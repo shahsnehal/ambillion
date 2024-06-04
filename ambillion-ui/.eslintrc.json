@@ -1,0 +1,56 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "plugins": ["@typescript-eslint", "react", "prettier"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+              "selector": "typeLike",
+              "format": ["PascalCase"]
+            }
+          ],
+          "@typescript-eslint/no-inferrable-types": [
+            "error",
+            {
+              "ignoreParameters": true
+            }
+          ],
+        "no-var": "error",
+        "semi": ["error", "always"],
+        "quotes": ["error", "single"],
+        "comma-dangle": ["error", "never"],
+        "no-debugger": "warn",
+        "no-console": "warn",
+        "no-undef": "off",
+        "prettier/prettier": 2,
+        "no-unused-vars": "warn",
+        "no-empty": "warn",
+        "prefer-arrow-callback": "warn",
+        "react/react-in-jsx-scope": "off",
+        "no-alert": 2,
+        "no-await-in-loop": 1,
+        "react/prop-types": "off",
+        "camelcase": 1,
+        "no-underscore-dangle": 1,
+        // "prefer-destructuring": "error",
+        "prefer-const": "error",
+        "no-dupe-args": "error",
+        "no-const-assign": "error",
+        "no-empty-function": "error"
+        // "camelcase": "warn"
+    }
+  }
+  
