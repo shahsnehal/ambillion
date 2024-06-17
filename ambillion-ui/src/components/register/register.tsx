@@ -1,7 +1,10 @@
+import { ROUTES } from 'constants/common';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 export const Registration = () => {
+    const navigate = useNavigate();
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
         lastName: Yup.string().required('LastName is required'),
@@ -18,22 +21,23 @@ export const Registration = () => {
             .required('Confirm Password is required')
     });
     return (
-        <div id="main-wrapper">
+        <div id="main-wrapper" className="auth-customizer-none">
             <div className="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
                 <div className="d-flex align-items-center justify-content-center w-100">
                     <div className="row justify-content-center w-100">
-                        <div className="col-md-12 col-lg-12 col-xxl-6">
+                        <div className="col-md-8 col-lg-6 col-xxl-9">
                             <div className="card mb-0">
                                 <div className="card-body p-5">
-                                    <div className="d-flex justify-content-center">
-                                        <img
-                                            src="../assets/images/logos/logo-icon.svg"
-                                            alt="homepage"
-                                            // height={250}
-                                            className="light-logo"
-                                        />
+                                    <div className="container">
+                                        <div className="row justify-content-center mb-5">
+                                            <img
+                                                src="../assets/images/logos/logo-icon.svg"
+                                                alt="homepage"
+                                                height={80}
+                                                className="logo-img"
+                                            />
+                                        </div>
                                     </div>
-
                                     <Formik
                                         initialValues={{
                                             firstName: '',
@@ -57,16 +61,16 @@ export const Registration = () => {
                                     >
                                         {(props) => (
                                             <Form>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="lastName"
-                                                        id="lastName"
-                                                        className="col-sm-3 col-form-label"
-                                                    >
-                                                        First Name
-                                                        <span className="text-danger"> *</span>
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                <div className="col-sm-12 col-md-12 col-lg-12 col-xxl-12 row">
+                                                    <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="lastName"
+                                                            id="lastName"
+                                                            className="col-form-label"
+                                                        >
+                                                            First Name
+                                                            <span className="text-danger"> *</span>
+                                                        </label>
                                                         <Field
                                                             type="text"
                                                             name="firstName"
@@ -84,16 +88,14 @@ export const Registration = () => {
                                                             className="invalid-feedback"
                                                         />
                                                     </div>
-                                                </div>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="lastName"
-                                                        className="form-label col-sm-3 col-form-label"
-                                                    >
-                                                        Last Name
-                                                        <span className="text-danger"> *</span>
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                    <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="lastName"
+                                                            className="form-label col-form-label"
+                                                        >
+                                                            Last Name
+                                                            <span className="text-danger"> *</span>
+                                                        </label>
                                                         <Field
                                                             type="text"
                                                             name="lastName"
@@ -112,14 +114,14 @@ export const Registration = () => {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="companyName"
-                                                        className="form-label col-sm-3 col-form-label"
-                                                    >
-                                                        Company Name
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                <div className="col-md-12 col-lg-12 col-xxl-12 row">
+                                                    <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="companyName"
+                                                            className="form-label col-form-label"
+                                                        >
+                                                            Company Name
+                                                        </label>
                                                         <Field
                                                             type="text"
                                                             name="companyName"
@@ -137,16 +139,15 @@ export const Registration = () => {
                                                             className="invalid-feedback"
                                                         />
                                                     </div>
-                                                </div>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="mobileNumber"
-                                                        className="form-label col-sm-3 col-form-label"
-                                                    >
-                                                        Mobile Number
-                                                        <span className="text-danger"> *</span>
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                    <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="mobileNumber"
+                                                            className="form-label col-form-label"
+                                                        >
+                                                            Mobile Number
+                                                            <span className="text-danger"> *</span>
+                                                        </label>
+
                                                         <Field
                                                             type="text"
                                                             name="mobileNumber"
@@ -165,15 +166,15 @@ export const Registration = () => {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="emailAddress"
-                                                        className="form-label col-sm-3 col-form-label"
-                                                    >
-                                                        Email Address
-                                                        <span className="text-danger"> *</span>
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                <div className="col-md-12 col-lg-12 col-xxl-12 row">
+                                                    <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="emailAddress"
+                                                            className="form-label col-form-label"
+                                                        >
+                                                            Email Address
+                                                            <span className="text-danger"> *</span>
+                                                        </label>
                                                         <Field
                                                             type="text"
                                                             name="emailAddress"
@@ -191,18 +192,16 @@ export const Registration = () => {
                                                             className="invalid-feedback"
                                                         />
                                                     </div>
-                                                </div>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="password"
-                                                        className="form-label col-sm-3 col-form-label"
-                                                    >
-                                                        Password
-                                                        <span className="text-danger"> *</span>
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                    <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="password"
+                                                            className="form-label col-form-label"
+                                                        >
+                                                            Password
+                                                            <span className="text-danger"> *</span>
+                                                        </label>
                                                         <Field
-                                                            type="text"
+                                                            type="password"
                                                             name="password"
                                                             className={`form-control ${
                                                                 props.touched.password &&
@@ -219,17 +218,17 @@ export const Registration = () => {
                                                         />
                                                     </div>
                                                 </div>
-                                                <div className="mb-4 row align-items-center">
-                                                    <label
-                                                        htmlFor="confirmPassword"
-                                                        className="form-label col-sm-3 col-form-label"
-                                                    >
-                                                        Confirm Password
-                                                        <span className="text-danger"> *</span>
-                                                    </label>
-                                                    <div className="col-sm-9">
+                                                <div className="mb-3 col-md-12 col-lg-12 col-xxl-12 row">
+                                                    <div className="col-sm-12 col-md-12 col-lg-6 col-xxl-6">
+                                                        <label
+                                                            htmlFor="confirmPassword"
+                                                            className="form-label col-form-label"
+                                                        >
+                                                            Confirm Password
+                                                            <span className="text-danger"> *</span>
+                                                        </label>
                                                         <Field
-                                                            type="text"
+                                                            type="password"
                                                             name="confirmPassword"
                                                             className={`form-control ${
                                                                 props.touched.confirmPassword &&
@@ -246,24 +245,30 @@ export const Registration = () => {
                                                         />
                                                     </div>
                                                 </div>
-                                                <button type="submit" className="btn btn-primary">
-                                                    Sign Up
-                                                </button>
-                                                <div className="d-flex align-items-center">
+                                                <div className="p-2 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-primary py-8 mb-4 rounded-2"
+                                                        disabled={props.isSubmitting}
+                                                    >
+                                                        Sign Up
+                                                    </button>
+                                                </div>
+                                                <div className="d-flex  align-items-center">
                                                     <p className="fs-4 mb-0 text-dark">
                                                         Already have an Account?
                                                     </p>
-                                                    <a
-                                                        className="text-primary fw-medium ms-2"
-                                                        href="authentication-login.html"
+
+                                                    <button
+                                                        className="btn text-primary fw-medium ms-2"
+                                                        onClick={() => navigate(ROUTES.LOGIN)}
                                                     >
                                                         Sign In
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </Form>
                                         )}
                                     </Formik>
-                                    {/* </form> */}
                                 </div>
                             </div>
                         </div>
