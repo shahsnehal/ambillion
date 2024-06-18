@@ -1,8 +1,10 @@
 import { Loader } from 'common/loaders/loader';
+import Layout from 'components/common/layouts/layouts';
 import { ROUTES } from 'constants/common';
 import { ErrorBoundary } from 'pages/errors/error';
 import { ForgotPasswordPage } from 'pages/forgotPassword/forgotPassword';
 import { LoginPage } from 'pages/login/login';
+import { NotFound } from 'pages/notFound/notFound';
 import { RegisterPage } from 'pages/register/register';
 // import { RegisterPage } from 'pages/register/register';
 import React from 'react';
@@ -25,6 +27,8 @@ function App() {
                                         path={ROUTES.FORGOT_PASSWORD}
                                         element={<ForgotPasswordPage />}
                                     />
+                                    <Route path={ROUTES.DASHBOARD} element={<Layout />} />
+                                    <Route path="*" element={<NotFound />} />
                                 </Route>
                                 <Route></Route>
                             </>

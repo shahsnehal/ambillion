@@ -7,7 +7,9 @@ import * as Yup from 'yup';
 export const ForgotPassword = () => {
     const navigate = useNavigate();
     const RegisterSchemas = Yup.object().shape({
-        email: Yup.string().required('email is required')
+        email: Yup.string()
+            .email('Please enter a valid Email Address')
+            .required('Email Address is required')
     });
     return (
         <div id="main-wrapper" className="auth-customizer-none">
@@ -55,11 +57,11 @@ export const ForgotPassword = () => {
                                         {(props) => (
                                             <Form>
                                                 <div className="mb-3">
-                                                    <label htmlFor="email" className="form-label">
+                                                    <label className="form-label">
                                                         Email address
                                                     </label>
                                                     <Field
-                                                        type="email"
+                                                        // type="email"
                                                         name="email"
                                                         className={`form-control ${
                                                             props.touched.email &&

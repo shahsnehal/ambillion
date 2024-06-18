@@ -141,7 +141,7 @@ export const Registration = () => {
                                                     </div>
                                                     <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
                                                         <label
-                                                            htmlFor="mobileNumber"
+                                                            // htmlFor="mobileNumber"
                                                             className="form-label col-form-label"
                                                         >
                                                             Mobile Number
@@ -169,7 +169,7 @@ export const Registration = () => {
                                                 <div className="col-md-12 col-lg-12 col-xxl-12 row">
                                                     <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
                                                         <label
-                                                            htmlFor="emailAddress"
+                                                            // htmlFor="emailAddress"
                                                             className="form-label col-form-label"
                                                         >
                                                             Email Address
@@ -194,7 +194,7 @@ export const Registration = () => {
                                                     </div>
                                                     <div className="mb-3 col-sm-12 col-md-12 col-lg-6 col-xxl-6">
                                                         <label
-                                                            htmlFor="password"
+                                                            // htmlFor="password"
                                                             className="form-label col-form-label"
                                                         >
                                                             Password
@@ -221,7 +221,7 @@ export const Registration = () => {
                                                 <div className="mb-3 col-md-12 col-lg-12 col-xxl-12 row">
                                                     <div className="col-sm-12 col-md-12 col-lg-6 col-xxl-6">
                                                         <label
-                                                            htmlFor="confirmPassword"
+                                                            // htmlFor="confirmPassword"
                                                             className="form-label col-form-label"
                                                         >
                                                             Confirm Password
