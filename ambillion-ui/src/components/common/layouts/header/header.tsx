@@ -3,9 +3,23 @@ import { ROUTES } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
 export const Header = () => {
     const navigate = useNavigate();
+
+    const handleSidebar = () => {
+        const mainWrapper = document.getElementById('main-wrapper');
+        if (mainWrapper) {
+            mainWrapper.classList.toggle('show-sidebar');
+        }
+        const dataTheme = document.body.getAttribute('data-sidebartype');
+        if (dataTheme === 'full') {
+            document.body.setAttribute('data-sidebartype', 'mini-sidebar');
+        } else {
+            document.body.setAttribute('data-sidebartype', 'full');
+        }
+    };
+
     return (
-        <div className="page-wrapper">
-            <header className="topbar card rounded-0 border-0">
+        <>
+            <header className="topbar custom-topbar card rounded-0 border-0">
                 <div className="with-vertical">
                     <nav className="navbar navbar-expand-lg px-0 py-0">
                         <div className="d-none d-lg-block">
@@ -13,7 +27,6 @@ export const Header = () => {
                                 <a className="text-nowrap logo-img d-flex align-items-center gap-6">
                                     <b className="logo-icon">
                                         <i className="wi wi-sunset"></i>
-
                                         <img
                                             src="assets/images/logos/logo-icon.svg"
                                             alt="homepage"
@@ -30,6 +43,7 @@ export const Header = () => {
                                     className="nav-link sidebartoggler"
                                     id="headerCollapse"
                                     href="javascript:void(0)"
+                                    onClick={handleSidebar}
                                 >
                                     <Icon icon="solar:list-broken" />
                                 </a>
@@ -207,6 +221,6 @@ export const Header = () => {
                     </nav>
                 </div>
             </aside>
-        </div>
+        </>
     );
 };
