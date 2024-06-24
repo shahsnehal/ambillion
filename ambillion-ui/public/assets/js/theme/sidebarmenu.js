@@ -55,7 +55,7 @@ if ((at = "vertical")) {
       }
     }
   });
-  document.querySelectorAll("#sidebarnav a").forEach(function (link) {
+  document.querySelectorAll("#sidebarnav a").forEach((link) => {
     link.addEventListener("click", function (e) {
       const isActive = this.classList.contains("active");
       const parentUl = this.closest("ul");
@@ -70,7 +70,7 @@ if ((at = "vertical")) {
 
         // open our new menu and add the open class
         const submenu = this.nextElementSibling;
-        if (submenu) {
+                if (submenu) {
           submenu.classList.add("in");
         }
 

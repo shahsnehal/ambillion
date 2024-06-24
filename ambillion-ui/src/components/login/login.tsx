@@ -50,6 +50,7 @@ export const Login = () => {
                                                 // eslint-disable-next-line no-alert
                                                 alert('Form is validated! Submitting the form...');
                                                 setSubmitting(false);
+                                                navigate(ROUTES.DASHBOARD);
                                             }, 1000);
                                         }}
                                     >
