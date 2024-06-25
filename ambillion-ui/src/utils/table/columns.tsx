@@ -10,39 +10,39 @@ interface DataRow {
     isVerified: boolean;
 }
 export const userTableColumns: TableColumn<DataRow>[] = [
+    // {
+    //     name: 'ID',
+    //     selector: (row) => row.id,
+    //     sortable: true,
+    //     width: '60px'
+    // },
     {
-        name: 'ID',
-        selector: (row) => row.id,
-        sortable: true,
-        width: '60px'
-    },
-    {
-        name: 'FirstName',
+        name: 'First Name',
         selector: (row) => row.firstName,
         sortable: true
     },
     {
-        name: 'LastName',
+        name: 'Last Name',
         selector: (row) => row.lastName,
         sortable: true
     },
     {
-        name: 'CompanyName',
+        name: 'Company Name',
         selector: (row) => row.companyName,
         sortable: true
     },
     {
-        name: 'MobileNumber',
+        name: 'Mobile Number',
         selector: (row) => row.mobileNumber,
         sortable: true
     },
     {
-        name: 'EmailAddress',
+        name: 'Email Address',
         selector: (row) => row.emailAddress,
         sortable: true
     },
     {
-        name: 'Verified',
+        name: 'Status',
         selector: (row) => row.isVerified,
         sortable: true,
         cell: (row) =>
