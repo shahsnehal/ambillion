@@ -7,7 +7,9 @@ import * as Yup from 'yup';
 export const Login = () => {
     const navigate = useNavigate();
     const RegisterSchemas = Yup.object().shape({
-        userName: Yup.string().required('Username is required'),
+        email: Yup.string()
+            .email('Please enter a valid Email Address')
+            .required('Email is required'),
         password: Yup.string().required('Password is required')
     });
     return (
@@ -39,7 +41,7 @@ export const Login = () => {
                                     </div>
                                     <Formik
                                         initialValues={{
-                                            userName: '',
+                                            email: '',
                                             password: ''
                                         }}
                                         validationSchema={RegisterSchemas}
@@ -48,7 +50,7 @@ export const Login = () => {
                                             // Simulating asynchronous operation, like an API call
                                             setTimeout(() => {
                                                 // eslint-disable-next-line no-alert
-                                                alert(`${values?.userName} has login successfully`);
+                                                alert(`${values?.email} has login successfully`);
                                                 setSubmitting(false);
                                                 navigate(ROUTES.DASHBOARD);
                                             }, 1000);
@@ -61,23 +63,24 @@ export const Login = () => {
                                                         // htmlFor="userName"
                                                         className="form-label"
                                                     >
-                                                        Username
+                                                        Email{' '}
+                                                        <span className="text-danger"> *</span>
                                                     </label>
                                                     <Field
-                                                        type="userName"
-                                                        name="userName"
+                                                        type="email"
+                                                        name="email"
                                                         className={`form-control ${
-                                                            props.touched.userName &&
-                                                            props.errors.userName
+                                                            props.touched.email &&
+                                                            props?.errors?.email
                                                                 ? 'is-invalid'
                                                                 : ''
                                                         }`}
-                                                        id="userName"
-                                                        aria-describedby="userName"
+                                                        id="email"
+                                                        aria-describedby="email"
                                                     />
                                                     <ErrorMessage
                                                         component="div"
-                                                        name="userName"
+                                                        name="email"
                                                         className="invalid-feedback"
                                                     />
                                                 </div>
@@ -86,7 +89,8 @@ export const Login = () => {
                                                         htmlFor="exampleInputPassword1"
                                                         className="form-label"
                                                     >
-                                                        Password
+                                                        Password{' '}
+                                                        <span className="text-danger"> *</span>
                                                     </label>
                                                     <Field
                                                         type="password"
