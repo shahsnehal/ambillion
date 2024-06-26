@@ -1,10 +1,22 @@
+import { useState, useEffect } from 'react';
+import { apiUrl } from 'constants/common';
 import { ROUTES } from 'constants/common';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
+const SITE_KEY = apiUrl.captchaSiteKey || '';
+
 export const Registration = () => {
     const navigate = useNavigate();
+    const [siteKey, setSiteKey] = useState<string>(SITE_KEY);
+
+    useEffect(() => {
+        setSiteKey(SITE_KEY);
+    }, [SITE_KEY]);
+
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
         lastName: Yup.string().required('LastName is required'),
@@ -18,8 +30,40 @@ export const Registration = () => {
             .required('Password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), ''], 'Passwords must match')
-            .required('Confirm Password is required')
+            .required('Confirm Password is required'),
+        captcha: Yup.string().required('Please complete the reCAPTCHA')
     });
+
+    const handleSubmit = (
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        values: any,
+        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+    ) => {
+        console.log('Form values:', values);
+        // Simulate form submission or API call here
+        fetch('http://localhost:5000/submitForm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+            .then((response) => response.json())
+            .then(
+                // (data) => {
+                () => {
+                    // eslint-disable-next-line no-alert
+                    alert('Form submitted successfully!');
+                    setSubmitting(false);
+                }
+            )
+
+            .catch((error) => {
+                console.error('Error submitting form:', error);
+                setSubmitting(false);
+            });
+    };
+
     return (
         <div id="main-wrapper" className="auth-customizer-none">
             <div className="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
@@ -46,18 +90,11 @@ export const Registration = () => {
                                             mobileNumber: '',
                                             emailAddress: '',
                                             password: '',
-                                            confirmPassword: ''
+                                            confirmPassword: '',
+                                            captcha: ''
                                         }}
                                         validationSchema={RegisterSchemas}
-                                        onSubmit={(values, { setSubmitting }) => {
-                                            console.log(values);
-                                            // Simulating asynchronous operation, like an API call
-                                            setTimeout(() => {
-                                                // eslint-disable-next-line no-alert
-                                                alert('Form is validated! Submitting the form...');
-                                                setSubmitting(false);
-                                            }, 1000);
-                                        }}
+                                        onSubmit={handleSubmit}
                                     >
                                         {(props) => (
                                             <Form>
@@ -245,13 +282,37 @@ export const Registration = () => {
                                                         />
                                                     </div>
                                                 </div>
+                                                <div className="mb-3 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
+                                                    <ReCAPTCHA
+                                                        sitekey={siteKey}
+                                                        onChange={(value: string | null) => {
+                                                            // console.log('Captcha value:', value);
+                                                            props.setFieldValue(
+                                                                'captcha',
+                                                                value || ''
+                                                            );
+                                                        }}
+                                                        className={`form-control ${props.touched.captcha && props.errors.captcha ? 'is-invalid' : ''}`}
+                                                    />
+                                                    <ErrorMessage
+                                                        name="captcha"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                    />
+                                                </div>
                                                 <div className="p-2 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
                                                     <button
                                                         type="submit"
                                                         className="btn btn-primary py-8 mb-4 rounded-2"
-                                                        disabled={props.isSubmitting}
+                                                        disabled={
+                                                            !props.isValid ||
+                                                            !props.dirty ||
+                                                            props.isSubmitting
+                                                        }
                                                     >
-                                                        Sign Up
+                                                        {props.isSubmitting
+                                                            ? 'Submitting...'
+                                                            : 'Sign Up'}
                                                     </button>
                                                 </div>
                                                 <div className="d-flex  align-items-center">
