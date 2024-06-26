@@ -14,7 +14,10 @@ export const Registration = () => {
             .email('Please enter a valid Email Address')
             .required('Email Address is required'),
         password: Yup.string()
-            .matches(passwordRules, { message: 'Please create a stronger Password' })
+            .matches(passwordRules, {
+                message:
+                    'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special'
+            })
             .required('Password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), ''], 'Passwords must match')
