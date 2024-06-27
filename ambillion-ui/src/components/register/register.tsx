@@ -11,7 +11,7 @@ const SITE_KEY = googleRecaptchaConfig.captchaSiteKey || '';
 
 export const Registration = () => {
     const navigate = useNavigate();
-    const [captchaToken, setCaptchaToken] = useState<string>('');
+    const [isCaptchaVerified, setIsCaptchaVerified] = useState<boolean>(false);
 
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
@@ -31,6 +31,14 @@ export const Registration = () => {
             .oneOf([Yup.ref('password'), ''], 'Passwords must match')
             .required('Confirm Password is required')
     });
+
+    const handleCaptchaChange = (value: string | null) => {
+        if (value) {
+            setIsCaptchaVerified(true);
+        } else {
+            setIsCaptchaVerified(false);
+        }
+    };
 
     const handleSubmit = (
         values: Yup.InferType<typeof RegisterSchemas>,
@@ -260,8 +268,9 @@ export const Registration = () => {
                                                 <div className="mb-3 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
                                                     <ReCAPTCHA
                                                         sitekey={SITE_KEY}
-                                                        onChange={(value) => {
-                                                            setCaptchaToken(value || '');
+                                                        onChange={handleCaptchaChange}
+                                                        onExpired={() => {
+                                                            setIsCaptchaVerified(false);
                                                         }}
                                                     />
                                                 </div>
@@ -273,7 +282,7 @@ export const Registration = () => {
                                                             !props.isValid ||
                                                             !props.dirty ||
                                                             props.isSubmitting ||
-                                                            !captchaToken
+                                                            !isCaptchaVerified
                                                         }
                                                     >
                                                         {props.isSubmitting
