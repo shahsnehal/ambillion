@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { apiUrl } from 'constants/common';
+import { useState } from 'react';
+import { googleRecaptchaConfig } from 'constants/common';
 import { ROUTES } from 'constants/common';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
@@ -7,15 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
-const SITE_KEY = apiUrl.captchaSiteKey || '';
+const SITE_KEY = googleRecaptchaConfig.captchaSiteKey || '';
 
 export const Registration = () => {
     const navigate = useNavigate();
-    const [siteKey, setSiteKey] = useState<string>(SITE_KEY);
-
-    useEffect(() => {
-        setSiteKey(SITE_KEY);
-    }, [SITE_KEY]);
+    const [captchaToken, setCaptchaToken] = useState<string>('');
 
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
@@ -33,38 +29,15 @@ export const Registration = () => {
             .required('Password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), ''], 'Passwords must match')
-            .required('Confirm Password is required'),
-        captcha: Yup.string().required('Please complete the reCAPTCHA')
+            .required('Confirm Password is required')
     });
 
     const handleSubmit = (
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        values: any,
+        values: Yup.InferType<typeof RegisterSchemas>,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
     ) => {
-        console.log('Form values:', values);
-        // Simulate form submission or API call here
-        fetch('http://localhost:5000/submitForm', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(values)
-        })
-            .then((response) => response.json())
-            .then(
-                // (data) => {
-                () => {
-                    // eslint-disable-next-line no-alert
-                    alert('Form submitted successfully!');
-                    setSubmitting(false);
-                }
-            )
-
-            .catch((error) => {
-                console.error('Error submitting form:', error);
-                setSubmitting(false);
-            });
+        setSubmitting(false);
+        navigate(ROUTES.LOGIN);
     };
 
     return (
@@ -93,8 +66,7 @@ export const Registration = () => {
                                             mobileNumber: '',
                                             emailAddress: '',
                                             password: '',
-                                            confirmPassword: '',
-                                            captcha: ''
+                                            confirmPassword: ''
                                         }}
                                         validationSchema={RegisterSchemas}
                                         onSubmit={handleSubmit}
@@ -287,30 +259,21 @@ export const Registration = () => {
                                                 </div>
                                                 <div className="mb-3 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
                                                     <ReCAPTCHA
-                                                        sitekey={siteKey}
-                                                        onChange={(value: string | null) => {
-                                                            // console.log('Captcha value:', value);
-                                                            props.setFieldValue(
-                                                                'captcha',
-                                                                value || ''
-                                                            );
+                                                        sitekey={SITE_KEY}
+                                                        onChange={(value) => {
+                                                            setCaptchaToken(value || '');
                                                         }}
-                                                        className={`form-control ${props.touched.captcha && props.errors.captcha ? 'is-invalid' : ''}`}
-                                                    />
-                                                    <ErrorMessage
-                                                        name="captcha"
-                                                        component="div"
-                                                        className="invalid-feedback"
                                                     />
                                                 </div>
                                                 <div className="p-2 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
                                                     <button
                                                         type="submit"
-                                                        className="btn btn-primary py-8 mb-4 rounded-2"
+                                                        className="btn btn-primary py-2 mb-2 rounded-2"
                                                         disabled={
                                                             !props.isValid ||
                                                             !props.dirty ||
-                                                            props.isSubmitting
+                                                            props.isSubmitting ||
+                                                            !captchaToken
                                                         }
                                                     >
                                                         {props.isSubmitting
