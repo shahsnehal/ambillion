@@ -1,7 +1,8 @@
 import { TableFilter } from 'components/common/table/tableFilter';
 import React from 'react';
 import DataTable from 'react-data-table-component';
-import { dummyUserTableData, userTableColumns } from 'utils/table/columns';
+import { userTableColumns } from 'utils/table/columns';
+import { dummyUserTableData } from 'utils/table/data';
 
 const customStyles = {
     rows: {
