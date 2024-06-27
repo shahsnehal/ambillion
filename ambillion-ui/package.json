@@ -36,11 +36,6 @@
         "format": "prettier src/**/*.{ts,tsx,json} --write",
         "eject": "react-scripts eject"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
     "eslintConfig": {
         "extends": [
             "react-app",
@@ -68,8 +63,6 @@
         "eslint-plugin-prettier": "^5.1.3",
         "eslint-plugin-react": "^7.34.2",
         "globals": "^15.3.0",
-        "husky": "^9.0.11",
-        "lint-staged": "^15.2.7",
         "prettier": "^3.2.5"
     }
 }
