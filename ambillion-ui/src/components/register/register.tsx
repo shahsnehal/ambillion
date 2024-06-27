@@ -6,7 +6,7 @@ import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const SITE_KEY = googleRecaptchaConfig.captchaSiteKey || '';
 
 export const Registration = () => {
