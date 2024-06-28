@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { googleRecaptchaConfig } from 'constants/common';
 import { ROUTES } from 'constants/common';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -11,7 +11,8 @@ const SITE_KEY = googleRecaptchaConfig.captchaSiteKey || '';
 
 export const Registration = () => {
     const navigate = useNavigate();
-    const [isCaptchaVerified, setIsCaptchaVerified] = useState<boolean>(false);
+    const [isRecaptchaValid, setIsRecaptchaValid] = useState<boolean>(false);
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
@@ -32,11 +33,11 @@ export const Registration = () => {
             .required('Confirm Password is required')
     });
 
-    const handleCaptchaChange = (value: string | null) => {
+    const captchaOnChange = (value: string | null) => {
         if (value) {
-            setIsCaptchaVerified(true);
+            setIsRecaptchaValid(true);
         } else {
-            setIsCaptchaVerified(false);
+            setIsRecaptchaValid(false);
         }
     };
 
@@ -267,10 +268,12 @@ export const Registration = () => {
                                                 </div>
                                                 <div className="mb-3 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
                                                     <ReCAPTCHA
+                                                        ref={recaptchaRef}
                                                         sitekey={SITE_KEY}
-                                                        onChange={handleCaptchaChange}
+                                                        onChange={captchaOnChange}
                                                         onExpired={() => {
-                                                            setIsCaptchaVerified(false);
+                                                            setIsRecaptchaValid(false);
+                                                            recaptchaRef.current?.reset();
                                                         }}
                                                     />
                                                 </div>
@@ -282,7 +285,7 @@ export const Registration = () => {
                                                             !props.isValid ||
                                                             !props.dirty ||
                                                             props.isSubmitting ||
-                                                            !isCaptchaVerified
+                                                            !isRecaptchaValid
                                                         }
                                                     >
                                                         {props.isSubmitting
