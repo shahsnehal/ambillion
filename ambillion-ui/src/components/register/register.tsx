@@ -1,10 +1,19 @@
+import { useState, useRef } from 'react';
+import { googleRecaptchaConfig } from 'constants/common';
 import { ROUTES } from 'constants/common';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
+
+const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const SITE_KEY = googleRecaptchaConfig.captchaSiteKey || '';
+
 export const Registration = () => {
     const navigate = useNavigate();
+    const [isRecaptchaValid, setIsRecaptchaValid] = useState<boolean>(false);
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
         lastName: Yup.string().required('LastName is required'),
@@ -23,6 +32,23 @@ export const Registration = () => {
             .oneOf([Yup.ref('password'), ''], 'Passwords must match')
             .required('Confirm Password is required')
     });
+
+    const captchaOnChange = (value: string | null) => {
+        if (value) {
+            setIsRecaptchaValid(true);
+        } else {
+            setIsRecaptchaValid(false);
+        }
+    };
+
+    const handleSubmit = (
+        values: Yup.InferType<typeof RegisterSchemas>,
+        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+    ) => {
+        setSubmitting(false);
+        navigate(ROUTES.LOGIN);
+    };
+
     return (
         <div id="main-wrapper" className="auth-customizer-none">
             <div className="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
@@ -52,15 +78,7 @@ export const Registration = () => {
                                             confirmPassword: ''
                                         }}
                                         validationSchema={RegisterSchemas}
-                                        onSubmit={(values, { setSubmitting }) => {
-                                            console.log(values);
-                                            // Simulating asynchronous operation, like an API call
-                                            setTimeout(() => {
-                                                // eslint-disable-next-line no-alert
-                                                alert('Form is validated! Submitting the form...');
-                                                setSubmitting(false);
-                                            }, 1000);
-                                        }}
+                                        onSubmit={handleSubmit}
                                     >
                                         {(props) => (
                                             <Form>
@@ -248,13 +266,31 @@ export const Registration = () => {
                                                         />
                                                     </div>
                                                 </div>
+                                                <div className="mb-3 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
+                                                    <ReCAPTCHA
+                                                        ref={recaptchaRef}
+                                                        sitekey={SITE_KEY}
+                                                        onChange={captchaOnChange}
+                                                        onExpired={() => {
+                                                            setIsRecaptchaValid(false);
+                                                            recaptchaRef.current?.reset();
+                                                        }}
+                                                    />
+                                                </div>
                                                 <div className="p-2 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
                                                     <button
                                                         type="submit"
-                                                        className="btn btn-primary py-8 mb-4 rounded-2"
-                                                        disabled={props.isSubmitting}
+                                                        className="btn btn-primary py-2 mb-2 rounded-2"
+                                                        disabled={
+                                                            !props.isValid ||
+                                                            !props.dirty ||
+                                                            props.isSubmitting ||
+                                                            !isRecaptchaValid
+                                                        }
                                                     >
-                                                        Sign Up
+                                                        {props.isSubmitting
+                                                            ? 'Submitting...'
+                                                            : 'Sign Up'}
                                                     </button>
                                                 </div>
                                                 <div className="d-flex  align-items-center">
