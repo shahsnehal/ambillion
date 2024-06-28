@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-interface ErrorBoundaryProps {
+type ErrorBoundaryProps = {
     children?: React.ReactNode;
-}
+};
 
-interface ErrorBoundaryState {
+type ErrorBoundaryState = {
     hasError: boolean;
-}
+};
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     constructor(props: ErrorBoundaryProps) {
