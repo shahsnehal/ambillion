@@ -3,7 +3,6 @@ import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-// import * as Yup from 'yup';
 export const Login = () => {
     const navigate = useNavigate();
     const RegisterSchemas = Yup.object().shape({

@@ -29,9 +29,8 @@ const customStyles = {
 export const UserList = () => {
     const [filterText, setFilterText] = React.useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState<boolean>(false);
-    const filteredItems = dummyUserTableData.filter(
-        (item) =>
-            item.emailAddress && item.emailAddress.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = dummyUserTableData.filter((item) =>
+        item.emailAddress?.toLowerCase().includes(filterText.toLowerCase())
     );
     const subHeaderComponentMemo = React.useMemo(() => {
         const handleClear = () => {
