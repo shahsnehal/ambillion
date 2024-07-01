@@ -3,7 +3,6 @@ import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-// import * as Yup from 'yup';
 export const ForgotPassword = () => {
     const navigate = useNavigate();
     const RegisterSchemas = Yup.object().shape({
@@ -57,7 +56,7 @@ export const ForgotPassword = () => {
                                         {(props) => (
                                             <Form>
                                                 <div className="mb-3">
-                                                    <label className="form-label">
+                                                    <label className="form-label" htmlFor="email">
                                                         Email address
                                                     </label>
                                                     <Field

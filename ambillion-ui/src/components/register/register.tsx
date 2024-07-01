@@ -1,13 +1,12 @@
 import { useState, useRef } from 'react';
-import { googleRecaptchaConfig } from 'constants/common';
-import { ROUTES } from 'constants/common';
+import { ROUTES, googleRecaptchaConfig } from 'constants/common';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-const SITE_KEY = googleRecaptchaConfig.captchaSiteKey || '';
+const SITE_KEY = googleRecaptchaConfig.captchaSiteKey ?? '';
 
 export const Registration = () => {
     const navigate = useNavigate();
@@ -89,7 +88,7 @@ export const Registration = () => {
                                                             id="lastName"
                                                             className="col-form-label"
                                                         >
-                                                            First Name
+                                                            First Name{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
                                                         <Field
@@ -114,7 +113,7 @@ export const Registration = () => {
                                                             htmlFor="lastName"
                                                             className="form-label col-form-label"
                                                         >
-                                                            Last Name
+                                                            Last Name{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
                                                         <Field
@@ -165,7 +164,7 @@ export const Registration = () => {
                                                             // htmlFor="mobileNumber"
                                                             className="form-label col-form-label"
                                                         >
-                                                            Mobile Number
+                                                            Mobile Number{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
 
@@ -193,7 +192,7 @@ export const Registration = () => {
                                                             // htmlFor="emailAddress"
                                                             className="form-label col-form-label"
                                                         >
-                                                            Email Address
+                                                            Email Address{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
                                                         <Field
@@ -218,7 +217,7 @@ export const Registration = () => {
                                                             // htmlFor="password"
                                                             className="form-label col-form-label"
                                                         >
-                                                            Password
+                                                            Password{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
                                                         <Field
@@ -245,7 +244,7 @@ export const Registration = () => {
                                                             // htmlFor="confirmPassword"
                                                             className="form-label col-form-label"
                                                         >
-                                                            Confirm Password
+                                                            Confirm Password{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
                                                         <Field
