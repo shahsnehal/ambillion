@@ -6,6 +6,7 @@ import { ErrorBoundary } from 'pages/errors/error';
 import { ForgotPasswordPage } from 'pages/forgotPassword/forgotPassword';
 import { LoginPage } from 'pages/login/login';
 import { NotFound } from 'pages/notFound/notFound';
+import { ProductsPage } from 'pages/products/products';
 import { RegisterPage } from 'pages/register/register';
 import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
@@ -23,6 +24,7 @@ function App() {
                                     <Route path={ROUTES.BASEPATH} element={<LoginPage />} />
                                     <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
                                     <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+
                                     <Route
                                         path={ROUTES.FORGOT_PASSWORD}
                                         element={<ForgotPasswordPage />}
@@ -30,8 +32,16 @@ function App() {
                                     <Route
                                         path={ROUTES.DASHBOARD}
                                         element={
-                                            <Layout>
+                                            <Layout title="Dashboard">
                                                 <DashboardPage />
+                                            </Layout>
+                                        }
+                                    />
+                                    <Route
+                                        path={ROUTES.PRODUCTS}
+                                        element={
+                                            <Layout title="products">
+                                                <ProductsPage />
                                             </Layout>
                                         }
                                     />

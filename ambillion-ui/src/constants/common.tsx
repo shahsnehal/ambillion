@@ -4,7 +4,8 @@ export const ROUTES = {
     LOGIN: '/login',
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgotPassword',
-    DASHBOARD: '/dashboard'
+    DASHBOARD: '/dashboard',
+    PRODUCTS: '/products'
 };
 
 // Recaptcha Configuration

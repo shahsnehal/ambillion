@@ -47,6 +47,7 @@ export const UserList = () => {
                 }
                 onClear={handleClear}
                 filterText={filterText}
+                placeholder="Filter By Email"
             />
         );
     }, [filterText, resetPaginationToggle]);
