@@ -25,7 +25,7 @@ type ProductFormModalProps = {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (values: ProductFormValues) => void;
-    initialValues?: ProductFormValues;
+    // initialValues?: ProductFormValues;
 };
 
 const dummyCategories = ['Furniture', 'Electronics', 'Apparel'];
@@ -522,7 +522,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                                 Close
                                             </button>
                                             <button type="submit" className="btn btn-primary">
-                                                Save changes
+                                                Save
                                             </button>
                                         </div>
                                     </Form>
