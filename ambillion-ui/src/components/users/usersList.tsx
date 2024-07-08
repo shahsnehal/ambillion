@@ -1,30 +1,8 @@
 import { TableFilter } from 'components/common/table/tableFilter';
 import React from 'react';
 import DataTable from 'react-data-table-component';
-import { userTableColumns } from 'utils/table/columns';
+import { customStyles, userTableColumns } from 'utils/table/columns';
 import { dummyUserTableData } from 'utils/table/data';
-
-const customStyles = {
-    rows: {
-        style: {
-            minHeight: '50px' // override the row height
-        }
-    },
-    headCells: {
-        style: {
-            paddingLeft: '6px', // override the cell padding for head cells
-            paddingRight: '6px',
-            fontSize: '14px',
-            fontWeight: 'bold'
-        }
-    },
-    cells: {
-        style: {
-            paddingLeft: '6px', // override the cell padding for data cells
-            paddingRight: '6px'
-        }
-    }
-};
 
 export const UserList = () => {
     const [filterText, setFilterText] = React.useState('');
@@ -47,6 +25,7 @@ export const UserList = () => {
                 }
                 onClear={handleClear}
                 filterText={filterText}
+                placeholder="Filter By Email"
             />
         );
     }, [filterText, resetPaginationToggle]);
