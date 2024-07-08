@@ -42,12 +42,18 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 <span className="hide-menu">HOME</span>
                             </li>
                             <li className="sidebar-item">
-                                <a className="sidebar-link" href="" id="get-url">
+                                <a
+                                    className="sidebar-link custom-sidebar-link"
+                                    id="get-url"
+                                    onClick={() => {
+                                        navigate(ROUTES.DASHBOARD);
+                                    }}
+                                >
                                     <Icon icon="solar:screencast-2-linear" className="aside-icon" />
                                     <span className="hide-menu">DASHBOARD</span>
                                 </a>
                             </li>
-                            <li className="sidebar-item">
+                            <li className="sidebar-item custom-sidebar-link">
                                 <a
                                     className="sidebar-link"
                                     id="get-url"
@@ -59,7 +65,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     <span className="hide-menu">PRODUCTS</span>
                                 </a>
                             </li>
-                            <li className="sidebar-item">
+                            <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" href="javascript:void(0)">
                                     <Icon
                                         icon="solar:user-circle-line-duotone"
@@ -68,7 +74,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     <span className="hide-menu">USER LIST</span>
                                 </a>
                             </li>
-                            <li className="sidebar-item">
+                            <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">
                                         <Icon icon="solar:question-circle-linear" />
@@ -76,7 +82,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     <span className="hide-menu">SERVICES</span>
                                 </a>
                             </li>
-                            <li className="sidebar-item">
+                            <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">
                                         <Icon icon="solar:question-circle-linear" />

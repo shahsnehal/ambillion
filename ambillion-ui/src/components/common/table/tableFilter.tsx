@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const TableFilter = ({ filterText, onFilter, onClear, placeholder }: any) => (
-    <div className="mb-3 col-sm-12 col-md-6 col-lg-12 col-xxl-4">
+    <div className="mb-3 col-sm-12 col-md-6 col-lg-12 col-xxl-12">
         <div className="input-group mb-3">
             <input
                 type="text"
