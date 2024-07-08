@@ -1,6 +1,28 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 
+export const customStyles = {
+    rows: {
+        style: {
+            minHeight: '50px' // override the row height
+        }
+    },
+    headCells: {
+        style: {
+            paddingLeft: '6px', // override the cell padding for head cells
+            paddingRight: '6px',
+            fontSize: '14px',
+            fontWeight: 'bold'
+        }
+    },
+    cells: {
+        style: {
+            paddingLeft: '6px', // override the cell padding for data cells
+            paddingRight: '6px'
+        }
+    }
+};
+
 type DataRow = {
     id: number;
     firstName: string;
@@ -32,15 +54,25 @@ export type ProductDataRow = {
     isActive: boolean;
 };
 
-type ActionsCellProps = {
-    row: ProductDataRow;
-    onEdit: (row: ProductDataRow) => void;
-    onDelete: (id: number) => void;
+type DeleteActionParams = {
+    id: number;
+    productDisplayName: string;
 };
 
-export const ActionsCell: React.FC<ActionsCellProps> = ({ row, onEdit, onDelete }) => {
+type ProductEditDeleteActionProps = {
+    row: ProductDataRow;
+    onEdit: (row: ProductDataRow) => void;
+    onDelete: (params: DeleteActionParams) => void;
+};
+
+// ProductEditDeleteAction component renders edit and delete actions for a table row.
+export const ProductEditDeleteAction: React.FC<ProductEditDeleteActionProps> = ({
+    row,
+    onEdit,
+    onDelete
+}) => {
     const handleDelete = () => {
-        onDelete(row.id);
+        onDelete({ id: row.id, productDisplayName: row.productDisplayName });
     };
 
     const handleEdit = () => {
@@ -65,12 +97,15 @@ export const ActionsCell: React.FC<ActionsCellProps> = ({ row, onEdit, onDelete 
     );
 };
 
-export const ActionsColumn = (
+//  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
+export const productEditDeleteActionColumn = (
     onEdit: (id: ProductDataRow) => void,
-    onDelete: (id: number) => void
+    onDelete: (params: DeleteActionParams) => void
 ) => ({
     name: 'Actions',
-    cell: (row: ProductDataRow) => <ActionsCell row={row} onEdit={onEdit} onDelete={onDelete} />,
+    cell: (row: ProductDataRow) => (
+        <ProductEditDeleteAction row={row} onEdit={onEdit} onDelete={onDelete} />
+    ),
     ignoreRowClick: false,
     allowOverflow: true,
     button: true

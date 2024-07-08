@@ -6,6 +6,7 @@ import { Header } from './header/header';
 import { Breadcrumb } from '../breadCrumb/breadCrumb';
 import { ROUTES } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
+import { Footer } from './footer/footer';
 
 export const Layout = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const navigate = useNavigate();
@@ -94,9 +95,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                         <Breadcrumb title={title} />
                         <div className="row">{children}</div>
                     </div>
-                    <footer className="footer py-3 bg-white border-top text-center">
-                        All Rights Reserved by Ambillion.
-                    </footer>
+                    <Footer />
                 </div>
             </div>
         </div>

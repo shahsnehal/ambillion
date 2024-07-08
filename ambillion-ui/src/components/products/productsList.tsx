@@ -2,63 +2,59 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { TableFilter } from 'components/common/table/tableFilter';
 import DataTable from 'react-data-table-component';
-import { productTableColumns, ActionsColumn, ProductDataRow } from 'utils/table/columns';
+import {
+    customStyles,
+    productTableColumns,
+    productEditDeleteActionColumn,
+    ProductDataRow
+} from 'utils/table/columns';
 import { dummyProductTableData } from 'utils/table/data';
-import { ConfirmationModal } from 'components/common/modal/confirmationModal';
-import { AddProductModal } from 'components/common/modal/addProductModal';
+import { DeleteConfirmationModal } from 'components/common/modal/deleteConfirmationModal';
+import { ProductFormModal } from 'components/common/modal/productFormModal';
 
-const customStyles = {
-    rows: {
-        style: {
-            minHeight: '50px' // override the row height
-        }
-    },
-    headCells: {
-        style: {
-            paddingLeft: '6px', // override the cell padding for head cells
-            paddingRight: '6px',
-            fontSize: '14px',
-            fontWeight: 'bold'
-        }
-    },
-    cells: {
-        style: {
-            paddingLeft: '6px', // override the cell padding for data cells
-            paddingRight: '6px'
-        }
-    }
+type SelectableDeleteRowData = {
+    productid: number | null;
+    productName: string;
 };
 
 export const ProductList = () => {
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [productData, setProductData] = useState(dummyProductTableData);
-    const [isAddProductModalOpen, setIsAddProductModalOpen] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
-    const [deleteItemId, setDeleteItemId] = useState<number | null>(null);
+    const [showProductFormModal, setShowProductFormModal] = useState<boolean>(false);
+    const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
+        productid: null,
+        productName: ''
+    });
 
     const filteredItems = productData.filter((item) =>
         item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
     );
 
     //Product Add Logic
-    const handleOpenAddProductModal = () => {
-        setIsAddProductModalOpen(true);
+    const handleOpenProductFormModal = () => {
+        setShowProductFormModal(true);
+    };
+
+    const handleConfirmAddProduct = () => {
+        setShowProductFormModal(false);
     };
 
     //Product Delete Logic
-    const handleDelete = (id: number) => {
-        setDeleteItemId(id);
+    const handleDelete = (params: { id: number; productDisplayName: string }) => {
+        setSelectDeleteProduct({ productid: params.id, productName: params.productDisplayName });
         setShowConfirmationModal(true);
     };
 
     const handleConfirmDelete = () => {
-        if (deleteItemId !== null) {
-            const updatedData = productData.filter((item) => item.id !== deleteItemId);
+        if (selectDeleteProduct.productid) {
+            const updatedData = productData.filter(
+                (item) => item.id !== selectDeleteProduct.productid
+            );
             setProductData(updatedData);
             setResetPaginationToggle(!resetPaginationToggle);
             setShowConfirmationModal(false);
-            setDeleteItemId(null);
         }
     };
 
@@ -79,7 +75,7 @@ export const ProductList = () => {
                 <div>
                     <button
                         className="btn btn-primary text-white icon-center"
-                        onClick={handleOpenAddProductModal}
+                        onClick={handleOpenProductFormModal}
                     >
                         <Icon icon="tabler:plus"></Icon>
                         Add Product
@@ -102,7 +98,10 @@ export const ProductList = () => {
     return (
         <>
             <DataTable
-                columns={[...productTableColumns, ActionsColumn(handleEdit, handleDelete)]}
+                columns={[
+                    ...productTableColumns,
+                    productEditDeleteActionColumn(handleEdit, handleDelete)
+                ]}
                 data={filteredItems}
                 pagination
                 title=" "
@@ -116,14 +115,20 @@ export const ProductList = () => {
                 persistTableHead
                 customStyles={customStyles}
             />
-            <ConfirmationModal
+            <DeleteConfirmationModal
                 isOpen={showConfirmationModal}
                 onClose={() => setShowConfirmationModal(false)}
                 onConfirm={handleConfirmDelete}
+                isLoading={false}
+                title="Delete Product"
+                content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
+                closeLabel="Cancel"
+                confirmLabel="Delete"
             />
-            <AddProductModal
-                onClose={() => setIsAddProductModalOpen(false)}
-                isOpen={isAddProductModalOpen}
+            <ProductFormModal
+                isOpen={showProductFormModal}
+                onClose={() => setShowProductFormModal(false)}
+                onSubmit={handleConfirmAddProduct}
             />
         </>
     );
