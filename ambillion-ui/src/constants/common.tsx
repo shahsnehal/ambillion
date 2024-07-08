@@ -12,8 +12,3 @@ export const ROUTES = {
 export const googleRecaptchaConfig = {
     captchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY
 };
-
-// Recaptcha Configuration
-export const googleRecaptchaConfig = {
-    captchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY
-};
