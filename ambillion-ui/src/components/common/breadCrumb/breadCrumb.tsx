@@ -1,5 +1,6 @@
+import { ROUTES } from 'constants/common';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type BreadcrumbProps = {
     title: string;
@@ -7,6 +8,7 @@ type BreadcrumbProps = {
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
     const location = useLocation();
+    const navigate = useNavigate();
     const pathnames = location.pathname.split('/').filter((x) => x);
 
     return (
@@ -16,7 +18,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
                 <nav aria-label="breadcrumb" className="d-flex align-items-center">
                     <ol className="breadcrumb d-flex align-items-center">
                         <li className="breadcrumb-item">
-                            <a className="text-decoration-none" href="/">
+                            <a
+                                className="text-decoration-none custom-sidebar-link"
+                                onClick={() => {
+                                    navigate(ROUTES.DASHBOARD);
+                                }}
+                            >
                                 Home
                             </a>
                         </li>
