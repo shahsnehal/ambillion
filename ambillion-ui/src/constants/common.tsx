@@ -4,7 +4,13 @@ export const ROUTES = {
     LOGIN: '/login',
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgotPassword',
-    DASHBOARD: '/dashboard'
+    DASHBOARD: '/dashboard',
+    PRODUCTS: '/products'
+};
+
+// Recaptcha Configuration
+export const googleRecaptchaConfig = {
+    captchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY
 };
 
 // Recaptcha Configuration
