@@ -10,7 +10,7 @@ import {
 } from 'utils/table/columns';
 import { dummyProductTableData } from 'utils/table/data';
 import { DeleteConfirmationModal } from 'components/common/modal/deleteConfirmationModal';
-import { ProductFormModal } from 'components/common/modal/productFormModal';
+import ProductFormModal, { ProductFormValues } from 'components/common/modal/productFormModal';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -23,6 +23,7 @@ export const ProductList = () => {
     const [productData, setProductData] = useState(dummyProductTableData);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [showProductFormModal, setShowProductFormModal] = useState<boolean>(false);
+    const [editedProduct, setEditedProduct] = useState<ProductDataRow | null>(null);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
@@ -32,13 +33,41 @@ export const ProductList = () => {
         item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    //Product Add Logic
-    const handleOpenProductFormModal = () => {
+    //Product Add/Edit Logic
+    const handleOpenProductFormModal = (product?: ProductDataRow) => {
+        console.log('product', product);
+        if (product) {
+            setEditedProduct(product);
+        } else {
+            setEditedProduct(null);
+        }
         setShowProductFormModal(true);
     };
 
-    const handleConfirmAddProduct = () => {
+    //Confirm Add Logic
+    const handleConfirmAddProduct = (values: ProductFormValues) => {
+        const newProduct: ProductDataRow = {
+            id: productData.length + 1,
+            ...values
+        };
+        setProductData([...productData, newProduct]);
         setShowProductFormModal(false);
+    };
+
+    //Product Edit Logic
+    const handleEdit = (editedRow: ProductDataRow) => {
+        handleOpenProductFormModal(editedRow);
+    };
+
+    //Confirm Edit Logic
+    const handleConfirmEditProduct = (values: ProductFormValues) => {
+        if (editedProduct) {
+            const updatedData = productData.map((item) =>
+                item.id === editedProduct.id ? { ...item, ...values } : item
+            );
+            setProductData(updatedData);
+            setShowProductFormModal(false);
+        }
     };
 
     //Product Delete Logic
@@ -47,6 +76,7 @@ export const ProductList = () => {
         setShowConfirmationModal(true);
     };
 
+    //Confirm Delete Logic
     const handleConfirmDelete = () => {
         if (selectDeleteProduct.productid) {
             const updatedData = productData.filter(
@@ -56,10 +86,6 @@ export const ProductList = () => {
             setResetPaginationToggle(!resetPaginationToggle);
             setShowConfirmationModal(false);
         }
-    };
-
-    const handleEdit = (editedRow: ProductDataRow) => {
-        console.log('Edit action:', editedRow);
     };
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -75,7 +101,7 @@ export const ProductList = () => {
                 <div>
                     <button
                         className="btn btn-primary text-white icon-center"
-                        onClick={handleOpenProductFormModal}
+                        onClick={() => handleOpenProductFormModal()}
                     >
                         <Icon icon="tabler:plus"></Icon>
                         Add Product
@@ -114,6 +140,7 @@ export const ProductList = () => {
                 subHeaderComponent={subHeaderComponentMemo}
                 persistTableHead
                 customStyles={customStyles}
+                // onRowClicked={handleRowClick}
             />
             <DeleteConfirmationModal
                 isOpen={showConfirmationModal}
@@ -127,8 +154,14 @@ export const ProductList = () => {
             />
             <ProductFormModal
                 isOpen={showProductFormModal}
-                onClose={() => setShowProductFormModal(false)}
-                onSubmit={handleConfirmAddProduct}
+                onClose={() => {
+                    setShowProductFormModal(false);
+                    setEditedProduct(null);
+                }}
+                onSubmit={editedProduct ? handleConfirmEditProduct : handleConfirmAddProduct}
+                initialValues={editedProduct ? { ...editedProduct } : undefined}
+                title={editedProduct ? 'Edit Product' : 'Add Product'}
+                submitLabel={editedProduct ? 'Update' : 'Add'}
             />
         </>
     );

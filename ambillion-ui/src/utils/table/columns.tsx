@@ -43,7 +43,7 @@ export type ProductDataRow = {
     brandName: string;
     exWorkPrice: string;
     byColor: string;
-    bySize: string;
+    bySize: string[];
     originHsnCode: string;
     unitMeasure: string;
     weight: string;
@@ -51,7 +51,6 @@ export type ProductDataRow = {
     byGender: string;
     material: string;
     productFeatures: string;
-    isActive: boolean;
 };
 
 type DeleteActionParams = {
@@ -206,7 +205,7 @@ export const productTableColumns: TableColumn<ProductDataRow>[] = [
     },
     {
         name: 'Size',
-        selector: (row) => row.bySize,
+        selector: (row) => row.bySize.join(', '),
         sortable: true
     },
     {
