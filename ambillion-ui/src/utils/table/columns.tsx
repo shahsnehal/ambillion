@@ -51,6 +51,21 @@ export type ProductDataRow = {
     byGender: string;
     material: string;
     productFeatures: string;
+    approvalStatus: string;
+    // isApproved: boolean;
+};
+
+const getStatusClass = (status: string): string => {
+    switch (status) {
+        case 'Approved':
+            return 'bg-success-subtle text-success';
+        case 'Rejected':
+            return 'bg-danger-subtle text-danger';
+        case 'Pending':
+            return 'bg-info-subtle text-info';
+        default:
+            return '';
+    }
 };
 
 type DeleteActionParams = {
@@ -58,36 +73,57 @@ type DeleteActionParams = {
     productDisplayName: string;
 };
 
-type ProductEditDeleteActionProps = {
+type ProductViewEditDeleteActionProps = {
     row: ProductDataRow;
+    onView: (id: number) => void;
     onEdit: (row: ProductDataRow) => void;
     onDelete: (params: DeleteActionParams) => void;
 };
 
 // ProductEditDeleteAction component renders edit and delete actions for a table row.
-export const ProductEditDeleteAction: React.FC<ProductEditDeleteActionProps> = ({
+export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionProps> = ({
     row,
+    onView,
     onEdit,
     onDelete
 }) => {
-    const handleDelete = () => {
-        onDelete({ id: row.id, productDisplayName: row.productDisplayName });
+    const handleView = () => {
+        onView(row.id);
     };
 
     const handleEdit = () => {
         onEdit(row);
     };
 
+    const handleDelete = () => {
+        onDelete({ id: row.id, productDisplayName: row.productDisplayName });
+    };
+
     return (
         <div className="d-flex gap-2">
             <button
                 className="btn btn-muted rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="View"
+                onClick={handleView}
+            >
+                <Icon icon="solar:eye-outline" className="fs-5" />
+            </button>
+            <button
+                className="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Edit"
                 onClick={handleEdit}
             >
                 <Icon icon="solar:pen-outline" className="fs-5" />
             </button>
             <button
                 className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Delete"
                 onClick={handleDelete}
             >
                 <Icon icon="solar:trash-bin-minimalistic-outline" className="fs-5" />
@@ -97,13 +133,19 @@ export const ProductEditDeleteAction: React.FC<ProductEditDeleteActionProps> = (
 };
 
 //  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
-export const productEditDeleteActionColumn = (
+export const productViewEditDeleteActionColumn = (
+    onView: (id: number) => void,
     onEdit: (id: ProductDataRow) => void,
     onDelete: (params: DeleteActionParams) => void
 ) => ({
     name: 'Actions',
     cell: (row: ProductDataRow) => (
-        <ProductEditDeleteAction row={row} onEdit={onEdit} onDelete={onDelete} />
+        <ProductViewEditDeleteAction
+            row={row}
+            onView={onView}
+            onEdit={onEdit}
+            onDelete={onDelete}
+        />
     ),
     ignoreRowClick: false,
     allowOverflow: true,
@@ -161,6 +203,11 @@ export const userTableColumns: TableColumn<DataRow>[] = [
 
 export const productTableColumns: TableColumn<ProductDataRow>[] = [
     {
+        name: 'HSN Code',
+        selector: (row) => row.originHsnCode,
+        sortable: true
+    },
+    {
         name: 'Image',
         selector: (row) => row.uploadImage,
         cell: (row) => <img src={row.uploadImage} alt={row.productDisplayName} width="50" />,
@@ -187,60 +234,79 @@ export const productTableColumns: TableColumn<ProductDataRow>[] = [
         sortable: true
     },
     {
-        name: 'Brand Name',
-        selector: (row) => row.brandName,
-        sortable: true
-    },
-    {
-        name: 'Ex-Work Price',
-        selector: (row) => parseFloat(row.exWorkPrice),
+        id: 'Status',
+        name: 'Status',
+        selector: (row) => row.approvalStatus,
         sortable: true,
-        cell: (row) => `${parseFloat(row.exWorkPrice).toFixed(2)}`
-    },
-
-    {
-        name: 'Color',
-        selector: (row) => row.byColor,
-        sortable: true
-    },
-    {
-        name: 'Size',
-        selector: (row) => row.bySize.join(', '),
-        sortable: true
-    },
-    {
-        name: 'HSN Code',
-        selector: (row) => row.originHsnCode,
-        sortable: true
-    },
-    {
-        name: 'Unit Measure',
-        selector: (row) => row.unitMeasure,
-        sortable: true
-    },
-    {
-        name: 'Weight',
-        selector: (row) => row.weight,
-        sortable: true
-    },
-    {
-        name: 'Dimensions',
-        selector: (row) => row.dimensions,
-        sortable: true
-    },
-    {
-        name: 'Gender',
-        selector: (row) => row.byGender,
-        sortable: true
-    },
-    {
-        name: 'Material',
-        selector: (row) => row.material,
-        sortable: true
-    },
-    {
-        name: 'Features',
-        selector: (row) => row.productFeatures,
-        sortable: true
+        cell: (row) => (
+            <span className={`badge ${getStatusClass(row.approvalStatus)} rounded fw-semibold p-2`}>
+                {row.approvalStatus}
+            </span>
+        )
     }
+    // {
+    //     name: 'Brand Name',
+    //     selector: (row) => row.brandName,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Ex-Work Price',
+    //     selector: (row) => parseFloat(row.exWorkPrice),
+    //     sortable: true,
+    //     cell: (row) => `${parseFloat(row.exWorkPrice).toFixed(2)}`
+    // },
+
+    // {
+    //     name: 'Color',
+    //     selector: (row) => row.byColor,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Size',
+    //     selector: (row) => row.bySize.join(', '),
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Unit Measure',
+    //     selector: (row) => row.unitMeasure,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Weight',
+    //     selector: (row) => row.weight,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Dimensions',
+    //     selector: (row) => row.dimensions,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Gender',
+    //     selector: (row) => row.byGender,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Material',
+    //     selector: (row) => row.material,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Features',
+    //     selector: (row) => row.productFeatures,
+    //     sortable: true
+    // }
 ];
+
+// {
+//     name: 'Status',
+//     selector: (row) => row.isApproved,
+//     sortable: true,
+//     cell: (row) => (
+//         <span
+//             className={`badge ${row.isApproved ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'} rounded fw-semibold p-2`}
+//         >
+//             {row.isApproved ? 'Approved' : 'Rejected'}
+//         </span>
+//     )
+// }

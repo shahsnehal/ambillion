@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { TableFilter } from 'components/common/table/tableFilter';
 import DataTable from 'react-data-table-component';
+import { useNavigate } from 'react-router-dom';
 import {
     customStyles,
     productTableColumns,
-    productEditDeleteActionColumn,
+    productViewEditDeleteActionColumn,
     ProductDataRow
 } from 'utils/table/columns';
 import { dummyProductTableData } from 'utils/table/data';
 import { DeleteConfirmationModal } from 'components/common/modal/deleteConfirmationModal';
-import ProductFormModal, { ProductFormValues } from 'components/common/modal/productFormModal';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -18,12 +18,11 @@ type SelectableDeleteRowData = {
 };
 
 export const ProductList = () => {
+    const navigate = useNavigate();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [productData, setProductData] = useState(dummyProductTableData);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
-    const [showProductFormModal, setShowProductFormModal] = useState<boolean>(false);
-    const [editedProduct, setEditedProduct] = useState<ProductDataRow | null>(null);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
@@ -33,41 +32,17 @@ export const ProductList = () => {
         item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    //Product Add/Edit Logic
-    const handleOpenProductFormModal = (product?: ProductDataRow) => {
-        console.log('product', product);
-        if (product) {
-            setEditedProduct(product);
-        } else {
-            setEditedProduct(null);
-        }
-        setShowProductFormModal(true);
-    };
-
-    //Confirm Add Logic
-    const handleConfirmAddProduct = (values: ProductFormValues) => {
-        const newProduct: ProductDataRow = {
-            id: productData.length + 1,
-            ...values
-        };
-        setProductData([...productData, newProduct]);
-        setShowProductFormModal(false);
+    const handleAddProduct = () => {
+        navigate('/products/addProduct');
     };
 
     //Product Edit Logic
     const handleEdit = (editedRow: ProductDataRow) => {
-        handleOpenProductFormModal(editedRow);
+        console.log('editRow', editedRow);
     };
 
-    //Confirm Edit Logic
-    const handleConfirmEditProduct = (values: ProductFormValues) => {
-        if (editedProduct) {
-            const updatedData = productData.map((item) =>
-                item.id === editedProduct.id ? { ...item, ...values } : item
-            );
-            setProductData(updatedData);
-            setShowProductFormModal(false);
-        }
+    const handleView = (productId: number) => {
+        navigate(`/products/${productId}`);
     };
 
     //Product Delete Logic
@@ -101,7 +76,7 @@ export const ProductList = () => {
                 <div>
                     <button
                         className="btn btn-primary text-white icon-center"
-                        onClick={() => handleOpenProductFormModal()}
+                        onClick={() => handleAddProduct()}
                     >
                         <Icon icon="tabler:plus"></Icon>
                         Add Product
@@ -126,9 +101,11 @@ export const ProductList = () => {
             <DataTable
                 columns={[
                     ...productTableColumns,
-                    productEditDeleteActionColumn(handleEdit, handleDelete)
+                    productViewEditDeleteActionColumn(handleView, handleEdit, handleDelete)
                 ]}
                 data={filteredItems}
+                defaultSortFieldId={'Status'}
+                defaultSortAsc={false}
                 pagination
                 title=" "
                 selectableRows
@@ -140,7 +117,6 @@ export const ProductList = () => {
                 subHeaderComponent={subHeaderComponentMemo}
                 persistTableHead
                 customStyles={customStyles}
-                // onRowClicked={handleRowClick}
             />
             <DeleteConfirmationModal
                 isOpen={showConfirmationModal}
@@ -151,17 +127,6 @@ export const ProductList = () => {
                 content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
                 closeLabel="Cancel"
                 confirmLabel="Delete"
-            />
-            <ProductFormModal
-                isOpen={showProductFormModal}
-                onClose={() => {
-                    setShowProductFormModal(false);
-                    setEditedProduct(null);
-                }}
-                onSubmit={editedProduct ? handleConfirmEditProduct : handleConfirmAddProduct}
-                initialValues={editedProduct ? { ...editedProduct } : undefined}
-                title={editedProduct ? 'Edit Product' : 'Add Product'}
-                submitLabel={editedProduct ? 'Update' : 'Add'}
             />
         </>
     );

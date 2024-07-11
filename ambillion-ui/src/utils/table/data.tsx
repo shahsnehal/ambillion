@@ -469,7 +469,8 @@ export const dummyProductTableData = [
         dimensions: '80x75x100 cm',
         byGender: 'Unisex',
         material: 'Fabric, Steel',
-        productFeatures: 'Ergonomic, Swivel'
+        productFeatures: 'Ergonomic, Swivel',
+        approvalStatus: 'Rejected'
     },
     {
         id: 2,
@@ -488,7 +489,8 @@ export const dummyProductTableData = [
         dimensions: '35x25x2 cm',
         byGender: 'Unisex',
         material: 'Plastic, Metal',
-        productFeatures: '16GB RAM, 1TB SSD, GTX 3080'
+        productFeatures: '16GB RAM, 1TB SSD, GTX 3080',
+        approvalStatus: 'Approved'
     },
     {
         id: 3,
@@ -507,7 +509,8 @@ export const dummyProductTableData = [
         dimensions: '40x30x2 cm',
         byGender: 'Male',
         material: 'Cotton',
-        productFeatures: 'Wrinkle-Free, Slim Fit'
+        productFeatures: 'Wrinkle-Free, Slim Fit',
+        approvalStatus: 'Rejected'
     },
     {
         id: 4,
@@ -526,7 +529,8 @@ export const dummyProductTableData = [
         dimensions: '65x65x25 cm',
         byGender: 'Unisex',
         material: 'Rubber',
-        productFeatures: 'All-weather, High Traction'
+        productFeatures: 'All-weather, High Traction',
+        approvalStatus: 'Rejected'
     },
     {
         id: 5,
@@ -545,7 +549,8 @@ export const dummyProductTableData = [
         dimensions: '30x30x10 cm',
         byGender: 'Unisex',
         material: 'Plastic, Metal',
-        productFeatures: 'Smart Navigation, Rechargeable'
+        productFeatures: 'Smart Navigation, Rechargeable',
+        approvalStatus: 'Pending'
     },
     {
         id: 6,
@@ -564,7 +569,8 @@ export const dummyProductTableData = [
         dimensions: '15x10x5 cm',
         byGender: 'Unisex',
         material: 'Plastic',
-        productFeatures: 'Articulated, Collectible'
+        productFeatures: 'Articulated, Collectible',
+        approvalStatus: 'Rejected'
     },
     {
         id: 7,
@@ -583,7 +589,8 @@ export const dummyProductTableData = [
         dimensions: '20x20x5 cm',
         byGender: 'Unisex',
         material: 'Plastic, Metal',
-        productFeatures: 'Rechargeable, High Torque'
+        productFeatures: 'Rechargeable, High Torque',
+        approvalStatus: 'Rejected'
     },
     {
         id: 8,
@@ -602,7 +609,8 @@ export const dummyProductTableData = [
         dimensions: '21x14x3 cm',
         byGender: 'Unisex',
         material: 'Paper',
-        productFeatures: 'Bestseller, Illustrated'
+        productFeatures: 'Bestseller, Illustrated',
+        approvalStatus: 'Approved'
     },
     {
         id: 9,
@@ -621,7 +629,8 @@ export const dummyProductTableData = [
         dimensions: '22x22x22 cm',
         byGender: 'Unisex',
         material: 'Synthetic Leather',
-        productFeatures: 'Durable, Water-Resistant'
+        productFeatures: 'Durable, Water-Resistant',
+        approvalStatus: 'Pending'
     },
     {
         id: 10,
@@ -640,7 +649,8 @@ export const dummyProductTableData = [
         dimensions: '5x5x1 cm',
         byGender: 'Female',
         material: 'Gold',
-        productFeatures: 'Pure Gold, Handcrafted'
+        productFeatures: 'Pure Gold, Handcrafted',
+        approvalStatus: 'Approved'
     },
     {
         id: 11,
@@ -659,7 +669,8 @@ export const dummyProductTableData = [
         dimensions: '20x20x20 cm',
         byGender: 'Unisex',
         material: 'Ceramic',
-        productFeatures: 'Hand-Painted, Durable'
+        productFeatures: 'Hand-Painted, Durable',
+        approvalStatus: 'Pending'
     },
     {
         id: 12,
@@ -678,7 +689,8 @@ export const dummyProductTableData = [
         dimensions: '10x5x5 cm',
         byGender: 'Unisex',
         material: 'Plastic',
-        productFeatures: 'Contains Vitamins A-Z, 100 Tablets'
+        productFeatures: 'Contains Vitamins A-Z, 100 Tablets',
+        approvalStatus: 'Approved'
     },
     {
         id: 13,
@@ -697,7 +709,8 @@ export const dummyProductTableData = [
         dimensions: '10x2x2 cm',
         byGender: 'Female',
         material: 'Wax, Pigment',
-        productFeatures: 'Long-lasting, Matte Finish'
+        productFeatures: 'Long-lasting, Matte Finish',
+        approvalStatus: 'Rejected'
     },
     {
         id: 14,
@@ -716,7 +729,8 @@ export const dummyProductTableData = [
         dimensions: '40x20x20 cm',
         byGender: 'Unisex',
         material: 'Plastic, Metal',
-        productFeatures: 'Multiple Speed Settings, Dishwasher Safe'
+        productFeatures: 'Multiple Speed Settings, Dishwasher Safe',
+        approvalStatus: 'Pending'
     },
     {
         id: 15,
@@ -735,7 +749,8 @@ export const dummyProductTableData = [
         dimensions: '60x20x20 cm',
         byGender: 'Unisex',
         material: 'Polyester, Fiberglass',
-        productFeatures: 'Waterproof, Easy Setup'
+        productFeatures: 'Waterproof, Easy Setup',
+        approvalStatus: 'Approved'
     },
     {
         id: 16,
@@ -754,7 +769,8 @@ export const dummyProductTableData = [
         dimensions: '80x60x20 cm',
         byGender: 'Unisex',
         material: 'Fabric, Foam',
-        productFeatures: 'Soft, Washable Cover'
+        productFeatures: 'Soft, Washable Cover',
+        approvalStatus: 'Rejected'
     },
     {
         id: 17,
@@ -773,7 +789,8 @@ export const dummyProductTableData = [
         dimensions: '30x21x2 cm',
         byGender: 'Unisex',
         material: 'Paper, Metal',
-        productFeatures: '200 Pages, Ruled'
+        productFeatures: '200 Pages, Ruled',
+        approvalStatus: 'Pending'
     },
     {
         id: 18,
@@ -792,7 +809,8 @@ export const dummyProductTableData = [
         dimensions: '30x20x10 cm',
         byGender: 'Unisex',
         material: 'Mesh, Rubber',
-        productFeatures: 'Lightweight, Breathable'
+        productFeatures: 'Lightweight, Breathable',
+        approvalStatus: 'Approved'
     },
     {
         id: 19,
@@ -811,7 +829,8 @@ export const dummyProductTableData = [
         dimensions: '120x60x60 cm',
         byGender: 'Unisex',
         material: 'Mesh, Metal',
-        productFeatures: 'Adjustable, Lumbar Support'
+        productFeatures: 'Adjustable, Lumbar Support',
+        approvalStatus: 'Pending'
     },
     {
         id: 20,
@@ -830,6 +849,7 @@ export const dummyProductTableData = [
         dimensions: '100x40x10 cm',
         byGender: 'Unisex',
         material: 'Wood',
-        productFeatures: '6 Strings, Steel Strings'
+        productFeatures: '6 Strings, Steel Strings',
+        approvalStatus: 'Approved'
     }
 ];
