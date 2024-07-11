@@ -462,7 +462,7 @@ export const dummyProductTableData = [
         brandName: 'Comfort Seating',
         exWorkPrice: '150.00',
         byColor: 'Red',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '9401.61.00.90',
         unitMeasure: 'Piece',
         weight: '12.5 kg',
@@ -470,7 +470,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Fabric, Steel',
         productFeatures: 'Ergonomic, Swivel',
-        isActive: false
+        approvalStatus: 'Rejected'
     },
     {
         id: 2,
@@ -482,7 +482,7 @@ export const dummyProductTableData = [
         brandName: 'Tech Innovators',
         exWorkPrice: '1200.00',
         byColor: 'Black',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8471.30.10.00',
         unitMeasure: 'Piece',
         weight: '2.5 kg',
@@ -490,7 +490,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: '16GB RAM, 1TB SSD, GTX 3080',
-        isActive: true
+        approvalStatus: 'Approved'
     },
     {
         id: 3,
@@ -502,7 +502,7 @@ export const dummyProductTableData = [
         brandName: 'Fashion Hub',
         exWorkPrice: '30.00',
         byColor: 'White',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '6205.20.00.10',
         unitMeasure: 'Piece',
         weight: '0.3 kg',
@@ -510,7 +510,7 @@ export const dummyProductTableData = [
         byGender: 'Male',
         material: 'Cotton',
         productFeatures: 'Wrinkle-Free, Slim Fit',
-        isActive: true
+        approvalStatus: 'Rejected'
     },
     {
         id: 4,
@@ -522,7 +522,7 @@ export const dummyProductTableData = [
         brandName: 'AutoSafe',
         exWorkPrice: '100.00',
         byColor: 'Black',
-        bySize: 'R17',
+        bySize: ['R17'],
         originHsnCode: '4011.20.10.00',
         unitMeasure: 'Piece',
         weight: '10.5 kg',
@@ -530,7 +530,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Rubber',
         productFeatures: 'All-weather, High Traction',
-        isActive: true
+        approvalStatus: 'Rejected'
     },
     {
         id: 5,
@@ -542,7 +542,7 @@ export const dummyProductTableData = [
         brandName: 'CleanTech',
         exWorkPrice: '300.00',
         byColor: 'Silver',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8508.11.00.00',
         unitMeasure: 'Piece',
         weight: '5 kg',
@@ -550,7 +550,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Smart Navigation, Rechargeable',
-        isActive: true
+        approvalStatus: 'Pending'
     },
     {
         id: 6,
@@ -562,7 +562,7 @@ export const dummyProductTableData = [
         brandName: 'ToyWorld',
         exWorkPrice: '20.00',
         byColor: 'Blue',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '9503.00.21.00',
         unitMeasure: 'Piece',
         weight: '0.5 kg',
@@ -570,7 +570,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic',
         productFeatures: 'Articulated, Collectible',
-        isActive: true
+        approvalStatus: 'Rejected'
     },
     {
         id: 7,
@@ -582,7 +582,7 @@ export const dummyProductTableData = [
         brandName: 'ToolMaster',
         exWorkPrice: '80.00',
         byColor: 'Yellow',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8467.21.00.00',
         unitMeasure: 'Piece',
         weight: '1.8 kg',
@@ -590,7 +590,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Rechargeable, High Torque',
-        isActive: true
+        approvalStatus: 'Rejected'
     },
     {
         id: 8,
@@ -602,7 +602,7 @@ export const dummyProductTableData = [
         brandName: 'BookWorld',
         exWorkPrice: '15.00',
         byColor: 'Red',
-        bySize: 'S',
+        bySize: ['S'],
         originHsnCode: '4901.99.00.10',
         unitMeasure: 'Piece',
         weight: '0.4 kg',
@@ -610,7 +610,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Paper',
         productFeatures: 'Bestseller, Illustrated',
-        isActive: true
+        approvalStatus: 'Approved'
     },
     {
         id: 9,
@@ -622,7 +622,7 @@ export const dummyProductTableData = [
         brandName: 'Sporty',
         exWorkPrice: '25.00',
         byColor: 'White',
-        bySize: '5',
+        bySize: ['5'],
         originHsnCode: '9506.62.00.00',
         unitMeasure: 'Piece',
         weight: '0.6 kg',
@@ -630,7 +630,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Synthetic Leather',
         productFeatures: 'Durable, Water-Resistant',
-        isActive: true
+        approvalStatus: 'Pending'
     },
     {
         id: 10,
@@ -642,7 +642,7 @@ export const dummyProductTableData = [
         brandName: 'JewelCraft',
         exWorkPrice: '500.00',
         byColor: 'Gold',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '7113.19.10.00',
         unitMeasure: 'Piece',
         weight: '0.1 kg',
@@ -650,7 +650,7 @@ export const dummyProductTableData = [
         byGender: 'Female',
         material: 'Gold',
         productFeatures: 'Pure Gold, Handcrafted',
-        isActive: true
+        approvalStatus: 'Approved'
     },
     {
         id: 11,
@@ -662,7 +662,7 @@ export const dummyProductTableData = [
         brandName: 'GardenStyle',
         exWorkPrice: '15.00',
         byColor: 'Green',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '6913.10.00.00',
         unitMeasure: 'Piece',
         weight: '1.2 kg',
@@ -670,7 +670,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Ceramic',
         productFeatures: 'Hand-Painted, Durable',
-        isActive: true
+        approvalStatus: 'Pending'
     },
     {
         id: 12,
@@ -682,7 +682,7 @@ export const dummyProductTableData = [
         brandName: 'HealthPlus',
         exWorkPrice: '25.00',
         byColor: 'White',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '2106.90.92.00',
         unitMeasure: 'Piece',
         weight: '0.2 kg',
@@ -690,7 +690,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic',
         productFeatures: 'Contains Vitamins A-Z, 100 Tablets',
-        isActive: true
+        approvalStatus: 'Approved'
     },
     {
         id: 13,
@@ -702,7 +702,7 @@ export const dummyProductTableData = [
         brandName: 'BeautyLine',
         exWorkPrice: '10.00',
         byColor: 'Red',
-        bySize: 'S',
+        bySize: ['S'],
         originHsnCode: '3304.10.00.00',
         unitMeasure: 'Piece',
         weight: '0.05 kg',
@@ -710,7 +710,7 @@ export const dummyProductTableData = [
         byGender: 'Female',
         material: 'Wax, Pigment',
         productFeatures: 'Long-lasting, Matte Finish',
-        isActive: true
+        approvalStatus: 'Rejected'
     },
     {
         id: 14,
@@ -722,7 +722,7 @@ export const dummyProductTableData = [
         brandName: 'KitchenPro',
         exWorkPrice: '150.00',
         byColor: 'Black',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8509.40.00.00',
         unitMeasure: 'Piece',
         weight: '3 kg',
@@ -730,7 +730,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Multiple Speed Settings, Dishwasher Safe',
-        isActive: true
+        approvalStatus: 'Pending'
     },
     {
         id: 15,
@@ -742,7 +742,7 @@ export const dummyProductTableData = [
         brandName: 'OutdoorGear',
         exWorkPrice: '100.00',
         byColor: 'Green',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '6306.22.00.00',
         unitMeasure: 'Piece',
         weight: '5 kg',
@@ -750,7 +750,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Polyester, Fiberglass',
         productFeatures: 'Waterproof, Easy Setup',
-        isActive: true
+        approvalStatus: 'Approved'
     },
     {
         id: 16,
@@ -762,7 +762,7 @@ export const dummyProductTableData = [
         brandName: 'PetComfort',
         exWorkPrice: '40.00',
         byColor: 'Brown',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '6307.90.20.00',
         unitMeasure: 'Piece',
         weight: '1 kg',
@@ -770,7 +770,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Fabric, Foam',
         productFeatures: 'Soft, Washable Cover',
-        isActive: true
+        approvalStatus: 'Rejected'
     },
     {
         id: 17,
@@ -782,7 +782,7 @@ export const dummyProductTableData = [
         brandName: 'NoteMaster',
         exWorkPrice: '5.00',
         byColor: 'Blue',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '4820.10.00.00',
         unitMeasure: 'Piece',
         weight: '0.5 kg',
@@ -790,7 +790,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Paper, Metal',
         productFeatures: '200 Pages, Ruled',
-        isActive: true
+        approvalStatus: 'Pending'
     },
     {
         id: 18,
@@ -802,7 +802,7 @@ export const dummyProductTableData = [
         brandName: 'RunFast',
         exWorkPrice: '60.00',
         byColor: 'White',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '6404.11.00.00',
         unitMeasure: 'Pair',
         weight: '1 kg',
@@ -810,7 +810,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Mesh, Rubber',
         productFeatures: 'Lightweight, Breathable',
-        isActive: true
+        approvalStatus: 'Approved'
     },
     {
         id: 19,
@@ -822,7 +822,7 @@ export const dummyProductTableData = [
         brandName: 'OfficeComfort',
         exWorkPrice: '200.00',
         byColor: 'Black',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '9401.30.00.00',
         unitMeasure: 'Piece',
         weight: '15 kg',
@@ -830,7 +830,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Mesh, Metal',
         productFeatures: 'Adjustable, Lumbar Support',
-        isActive: true
+        approvalStatus: 'Pending'
     },
     {
         id: 20,
@@ -842,7 +842,7 @@ export const dummyProductTableData = [
         brandName: 'MusicMaster',
         exWorkPrice: '120.00',
         byColor: 'Brown',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '9202.90.10.00',
         unitMeasure: 'Piece',
         weight: '2.5 kg',
@@ -850,6 +850,6 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Wood',
         productFeatures: '6 Strings, Steel Strings',
-        isActive: true
+        approvalStatus: 'Approved'
     }
 ];

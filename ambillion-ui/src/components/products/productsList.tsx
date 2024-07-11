@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { TableFilter } from 'components/common/table/tableFilter';
 import DataTable from 'react-data-table-component';
+import { useNavigate } from 'react-router-dom';
 import {
     customStyles,
     productTableColumns,
-    productEditDeleteActionColumn,
+    productViewEditDeleteActionColumn,
     ProductDataRow
 } from 'utils/table/columns';
 import { dummyProductTableData } from 'utils/table/data';
 import { DeleteConfirmationModal } from 'components/common/modal/deleteConfirmationModal';
-import { ProductFormModal } from 'components/common/modal/productFormModal';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -18,11 +18,11 @@ type SelectableDeleteRowData = {
 };
 
 export const ProductList = () => {
+    const navigate = useNavigate();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [productData, setProductData] = useState(dummyProductTableData);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
-    const [showProductFormModal, setShowProductFormModal] = useState<boolean>(false);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
@@ -32,13 +32,17 @@ export const ProductList = () => {
         item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    //Product Add Logic
-    const handleOpenProductFormModal = () => {
-        setShowProductFormModal(true);
+    const handleAddProduct = () => {
+        navigate('/products/addProduct');
     };
 
-    const handleConfirmAddProduct = () => {
-        setShowProductFormModal(false);
+    //Product Edit Logic
+    const handleEdit = (editedRow: ProductDataRow) => {
+        console.log('editRow', editedRow);
+    };
+
+    const handleView = (productId: number) => {
+        navigate(`/products/${productId}`);
     };
 
     //Product Delete Logic
@@ -47,6 +51,7 @@ export const ProductList = () => {
         setShowConfirmationModal(true);
     };
 
+    //Confirm Delete Logic
     const handleConfirmDelete = () => {
         if (selectDeleteProduct.productid) {
             const updatedData = productData.filter(
@@ -56,10 +61,6 @@ export const ProductList = () => {
             setResetPaginationToggle(!resetPaginationToggle);
             setShowConfirmationModal(false);
         }
-    };
-
-    const handleEdit = (editedRow: ProductDataRow) => {
-        console.log('Edit action:', editedRow);
     };
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -75,7 +76,7 @@ export const ProductList = () => {
                 <div>
                     <button
                         className="btn btn-primary text-white icon-center"
-                        onClick={handleOpenProductFormModal}
+                        onClick={() => handleAddProduct()}
                     >
                         <Icon icon="tabler:plus"></Icon>
                         Add Product
@@ -100,9 +101,11 @@ export const ProductList = () => {
             <DataTable
                 columns={[
                     ...productTableColumns,
-                    productEditDeleteActionColumn(handleEdit, handleDelete)
+                    productViewEditDeleteActionColumn(handleView, handleEdit, handleDelete)
                 ]}
                 data={filteredItems}
+                defaultSortFieldId={'Status'}
+                defaultSortAsc={false}
                 pagination
                 title=" "
                 selectableRows
@@ -124,11 +127,6 @@ export const ProductList = () => {
                 content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
                 closeLabel="Cancel"
                 confirmLabel="Delete"
-            />
-            <ProductFormModal
-                isOpen={showProductFormModal}
-                onClose={() => setShowProductFormModal(false)}
-                onSubmit={handleConfirmAddProduct}
             />
         </>
     );

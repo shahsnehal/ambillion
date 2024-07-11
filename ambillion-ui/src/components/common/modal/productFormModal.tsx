@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 export type ProductFormValues = {
-    uploadImage: File | null;
+    uploadImage: string;
     productCategory: string;
     productType: string;
     productDisplayName: string;
@@ -26,6 +26,8 @@ type ProductFormModalProps = {
     onClose: () => void;
     onSubmit: (values: ProductFormValues) => void;
     initialValues?: ProductFormValues;
+    title: string;
+    submitLabel: string;
 };
 
 const dummyCategories = ['Furniture', 'Electronics', 'Apparel'];
@@ -59,10 +61,9 @@ const ProductFormSchema = Yup.object().shape({
 export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     isOpen,
     onClose,
-    onSubmit
-}) => {
-    const defaultValues: ProductFormValues = {
-        uploadImage: null,
+    onSubmit,
+    initialValues = {
+        uploadImage: '',
         productCategory: '',
         productType: '',
         productDisplayName: '',
@@ -78,8 +79,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         byGender: '',
         material: '',
         productFeatures: ''
-    };
-
+    },
+    title,
+    submitLabel
+}) => {
     return (
         <div>
             <div
@@ -92,7 +95,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title" id="productFormModalLabel">
-                                Add Product
+                                {title}
                             </h5>
                             <button
                                 type="button"
@@ -104,7 +107,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                         </div>
                         <div className="modal-body">
                             <Formik
-                                initialValues={defaultValues}
+                                initialValues={initialValues}
                                 validationSchema={ProductFormSchema}
                                 onSubmit={(values, { resetForm }) => {
                                     onSubmit(values);
@@ -522,7 +525,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                                                 Close
                                             </button>
                                             <button type="submit" className="btn btn-primary">
-                                                Save changes
+                                                {submitLabel}
                                             </button>
                                         </div>
                                     </Form>

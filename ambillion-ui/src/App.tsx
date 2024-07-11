@@ -1,5 +1,6 @@
 import { Loader } from 'common/loaders/loader';
 import Layout from 'components/common/layouts/layouts';
+import { ProductDetail } from 'components/products/productDetails';
 import { ROUTES } from 'constants/common';
 import { DashboardPage } from 'pages/dashboard/dashboard';
 import { ErrorBoundary } from 'pages/errors/error';
@@ -42,6 +43,22 @@ function App() {
                                         element={
                                             <Layout title="products">
                                                 <ProductsPage />
+                                            </Layout>
+                                        }
+                                    />
+                                    <Route
+                                        path={ROUTES.ADDPRODUCTS}
+                                        element={
+                                            <Layout title="add Product">
+                                                <ProductsPage />
+                                            </Layout>
+                                        }
+                                    />
+                                    <Route
+                                        path={ROUTES.PRODUCTDETAILS}
+                                        element={
+                                            <Layout title="product detail">
+                                                <ProductDetail />
                                             </Layout>
                                         }
                                     />

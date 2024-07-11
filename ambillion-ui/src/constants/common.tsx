@@ -5,7 +5,9 @@ export const ROUTES = {
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgotPassword',
     DASHBOARD: '/dashboard',
-    PRODUCTS: '/products'
+    PRODUCTS: '/products',
+    ADDPRODUCTS: '/products/addProduct',
+    PRODUCTDETAILS: '/products/:productId'
 };
 
 // Recaptcha Configuration
