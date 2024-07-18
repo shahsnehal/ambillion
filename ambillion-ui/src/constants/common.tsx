@@ -1,3 +1,17 @@
+//Api EndPoint
+export const apiUrl = {
+    endPoint: process.env.REACT_APP_BACKEND_URL,
+
+    //auth-Module
+    signUp: '/auth/register',
+    signIn: '/auth/login',
+    tokenRefresh: '/auth/refresh-tokens',
+
+    //user-Module
+    getUserList: '/users',
+    updateUserStatus: '/users'
+};
+
 // Routing path constants
 export const ROUTES = {
     BASEPATH: '/',

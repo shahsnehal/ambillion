@@ -10,7 +10,7 @@ import {
     ProductDataRow
 } from 'utils/table/columns';
 import { dummyProductTableData } from 'utils/table/data';
-import { DeleteConfirmationModal } from 'components/common/modal/deleteConfirmationModal';
+import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -118,7 +118,7 @@ export const ProductList = () => {
                 persistTableHead
                 customStyles={customStyles}
             />
-            <DeleteConfirmationModal
+            <ConfirmationModal
                 isOpen={showConfirmationModal}
                 onClose={() => setShowConfirmationModal(false)}
                 onConfirm={handleConfirmDelete}
@@ -127,6 +127,7 @@ export const ProductList = () => {
                 content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
                 closeLabel="Cancel"
                 confirmLabel="Delete"
+                actionInProgressLabel="Deleting..."
             />
         </>
     );

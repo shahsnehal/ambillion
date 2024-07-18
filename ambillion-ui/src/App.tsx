@@ -1,3 +1,5 @@
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import { Loader } from 'common/loaders/loader';
 import Layout from 'components/common/layouts/layouts';
 import { ProductDetail } from 'components/products/productDetails';
@@ -70,6 +72,7 @@ function App() {
                     </Routes>
                 </React.Suspense>
             </BrowserRouter>
+            <ToastContainer position="top-right" autoClose={2000} />
         </ErrorBoundary>
     );
 }

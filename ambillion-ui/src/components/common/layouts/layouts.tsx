@@ -1,6 +1,3 @@
-// import Header from './Header';
-// import SideBar from './SideBar';
-
 import { Icon } from '@iconify/react';
 import { Header } from './header/header';
 import { Breadcrumb } from '../breadCrumb/breadCrumb';

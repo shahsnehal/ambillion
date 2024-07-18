@@ -1,5 +1,6 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
+import { User } from 'Modules/user-module/type/types';
 
 export const customStyles = {
     rows: {
@@ -21,16 +22,6 @@ export const customStyles = {
             paddingRight: '6px'
         }
     }
-};
-
-type DataRow = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    companyName: string;
-    mobileNumber: string;
-    emailAddress: string;
-    isVerified: boolean;
 };
 
 export type ProductDataRow = {
@@ -57,11 +48,11 @@ export type ProductDataRow = {
 
 const getStatusClass = (status: string): string => {
     switch (status) {
-        case 'Approved':
+        case 'ACCEPTED':
             return 'bg-success-subtle text-success';
-        case 'Rejected':
+        case 'REJECTED':
             return 'bg-danger-subtle text-danger';
-        case 'Pending':
+        case 'PENDING':
             return 'bg-info-subtle text-info';
         default:
             return '';
@@ -79,6 +70,59 @@ type ProductViewEditDeleteActionProps = {
     onEdit: (row: ProductDataRow) => void;
     onDelete: (params: DeleteActionParams) => void;
 };
+
+type UserStatusChangeActionProps = {
+    status: string;
+    onApprove: () => void;
+    onReject: () => void;
+};
+
+export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
+    status,
+    onApprove,
+    onReject
+}) => {
+    return (
+        <div className="d-flex gap-2">
+            <button
+                className="btn btn-success rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Approve"
+                onClick={onApprove}
+                disabled={status === 'ACCEPTED'}
+            >
+                <Icon icon="solar:check-circle-outline" className="fs-5" />
+            </button>
+            <button
+                className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Reject"
+                onClick={onReject}
+                disabled={status === 'REJECTED'}
+            >
+                <Icon icon="solar:close-circle-outline" className="fs-5" />
+            </button>
+        </div>
+    );
+};
+export const UserStatusChangeActionColumn = (
+    onApprove: (userId: number) => void,
+    onReject: (userId: number) => void
+) => ({
+    name: 'Actions',
+    cell: (row: User) => (
+        <UserStatusChangeAction
+            status={row.status}
+            onApprove={() => onApprove(row.userprofile_id)}
+            onReject={() => onReject(row.userprofile_id)}
+        />
+    ),
+    ignoreRowClick: false,
+    allowOverflow: true,
+    button: true
+});
 
 // ProductEditDeleteAction component renders edit and delete actions for a table row.
 export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionProps> = ({
@@ -152,53 +196,58 @@ export const productViewEditDeleteActionColumn = (
     button: true
 });
 
-export const userTableColumns: TableColumn<DataRow>[] = [
-    // {
-    //     name: 'ID',
-    //     selector: (row) => row.id,
-    //     sortable: true,
-    //     width: '60px'
-    // },
+export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'First Name',
-        selector: (row) => row.firstName,
+        selector: (row) => row.first_name,
         sortable: true
     },
     {
         name: 'Last Name',
-        selector: (row) => row.lastName,
+        selector: (row) => row.last_name,
         sortable: true
     },
     {
         name: 'Company Name',
-        selector: (row) => row.companyName,
+        selector: (row) => row.company_name ?? '',
         sortable: true
     },
     {
         name: 'Mobile Number',
-        selector: (row) => row.mobileNumber,
+        selector: (row) => row.mobile_number,
         sortable: true
     },
     {
         name: 'Email Address',
-        selector: (row) => row.emailAddress,
+        selector: (row) => row.email,
         sortable: true
     },
     {
+        id: 'Status',
         name: 'Status',
-        selector: (row) => row.isVerified,
+        selector: (row) => row.status,
         sortable: true,
-        cell: (row) =>
-            row.isVerified ? (
-                <span className="badge bg-success-subtle text-success rounded fw-semibold p-2">
-                    Verified
-                </span>
-            ) : (
-                <span className="badge bg-danger-subtle text-danger rounded fw-semibold p-2">
-                    UnVerified
-                </span>
-            )
+        cell: (row) => (
+            <span className={`badge ${getStatusClass(row.status)} rounded fw-semibold p-2`}>
+                {row.status}
+            </span>
+        )
     }
+    // {
+    //     name: 'Status',
+    //     selector: (row) => row.isVerified,
+    //     sortable: true,
+    //     cell: (row) =>
+    //         row.isVerified ? (
+    //             <span className="badge bg-success-subtle text-success rounded fw-semibold p-2">
+    //                 Verified
+    //             </span>
+    //         ) : (
+    //             <span className="badge bg-danger-subtle text-danger rounded fw-semibold p-2">
+    //                 UnVerified
+    //             </span>
+    //         )
+    // },
 ];
 
 export const productTableColumns: TableColumn<ProductDataRow>[] = [
@@ -297,16 +346,3 @@ export const productTableColumns: TableColumn<ProductDataRow>[] = [
     //     sortable: true
     // }
 ];
-
-// {
-//     name: 'Status',
-//     selector: (row) => row.isApproved,
-//     sortable: true,
-//     cell: (row) => (
-//         <span
-//             className={`badge ${row.isApproved ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'} rounded fw-semibold p-2`}
-//         >
-//             {row.isApproved ? 'Approved' : 'Rejected'}
-//         </span>
-//     )
-// }
