@@ -1,6 +1,7 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 import { User } from 'Modules/user-module/type/types';
+import { userStatus } from 'constants/common';
 
 export const customStyles = {
     rows: {
@@ -48,11 +49,11 @@ export type ProductDataRow = {
 
 const getStatusClass = (status: string): string => {
     switch (status) {
-        case 'ACCEPTED':
+        case userStatus.ACCEPTED:
             return 'bg-success-subtle text-success';
-        case 'REJECTED':
+        case userStatus.REJECTED:
             return 'bg-danger-subtle text-danger';
-        case 'PENDING':
+        case userStatus.PENDING:
             return 'bg-info-subtle text-info';
         default:
             return '';

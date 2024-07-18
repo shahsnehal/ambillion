@@ -28,3 +28,15 @@ export const ROUTES = {
 export const googleRecaptchaConfig = {
     captchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY
 };
+
+export const userStatus = {
+    ACCEPTED: 'ACCEPTED',
+    REJECTED: 'REJECTED',
+    PENDING: 'PENDING'
+};
+
+export const userRoles = {
+    ADMIN: 'ADMIN',
+    MANUFACTURER: 'MANUFACTURER',
+    OFFICER: 'OFFICER'
+};

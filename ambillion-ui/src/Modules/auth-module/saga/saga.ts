@@ -12,7 +12,6 @@ import {
 import { apiUrl, ROUTES } from 'constants/common';
 import axiosInstance from 'global/axiosInstance';
 import { AxiosResponse } from 'axios';
-import { setLocalStorage } from 'global/storage';
 
 const signup = async (signupData: SignupData): Promise<AxiosResponse> => {
     return await axiosInstance.post(apiUrl.signUp, signupData);
@@ -45,11 +44,16 @@ function* handleSignin(action: {
 }) {
     try {
         const response: AxiosResponse = yield call(signin, action.payload);
-        yield put({ type: SIGNIN_SUCCESS, payload: response.data.data });
-        const accessToken = response.data.data.tokens.access;
-        const refreshToken = response.data.data.tokens.refresh;
-        setLocalStorage('accessToken', accessToken);
-        setLocalStorage('refreshToken', refreshToken);
+        const responseData = response.data.data;
+        const { userprofile_id: userProfileID } = responseData.user;
+        const { access, refresh } = responseData.tokens;
+
+        yield put({ type: SIGNIN_SUCCESS, payload: responseData });
+
+        localStorage.setItem('profileID', userProfileID);
+        localStorage.setItem('accessToken', access.token);
+        localStorage.setItem('refreshToken', refresh.token);
+
         action.payload.navigate(ROUTES.DASHBOARD);
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';

@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import axiosInstance from 'global/axiosInstance';
 import { AxiosResponse } from 'axios';
 import {
@@ -11,9 +11,6 @@ import {
     UpdateUserStatusRequestAction
 } from '../type/types';
 import { apiUrl } from 'constants/common';
-import { RootState } from 'config/store';
-
-const getprofileID = (state: RootState) => state.authModule.user?.userprofile_id;
 
 const fetchUsersAPI = async (): Promise<AxiosResponse> => {
     return await axiosInstance.get(apiUrl.getUserList);
@@ -44,9 +41,10 @@ const updateUserStatusAPI = async (
 };
 
 function* handleUpdateUserStatus(action: UpdateUserStatusRequestAction) {
+    const profileIDStr = localStorage.getItem('profileID');
+    const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
     try {
         const { userId, status } = action.payload;
-        const profileID: number = yield select(getprofileID);
         yield call(updateUserStatusAPI, userId, status, profileID);
         yield put({ type: UPDATE_USER_STATUS_SUCCESS, payload: { userId, status } });
     } catch (error: unknown) {

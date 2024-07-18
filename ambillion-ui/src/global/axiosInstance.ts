@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { apiUrl } from 'constants/common';
 import { toast } from 'react-toastify';
-import { setLocalStorage, getLocalStorage } from './storage';
 import { refreshAccessToken } from './globalFunction';
 
 type AdaptAxiosRequestConfig = AxiosRequestConfig & {
@@ -18,7 +17,7 @@ const axiosInstance = axios.create({
 // Request interceptor for API calls
 axiosInstance.interceptors.request.use(
     async (config: AdaptAxiosRequestConfig) => {
-        const accessToken = getLocalStorage<string>('accessToken') ?? null;
+        const accessToken = localStorage.getItem('accessToken') ?? null;
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
@@ -36,14 +35,14 @@ axiosInstance.interceptors.response.use(
         const responseCode = response?.data?.code;
         if ([200, 201, 202, 203].includes(responseCode)) {
             const responseMessage = response?.data?.message;
-            toast.success(responseMessage);
+            if (responseMessage) toast.success(responseMessage);
         }
         return response;
     },
     async (error) => {
         const originalRequest = error.config;
 
-        const refreshToken = getLocalStorage<string>('refreshToken') ?? null;
+        const refreshToken = localStorage.getItem('refreshToken') ?? null;
 
         if (error.response?.status === 401 && refreshToken && !originalRequest._retry) {
             originalRequest._retry = true;
@@ -53,7 +52,7 @@ axiosInstance.interceptors.response.use(
 
                 const { accessToken: newAccessToken } = refreshTokenResponse.data;
 
-                setLocalStorage('accessToken', newAccessToken);
+                localStorage.setItem('accessToken', newAccessToken);
 
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                 return axiosInstance(originalRequest);
@@ -66,7 +65,7 @@ axiosInstance.interceptors.response.use(
         const data = error.response?.data ?? null;
         let errorMessage = 'An unknown error occurred.';
 
-        if (data?.message) {
+        if (data?.message?.responseMessage) {
             errorMessage = data.message;
             toast.error(errorMessage);
         }

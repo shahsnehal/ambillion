@@ -16,7 +16,6 @@ export const UserList = () => {
     const [actionType, setActionType] = useState<'APPROVE' | 'REJECT' | null>(null);
 
     const { isLoading, users } = useSelector((state: RootState) => state.userModule);
-    console.log('users', users);
 
     useEffect(() => {
         const getUsers = () => {
@@ -47,7 +46,6 @@ export const UserList = () => {
                     actionType === 'APPROVE' ? 'ACCEPTED' : 'REJECTED'
                 )
             );
-            dispatch(fetchUsersRequest());
         }
     };
 
@@ -77,7 +75,7 @@ export const UserList = () => {
     }, [filterText, resetPaginationToggle]);
     return (
         <>
-            {isLoading && <Loader />}
+            {isLoading ?? <Loader />}
             <DataTable
                 columns={[
                     ...userTableColumns,
