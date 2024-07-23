@@ -1,9 +1,9 @@
-import { UserList } from 'components/users/usersList';
+import { NotFound } from 'pages/notFound/notFound';
 export const Dashboard = () => {
     return (
         <div className="card">
             <div className="card-body">
-                <UserList />
+                <NotFound />
             </div>
         </div>
     );

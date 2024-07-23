@@ -9,7 +9,18 @@ export const apiUrl = {
 
     //user-Module
     getUserList: '/users',
-    updateUserStatus: '/users'
+    updateUserStatus: '/users',
+
+    //Manufacture-product-Module
+    productsByUserID: '/product/getProduct',
+    addProduct: '/products/addProduct',
+    getProductById: '/products/getProductByid',
+    updateProduct: '/products/updateProduct',
+    deleteProduct: '/products/deleteProduct',
+
+    //Officer-Module
+    getProducts: '/products',
+    updateProductStatus: '/officer'
 };
 
 // Routing path constants
@@ -19,9 +30,13 @@ export const ROUTES = {
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgotPassword',
     DASHBOARD: '/dashboard',
+    USERSLIST: '/users',
+    PRODUCTSBYUSERID: '/products/getProduct',
+    ADDPRODUCT: '/products/addProduct',
+    EDITPRODUCT: '/products/edit/:Id',
+    PRODUCTDETAILS: '/products/:productId',
     PRODUCTS: '/products',
-    ADDPRODUCTS: '/products/addProduct',
-    PRODUCTDETAILS: '/products/:productId'
+    NOT_AUTHORIZES: '/not-authorized'
 };
 
 // Recaptcha Configuration
@@ -35,8 +50,22 @@ export const userStatus = {
     PENDING: 'PENDING'
 };
 
+export const productStatus = {
+    APPROVED: 'APPROVED',
+    REJECTED: 'REJECTED',
+    PENDING: 'PENDING',
+    INREVIEW: 'INREVIEW',
+    ONHOLD: 'ONHOLD'
+};
+
 export const userRoles = {
     ADMIN: 'ADMIN',
     MANUFACTURER: 'MANUFACTURER',
     OFFICER: 'OFFICER'
+};
+
+export const roleRedirects = {
+    [userRoles.ADMIN]: ROUTES.USERSLIST,
+    [userRoles.MANUFACTURER]: ROUTES.PRODUCTSBYUSERID,
+    [userRoles.OFFICER]: ROUTES.PRODUCTS
 };

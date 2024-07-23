@@ -1,7 +1,8 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 import { User } from 'Modules/user-module/type/types';
-import { userStatus } from 'constants/common';
+import { Product } from 'Modules/product-module/type/types';
+import { userStatus, productStatus } from 'constants/common';
 
 export const customStyles = {
     rows: {
@@ -47,7 +48,7 @@ export type ProductDataRow = {
     // isApproved: boolean;
 };
 
-const getStatusClass = (status: string): string => {
+const getUserStatusClass = (status: string): string => {
     switch (status) {
         case userStatus.ACCEPTED:
             return 'bg-success-subtle text-success';
@@ -55,6 +56,23 @@ const getStatusClass = (status: string): string => {
             return 'bg-danger-subtle text-danger';
         case userStatus.PENDING:
             return 'bg-info-subtle text-info';
+        default:
+            return '';
+    }
+};
+
+const getProductStatusClass = (status: string): string => {
+    switch (status) {
+        case productStatus.APPROVED:
+            return 'bg-success-subtle text-success';
+        case productStatus.REJECTED:
+            return 'bg-danger-subtle text-danger';
+        case productStatus.PENDING:
+            return 'bg-info-subtle text-info';
+        case productStatus.INREVIEW:
+            return 'bg-warning-subtle text-warning';
+        case productStatus.ONHOLD:
+            return 'bg-secondary-subtle text-secondary';
         default:
             return '';
     }
@@ -72,10 +90,18 @@ type ProductViewEditDeleteActionProps = {
     onDelete: (params: DeleteActionParams) => void;
 };
 
+//UserStatusChangeTypes
 type UserStatusChangeActionProps = {
     status: string;
     onApprove: () => void;
     onReject: () => void;
+};
+
+//ProductStatusChangeTypes
+type ProductStatusChangeActionProps = {
+    productId: number;
+    currentStatus: string;
+    onOpenModal: (productId: number, status: string) => void;
 };
 
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
@@ -108,6 +134,27 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
         </div>
     );
 };
+
+export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps> = ({
+    productId,
+    currentStatus,
+    onOpenModal
+}) => {
+    return (
+        <div className="d-flex gap-2">
+            <button
+                className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Change Status"
+                onClick={() => onOpenModal(productId, currentStatus)}
+            >
+                <Icon icon="solar:pen-outline" className="fs-5" />
+            </button>
+        </div>
+    );
+};
+
 export const UserStatusChangeActionColumn = (
     onApprove: (userId: number) => void,
     onReject: (userId: number) => void
@@ -118,6 +165,22 @@ export const UserStatusChangeActionColumn = (
             status={row.status}
             onApprove={() => onApprove(row.userprofile_id)}
             onReject={() => onReject(row.userprofile_id)}
+        />
+    ),
+    ignoreRowClick: false,
+    allowOverflow: true,
+    button: true
+});
+
+export const ProductStatusChangeActionColumn = (
+    onOpenModal: (productId: number, currentStatus: string) => void
+) => ({
+    name: 'Action',
+    cell: (row: Product) => (
+        <ProductStatusChangeAction
+            productId={row.productId}
+            currentStatus={row.status}
+            onOpenModal={() => onOpenModal(row.productId, row.status)}
         />
     ),
     ignoreRowClick: false,
@@ -229,28 +292,65 @@ export const userTableColumns: TableColumn<User>[] = [
         selector: (row) => row.status,
         sortable: true,
         cell: (row) => (
-            <span className={`badge ${getStatusClass(row.status)} rounded fw-semibold p-2`}>
+            <span className={`badge ${getUserStatusClass(row.status)} rounded fw-semibold p-2`}>
                 {row.status}
             </span>
         )
     }
-    // {
-    //     name: 'Status',
-    //     selector: (row) => row.isVerified,
-    //     sortable: true,
-    //     cell: (row) =>
-    //         row.isVerified ? (
-    //             <span className="badge bg-success-subtle text-success rounded fw-semibold p-2">
-    //                 Verified
-    //             </span>
-    //         ) : (
-    //             <span className="badge bg-danger-subtle text-danger rounded fw-semibold p-2">
-    //                 UnVerified
-    //             </span>
-    //         )
-    // },
 ];
 
+//ProductListTableColumn For Officer
+export const productsListTableColumns: TableColumn<Product>[] = [
+    {
+        name: 'HSN Code',
+        selector: (row) => row.originHsnCode,
+        sortable: true
+    },
+    {
+        name: 'Manufacturer Name',
+        selector: (row) => row.manufacturerName,
+        sortable: true
+    },
+    {
+        name: 'Image',
+        selector: (row) => row.uploadImage,
+        cell: (row) => <img src={row.uploadImage} alt={row.productDisplayName} width="50" />,
+        sortable: false
+    },
+    {
+        name: 'Category',
+        selector: (row) => row.productCategory,
+        sortable: true
+    },
+    {
+        name: 'Type',
+        selector: (row) => row.productType,
+        sortable: true
+    },
+    {
+        name: 'Name',
+        selector: (row) => row.productDisplayName,
+        sortable: true
+    },
+    {
+        name: 'Description',
+        selector: (row) => row.customerProductDescription,
+        sortable: true
+    },
+    {
+        id: 'Status',
+        name: 'Status',
+        selector: (row) => row.status,
+        sortable: true,
+        cell: (row) => (
+            <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
+                {row.status}
+            </span>
+        )
+    }
+];
+
+//ProductsTableColumn For Manufacturer
 export const productTableColumns: TableColumn<ProductDataRow>[] = [
     {
         name: 'HSN Code',
@@ -289,7 +389,9 @@ export const productTableColumns: TableColumn<ProductDataRow>[] = [
         selector: (row) => row.approvalStatus,
         sortable: true,
         cell: (row) => (
-            <span className={`badge ${getStatusClass(row.approvalStatus)} rounded fw-semibold p-2`}>
+            <span
+                className={`badge ${getProductStatusClass(row.approvalStatus)} rounded fw-semibold p-2`}
+            >
                 {row.approvalStatus}
             </span>
         )

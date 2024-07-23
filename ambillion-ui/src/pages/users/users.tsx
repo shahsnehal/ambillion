@@ -1,10 +1,10 @@
-import { Products } from 'components/products/products';
+import { UserList } from 'components/users/usersList';
 
-export const ProductsPage = () => {
+export const UsersPage = () => {
     return (
         <div className="card">
             <div className="card-body">
-                <Products />
+                <UserList />
             </div>
         </div>
     );

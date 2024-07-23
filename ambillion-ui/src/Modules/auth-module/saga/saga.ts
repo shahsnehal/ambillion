@@ -9,7 +9,7 @@ import {
     SIGNIN_FAILURE,
     SIGNIN_REQUEST
 } from '../type/types';
-import { apiUrl, ROUTES } from 'constants/common';
+import { apiUrl, roleRedirects, ROUTES } from 'constants/common';
 import axiosInstance from 'global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
@@ -45,16 +45,18 @@ function* handleSignin(action: {
     try {
         const response: AxiosResponse = yield call(signin, action.payload);
         const responseData = response.data.data;
-        const { userprofile_id: userProfileID } = responseData.user;
+        const { userprofile_id: userProfileID, role_name: userRole } = responseData.user;
         const { access, refresh } = responseData.tokens;
 
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
         localStorage.setItem('profileID', userProfileID);
+        localStorage.setItem('role', userRole);
         localStorage.setItem('accessToken', access.token);
         localStorage.setItem('refreshToken', refresh.token);
 
-        action.payload.navigate(ROUTES.DASHBOARD);
+        const redirectPath = roleRedirects[userRole];
+        action.payload.navigate(redirectPath);
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {

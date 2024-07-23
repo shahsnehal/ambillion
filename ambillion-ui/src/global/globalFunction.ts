@@ -11,3 +11,12 @@ export const userLogout = (navigate: (path: string) => void) => {
         localStorage.clear();
     }, 5);
 };
+
+export const getUserRole = (): string | null => {
+    return localStorage.getItem('role');
+};
+
+export const hasRole = (role: string): boolean => {
+    const userRole = getUserRole();
+    return userRole === role;
+};

@@ -6,7 +6,7 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '1234567890',
         emailAddress: 'vishal.devani@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -16,7 +16,7 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '2345678901',
         emailAddress: 'john.smith@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -26,7 +26,7 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '3456789012',
         emailAddress: 'emily.brown@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -36,7 +36,7 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '4567890123',
         emailAddress: 'michael.johnson@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -46,7 +46,7 @@ export const dummyUserTableData = [
         companyName: 'DEF Ltd.',
         mobileNumber: '5678901234',
         emailAddress: 'sarah.wilson@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -56,7 +56,7 @@ export const dummyUserTableData = [
         companyName: '789 Corp.',
         mobileNumber: '6789012345',
         emailAddress: 'david.lee@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -66,7 +66,7 @@ export const dummyUserTableData = [
         companyName: 'GHI Inc.',
         mobileNumber: '7890123456',
         emailAddress: 'emma.garcia@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -76,7 +76,7 @@ export const dummyUserTableData = [
         companyName: 'JKL Corp.',
         mobileNumber: '8901234567',
         emailAddress: 'daniel.martinez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -86,7 +86,7 @@ export const dummyUserTableData = [
         companyName: 'MNO Ltd.',
         mobileNumber: '9012345678',
         emailAddress: 'sophia.lopez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -96,7 +96,7 @@ export const dummyUserTableData = [
         companyName: 'PQR Inc.',
         mobileNumber: '0123456789',
         emailAddress: 'james.davis@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -106,7 +106,7 @@ export const dummyUserTableData = [
         companyName: 'STU Corp.',
         mobileNumber: '9876543210',
         emailAddress: 'olivia.miller@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -116,7 +116,7 @@ export const dummyUserTableData = [
         companyName: 'VWX Ltd.',
         mobileNumber: '8765432109',
         emailAddress: 'william.rodriguez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -126,7 +126,7 @@ export const dummyUserTableData = [
         companyName: 'YZA Inc.',
         mobileNumber: '7654321098',
         emailAddress: 'ava.martinez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -136,7 +136,7 @@ export const dummyUserTableData = [
         companyName: 'BCD Corp.',
         mobileNumber: '6543210987',
         emailAddress: 'alexander.hernandez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -146,7 +146,7 @@ export const dummyUserTableData = [
         companyName: 'EFG Ltd.',
         mobileNumber: '5432109876',
         emailAddress: 'mia.gonzalez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -156,7 +156,7 @@ export const dummyUserTableData = [
         companyName: 'HIJ Inc.',
         mobileNumber: '4321098765',
         emailAddress: 'ethan.perez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -166,7 +166,7 @@ export const dummyUserTableData = [
         companyName: 'KLM Corp.',
         mobileNumber: '3210987654',
         emailAddress: 'isabella.sanchez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -176,7 +176,7 @@ export const dummyUserTableData = [
         companyName: 'NOP Ltd.',
         mobileNumber: '2109876543',
         emailAddress: 'alexander.gonzalez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -186,7 +186,7 @@ export const dummyUserTableData = [
         companyName: 'QRS Inc.',
         mobileNumber: '1098765432',
         emailAddress: 'sophia.rivera@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -196,7 +196,7 @@ export const dummyUserTableData = [
         companyName: 'TUV Corp.',
         mobileNumber: '0987654321',
         emailAddress: 'mason.brooks@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -206,7 +206,7 @@ export const dummyUserTableData = [
         companyName: 'WXY Ltd.',
         mobileNumber: '9876543210',
         emailAddress: 'amelia.roberts@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -216,7 +216,7 @@ export const dummyUserTableData = [
         companyName: 'ZAB Inc.',
         mobileNumber: '8765432109',
         emailAddress: 'logan.cook@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -226,7 +226,7 @@ export const dummyUserTableData = [
         companyName: 'CDE Corp.',
         mobileNumber: '7654321098',
         emailAddress: 'evelyn.bailey@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -236,7 +236,7 @@ export const dummyUserTableData = [
         companyName: 'FGH Ltd.',
         mobileNumber: '6543210987',
         emailAddress: 'lucas.james@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -246,7 +246,7 @@ export const dummyUserTableData = [
         companyName: 'IJK Inc.',
         mobileNumber: '5432109876',
         emailAddress: 'abigail.phillips@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -256,7 +256,7 @@ export const dummyUserTableData = [
         companyName: 'LMN Corp.',
         mobileNumber: '4321098765',
         emailAddress: 'jackson.evans@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: false
     },
     {
@@ -266,7 +266,7 @@ export const dummyUserTableData = [
         companyName: 'OPQ Ltd.',
         mobileNumber: '3210987654',
         emailAddress: 'charlotte.howard@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -276,7 +276,7 @@ export const dummyUserTableData = [
         companyName: 'RST Inc.',
         mobileNumber: '2109876543',
         emailAddress: 'daniel.morales@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -286,7 +286,7 @@ export const dummyUserTableData = [
         companyName: 'UVW Corp.',
         mobileNumber: '1098765432',
         emailAddress: 'harper.ward@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -296,7 +296,7 @@ export const dummyUserTableData = [
         companyName: 'XYZ Ltd.',
         mobileNumber: '0987654321',
         emailAddress: 'aiden.torres@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -306,7 +306,7 @@ export const dummyUserTableData = [
         companyName: '123 Inc.',
         mobileNumber: '9876543210',
         emailAddress: 'madison.flores@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -316,7 +316,7 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '8765432109',
         emailAddress: 'elijah.nguyen@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -326,7 +326,7 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '7654321098',
         emailAddress: 'avery.king@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -336,7 +336,7 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '6543210987',
         emailAddress: 'grayson.scott@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -346,7 +346,7 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '5432109876',
         emailAddress: 'scarlett.gomez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -356,7 +356,7 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '4321098765',
         emailAddress: 'logan.hill@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -366,7 +366,7 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '3210987654',
         emailAddress: 'lily.perez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -376,7 +376,7 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '2109876543',
         emailAddress: 'owen.collins@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -386,7 +386,7 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '1098765432',
         emailAddress: 'liam.stewart@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -396,7 +396,7 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '0987654321',
         emailAddress: 'zoe.mitchell@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -406,7 +406,7 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '9876543210',
         emailAddress: 'jackson.rogers@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -416,7 +416,7 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '8765432109',
         emailAddress: 'chloe.price@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -426,7 +426,7 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '7654321098',
         emailAddress: 'carter.ward@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -436,7 +436,7 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '6543210987',
         emailAddress: 'emma.brooks@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -446,7 +446,7 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '5432109876',
         emailAddress: 'aiden.turner@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -456,7 +456,7 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '4321098765',
         emailAddress: 'grace.scott@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -466,7 +466,7 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '3210987654',
         emailAddress: 'ethan.gonzalez@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -476,7 +476,7 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '2109876543',
         emailAddress: 'hannah.evans@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -486,7 +486,7 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '1098765432',
         emailAddress: 'luke.ward@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     },
     {
@@ -496,7 +496,7 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '0987654321',
         emailAddress: 'leah.morris@example.com',
-        status: 'Pending'
+        status: 'PENDING'
         //isVerified: true
     }
 ];
@@ -520,7 +520,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Fabric, Steel',
         productFeatures: 'Ergonomic, Swivel',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 2,
@@ -540,7 +540,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: '16GB RAM, 1TB SSD, GTX 3080',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 3,
@@ -560,7 +560,7 @@ export const dummyProductTableData = [
         byGender: 'Male',
         material: 'Cotton',
         productFeatures: 'Wrinkle-Free, Slim Fit',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 4,
@@ -580,7 +580,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Rubber',
         productFeatures: 'All-weather, High Traction',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 5,
@@ -600,7 +600,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Smart Navigation, Rechargeable',
-        approvalStatus: 'Pending'
+        approvalStatus: 'PENDING'
     },
     {
         id: 6,
@@ -620,7 +620,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic',
         productFeatures: 'Articulated, Collectible',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 7,
@@ -640,7 +640,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Rechargeable, High Torque',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 8,
@@ -660,7 +660,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Paper',
         productFeatures: 'Bestseller, Illustrated',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 9,
@@ -680,7 +680,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Synthetic Leather',
         productFeatures: 'Durable, Water-Resistant',
-        approvalStatus: 'Pending'
+        approvalStatus: 'PENDING'
     },
     {
         id: 10,
@@ -700,7 +700,7 @@ export const dummyProductTableData = [
         byGender: 'Female',
         material: 'Gold',
         productFeatures: 'Pure Gold, Handcrafted',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 11,
@@ -720,7 +720,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Ceramic',
         productFeatures: 'Hand-Painted, Durable',
-        approvalStatus: 'Pending'
+        approvalStatus: 'PENDING'
     },
     {
         id: 12,
@@ -740,7 +740,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic',
         productFeatures: 'Contains Vitamins A-Z, 100 Tablets',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 13,
@@ -760,7 +760,7 @@ export const dummyProductTableData = [
         byGender: 'Female',
         material: 'Wax, Pigment',
         productFeatures: 'Long-lasting, Matte Finish',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 14,
@@ -780,7 +780,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Multiple Speed Settings, Dishwasher Safe',
-        approvalStatus: 'Pending'
+        approvalStatus: 'PENDING'
     },
     {
         id: 15,
@@ -800,7 +800,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Polyester, Fiberglass',
         productFeatures: 'Waterproof, Easy Setup',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 16,
@@ -820,7 +820,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Fabric, Foam',
         productFeatures: 'Soft, Washable Cover',
-        approvalStatus: 'Rejected'
+        approvalStatus: 'REJECTED'
     },
     {
         id: 17,
@@ -840,7 +840,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Paper, Metal',
         productFeatures: '200 Pages, Ruled',
-        approvalStatus: 'Pending'
+        approvalStatus: 'PENDING'
     },
     {
         id: 18,
@@ -860,7 +860,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Mesh, Rubber',
         productFeatures: 'Lightweight, Breathable',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 19,
@@ -880,7 +880,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Mesh, Metal',
         productFeatures: 'Adjustable, Lumbar Support',
-        approvalStatus: 'Pending'
+        approvalStatus: 'PENDING'
     },
     {
         id: 20,
@@ -900,6 +900,64 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Wood',
         productFeatures: '6 Strings, Steel Strings',
-        approvalStatus: 'Approved'
+        approvalStatus: 'ACCEPTED'
+    }
+];
+
+export const dummyProductsListTableData = [
+    {
+        productId: 1,
+        originHsnCode: '9401.61.00.90',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Furniture',
+        productType: 'Chair',
+        productDisplayName: 'Red Lounge Chair',
+        customerProductDescription: 'Modern red lounge chair',
+        manufacturerName: 'Furniture Co.',
+        status: 'REJECTED'
+    },
+    {
+        productId: 2,
+        originHsnCode: '8471.30.10.00',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Electronics',
+        productType: 'Laptop',
+        productDisplayName: 'Gaming Laptop Pro',
+        customerProductDescription: 'High performance gaming laptop',
+        manufacturerName: 'Tech Innovators',
+        status: 'APPROVED'
+    },
+    {
+        productId: 3,
+        originHsnCode: '6403.59.00.90',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Footwear',
+        productType: 'Sneakers',
+        productDisplayName: 'Running Sneakers',
+        customerProductDescription: 'Comfortable running sneakers',
+        manufacturerName: 'Sporty Shoes Inc.',
+        status: 'PENDING'
+    },
+    {
+        productId: 4,
+        originHsnCode: '6201.99.00.90',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Apparel',
+        productType: 'Jacket',
+        productDisplayName: 'Winter Jacket',
+        customerProductDescription: 'Warm and stylish winter jacket',
+        manufacturerName: 'Fashion Hub',
+        status: 'INREVIEW'
+    },
+    {
+        productId: 5,
+        originHsnCode: '9506.99.80.00',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Sports Equipment',
+        productType: 'Yoga Mat',
+        productDisplayName: 'Eco-friendly Yoga Mat',
+        customerProductDescription: 'Non-slip, eco-friendly yoga mat',
+        manufacturerName: 'Yoga Essentials',
+        status: 'ONHOLD'
     }
 ];

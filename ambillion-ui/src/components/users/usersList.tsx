@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { customStyles, UserStatusChangeActionColumn, userTableColumns } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
-import { Loader } from 'common/loaders/loader';
 import { fetchUsersRequest, updateUserStatusRequest } from 'Modules/user-module/action/actions';
 import { RootState } from 'config/store';
 
@@ -14,15 +13,18 @@ export const UserList = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [actionType, setActionType] = useState<'APPROVE' | 'REJECT' | null>(null);
+    const [pending, setPending] = useState<boolean>(true);
 
-    const { isLoading, users } = useSelector((state: RootState) => state.userModule);
+    const { users } = useSelector((state: RootState) => state.userModule);
 
     useEffect(() => {
         const getUsers = () => {
+            setPending(true);
             dispatch(fetchUsersRequest());
+            setPending(false);
         };
-        return () => getUsers();
-    }, []);
+        getUsers();
+    }, [dispatch]);
 
     const filteredItems = users.filter((user) =>
         user.email?.toLowerCase().includes(filterText.toLowerCase())
@@ -75,13 +77,14 @@ export const UserList = () => {
     }, [filterText, resetPaginationToggle]);
     return (
         <>
-            {isLoading ?? <Loader />}
             <DataTable
                 columns={[
                     ...userTableColumns,
                     UserStatusChangeActionColumn(handleApprove, handleReject)
                 ]}
                 data={filteredItems}
+                progressPending={pending}
+                // progressComponent={<Loader />}
                 pagination
                 title=" "
                 selectableRows

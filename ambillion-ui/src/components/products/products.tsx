@@ -11,34 +11,55 @@ import {
 } from 'utils/table/columns';
 import { dummyProductTableData } from 'utils/table/data';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
+import { ROUTES } from 'constants/common';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { deleteProductRequest } from 'Modules/product-module/action/actions';
+// import { RootState } from 'config/store';
+// import { getProductsRequest } from 'Modules/product-module/action/actions';
 
 type SelectableDeleteRowData = {
     productid: number | null;
     productName: string;
 };
 
-export const ProductList = () => {
+export const Products = () => {
     const navigate = useNavigate();
+    // const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
+    // const [pending, setPending] = useState<boolean>(true);
     const [productData, setProductData] = useState(dummyProductTableData);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
     });
+    // const { products } = useSelector((state: RootState) => state.productModule);
+
+    // useEffect(() => {
+    //     const getProducts = () => {
+    //         setPending(true);
+    //         dispatch(getProductsRequest());
+    //         setPending(false);
+    //     };
+    //     getProducts();
+    // }, [dispatch]);
 
     const filteredItems = productData.filter((item) =>
         item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
     );
 
+    // const filteredItems = products.filter((product) =>
+    //     product.name?.toLowerCase().includes(filterText.toLowerCase())
+    // );
+
     const handleAddProduct = () => {
-        navigate('/products/addProduct');
+        navigate(ROUTES.ADDPRODUCT);
     };
 
     //Product Edit Logic
-    const handleEdit = (editedRow: ProductDataRow) => {
-        console.log('editRow', editedRow);
+    const handleEdit = (row: ProductDataRow) => {
+        navigate(`/products/edit/${row.id}`);
     };
 
     const handleView = (productId: number) => {
@@ -51,7 +72,7 @@ export const ProductList = () => {
         setShowConfirmationModal(true);
     };
 
-    //Confirm Delete Logic
+    // Confirm Delete Logic
     const handleConfirmDelete = () => {
         if (selectDeleteProduct.productid) {
             const updatedData = productData.filter(
@@ -62,6 +83,13 @@ export const ProductList = () => {
             setShowConfirmationModal(false);
         }
     };
+
+    // const handleConfirmDelete = () => {
+    //     if (selectDeleteProduct?.productid) {
+    //         dispatch(deleteProductRequest(selectDeleteProduct.productid));
+    //         setShowConfirmationModal(false);
+    //     }
+    // };
 
     const subHeaderComponentMemo = React.useMemo(() => {
         const handleClear = () => {
@@ -106,6 +134,7 @@ export const ProductList = () => {
                 data={filteredItems}
                 defaultSortFieldId={'Status'}
                 defaultSortAsc={false}
+                // progressPending={pending}
                 pagination
                 title=" "
                 selectableRows
