@@ -18,13 +18,11 @@ export const UserList = () => {
     const { users } = useSelector((state: RootState) => state.userModule);
 
     useEffect(() => {
-        const getUsers = () => {
-            setPending(true);
-            dispatch(fetchUsersRequest());
-            setPending(false);
-        };
-        getUsers();
-    }, [dispatch]);
+        //optimized
+        setPending(true);
+        dispatch(fetchUsersRequest());
+        setPending(false);
+    }, []);
 
     const filteredItems = users.filter((user) =>
         user.email?.toLowerCase().includes(filterText.toLowerCase())
@@ -97,7 +95,7 @@ export const UserList = () => {
                 persistTableHead
                 customStyles={customStyles}
             />
-
+            {/* optimized */}
             <ConfirmationModal
                 isOpen={actionType !== null}
                 onClose={handleCloseModal}

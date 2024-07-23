@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { apiUrl } from 'constants/common';
 import { toast } from 'react-toastify';
-import { refreshAccessToken } from './globalFunction';
+// import { refreshAccessToken } from './globalFunction';
 
 type AdaptAxiosRequestConfig = AxiosRequestConfig & {
     headers: AxiosRequestHeaders;
@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
     async (config: AdaptAxiosRequestConfig) => {
         const accessToken = localStorage.getItem('accessToken') ?? null;
         if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
+            config.headers.Authorization = `${accessToken}`;
         }
         return config;
     },
@@ -40,37 +40,16 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const originalRequest = error.config;
-
-        const refreshToken = localStorage.getItem('refreshToken') ?? null;
-
-        if (error.response?.status === 401 && refreshToken && !originalRequest._retry) {
-            originalRequest._retry = true;
-
-            try {
-                const refreshTokenResponse = await refreshAccessToken(refreshToken);
-
-                const { accessToken: newAccessToken } = refreshTokenResponse.data;
-
-                localStorage.setItem('accessToken', newAccessToken);
-
-                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return axiosInstance(originalRequest);
-            } catch (refreshError) {
-                const refreshErrorMessage = 'Failed To Refresh Access. Please log in again.';
-                return Promise.reject(new Error(refreshErrorMessage));
-            }
+        const data = error && error.response ? error.response.data : null;
+        console.log(data, error);
+        if (error.code && !data) {
+            console.log(error);
+            // toast.error(generic.status[error.code]);
+            return Promise.reject(data);
+        } else if (data && data.message) {
+            toast.error(data.message);
+            return Promise.reject(data);
         }
-
-        const data = error.response?.data ?? null;
-        let errorMessage = 'An unknown error occurred.';
-
-        if (data?.message?.responseMessage) {
-            errorMessage = data.message;
-            toast.error(errorMessage);
-        }
-
-        return Promise.reject(new Error(errorMessage));
     }
 );
 
