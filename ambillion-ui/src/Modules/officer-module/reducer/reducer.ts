@@ -21,7 +21,7 @@ const initialState: ProductState = {
     products: []
 };
 
-export const productReducer = (state = initialState, action: ProductActionTypes): ProductState => {
+export const productsReducer = (state = initialState, action: ProductActionTypes): ProductState => {
     switch (action.type) {
         case FETCH_PRODUCTS_REQUEST:
             return { ...state, isLoading: true, error: null };

@@ -2,21 +2,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Loader } from 'common/loaders/loader';
 import Layout from 'components/common/layouts/layouts';
-import { ProductDetail } from 'components/products/productDetails';
+import { ProductDetail } from 'components/userProducts/productDetails';
 import { ROUTES, userRoles } from 'constants/common';
 import { ErrorBoundary } from 'pages/errors/error';
 import { ForgotPasswordPage } from 'pages/forgotPassword/forgotPassword';
 import { LoginPage } from 'pages/login/login';
 import { NotFound } from 'pages/notFound/notFound';
-import { ProductsPage } from 'pages/products/products';
+import { UserProductsPage } from 'pages/userProducts/userProducts';
 import { RegisterPage } from 'pages/register/register';
 import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { UsersPage } from 'pages/users/users';
 import ProtectedRoute from 'common/privatesRoute/protectedRoute';
 import { NotAuthorized } from 'common/privatesRoute/notAuthorized';
-import { ProductForm } from 'components/products/productForm';
-import { ProductsListPage } from 'pages/officerproductsList/productsList';
+import { ProductForm } from 'components/userProducts/productForm';
+import { ProductsPage } from 'pages/products/products';
 
 function App() {
     return (
@@ -70,7 +70,7 @@ function App() {
                                             path={ROUTES.PRODUCTSBYUSERID}
                                             element={
                                                 <Layout title="product">
-                                                    <ProductsPage />
+                                                    <UserProductsPage />
                                                 </Layout>
                                             }
                                         />
@@ -120,7 +120,7 @@ function App() {
                                             path={ROUTES.PRODUCTS}
                                             element={
                                                 <Layout title="Products">
-                                                    <ProductsListPage />
+                                                    <ProductsPage />
                                                 </Layout>
                                             }
                                         />

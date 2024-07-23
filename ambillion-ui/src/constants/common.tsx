@@ -12,7 +12,7 @@ export const apiUrl = {
     updateUserStatus: '/users',
 
     //Manufacture-product-Module
-    productsByUserID: '/product/getProduct',
+    productsByUserID: '/products',
     addProduct: '/products/addProduct',
     getProductById: '/products/getProductByid',
     updateProduct: '/products/updateProduct',
@@ -31,11 +31,11 @@ export const ROUTES = {
     FORGOT_PASSWORD: '/forgotPassword',
     DASHBOARD: '/dashboard',
     USERSLIST: '/users',
-    PRODUCTSBYUSERID: '/products/getProduct',
+    PRODUCTS: '/products',
+    PRODUCTSBYUSERID: '/products/:userId',
     ADDPRODUCT: '/products/addProduct',
     EDITPRODUCT: '/products/edit/:Id',
     PRODUCTDETAILS: '/products/:productId',
-    PRODUCTS: '/products',
     NOT_AUTHORIZES: '/not-authorized'
 };
 

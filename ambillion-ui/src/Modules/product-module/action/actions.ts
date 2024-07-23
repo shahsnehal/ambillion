@@ -1,5 +1,5 @@
 import {
-    GET_PRODUCTS_REQUEST,
+    GET_PRODUCTS_BY_USER_REQUEST,
     GetProductsRequestAction,
     ADD_PRODUCT_REQUEST,
     AddProductRequestAction,
@@ -9,11 +9,27 @@ import {
     DeleteProductRequestAction,
     GET_PRODUCT_BY_ID_REQUEST,
     GetProductByIdRequestAction,
-    ProductFormValues
+    ProductFormValues,
+    FETCH_ALL_PRODUCTS_REQUEST,
+    FetchAllProductsRequestAction,
+    UPDATE_PRODUCT_STATUS_REQUEST,
+    UpdateProductStatusRequestAction
 } from '../type/types';
 
 export const getProductsRequest = (): GetProductsRequestAction => ({
-    type: GET_PRODUCTS_REQUEST
+    type: GET_PRODUCTS_BY_USER_REQUEST
+});
+
+export const fetchProductsRequest = (): FetchAllProductsRequestAction => ({
+    type: FETCH_ALL_PRODUCTS_REQUEST
+});
+
+export const updateProductStatusRequest = (
+    productId: number,
+    status: string
+): UpdateProductStatusRequestAction => ({
+    type: UPDATE_PRODUCT_STATUS_REQUEST,
+    payload: { productId, status }
 });
 
 export const addProductRequest = (

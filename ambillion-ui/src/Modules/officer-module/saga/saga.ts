@@ -58,7 +58,7 @@ function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
     }
 }
 
-export default function* productSaga() {
+export default function* productsSaga() {
     yield takeLatest(UPDATE_PRODUCT_STATUS_REQUEST, handleUpdateProductStatus);
     yield takeLatest(FETCH_PRODUCTS_REQUEST, handleFetchProducts);
 }

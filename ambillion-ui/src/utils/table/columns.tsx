@@ -26,28 +26,6 @@ export const customStyles = {
     }
 };
 
-export type ProductDataRow = {
-    id: number;
-    uploadImage: string;
-    productCategory: string;
-    productType: string;
-    productDisplayName: string;
-    customerProductDescription: string;
-    brandName: string;
-    exWorkPrice: string;
-    byColor: string;
-    bySize: string[];
-    originHsnCode: string;
-    unitMeasure: string;
-    weight: string;
-    dimensions: string;
-    byGender: string;
-    material: string;
-    productFeatures: string;
-    approvalStatus: string;
-    // isApproved: boolean;
-};
-
 const getUserStatusClass = (status: string): string => {
     switch (status) {
         case userStatus.ACCEPTED:
@@ -84,9 +62,9 @@ type DeleteActionParams = {
 };
 
 type ProductViewEditDeleteActionProps = {
-    row: ProductDataRow;
+    row: Product;
     onView: (id: number) => void;
-    onEdit: (row: ProductDataRow) => void;
+    onEdit: (row: Product) => void;
     onDelete: (params: DeleteActionParams) => void;
 };
 
@@ -196,7 +174,7 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
     onDelete
 }) => {
     const handleView = () => {
-        onView(row.id);
+        onView(row.productId);
     };
 
     const handleEdit = () => {
@@ -204,7 +182,7 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
     };
 
     const handleDelete = () => {
-        onDelete({ id: row.id, productDisplayName: row.productDisplayName });
+        onDelete({ id: row.productId, productDisplayName: row.productDisplayName });
     };
 
     return (
@@ -243,11 +221,11 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
 //  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
 export const productViewEditDeleteActionColumn = (
     onView: (id: number) => void,
-    onEdit: (id: ProductDataRow) => void,
+    onEdit: (id: Product) => void,
     onDelete: (params: DeleteActionParams) => void
 ) => ({
     name: 'Actions',
-    cell: (row: ProductDataRow) => (
+    cell: (row: Product) => (
         <ProductViewEditDeleteAction
             row={row}
             onView={onView}
@@ -351,7 +329,7 @@ export const productsListTableColumns: TableColumn<Product>[] = [
 ];
 
 //ProductsTableColumn For Manufacturer
-export const productTableColumns: TableColumn<ProductDataRow>[] = [
+export const productTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
         selector: (row) => row.originHsnCode,
@@ -386,66 +364,12 @@ export const productTableColumns: TableColumn<ProductDataRow>[] = [
     {
         id: 'Status',
         name: 'Status',
-        selector: (row) => row.approvalStatus,
+        selector: (row) => row.status,
         sortable: true,
         cell: (row) => (
-            <span
-                className={`badge ${getProductStatusClass(row.approvalStatus)} rounded fw-semibold p-2`}
-            >
-                {row.approvalStatus}
+            <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
+                {row.status}
             </span>
         )
     }
-    // {
-    //     name: 'Brand Name',
-    //     selector: (row) => row.brandName,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Ex-Work Price',
-    //     selector: (row) => parseFloat(row.exWorkPrice),
-    //     sortable: true,
-    //     cell: (row) => `${parseFloat(row.exWorkPrice).toFixed(2)}`
-    // },
-
-    // {
-    //     name: 'Color',
-    //     selector: (row) => row.byColor,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Size',
-    //     selector: (row) => row.bySize.join(', '),
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Unit Measure',
-    //     selector: (row) => row.unitMeasure,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Weight',
-    //     selector: (row) => row.weight,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Dimensions',
-    //     selector: (row) => row.dimensions,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Gender',
-    //     selector: (row) => row.byGender,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Material',
-    //     selector: (row) => row.material,
-    //     sortable: true
-    // },
-    // {
-    //     name: 'Features',
-    //     selector: (row) => row.productFeatures,
-    //     sortable: true
-    // }
 ];

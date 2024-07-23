@@ -1,97 +1,70 @@
-import React, { useState } from 'react';
-import { Icon } from '@iconify/react';
-import { TableFilter } from 'components/common/table/tableFilter';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import DataTable from 'react-data-table-component';
-import { useNavigate } from 'react-router-dom';
+import { TableFilter } from 'components/common/table/tableFilter';
+import { ProductStatusModal } from './productStatusModal';
+import { dummyProductsListTableData } from 'utils/table/data';
 import {
     customStyles,
-    productTableColumns,
-    productViewEditDeleteActionColumn,
-    ProductDataRow
+    productsListTableColumns,
+    ProductStatusChangeActionColumn
 } from 'utils/table/columns';
-import { dummyProductTableData } from 'utils/table/data';
-import { ConfirmationModal } from 'components/common/modal/confirmationModal';
-import { ROUTES } from 'constants/common';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { deleteProductRequest } from 'Modules/product-module/action/actions';
-// import { RootState } from 'config/store';
-// import { getProductsRequest } from 'Modules/product-module/action/actions';
-
-type SelectableDeleteRowData = {
-    productid: number | null;
-    productName: string;
-};
+import { RootState } from 'config/store';
+import { fetchProductsRequest } from 'Modules/officer-module/action/actions';
 
 export const Products = () => {
-    const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    // const [pending, setPending] = useState<boolean>(true);
-    const [productData, setProductData] = useState(dummyProductTableData);
-    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
-    const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
-        productid: null,
-        productName: ''
-    });
-    // const { products } = useSelector((state: RootState) => state.productModule);
+    const [productListData, setProductListData] = useState(dummyProductsListTableData);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+    const [currentStatus, setCurrentStatus] = useState<string>('');
+    const [pending, setPending] = useState<boolean>(true);
 
-    // useEffect(() => {
-    //     const getProducts = () => {
-    //         setPending(true);
-    //         dispatch(getProductsRequest());
-    //         setPending(false);
-    //     };
-    //     getProducts();
-    // }, [dispatch]);
+    const { products } = useSelector((state: RootState) => state.productModule);
 
-    const filteredItems = productData.filter((item) =>
-        item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
+    useEffect(() => {
+        const getProducts = () => {
+            setPending(true);
+            dispatch(fetchProductsRequest());
+            setPending(false);
+        };
+        getProducts();
+    }, [dispatch]);
+
+    const filteredItems = useMemo(
+        () =>
+            products.filter((item) =>
+                item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
+            ),
+        [filterText, productListData]
     );
 
-    // const filteredItems = products.filter((product) =>
-    //     product.name?.toLowerCase().includes(filterText.toLowerCase())
-    // );
-
-    const handleAddProduct = () => {
-        navigate(ROUTES.ADDPRODUCT);
+    const handleOpenModal = (productId: number, status: string) => {
+        setSelectedProduct(productId);
+        setCurrentStatus(status);
+        setIsModalOpen(true);
     };
 
-    //Product Edit Logic
-    const handleEdit = (row: ProductDataRow) => {
-        navigate(`/products/edit/${row.id}`);
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedProduct(null);
+        setCurrentStatus('');
     };
 
-    const handleView = (productId: number) => {
-        navigate(`/products/${productId}`);
+    const handleConfirmStatusChange = (productId: number, newStatus: string, comments: string) => {
+        setProductListData((prevData) =>
+            prevData.map((product) =>
+                product.productId === productId
+                    ? { ...product, status: newStatus, comments }
+                    : product
+            )
+        );
+        handleCloseModal();
     };
 
-    //Product Delete Logic
-    const handleDelete = (params: { id: number; productDisplayName: string }) => {
-        setSelectDeleteProduct({ productid: params.id, productName: params.productDisplayName });
-        setShowConfirmationModal(true);
-    };
-
-    // Confirm Delete Logic
-    const handleConfirmDelete = () => {
-        if (selectDeleteProduct.productid) {
-            const updatedData = productData.filter(
-                (item) => item.id !== selectDeleteProduct.productid
-            );
-            setProductData(updatedData);
-            setResetPaginationToggle(!resetPaginationToggle);
-            setShowConfirmationModal(false);
-        }
-    };
-
-    // const handleConfirmDelete = () => {
-    //     if (selectDeleteProduct?.productid) {
-    //         dispatch(deleteProductRequest(selectDeleteProduct.productid));
-    //         setShowConfirmationModal(false);
-    //     }
-    // };
-
-    const subHeaderComponentMemo = React.useMemo(() => {
+    const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {
                 setResetPaginationToggle(!resetPaginationToggle);
@@ -101,25 +74,14 @@ export const Products = () => {
 
         return (
             <div className="d-flex align-items-start justify-content-between gap-4">
-                <div>
-                    <button
-                        className="btn btn-primary text-white icon-center"
-                        onClick={() => handleAddProduct()}
-                    >
-                        <Icon icon="tabler:plus"></Icon>
-                        Add Product
-                    </button>
-                </div>
-                <div>
-                    <TableFilter
-                        onFilter={(e: { target: { value: React.SetStateAction<string> } }) =>
-                            setFilterText(e.target.value)
-                        }
-                        onClear={handleClear}
-                        filterText={filterText}
-                        placeholder="Filter By Product Name"
-                    />
-                </div>
+                <TableFilter
+                    onFilter={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setFilterText(e.target.value)
+                    }
+                    onClear={handleClear}
+                    filterText={filterText}
+                    placeholder="Filter By Product Name"
+                />
             </div>
         );
     }, [filterText, resetPaginationToggle]);
@@ -128,13 +90,13 @@ export const Products = () => {
         <>
             <DataTable
                 columns={[
-                    ...productTableColumns,
-                    productViewEditDeleteActionColumn(handleView, handleEdit, handleDelete)
+                    ...productsListTableColumns,
+                    ProductStatusChangeActionColumn(handleOpenModal)
                 ]}
                 data={filteredItems}
-                defaultSortFieldId={'Status'}
+                defaultSortFieldId="Status"
                 defaultSortAsc={false}
-                // progressPending={pending}
+                progressPending={pending}
                 pagination
                 title=" "
                 selectableRows
@@ -147,16 +109,13 @@ export const Products = () => {
                 persistTableHead
                 customStyles={customStyles}
             />
-            <ConfirmationModal
-                isOpen={showConfirmationModal}
-                onClose={() => setShowConfirmationModal(false)}
-                onConfirm={handleConfirmDelete}
-                isLoading={false}
-                title="Delete Product"
-                content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
-                closeLabel="Cancel"
-                confirmLabel="Delete"
-                actionInProgressLabel="Deleting..."
+
+            <ProductStatusModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                productId={selectedProduct ?? 0}
+                currentStatus={currentStatus}
+                onConfirm={handleConfirmStatusChange}
             />
         </>
     );

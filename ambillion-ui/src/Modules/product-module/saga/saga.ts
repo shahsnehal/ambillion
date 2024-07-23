@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
-    GET_PRODUCTS_REQUEST,
-    GET_PRODUCTS_SUCCESS,
-    GET_PRODUCTS_FAILURE,
+    GET_PRODUCTS_BY_USER_REQUEST,
+    GET_PRODUCTS_BY_USER_SUCCESS,
+    GET_PRODUCTS_BY_USER_FAILURE,
     ADD_PRODUCT_REQUEST,
     ADD_PRODUCT_SUCCESS,
     ADD_PRODUCT_FAILURE,
@@ -15,26 +15,36 @@ import {
     GET_PRODUCT_BY_ID_REQUEST,
     GET_PRODUCT_BY_ID_SUCCESS,
     GET_PRODUCT_BY_ID_FAILURE,
-    ProductFormValues
+    ProductFormValues,
+    FETCH_ALL_PRODUCTS_REQUEST,
+    FETCH_ALL_PRODUCTS_SUCCESS,
+    FETCH_ALL_PRODUCTS_FAILURE,
+    UPDATE_PRODUCT_STATUS_REQUEST,
+    UPDATE_PRODUCT_STATUS_SUCCESS,
+    UPDATE_PRODUCT_STATUS_FAILURE,
+    UpdateProductStatusRequestAction
 } from '../type/types';
 import { apiUrl, ROUTES } from 'constants/common';
 import axiosInstance from 'global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
+const profileIDStr = localStorage.getItem('profileID');
+const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
+
 const getProducts = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getProductById);
+    return await axiosInstance.get(`apiUrl.getProductById/${profileID}`);
 };
 
 function* handleGetProducts() {
     try {
         const response: AxiosResponse = yield call(getProducts);
-        yield put({ type: GET_PRODUCTS_SUCCESS, payload: response.data });
+        yield put({ type: GET_PRODUCTS_BY_USER_SUCCESS, payload: response.data });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
             errorMessage = error.message;
         }
-        yield put({ type: GET_PRODUCTS_FAILURE, error: errorMessage });
+        yield put({ type: GET_PRODUCTS_BY_USER_FAILURE, error: errorMessage });
     }
 }
 
@@ -118,10 +128,58 @@ function* handleGetProductById(action: {
     }
 }
 
+// Fetch ALLProducts API
+const fetchProductsAPI = async (): Promise<AxiosResponse> => {
+    return await axiosInstance.get(apiUrl.getProducts);
+};
+
+function* handleFetchProducts() {
+    try {
+        const response: AxiosResponse = yield call(fetchProductsAPI);
+        yield put({ type: FETCH_ALL_PRODUCTS_SUCCESS, payload: response.data.data });
+    } catch (error: unknown) {
+        let errorMessage = 'An unknown error occurred';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        yield put({ type: FETCH_ALL_PRODUCTS_FAILURE, error: errorMessage });
+    }
+}
+
+// Update product status API
+const updateProductStatusAPI = async (
+    productId: number,
+    status: string,
+    profileID: number
+): Promise<AxiosResponse> => {
+    return await axiosInstance.patch(`${apiUrl.updateProductStatus}/${profileID}`, {
+        productId,
+        status
+    });
+};
+
+function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
+    const profileIDStr = localStorage.getItem('profileID');
+    const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
+    try {
+        const { productId, status } = action.payload;
+        yield call(updateProductStatusAPI, productId, status, profileID);
+        yield put({ type: UPDATE_PRODUCT_STATUS_SUCCESS, payload: { productId, status } });
+    } catch (error: unknown) {
+        let errorMessage = 'An unknown error occurred';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        yield put({ type: UPDATE_PRODUCT_STATUS_FAILURE, error: errorMessage });
+    }
+}
+
 export default function* productSaga() {
-    yield takeLatest(GET_PRODUCTS_REQUEST, handleGetProducts);
+    yield takeLatest(GET_PRODUCTS_BY_USER_REQUEST, handleGetProducts);
     yield takeLatest(ADD_PRODUCT_REQUEST, handleAddProduct);
     yield takeLatest(EDIT_PRODUCT_REQUEST, handleEditProduct);
     yield takeLatest(DELETE_PRODUCT_REQUEST, handleDeleteProduct);
     yield takeLatest(GET_PRODUCT_BY_ID_REQUEST, handleGetProductById);
+    yield takeLatest(UPDATE_PRODUCT_STATUS_REQUEST, handleUpdateProductStatus);
+    yield takeLatest(FETCH_ALL_PRODUCTS_REQUEST, handleFetchProducts);
 }

@@ -1,6 +1,10 @@
-export const GET_PRODUCTS_REQUEST = 'GET_PRODUCTS_REQUEST';
-export const GET_PRODUCTS_SUCCESS = 'GET_PRODUCTS_SUCCESS';
-export const GET_PRODUCTS_FAILURE = 'GET_PRODUCTS_FAILURE';
+export const FETCH_ALL_PRODUCTS_REQUEST = 'FETCH_PRODUCTS_REQUEST';
+export const FETCH_ALL_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
+export const FETCH_ALL_PRODUCTS_FAILURE = 'FETCH_PRODUCTS_FAILURE';
+
+export const GET_PRODUCTS_BY_USER_REQUEST = 'GET_PRODUCTS_REQUEST';
+export const GET_PRODUCTS_BY_USER_SUCCESS = 'GET_PRODUCTS_SUCCESS';
+export const GET_PRODUCTS_BY_USER_FAILURE = 'GET_PRODUCTS_FAILURE';
 
 export const ADD_PRODUCT_REQUEST = 'ADD_PRODUCT_REQUEST';
 export const ADD_PRODUCT_SUCCESS = 'ADD_PRODUCT_SUCCESS';
@@ -18,6 +22,10 @@ export const GET_PRODUCT_BY_ID_REQUEST = 'GET_PRODUCT_BY_ID_REQUEST';
 export const GET_PRODUCT_BY_ID_SUCCESS = 'GET_PRODUCT_BY_ID_SUCCESS';
 export const GET_PRODUCT_BY_ID_FAILURE = 'GET_PRODUCT_BY_ID_FAILURE';
 
+export const UPDATE_PRODUCT_STATUS_REQUEST = 'UPDATE_PRODUCT_STATUS_REQUEST';
+export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
+export const UPDATE_PRODUCT_STATUS_FAILURE = 'UPDATE_PRODUCT_STATUS_FAILURE';
+
 export type Product = {
     productId: number;
     originHsnCode: string;
@@ -26,8 +34,8 @@ export type Product = {
     productType: string;
     productDisplayName: string;
     customerProductDescription: string;
-    status: string;
     manufacturerName: string;
+    status: string;
 };
 
 export type ProductFormValues = {
@@ -51,16 +59,45 @@ export type ProductFormValues = {
 };
 
 export type GetProductsRequestAction = {
-    type: typeof GET_PRODUCTS_REQUEST;
+    type: typeof GET_PRODUCTS_BY_USER_REQUEST;
 };
 
 export type GetProductsSuccessAction = {
-    type: typeof GET_PRODUCTS_SUCCESS;
+    type: typeof GET_PRODUCTS_BY_USER_SUCCESS;
     payload: Product[];
 };
 
 export type GetProductsFailureAction = {
-    type: typeof GET_PRODUCTS_FAILURE;
+    type: typeof GET_PRODUCTS_BY_USER_FAILURE;
+    error: string;
+};
+
+export type FetchAllProductsRequestAction = {
+    type: typeof FETCH_ALL_PRODUCTS_REQUEST;
+};
+
+export type FetchAllProductsSuccessAction = {
+    type: typeof FETCH_ALL_PRODUCTS_SUCCESS;
+    payload: Product[];
+};
+
+export type FetchAllProductsFailureAction = {
+    type: typeof FETCH_ALL_PRODUCTS_FAILURE;
+    error: string;
+};
+
+export type UpdateProductStatusRequestAction = {
+    type: typeof UPDATE_PRODUCT_STATUS_REQUEST;
+    payload: { productId: number; status: string };
+};
+
+export type UpdateProductStatusSuccessAction = {
+    type: typeof UPDATE_PRODUCT_STATUS_SUCCESS;
+    payload: { productId: number; status: string };
+};
+
+export type UpdateProductStatusFailureAction = {
+    type: typeof UPDATE_PRODUCT_STATUS_FAILURE;
     error: string;
 };
 
@@ -139,4 +176,10 @@ export type ProductActionTypes =
     | DeleteProductFailureAction
     | GetProductByIdRequestAction
     | GetProductByIdSuccessAction
-    | GetProductByIdFailureAction;
+    | GetProductByIdFailureAction
+    | FetchAllProductsRequestAction
+    | FetchAllProductsSuccessAction
+    | FetchAllProductsFailureAction
+    | UpdateProductStatusRequestAction
+    | UpdateProductStatusSuccessAction
+    | UpdateProductStatusFailureAction;
