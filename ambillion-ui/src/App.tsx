@@ -37,7 +37,10 @@ function App() {
                                         element={<ForgotPasswordPage />}
                                     />
 
-                                    <Route path="/not-authorized" element={<NotAuthorized />} />
+                                    <Route
+                                        path={ROUTES.NOT_AUTHORIZES}
+                                        element={<NotAuthorized />}
+                                    />
                                     <Route path="*" element={<NotFound />} />
 
                                     {/* Private routes */}

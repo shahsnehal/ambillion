@@ -36,7 +36,7 @@ export const ROUTES = {
     ADDPRODUCT: '/products/addProduct',
     EDITPRODUCT: '/products/edit/:Id',
     PRODUCTDETAILS: '/products/:productId',
-    NOT_AUTHORIZES: '/not-authorized'
+    NOT_AUTHORIZES: '/unAthorized'
 };
 
 // Recaptcha Configuration
