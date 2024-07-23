@@ -156,9 +156,9 @@ export const ProductStatusChangeActionColumn = (
     name: 'Action',
     cell: (row: Product) => (
         <ProductStatusChangeAction
-            productId={row.productId}
+            productId={row.product_id}
             currentStatus={row.status}
-            onOpenModal={() => onOpenModal(row.productId, row.status)}
+            onOpenModal={() => onOpenModal(row.product_id, row.status)}
         />
     ),
     ignoreRowClick: false,
@@ -174,7 +174,7 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
     onDelete
 }) => {
     const handleView = () => {
-        onView(row.productId);
+        onView(row.product_id);
     };
 
     const handleEdit = () => {
@@ -182,7 +182,7 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
     };
 
     const handleDelete = () => {
-        onDelete({ id: row.productId, productDisplayName: row.productDisplayName });
+        onDelete({ id: row.product_id, productDisplayName: row.product_displayname });
     };
 
     return (
@@ -281,38 +281,38 @@ export const userTableColumns: TableColumn<User>[] = [
 export const productsListTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
-        selector: (row) => row.originHsnCode,
+        selector: (row) => row.origin_hsn_code,
         sortable: true
     },
-    {
-        name: 'Manufacturer Name',
-        selector: (row) => row.manufacturerName,
-        sortable: true
-    },
-    {
-        name: 'Image',
-        selector: (row) => row.uploadImage,
-        cell: (row) => <img src={row.uploadImage} alt={row.productDisplayName} width="50" />,
-        sortable: false
-    },
+    // {
+    //     name: 'Manufacturer Name',
+    //     selector: (row) => row.manufacturerName,
+    //     sortable: true
+    // },
+    // {
+    //     name: 'Image',
+    //     selector: (row) => row.uploadImage,
+    //     cell: (row) => <img src={row.uploadImage} alt={row.product_displayname} width="50" />,
+    //     sortable: false
+    // },
     {
         name: 'Category',
-        selector: (row) => row.productCategory,
+        selector: (row) => row.product_category_id,
         sortable: true
     },
     {
-        name: 'Type',
-        selector: (row) => row.productType,
+        name: 'Feature',
+        selector: (row) => row.product_feature,
         sortable: true
     },
     {
         name: 'Name',
-        selector: (row) => row.productDisplayName,
+        selector: (row) => row.product_displayname,
         sortable: true
     },
     {
         name: 'Description',
-        selector: (row) => row.customerProductDescription,
+        selector: (row) => row.customer_product_description,
         sortable: true
     },
     {
@@ -332,33 +332,33 @@ export const productsListTableColumns: TableColumn<Product>[] = [
 export const productTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
-        selector: (row) => row.originHsnCode,
+        selector: (row) => row.origin_hsn_code,
         sortable: true
     },
-    {
-        name: 'Image',
-        selector: (row) => row.uploadImage,
-        cell: (row) => <img src={row.uploadImage} alt={row.productDisplayName} width="50" />,
-        sortable: false
-    },
+    // {
+    //     name: 'Image',
+    //     selector: (row) => row.uploadImage,
+    //     cell: (row) => <img src={} alt={row.product_displayname} width="50" />,
+    //     sortable: false
+    // },
     {
         name: 'Category',
-        selector: (row) => row.productCategory,
+        selector: (row) => row.product_category_id,
         sortable: true
     },
     {
-        name: 'Type',
-        selector: (row) => row.productType,
+        name: 'Feature',
+        selector: (row) => row.product_feature,
         sortable: true
     },
     {
         name: 'Name',
-        selector: (row) => row.productDisplayName,
+        selector: (row) => row.product_displayname,
         sortable: true
     },
     {
         name: 'Description',
-        selector: (row) => row.customerProductDescription,
+        selector: (row) => row.customer_product_description,
         sortable: true
     },
     {

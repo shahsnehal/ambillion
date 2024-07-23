@@ -12,7 +12,7 @@ import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ROUTES } from 'constants/common';
 import { RootState } from 'config/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProductRequest, fetchProductsRequest } from 'Modules/product-module/action/actions';
+import { deleteProductRequest, getProductsRequest } from 'Modules/product-module/action/actions';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -20,6 +20,7 @@ type SelectableDeleteRowData = {
 };
 
 export const UserProducts = () => {
+    // const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
@@ -33,16 +34,13 @@ export const UserProducts = () => {
     const { products } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
-        const getProducts = () => {
-            setPending(true);
-            dispatch(fetchProductsRequest());
-            setPending(false);
-        };
-        getProducts();
-    }, [dispatch]);
+        setPending(true);
+        dispatch(getProductsRequest());
+        setPending(false);
+    }, []);
 
-    const filteredItems = products.filter((item) =>
-        item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
+    const filteredItems = products?.filter((item) =>
+        item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleAddProduct = () => {

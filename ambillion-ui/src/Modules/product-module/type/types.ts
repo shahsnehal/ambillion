@@ -27,15 +27,19 @@ export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
 export const UPDATE_PRODUCT_STATUS_FAILURE = 'UPDATE_PRODUCT_STATUS_FAILURE';
 
 export type Product = {
-    productId: number;
-    originHsnCode: string;
-    uploadImage: string;
-    productCategory: string;
-    productType: string;
-    productDisplayName: string;
-    customerProductDescription: string;
-    manufacturerName: string;
+    product_id: number;
+    product_category_id: number;
+    product_displayname: string;
+    customer_product_description: string;
+    origin_hsn_code: string;
+    product_feature: string;
+    audit_user_id: number;
+    product_custom_fields: string;
+    audit_timestamp: string;
+    created_date: string;
+    country_id: number;
     status: string;
+    comments: string;
 };
 
 export type ProductFormValues = {
@@ -64,7 +68,7 @@ export type GetProductsRequestAction = {
 
 export type GetProductsSuccessAction = {
     type: typeof GET_PRODUCTS_BY_USER_SUCCESS;
-    payload: Product[];
+    payload: { data: Product[] };
 };
 
 export type GetProductsFailureAction = {
@@ -78,7 +82,7 @@ export type FetchAllProductsRequestAction = {
 
 export type FetchAllProductsSuccessAction = {
     type: typeof FETCH_ALL_PRODUCTS_SUCCESS;
-    payload: Product[];
+    payload: { data: Product[] };
 };
 
 export type FetchAllProductsFailureAction = {

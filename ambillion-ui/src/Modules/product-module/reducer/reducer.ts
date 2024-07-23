@@ -54,11 +54,11 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 ...state,
                 isLoading: false,
                 error: null,
-                products: action.payload
+                products: action.payload.data
             };
 
         case GET_PRODUCTS_BY_USER_SUCCESS:
-            return { ...state, isLoading: false, products: action.payload, error: null };
+            return { ...state, isLoading: false, error: null, products: action.payload.data };
 
         case ADD_PRODUCT_SUCCESS:
             return {
@@ -73,7 +73,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 ...state,
                 isLoading: false,
                 products: state.products.map((product) =>
-                    product.productId === action.payload.productId ? action.payload : product
+                    product.product_id === action.payload.product_id ? action.payload : product
                 ),
                 error: null
             };
@@ -82,7 +82,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
             return {
                 ...state,
                 isLoading: false,
-                products: state.products.filter((product) => product.productId !== action.payload),
+                products: state.products.filter((product) => product.product_id !== action.payload),
                 error: null
             };
 
@@ -95,7 +95,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 isLoading: false,
                 error: null,
                 products: state.products.map((product) =>
-                    product.productId === action.payload.productId
+                    product.product_id === action.payload.productId
                         ? { ...product, status: action.payload.status }
                         : product
                 )

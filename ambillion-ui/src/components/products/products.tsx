@@ -25,18 +25,15 @@ export const Products = () => {
     const { products } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
-        const getProducts = () => {
-            setPending(true);
-            dispatch(fetchProductsRequest());
-            setPending(false);
-        };
-        getProducts();
-    }, [dispatch]);
+        setPending(true);
+        dispatch(fetchProductsRequest());
+        setPending(false);
+    }, []);
 
     const filteredItems = useMemo(
         () =>
             products.filter((item) =>
-                item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
+                item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
             ),
         [filterText, productListData]
     );

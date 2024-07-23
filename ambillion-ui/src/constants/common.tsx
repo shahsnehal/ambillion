@@ -14,7 +14,7 @@ export const apiUrl = {
     //Manufacture-product-Module
     productsByUserID: '/products',
     addProduct: '/products/addProduct',
-    getProductById: '/products/getProductByid',
+    getProductById: '/products',
     updateProduct: '/products/updateProduct',
     deleteProduct: '/products/deleteProduct',
 

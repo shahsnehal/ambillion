@@ -32,7 +32,7 @@ const profileIDStr = localStorage.getItem('profileID');
 const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
 
 const getProducts = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(`apiUrl.getProductById/${profileID}`);
+    return await axiosInstance.get(`${apiUrl.getProductById}/${profileID}`);
 };
 
 function* handleGetProducts() {
@@ -137,6 +137,7 @@ function* handleFetchProducts() {
     try {
         const response: AxiosResponse = yield call(fetchProductsAPI);
         yield put({ type: FETCH_ALL_PRODUCTS_SUCCESS, payload: response.data.data });
+        console.log('data', response.data.data);
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
