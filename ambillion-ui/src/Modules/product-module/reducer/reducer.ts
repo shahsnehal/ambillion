@@ -1,7 +1,7 @@
 import {
-    GET_PRODUCTS_BY_USER_REQUEST,
-    GET_PRODUCTS_BY_USER_SUCCESS,
-    GET_PRODUCTS_BY_USER_FAILURE,
+    GET_PRODUCTSLIST_BY_USER_REQUEST,
+    GET_PRODUCTSLIST_BY_USER_SUCCESS,
+    GET_PRODUCTSLIST_BY_USER_FAILURE,
     ADD_PRODUCT_REQUEST,
     ADD_PRODUCT_SUCCESS,
     ADD_PRODUCT_FAILURE,
@@ -11,9 +11,9 @@ import {
     DELETE_PRODUCT_REQUEST,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_FAILURE,
-    GET_PRODUCT_BY_ID_REQUEST,
-    GET_PRODUCT_BY_ID_SUCCESS,
-    GET_PRODUCT_BY_ID_FAILURE,
+    GET_PRODUCTDETAILS_BY_ID_REQUEST,
+    GET_PRODUCTDETAILS_BY_ID_SUCCESS,
+    GET_PRODUCTDETAILS_BY_ID_FAILURE,
     FETCH_ALL_PRODUCTS_REQUEST,
     FETCH_ALL_PRODUCTS_SUCCESS,
     FETCH_ALL_PRODUCTS_FAILURE,
@@ -40,13 +40,13 @@ const initialState: ProductState = {
 
 export const productReducer = (state = initialState, action: ProductActionTypes): ProductState => {
     switch (action.type) {
-        case GET_PRODUCTS_BY_USER_REQUEST:
+        case GET_PRODUCTSLIST_BY_USER_REQUEST:
         case ADD_PRODUCT_REQUEST:
         case EDIT_PRODUCT_REQUEST:
         case DELETE_PRODUCT_REQUEST:
         case FETCH_ALL_PRODUCTS_REQUEST:
         case UPDATE_PRODUCT_STATUS_REQUEST:
-        case GET_PRODUCT_BY_ID_REQUEST:
+        case GET_PRODUCTDETAILS_BY_ID_REQUEST:
             return { ...state, isLoading: true, error: null };
 
         case FETCH_ALL_PRODUCTS_SUCCESS:
@@ -57,7 +57,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 products: action.payload.data
             };
 
-        case GET_PRODUCTS_BY_USER_SUCCESS:
+        case GET_PRODUCTSLIST_BY_USER_SUCCESS:
             return { ...state, isLoading: false, error: null, products: action.payload.data };
 
         case ADD_PRODUCT_SUCCESS:
@@ -86,7 +86,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 error: null
             };
 
-        case GET_PRODUCT_BY_ID_SUCCESS:
+        case GET_PRODUCTDETAILS_BY_ID_SUCCESS:
             return { ...state, isLoading: false, selectedProduct: action.payload, error: null };
 
         case UPDATE_PRODUCT_STATUS_SUCCESS:
@@ -95,19 +95,23 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 isLoading: false,
                 error: null,
                 products: state.products.map((product) =>
-                    product.product_id === action.payload.productId
-                        ? { ...product, status: action.payload.status }
+                    product.product_id.toString() === action.payload.productId
+                        ? {
+                              ...product,
+                              status: action.payload.status,
+                              comments: action.payload.comments
+                          }
                         : product
                 )
             };
 
-        case GET_PRODUCTS_BY_USER_FAILURE:
+        case GET_PRODUCTSLIST_BY_USER_FAILURE:
         case FETCH_ALL_PRODUCTS_FAILURE:
         case ADD_PRODUCT_FAILURE:
         case EDIT_PRODUCT_FAILURE:
         case DELETE_PRODUCT_FAILURE:
         case UPDATE_PRODUCT_STATUS_FAILURE:
-        case GET_PRODUCT_BY_ID_FAILURE:
+        case GET_PRODUCTDETAILS_BY_ID_FAILURE:
             return { ...state, isLoading: false, error: action.error };
 
         default:

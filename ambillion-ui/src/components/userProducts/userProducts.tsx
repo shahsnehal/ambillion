@@ -20,23 +20,19 @@ type SelectableDeleteRowData = {
 };
 
 export const UserProducts = () => {
-    // const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [pending, setPending] = useState<boolean>(true);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
     });
-    const { products } = useSelector((state: RootState) => state.productModule);
+    const { isLoading, products } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
-        setPending(true);
         dispatch(getProductsRequest());
-        setPending(false);
     }, []);
 
     const filteredItems = products?.filter((item) =>
@@ -65,18 +61,6 @@ export const UserProducts = () => {
         setSelectDeleteProduct({ productid: params.id, productName: params.productDisplayName });
         setShowConfirmationModal(true);
     };
-
-    // Confirm Delete Logic
-    // const handleConfirmDelete = () => {
-    //     if (selectDeleteProduct.productid) {
-    //         const updatedData = productData.filter(
-    //             (item) => item.id !== selectDeleteProduct.productid
-    //         );
-    //         setProductData(updatedData);
-    //         setResetPaginationToggle(!resetPaginationToggle);
-    //         setShowConfirmationModal(false);
-    //     }
-    // };
 
     const handleConfirmDelete = () => {
         if (selectDeleteProduct?.productid) {
@@ -128,7 +112,7 @@ export const UserProducts = () => {
                 data={filteredItems}
                 defaultSortFieldId={'Status'}
                 defaultSortAsc={false}
-                progressPending={pending}
+                progressPending={isLoading}
                 pagination
                 title=" "
                 selectableRows

@@ -80,7 +80,8 @@ type UserStatusChangeActionProps = {
 type ProductStatusChangeActionProps = {
     productId: number;
     currentStatus: string;
-    onOpenModal: (productId: number, status: string) => void;
+    currentComment: string;
+    onOpenModal: (productId: number, status: string, comments: string) => void;
 };
 
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
@@ -117,6 +118,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
 export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps> = ({
     productId,
     currentStatus,
+    currentComment,
     onOpenModal
 }) => {
     return (
@@ -126,7 +128,7 @@ export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps>
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Change Status"
-                onClick={() => onOpenModal(productId, currentStatus)}
+                onClick={() => onOpenModal(productId, currentStatus, currentComment)}
             >
                 <Icon icon="solar:pen-outline" className="fs-5" />
             </button>
@@ -152,14 +154,15 @@ export const UserStatusChangeActionColumn = (
 });
 
 export const ProductStatusChangeActionColumn = (
-    onOpenModal: (productId: number, currentStatus: string) => void
+    onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
 ) => ({
     name: 'Action',
     cell: (row: Product) => (
         <ProductStatusChangeAction
             productId={row.product_id}
             currentStatus={row.status}
-            onOpenModal={() => onOpenModal(row.product_id, row.status)}
+            currentComment={row.comments}
+            onOpenModal={() => onOpenModal(row.product_id.toString(), row.status, row.comments)}
         />
     ),
     ignoreRowClick: false,

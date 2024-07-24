@@ -13,14 +13,11 @@ export const UserList = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [actionType, setActionType] = useState<'APPROVE' | 'REJECT' | null>(null);
-    const [pending, setPending] = useState<boolean>(true);
 
-    const { users } = useSelector((state: RootState) => state.userModule);
+    const { isLoading, users } = useSelector((state: RootState) => state.userModule);
 
     useEffect(() => {
-        setPending(true);
         dispatch(fetchUsersRequest());
-        setPending(false);
     }, []);
 
     const filteredItems = users.filter((user) =>
@@ -80,8 +77,7 @@ export const UserList = () => {
                     UserStatusChangeActionColumn(handleApprove, handleReject)
                 ]}
                 data={filteredItems}
-                progressPending={pending}
-                // progressComponent={<Loader />}
+                progressPending={isLoading}
                 pagination
                 title=" "
                 selectableRows

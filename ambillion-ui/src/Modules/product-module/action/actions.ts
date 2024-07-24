@@ -1,14 +1,14 @@
 import {
-    GET_PRODUCTS_BY_USER_REQUEST,
-    GetProductsRequestAction,
+    GET_PRODUCTSLIST_BY_USER_REQUEST,
+    FetchProductsListByUserRequestAction,
     ADD_PRODUCT_REQUEST,
     AddProductRequestAction,
     EDIT_PRODUCT_REQUEST,
     EditProductRequestAction,
     DELETE_PRODUCT_REQUEST,
     DeleteProductRequestAction,
-    GET_PRODUCT_BY_ID_REQUEST,
-    GetProductByIdRequestAction,
+    GET_PRODUCTDETAILS_BY_ID_REQUEST,
+    FetchProductDetailsByIdRequestAction,
     ProductFormValues,
     FETCH_ALL_PRODUCTS_REQUEST,
     FetchAllProductsRequestAction,
@@ -16,8 +16,8 @@ import {
     UpdateProductStatusRequestAction
 } from '../type/types';
 
-export const getProductsRequest = (): GetProductsRequestAction => ({
-    type: GET_PRODUCTS_BY_USER_REQUEST
+export const getProductsRequest = (): FetchProductsListByUserRequestAction => ({
+    type: GET_PRODUCTSLIST_BY_USER_REQUEST
 });
 
 export const fetchProductsRequest = (): FetchAllProductsRequestAction => ({
@@ -25,11 +25,13 @@ export const fetchProductsRequest = (): FetchAllProductsRequestAction => ({
 });
 
 export const updateProductStatusRequest = (
-    productId: number,
-    status: string
+    productId: string,
+    userId: string,
+    status: string,
+    comments: string
 ): UpdateProductStatusRequestAction => ({
     type: UPDATE_PRODUCT_STATUS_REQUEST,
-    payload: { productId, status }
+    payload: { productId, userId, comments, status }
 });
 
 export const addProductRequest = (
@@ -53,7 +55,7 @@ export const deleteProductRequest = (productId: number): DeleteProductRequestAct
     payload: productId
 });
 
-export const getProductByIdRequest = (productId: number): GetProductByIdRequestAction => ({
-    type: GET_PRODUCT_BY_ID_REQUEST,
+export const getProductByIdRequest = (productId: number): FetchProductDetailsByIdRequestAction => ({
+    type: GET_PRODUCTDETAILS_BY_ID_REQUEST,
     payload: productId
 });

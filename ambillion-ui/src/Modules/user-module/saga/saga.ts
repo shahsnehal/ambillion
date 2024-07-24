@@ -12,13 +12,14 @@ import {
 } from '../type/types';
 import { apiUrl } from 'constants/common';
 
-const fetchUsersAPI = async (): Promise<AxiosResponse> => {
+//Fetch UsersList API
+const fetchUsers = async (): Promise<AxiosResponse> => {
     return await axiosInstance.get(apiUrl.getUserList);
 };
 
 function* handleFetchUsers() {
     try {
-        const response: AxiosResponse = yield call(fetchUsersAPI);
+        const response: AxiosResponse = yield call(fetchUsers);
         yield put({ type: FETCH_USERS_SUCCESS, payload: response.data.data });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
@@ -29,7 +30,8 @@ function* handleFetchUsers() {
     }
 }
 
-const updateUserStatusAPI = async (
+//Update User Status API
+const updateUserStatus = async (
     userId: number,
     status: string,
     profileID: number
@@ -45,7 +47,7 @@ function* handleUpdateUserStatus(action: UpdateUserStatusRequestAction) {
     const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
     try {
         const { userId, status } = action.payload;
-        yield call(updateUserStatusAPI, userId, status, profileID);
+        yield call(updateUserStatus, userId, status, profileID);
         yield put({ type: UPDATE_USER_STATUS_SUCCESS, payload: { userId, status } });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';

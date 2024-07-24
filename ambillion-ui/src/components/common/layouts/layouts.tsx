@@ -43,18 +43,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 />
                                 <span className="hide-menu">HOME</span>
                             </li>
-                            {/* <li className="sidebar-item">
-                                <a
-                                    className="sidebar-link custom-sidebar-link"
-                                    id="get-url"
-                                    onClick={() => {
-                                        navigate(ROUTES.DASHBOARD);
-                                    }}
-                                >
-                                    <Icon icon="solar:screencast-2-linear" className="aside-icon" />
-                                    <span className="hide-menu">DASHBOARD</span>
-                                </a>
-                            </li> */}
+
                             {userRole === userRoles.ADMIN && (
                                 <li className="sidebar-item custom-sidebar-link">
                                     <a
@@ -75,10 +64,10 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                             {userRole === userRoles.MANUFACTURER && (
                                 <li className="sidebar-item custom-sidebar-link">
                                     <a
-                                        className={`sidebar-link ${isActive(ROUTES.PRODUCTSBYUSERID) ? 'active' : ''}`}
+                                        className={`sidebar-link ${isActive(ROUTES.PRODUCTSLIST) ? 'active' : ''}`}
                                         id="get-url"
                                         onClick={() => {
-                                            navigate(ROUTES.PRODUCTSBYUSERID);
+                                            navigate(ROUTES.PRODUCTSLIST);
                                         }}
                                     >
                                         <Icon icon="gridicons:product" className="aside-icon" />

@@ -46,14 +46,13 @@ function* handleSignin(action: {
         const response: AxiosResponse = yield call(signin, action.payload);
         const responseData = response.data.data;
         const { userprofile_id: userProfileID, role_name: userRole } = responseData.user;
-        const { access, refresh } = responseData.tokens;
+        const { access } = responseData.tokens;
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
         //optimized
         localStorage.setItem('profileID', userProfileID);
         localStorage.setItem('role', userRole);
         localStorage.setItem('accessToken', access.token);
-        localStorage.setItem('refreshToken', refresh.token);
 
         //optimized
         const redirectPath = roleRedirects[userRole];

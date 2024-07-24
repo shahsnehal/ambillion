@@ -2,9 +2,9 @@ export const FETCH_ALL_PRODUCTS_REQUEST = 'FETCH_PRODUCTS_REQUEST';
 export const FETCH_ALL_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
 export const FETCH_ALL_PRODUCTS_FAILURE = 'FETCH_PRODUCTS_FAILURE';
 
-export const GET_PRODUCTS_BY_USER_REQUEST = 'GET_PRODUCTS_REQUEST';
-export const GET_PRODUCTS_BY_USER_SUCCESS = 'GET_PRODUCTS_SUCCESS';
-export const GET_PRODUCTS_BY_USER_FAILURE = 'GET_PRODUCTS_FAILURE';
+export const GET_PRODUCTSLIST_BY_USER_REQUEST = 'GET_PRODUCTS_REQUEST';
+export const GET_PRODUCTSLIST_BY_USER_SUCCESS = 'GET_PRODUCTS_SUCCESS';
+export const GET_PRODUCTSLIST_BY_USER_FAILURE = 'GET_PRODUCTS_FAILURE';
 
 export const ADD_PRODUCT_REQUEST = 'ADD_PRODUCT_REQUEST';
 export const ADD_PRODUCT_SUCCESS = 'ADD_PRODUCT_SUCCESS';
@@ -18,9 +18,9 @@ export const DELETE_PRODUCT_REQUEST = 'DELETE_PRODUCT_REQUEST';
 export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS';
 export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE';
 
-export const GET_PRODUCT_BY_ID_REQUEST = 'GET_PRODUCT_BY_ID_REQUEST';
-export const GET_PRODUCT_BY_ID_SUCCESS = 'GET_PRODUCT_BY_ID_SUCCESS';
-export const GET_PRODUCT_BY_ID_FAILURE = 'GET_PRODUCT_BY_ID_FAILURE';
+export const GET_PRODUCTDETAILS_BY_ID_REQUEST = 'GET_PRODUCT_BY_ID_REQUEST';
+export const GET_PRODUCTDETAILS_BY_ID_SUCCESS = 'GET_PRODUCT_BY_ID_SUCCESS';
+export const GET_PRODUCTDETAILS_BY_ID_FAILURE = 'GET_PRODUCT_BY_ID_FAILURE';
 
 export const UPDATE_PRODUCT_STATUS_REQUEST = 'UPDATE_PRODUCT_STATUS_REQUEST';
 export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
@@ -65,17 +65,17 @@ export type ProductFormValues = {
     [key: string]: unknown;
 };
 
-export type GetProductsRequestAction = {
-    type: typeof GET_PRODUCTS_BY_USER_REQUEST;
+export type FetchProductsListByUserRequestAction = {
+    type: typeof GET_PRODUCTSLIST_BY_USER_REQUEST;
 };
 
-export type GetProductsSuccessAction = {
-    type: typeof GET_PRODUCTS_BY_USER_SUCCESS;
+export type FetchProductsListByUserSuccessAction = {
+    type: typeof GET_PRODUCTSLIST_BY_USER_SUCCESS;
     payload: { data: Product[] };
 };
 
-export type GetProductsFailureAction = {
-    type: typeof GET_PRODUCTS_BY_USER_FAILURE;
+export type FetchProductsListByUserFailureAction = {
+    type: typeof GET_PRODUCTSLIST_BY_USER_FAILURE;
     error: string;
 };
 
@@ -95,12 +95,12 @@ export type FetchAllProductsFailureAction = {
 
 export type UpdateProductStatusRequestAction = {
     type: typeof UPDATE_PRODUCT_STATUS_REQUEST;
-    payload: { productId: number; status: string };
+    payload: { productId: string; userId: string; comments: string; status: string };
 };
 
 export type UpdateProductStatusSuccessAction = {
     type: typeof UPDATE_PRODUCT_STATUS_SUCCESS;
-    payload: { productId: number; status: string };
+    payload: { productId: string; userId: string; comments: string; status: string };
 };
 
 export type UpdateProductStatusFailureAction = {
@@ -153,25 +153,31 @@ export type DeleteProductFailureAction = {
     error: string;
 };
 
-export type GetProductByIdRequestAction = {
-    type: typeof GET_PRODUCT_BY_ID_REQUEST;
+export type FetchProductDetailsByIdRequestAction = {
+    type: typeof GET_PRODUCTDETAILS_BY_ID_REQUEST;
     payload: number;
 };
 
-export type GetProductByIdSuccessAction = {
-    type: typeof GET_PRODUCT_BY_ID_SUCCESS;
+export type FetchProductDetailsByIdSuccessAction = {
+    type: typeof GET_PRODUCTDETAILS_BY_ID_SUCCESS;
     payload: Product;
 };
 
-export type GetProductByIdFailureAction = {
-    type: typeof GET_PRODUCT_BY_ID_FAILURE;
+export type FetchProductDetailsByIdFailureAction = {
+    type: typeof GET_PRODUCTDETAILS_BY_ID_FAILURE;
     error: string;
 };
 
 export type ProductActionTypes =
-    | GetProductsRequestAction
-    | GetProductsSuccessAction
-    | GetProductsFailureAction
+    | FetchProductsListByUserRequestAction
+    | FetchProductsListByUserSuccessAction
+    | FetchProductsListByUserFailureAction
+    | FetchAllProductsRequestAction
+    | FetchAllProductsSuccessAction
+    | FetchAllProductsFailureAction
+    | UpdateProductStatusRequestAction
+    | UpdateProductStatusSuccessAction
+    | UpdateProductStatusFailureAction
     | AddProductRequestAction
     | AddProductSuccessAction
     | AddProductFailureAction
@@ -181,12 +187,6 @@ export type ProductActionTypes =
     | DeleteProductRequestAction
     | DeleteProductSuccessAction
     | DeleteProductFailureAction
-    | GetProductByIdRequestAction
-    | GetProductByIdSuccessAction
-    | GetProductByIdFailureAction
-    | FetchAllProductsRequestAction
-    | FetchAllProductsSuccessAction
-    | FetchAllProductsFailureAction
-    | UpdateProductStatusRequestAction
-    | UpdateProductStatusSuccessAction
-    | UpdateProductStatusFailureAction;
+    | FetchProductDetailsByIdRequestAction
+    | FetchProductDetailsByIdSuccessAction
+    | FetchProductDetailsByIdFailureAction;
