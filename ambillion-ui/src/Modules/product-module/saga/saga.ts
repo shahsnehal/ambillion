@@ -148,12 +148,16 @@ function* handleFetchProducts() {
 // Update product status API
 const updateProductStatusAPI = async (
     productId: number,
+    userId: number,
     status: string,
+    comments: string,
     profileID: number
 ): Promise<AxiosResponse> => {
     return await axiosInstance.patch(`${apiUrl.updateProductStatus}/${profileID}`, {
         productId,
-        status
+        status,
+        userId,
+        comments
     });
 };
 
@@ -162,8 +166,11 @@ function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
     const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
     try {
         const { productId, status } = action.payload;
-        yield call(updateProductStatusAPI, productId, status, profileID);
-        yield put({ type: UPDATE_PRODUCT_STATUS_SUCCESS, payload: { productId, status } });
+        yield call(updateProductStatusAPI, productId, status, userId, comments, profileID);
+        yield put({
+            type: UPDATE_PRODUCT_STATUS_SUCCESS,
+            payload: { productId, status, userId, comments }
+        });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {

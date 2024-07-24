@@ -26,10 +26,12 @@ export const fetchProductsRequest = (): FetchAllProductsRequestAction => ({
 
 export const updateProductStatusRequest = (
     productId: number,
-    status: string
+    userId: number,
+    status: string,
+    comments: string
 ): UpdateProductStatusRequestAction => ({
     type: UPDATE_PRODUCT_STATUS_REQUEST,
-    payload: { productId, status }
+    payload: { productId, userId, status, comments }
 });
 
 export const addProductRequest = (

@@ -72,8 +72,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     </a>
                                 </li>
                             )}
-                            {(userRole === userRoles.MANUFACTURER ||
-                                userRole === userRoles.ADMIN) && (
+                            {userRole === userRoles.MANUFACTURER && (
                                 <li className="sidebar-item custom-sidebar-link">
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.PRODUCTSBYUSERID) ? 'active' : ''}`}

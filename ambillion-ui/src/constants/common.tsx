@@ -15,7 +15,7 @@ export const apiUrl = {
     productsByUserID: '/products',
     addProduct: '/products/addProduct',
     getProductById: '/products',
-    updateProduct: '/products/updateProduct',
+    updateProduct: '/products',
     deleteProduct: '/products/deleteProduct',
 
     //Officer-Module
@@ -33,6 +33,7 @@ export const ROUTES = {
     USERSLIST: '/users',
     PRODUCTS: '/products',
     PRODUCTSBYUSERID: '/productsList',
+    UPDATEPRODUCT: '/products',
     ADDPRODUCT: '/products/addProduct',
     EDITPRODUCT: '/products/edit/:Id',
     PRODUCTDETAILS: '/products/:productId',
