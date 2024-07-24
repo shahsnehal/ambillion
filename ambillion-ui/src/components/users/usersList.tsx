@@ -18,7 +18,6 @@ export const UserList = () => {
     const { users } = useSelector((state: RootState) => state.userModule);
 
     useEffect(() => {
-        //optimized
         setPending(true);
         dispatch(fetchUsersRequest());
         setPending(false);

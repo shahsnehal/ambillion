@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { User } from 'Modules/user-module/type/types';
 import { Product } from 'Modules/product-module/type/types';
 import { userStatus, productStatus } from 'constants/common';
+import productImage from 'assets/images/product.jpg';
 
 export const customStyles = {
     rows: {
@@ -278,7 +279,7 @@ export const userTableColumns: TableColumn<User>[] = [
 ];
 
 //ProductListTableColumn For Officer
-export const productsListTableColumns: TableColumn<Product>[] = [
+export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
         selector: (row) => row.origin_hsn_code,
@@ -289,12 +290,12 @@ export const productsListTableColumns: TableColumn<Product>[] = [
     //     selector: (row) => row.manufacturerName,
     //     sortable: true
     // },
-    // {
-    //     name: 'Image',
-    //     selector: (row) => row.uploadImage,
-    //     cell: (row) => <img src={row.uploadImage} alt={row.product_displayname} width="50" />,
-    //     sortable: false
-    // },
+    {
+        name: 'Image',
+        // selector: (row) => row.product_custom_fields,
+        cell: (row) => <img src={productImage} alt={row.product_displayname} width="50" />,
+        sortable: false
+    },
     {
         name: 'Category',
         selector: (row) => row.product_category_id,
@@ -329,18 +330,18 @@ export const productsListTableColumns: TableColumn<Product>[] = [
 ];
 
 //ProductsTableColumn For Manufacturer
-export const productTableColumns: TableColumn<Product>[] = [
+export const productsListTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
         selector: (row) => row.origin_hsn_code,
         sortable: true
     },
-    // {
-    //     name: 'Image',
-    //     selector: (row) => row.uploadImage,
-    //     cell: (row) => <img src={} alt={row.product_displayname} width="50" />,
-    //     sortable: false
-    // },
+    {
+        name: 'Image',
+        // selector: (row) => row.product_custom_fields,
+        cell: (row) => <img src={productImage} alt={row.product_displayname} width="50" />,
+        sortable: false
+    },
     {
         name: 'Category',
         selector: (row) => row.product_category_id,

@@ -76,18 +76,18 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 userRole === userRoles.ADMIN) && (
                                 <li className="sidebar-item custom-sidebar-link">
                                     <a
-                                        className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
+                                        className={`sidebar-link ${isActive(ROUTES.PRODUCTSBYUSERID) ? 'active' : ''}`}
                                         id="get-url"
                                         onClick={() => {
-                                            navigate(ROUTES.PRODUCTS);
+                                            navigate(ROUTES.PRODUCTSBYUSERID);
                                         }}
                                     >
                                         <Icon icon="gridicons:product" className="aside-icon" />
-                                        <span className="hide-menu">PRODUCTS</span>
+                                        <span className="hide-menu">PRODUCTSLIST</span>
                                     </a>
                                 </li>
                             )}
-                            {userRole === userRoles.OFFICER && (
+                            {(userRole === userRoles.OFFICER || userRole === userRoles.ADMIN) && (
                                 <li className="sidebar-item custom-sidebar-link">
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
@@ -97,7 +97,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                         }}
                                     >
                                         <Icon icon="gridicons:product" className="aside-icon" />
-                                        <span className="hide-menu">PRODUCTSLIST</span>
+                                        <span className="hide-menu">PRODUCTS</span>
                                     </a>
                                 </li>
                             )}

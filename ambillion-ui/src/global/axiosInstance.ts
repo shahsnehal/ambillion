@@ -40,10 +40,8 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async (error) => {
-        const data = error && error.response ? error.response.data : null;
-        console.log(data, error);
+        const data = error ?? error.response ? error.response.data : null;
         if (error.code && !data) {
-            console.log(error);
             // toast.error(generic.status[error.code]);
             return Promise.reject(data);
         } else if (data && data.message) {

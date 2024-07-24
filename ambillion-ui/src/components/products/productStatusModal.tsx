@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { productStatus } from 'constants/common';
 
 type ProductStatusModalProps = {
     isOpen: boolean;
@@ -7,6 +8,8 @@ type ProductStatusModalProps = {
     currentStatus: string;
     onConfirm: (productId: number, newStatus: string, comments: string) => void;
 };
+
+type ProductStatusKeys = keyof typeof productStatus;
 
 export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     isOpen,
@@ -54,11 +57,14 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                     value={newStatus}
                                     onChange={(e) => setNewStatus(e.target.value)}
                                 >
-                                    <option value="APPROVED">Approved</option>
-                                    <option value="REJECTED">Rejected</option>
-                                    <option value="PENDING">Pending</option>
-                                    <option value="INREVIEW">In Review</option>
-                                    <option value="ONHOLD">On Hold</option>
+                                    {Object.keys(productStatus).map((status) => (
+                                        <option
+                                            key={status}
+                                            value={productStatus[status as ProductStatusKeys]}
+                                        >
+                                            {status.charAt(0) + status.slice(1).toLowerCase()}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="mb-3">

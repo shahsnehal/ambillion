@@ -33,10 +33,13 @@ export type Product = {
     customer_product_description: string;
     origin_hsn_code: string;
     product_feature: string;
-    audit_user_id: number;
     product_custom_fields: string;
+    audit_user_id: number;
     audit_timestamp: string;
     created_date: string;
+    created_by: number;
+    created_by_name: string;
+    inactive_date: string | null;
     country_id: number;
     status: string;
     comments: string;

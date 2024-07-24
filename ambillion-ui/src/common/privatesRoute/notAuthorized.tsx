@@ -1,9 +1,26 @@
 import React from 'react';
-import { ROUTES } from 'constants/common';
+import { ROUTES, userRoles } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
 
 export const NotAuthorized: React.FC = () => {
     const navigate = useNavigate();
+    const userRole = localStorage.getItem('role');
+
+    const handleNavigation = () => {
+        switch (userRole) {
+            case userRoles.ADMIN:
+                navigate(ROUTES.USERSLIST);
+                break;
+            case userRoles.MANUFACTURER:
+                navigate(ROUTES.PRODUCTSBYUSERID);
+                break;
+            case userRoles.OFFICER:
+                navigate(ROUTES.PRODUCTS);
+                break;
+            default:
+                navigate(ROUTES.LOGIN);
+        }
+    };
 
     return (
         <div id="main-wrapper">
@@ -19,9 +36,7 @@ export const NotAuthorized: React.FC = () => {
                                     className="sidebar-link btn btn-primary"
                                     id="get-url"
                                     role="button"
-                                    onClick={() => {
-                                        navigate(ROUTES.PRODUCTS);
-                                    }}
+                                    onClick={handleNavigation}
                                 >
                                     Go to Home
                                 </a>

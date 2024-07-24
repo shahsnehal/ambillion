@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import {
     customStyles,
-    productTableColumns,
+    productsListTableColumns,
     productViewEditDeleteActionColumn
 } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
@@ -32,6 +32,8 @@ export const UserProducts = () => {
         productName: ''
     });
     const { products } = useSelector((state: RootState) => state.productModule);
+    // const userIDStr = localStorage.getItem('profileID');
+    // const userID = userIDStr ? parseInt(userIDStr, 10) : 0;
 
     useEffect(() => {
         setPending(true);
@@ -122,7 +124,7 @@ export const UserProducts = () => {
         <>
             <DataTable
                 columns={[
-                    ...productTableColumns,
+                    ...productsListTableColumns,
                     productViewEditDeleteActionColumn(handleView, handleEdit, handleDelete)
                 ]}
                 data={filteredItems}

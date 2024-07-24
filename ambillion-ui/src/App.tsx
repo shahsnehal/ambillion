@@ -116,7 +116,9 @@ function App() {
 
                                     <Route
                                         element={
-                                            <ProtectedRoute allowedRoles={[userRoles.OFFICER]} />
+                                            <ProtectedRoute
+                                                allowedRoles={[userRoles.OFFICER, userRoles.ADMIN]}
+                                            />
                                         }
                                     >
                                         <Route

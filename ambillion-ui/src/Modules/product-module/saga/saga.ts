@@ -28,16 +28,15 @@ import { apiUrl, ROUTES } from 'constants/common';
 import axiosInstance from 'global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
-const profileIDStr = localStorage.getItem('profileID');
-const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
-
-const getProducts = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(`${apiUrl.getProductById}/${profileID}`);
+const getProducts = async (userID: number): Promise<AxiosResponse> => {
+    return await axiosInstance.get(`${apiUrl.getProductById}/${userID}`);
 };
 
 function* handleGetProducts() {
     try {
-        const response: AxiosResponse = yield call(getProducts);
+        const userIDStr = localStorage.getItem('profileID');
+        const userID = userIDStr ? parseInt(userIDStr, 10) : 0;
+        const response: AxiosResponse = yield call(getProducts, userID);
         yield put({ type: GET_PRODUCTS_BY_USER_SUCCESS, payload: response.data });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
@@ -136,8 +135,7 @@ const fetchProductsAPI = async (): Promise<AxiosResponse> => {
 function* handleFetchProducts() {
     try {
         const response: AxiosResponse = yield call(fetchProductsAPI);
-        yield put({ type: FETCH_ALL_PRODUCTS_SUCCESS, payload: response.data.data });
-        console.log('data', response.data.data);
+        yield put({ type: FETCH_ALL_PRODUCTS_SUCCESS, payload: { data: response.data.data } });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {

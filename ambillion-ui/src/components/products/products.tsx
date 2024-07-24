@@ -3,20 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import { TableFilter } from 'components/common/table/tableFilter';
 import { ProductStatusModal } from './productStatusModal';
-import { dummyProductsListTableData } from 'utils/table/data';
 import {
     customStyles,
-    productsListTableColumns,
+    productsTableColumns,
     ProductStatusChangeActionColumn
 } from 'utils/table/columns';
 import { RootState } from 'config/store';
 import { fetchProductsRequest } from 'Modules/officer-module/action/actions';
+import { updateProductStatusRequest } from 'Modules/product-module/action/actions';
 
 export const Products = () => {
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [productListData, setProductListData] = useState(dummyProductsListTableData);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
     const [currentStatus, setCurrentStatus] = useState<string>('');
@@ -35,7 +34,7 @@ export const Products = () => {
             products.filter((item) =>
                 item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
             ),
-        [filterText, productListData]
+        [filterText, products]
     );
 
     const handleOpenModal = (productId: number, status: string) => {
@@ -50,14 +49,10 @@ export const Products = () => {
         setCurrentStatus('');
     };
 
-    const handleConfirmStatusChange = (productId: number, newStatus: string, comments: string) => {
-        setProductListData((prevData) =>
-            prevData.map((product) =>
-                product.productId === productId
-                    ? { ...product, status: newStatus, comments }
-                    : product
-            )
-        );
+    const handleConfirmStatusChange = (productId: number, newStatus: string) => {
+        if (productId !== null) {
+            dispatch(updateProductStatusRequest(productId, newStatus));
+        }
         handleCloseModal();
     };
 
@@ -87,7 +82,7 @@ export const Products = () => {
         <>
             <DataTable
                 columns={[
-                    ...productsListTableColumns,
+                    ...productsTableColumns,
                     ProductStatusChangeActionColumn(handleOpenModal)
                 ]}
                 data={filteredItems}
