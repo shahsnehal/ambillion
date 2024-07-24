@@ -4,21 +4,35 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { SignupData } from 'Modules/auth-module/type/types';
+import { signupRequest } from 'Modules/auth-module/action/actions';
+import { RootState } from 'config/store';
+import { Icon } from '@iconify/react';
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const SITE_KEY = googleRecaptchaConfig.captchaSiteKey ?? '';
 
 export const Registration = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [isRecaptchaValid, setIsRecaptchaValid] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const isLoading = useSelector((state: RootState) => state.authModule.isLoading);
+
+    const toggleShowPassword = () => setShowPassword(!showPassword);
+    const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().required('FirstName is required'),
         lastName: Yup.string().required('LastName is required'),
         companyName: Yup.string(),
-        mobileNumber: Yup.string().required('Mobile Number is required'),
-        emailAddress: Yup.string()
+        mobileNumber: Yup.string()
+            .required('Mobile Number is required')
+            .matches(/^\d{10}$/, 'Mobile Number must be exactly 10 digits'),
+        email: Yup.string()
             .email('Please enter a valid Email Address')
             .required('Email Address is required'),
         password: Yup.string()
@@ -40,12 +54,19 @@ export const Registration = () => {
         }
     };
 
-    const handleSubmit = (
-        values: Yup.InferType<typeof RegisterSchemas>,
-        { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-    ) => {
-        setSubmitting(false);
-        navigate(ROUTES.LOGIN);
+    const handleSubmit = async (values: SignupData) => {
+        const { firstName, lastName, companyName, mobileNumber, email, password } = values;
+        dispatch(
+            signupRequest({
+                firstName,
+                lastName,
+                companyName,
+                mobileNumber,
+                email,
+                password,
+                navigate
+            })
+        );
     };
 
     return (
@@ -72,7 +93,7 @@ export const Registration = () => {
                                             lastName: '',
                                             companyName: '',
                                             mobileNumber: '',
-                                            emailAddress: '',
+                                            email: '',
                                             password: '',
                                             confirmPassword: ''
                                         }}
@@ -197,18 +218,18 @@ export const Registration = () => {
                                                         </label>
                                                         <Field
                                                             type="text"
-                                                            name="emailAddress"
+                                                            name="email"
                                                             className={`form-control ${
-                                                                props.touched.emailAddress &&
-                                                                props.errors.emailAddress
+                                                                props.touched.email &&
+                                                                props.errors.email
                                                                     ? 'is-invalid'
                                                                     : ''
                                                             }`}
-                                                            id="emailAddress"
+                                                            id="email"
                                                         />
                                                         <ErrorMessage
                                                             component="div"
-                                                            name="emailAddress"
+                                                            name="email"
                                                             className="invalid-feedback"
                                                         />
                                                     </div>
@@ -220,22 +241,42 @@ export const Registration = () => {
                                                             Password{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
-                                                        <Field
-                                                            type="password"
-                                                            name="password"
-                                                            className={`form-control ${
-                                                                props.touched.password &&
-                                                                props.errors.password
-                                                                    ? 'is-invalid'
-                                                                    : ''
-                                                            }`}
-                                                            id="password"
-                                                        />
-                                                        <ErrorMessage
-                                                            component="div"
-                                                            name="password"
-                                                            className="invalid-feedback"
-                                                        />
+                                                        <div className="input-group">
+                                                            <Field
+                                                                type={
+                                                                    showPassword
+                                                                        ? 'text'
+                                                                        : 'password'
+                                                                }
+                                                                name="password"
+                                                                className={`form-control ${props.touched.password && props.errors.password ? 'is-invalid' : ''}`}
+                                                                id="password"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                className="input-group-text cursor-pointer"
+                                                                onClick={toggleShowPassword}
+                                                                aria-label={
+                                                                    showPassword
+                                                                        ? 'Hide password'
+                                                                        : 'Show password'
+                                                                }
+                                                            >
+                                                                <Icon
+                                                                    icon={
+                                                                        showPassword
+                                                                            ? 'solar:eye-outline'
+                                                                            : 'solar:eye-closed-outline'
+                                                                    }
+                                                                    className="fs-5"
+                                                                />
+                                                            </button>
+                                                            <ErrorMessage
+                                                                component="div"
+                                                                name="password"
+                                                                className="invalid-feedback"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="mb-3 col-md-12 col-lg-12 col-xxl-12 row">
@@ -247,22 +288,42 @@ export const Registration = () => {
                                                             Confirm Password{' '}
                                                             <span className="text-danger"> *</span>
                                                         </label>
-                                                        <Field
-                                                            type="password"
-                                                            name="confirmPassword"
-                                                            className={`form-control ${
-                                                                props.touched.confirmPassword &&
-                                                                props.errors.confirmPassword
-                                                                    ? 'is-invalid'
-                                                                    : ''
-                                                            }`}
-                                                            id="confirmPassword"
-                                                        />
-                                                        <ErrorMessage
-                                                            component="div"
-                                                            name="confirmPassword"
-                                                            className="invalid-feedback"
-                                                        />
+                                                        <div className="input-group">
+                                                            <Field
+                                                                type={
+                                                                    showConfirmPassword
+                                                                        ? 'text'
+                                                                        : 'password'
+                                                                }
+                                                                name="confirmPassword"
+                                                                className={`form-control ${props.touched.confirmPassword && props.errors.confirmPassword ? 'is-invalid' : ''}`}
+                                                                id="confirmPassword"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                className="input-group-text cursor-pointer"
+                                                                onClick={toggleShowConfirmPassword}
+                                                                aria-label={
+                                                                    showConfirmPassword
+                                                                        ? 'Hide confirm password'
+                                                                        : 'Show confirm password'
+                                                                }
+                                                            >
+                                                                <Icon
+                                                                    icon={
+                                                                        showConfirmPassword
+                                                                            ? 'solar:eye-outline'
+                                                                            : 'solar:eye-closed-outline'
+                                                                    }
+                                                                    className="fs-5"
+                                                                />
+                                                            </button>
+                                                            <ErrorMessage
+                                                                component="div"
+                                                                name="confirmPassword"
+                                                                className="invalid-feedback"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="mb-3 row col-sm-12 col-md-12 col-lg-6 col-xxl-3">
@@ -283,13 +344,11 @@ export const Registration = () => {
                                                         disabled={
                                                             !props.isValid ||
                                                             !props.dirty ||
-                                                            props.isSubmitting ||
+                                                            isLoading ||
                                                             !isRecaptchaValid
                                                         }
                                                     >
-                                                        {props.isSubmitting
-                                                            ? 'Submitting...'
-                                                            : 'Sign Up'}
+                                                        {isLoading ? 'Submitting...' : 'Sign Up'}
                                                     </button>
                                                 </div>
                                                 <div className="d-flex  align-items-center">

@@ -1,5 +1,9 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
+import { User } from 'Modules/user-module/type/types';
+import { Product } from 'Modules/product-module/type/types';
+import { userStatus, productStatus } from 'constants/common';
+import productImage from 'assets/images/product.jpg';
 
 export const customStyles = {
     rows: {
@@ -23,35 +27,34 @@ export const customStyles = {
     }
 };
 
-type DataRow = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    companyName: string;
-    mobileNumber: string;
-    emailAddress: string;
-    isVerified: boolean;
+const getUserStatusClass = (status: string): string => {
+    switch (status) {
+        case userStatus.ACCEPTED:
+            return 'bg-success-subtle text-success';
+        case userStatus.REJECTED:
+            return 'bg-danger-subtle text-danger';
+        case userStatus.PENDING:
+            return 'bg-info-subtle text-info';
+        default:
+            return '';
+    }
 };
 
-export type ProductDataRow = {
-    id: number;
-    uploadImage: string;
-    productCategory: string;
-    productType: string;
-    productDisplayName: string;
-    customerProductDescription: string;
-    brandName: string;
-    exWorkPrice: string;
-    byColor: string;
-    bySize: string;
-    originHsnCode: string;
-    unitMeasure: string;
-    weight: string;
-    dimensions: string;
-    byGender: string;
-    material: string;
-    productFeatures: string;
-    isActive: boolean;
+const getProductStatusClass = (status: string): string => {
+    switch (status) {
+        case productStatus.APPROVED:
+            return 'bg-success-subtle text-success';
+        case productStatus.REJECTED:
+            return 'bg-danger-subtle text-danger';
+        case productStatus.PENDING:
+            return 'bg-info-subtle text-info';
+        case productStatus.INREVIEW:
+            return 'bg-warning-subtle text-warning';
+        case productStatus.ONHOLD:
+            return 'bg-secondary-subtle text-secondary';
+        default:
+            return '';
+    }
 };
 
 type DeleteActionParams = {
@@ -59,36 +62,155 @@ type DeleteActionParams = {
     productDisplayName: string;
 };
 
-type ProductEditDeleteActionProps = {
-    row: ProductDataRow;
-    onEdit: (row: ProductDataRow) => void;
+type ProductViewEditDeleteActionProps = {
+    row: Product;
+    onView: (id: number) => void;
+    onEdit: (row: Product) => void;
     onDelete: (params: DeleteActionParams) => void;
 };
 
+//UserStatusChangeTypes
+type UserStatusChangeActionProps = {
+    status: string;
+    onApprove: () => void;
+    onReject: () => void;
+};
+
+//ProductStatusChangeTypes
+type ProductStatusChangeActionProps = {
+    productId: number;
+    currentStatus: string;
+    onOpenModal: (productId: number, status: string) => void;
+};
+
+export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
+    status,
+    onApprove,
+    onReject
+}) => {
+    return (
+        <div className="d-flex gap-2">
+            <button
+                className="btn btn-success rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Approve"
+                onClick={onApprove}
+                disabled={status === 'ACCEPTED'}
+            >
+                <Icon icon="solar:check-circle-outline" className="fs-5" />
+            </button>
+            <button
+                className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Reject"
+                onClick={onReject}
+                disabled={status === 'REJECTED'}
+            >
+                <Icon icon="solar:close-circle-outline" className="fs-5" />
+            </button>
+        </div>
+    );
+};
+
+export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps> = ({
+    productId,
+    currentStatus,
+    onOpenModal
+}) => {
+    return (
+        <div className="d-flex gap-2">
+            <button
+                className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Change Status"
+                onClick={() => onOpenModal(productId, currentStatus)}
+            >
+                <Icon icon="solar:pen-outline" className="fs-5" />
+            </button>
+        </div>
+    );
+};
+
+export const UserStatusChangeActionColumn = (
+    onApprove: (userId: number) => void,
+    onReject: (userId: number) => void
+) => ({
+    name: 'Actions',
+    cell: (row: User) => (
+        <UserStatusChangeAction
+            status={row.status}
+            onApprove={() => onApprove(row.userprofile_id)}
+            onReject={() => onReject(row.userprofile_id)}
+        />
+    ),
+    ignoreRowClick: false,
+    allowOverflow: true,
+    button: true
+});
+
+export const ProductStatusChangeActionColumn = (
+    onOpenModal: (productId: number, currentStatus: string) => void
+) => ({
+    name: 'Action',
+    cell: (row: Product) => (
+        <ProductStatusChangeAction
+            productId={row.product_id}
+            currentStatus={row.status}
+            onOpenModal={() => onOpenModal(row.product_id, row.status)}
+        />
+    ),
+    ignoreRowClick: false,
+    allowOverflow: true,
+    button: true
+});
+
 // ProductEditDeleteAction component renders edit and delete actions for a table row.
-export const ProductEditDeleteAction: React.FC<ProductEditDeleteActionProps> = ({
+export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionProps> = ({
     row,
+    onView,
     onEdit,
     onDelete
 }) => {
-    const handleDelete = () => {
-        onDelete({ id: row.id, productDisplayName: row.productDisplayName });
+    const handleView = () => {
+        onView(row.product_id);
     };
 
     const handleEdit = () => {
         onEdit(row);
     };
 
+    const handleDelete = () => {
+        onDelete({ id: row.product_id, productDisplayName: row.product_displayname });
+    };
+
     return (
         <div className="d-flex gap-2">
             <button
                 className="btn btn-muted rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="View"
+                onClick={handleView}
+            >
+                <Icon icon="solar:eye-outline" className="fs-5" />
+            </button>
+            <button
+                className="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Edit"
                 onClick={handleEdit}
             >
                 <Icon icon="solar:pen-outline" className="fs-5" />
             </button>
             <button
                 className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="Delete"
                 onClick={handleDelete}
             >
                 <Icon icon="solar:trash-bin-minimalistic-outline" className="fs-5" />
@@ -98,150 +220,157 @@ export const ProductEditDeleteAction: React.FC<ProductEditDeleteActionProps> = (
 };
 
 //  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
-export const productEditDeleteActionColumn = (
-    onEdit: (id: ProductDataRow) => void,
+export const productViewEditDeleteActionColumn = (
+    onView: (id: number) => void,
+    onEdit: (id: Product) => void,
     onDelete: (params: DeleteActionParams) => void
 ) => ({
     name: 'Actions',
-    cell: (row: ProductDataRow) => (
-        <ProductEditDeleteAction row={row} onEdit={onEdit} onDelete={onDelete} />
+    cell: (row: Product) => (
+        <ProductViewEditDeleteAction
+            row={row}
+            onView={onView}
+            onEdit={onEdit}
+            onDelete={onDelete}
+        />
     ),
     ignoreRowClick: false,
     allowOverflow: true,
     button: true
 });
 
-export const userTableColumns: TableColumn<DataRow>[] = [
-    // {
-    //     name: 'ID',
-    //     selector: (row) => row.id,
-    //     sortable: true,
-    //     width: '60px'
-    // },
+export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'First Name',
-        selector: (row) => row.firstName,
+        selector: (row) => row.first_name,
         sortable: true
     },
     {
         name: 'Last Name',
-        selector: (row) => row.lastName,
+        selector: (row) => row.last_name,
         sortable: true
     },
     {
         name: 'Company Name',
-        selector: (row) => row.companyName,
+        selector: (row) => row.company_name ?? '',
         sortable: true
     },
     {
         name: 'Mobile Number',
-        selector: (row) => row.mobileNumber,
+        selector: (row) => row.mobile_number,
         sortable: true
     },
     {
         name: 'Email Address',
-        selector: (row) => row.emailAddress,
+        selector: (row) => row.email,
         sortable: true
     },
     {
+        id: 'Status',
         name: 'Status',
-        selector: (row) => row.isVerified,
+        selector: (row) => row.status,
         sortable: true,
-        cell: (row) =>
-            row.isVerified ? (
-                <span className="badge bg-success-subtle text-success rounded fw-semibold p-2">
-                    Verified
-                </span>
-            ) : (
-                <span className="badge bg-danger-subtle text-danger rounded fw-semibold p-2">
-                    UnVerified
-                </span>
-            )
+        cell: (row) => (
+            <span className={`badge ${getUserStatusClass(row.status)} rounded fw-semibold p-2`}>
+                {row.status}
+            </span>
+        )
     }
 ];
 
-export const productTableColumns: TableColumn<ProductDataRow>[] = [
+//ProductListTableColumn For Officer
+export const productsTableColumns: TableColumn<Product>[] = [
+    {
+        name: 'HSN Code',
+        selector: (row) => row.origin_hsn_code,
+        sortable: true
+    },
+    // {
+    //     name: 'Manufacturer Name',
+    //     selector: (row) => row.manufacturerName,
+    //     sortable: true
+    // },
     {
         name: 'Image',
-        selector: (row) => row.uploadImage,
-        cell: (row) => <img src={row.uploadImage} alt={row.productDisplayName} width="50" />,
+        // selector: (row) => row.product_custom_fields,
+        cell: (row) => <img src={productImage} alt={row.product_displayname} width="50" />,
         sortable: false
     },
     {
         name: 'Category',
-        selector: (row) => row.productCategory,
+        selector: (row) => row.product_category_id,
         sortable: true
     },
     {
-        name: 'Type',
-        selector: (row) => row.productType,
+        name: 'Feature',
+        selector: (row) => row.product_feature,
         sortable: true
     },
     {
         name: 'Name',
-        selector: (row) => row.productDisplayName,
+        selector: (row) => row.product_displayname,
         sortable: true
     },
     {
         name: 'Description',
-        selector: (row) => row.customerProductDescription,
+        selector: (row) => row.customer_product_description,
         sortable: true
     },
     {
-        name: 'Brand Name',
-        selector: (row) => row.brandName,
-        sortable: true
-    },
-    {
-        name: 'Ex-Work Price',
-        selector: (row) => parseFloat(row.exWorkPrice),
+        id: 'Status',
+        name: 'Status',
+        selector: (row) => row.status,
         sortable: true,
-        cell: (row) => `${parseFloat(row.exWorkPrice).toFixed(2)}`
-    },
+        cell: (row) => (
+            <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
+                {row.status}
+            </span>
+        )
+    }
+];
 
-    {
-        name: 'Color',
-        selector: (row) => row.byColor,
-        sortable: true
-    },
-    {
-        name: 'Size',
-        selector: (row) => row.bySize,
-        sortable: true
-    },
+//ProductsTableColumn For Manufacturer
+export const productsListTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
-        selector: (row) => row.originHsnCode,
+        selector: (row) => row.origin_hsn_code,
         sortable: true
     },
     {
-        name: 'Unit Measure',
-        selector: (row) => row.unitMeasure,
+        name: 'Image',
+        // selector: (row) => row.product_custom_fields,
+        cell: (row) => <img src={productImage} alt={row.product_displayname} width="50" />,
+        sortable: false
+    },
+    {
+        name: 'Category',
+        selector: (row) => row.product_category_id,
         sortable: true
     },
     {
-        name: 'Weight',
-        selector: (row) => row.weight,
+        name: 'Feature',
+        selector: (row) => row.product_feature,
         sortable: true
     },
     {
-        name: 'Dimensions',
-        selector: (row) => row.dimensions,
+        name: 'Name',
+        selector: (row) => row.product_displayname,
         sortable: true
     },
     {
-        name: 'Gender',
-        selector: (row) => row.byGender,
+        name: 'Description',
+        selector: (row) => row.customer_product_description,
         sortable: true
     },
     {
-        name: 'Material',
-        selector: (row) => row.material,
-        sortable: true
-    },
-    {
-        name: 'Features',
-        selector: (row) => row.productFeatures,
-        sortable: true
+        id: 'Status',
+        name: 'Status',
+        selector: (row) => row.status,
+        sortable: true,
+        cell: (row) => (
+            <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
+                {row.status}
+            </span>
+        )
     }
 ];

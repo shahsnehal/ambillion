@@ -1,10 +1,10 @@
-import { ProductList } from 'components/products/productsList';
+import { Products } from 'components/products/products';
 
 export const ProductsPage = () => {
     return (
         <div className="card">
             <div className="card-body">
-                <ProductList />
+                <Products />
             </div>
         </div>
     );

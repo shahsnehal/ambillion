@@ -6,7 +6,8 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '1234567890',
         emailAddress: 'vishal.devani@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 2,
@@ -15,7 +16,8 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '2345678901',
         emailAddress: 'john.smith@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 3,
@@ -24,7 +26,8 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '3456789012',
         emailAddress: 'emily.brown@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 4,
@@ -33,7 +36,8 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '4567890123',
         emailAddress: 'michael.johnson@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 5,
@@ -42,7 +46,8 @@ export const dummyUserTableData = [
         companyName: 'DEF Ltd.',
         mobileNumber: '5678901234',
         emailAddress: 'sarah.wilson@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 6,
@@ -51,7 +56,8 @@ export const dummyUserTableData = [
         companyName: '789 Corp.',
         mobileNumber: '6789012345',
         emailAddress: 'david.lee@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 7,
@@ -60,7 +66,8 @@ export const dummyUserTableData = [
         companyName: 'GHI Inc.',
         mobileNumber: '7890123456',
         emailAddress: 'emma.garcia@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 8,
@@ -69,7 +76,8 @@ export const dummyUserTableData = [
         companyName: 'JKL Corp.',
         mobileNumber: '8901234567',
         emailAddress: 'daniel.martinez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 9,
@@ -78,7 +86,8 @@ export const dummyUserTableData = [
         companyName: 'MNO Ltd.',
         mobileNumber: '9012345678',
         emailAddress: 'sophia.lopez@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 10,
@@ -87,7 +96,8 @@ export const dummyUserTableData = [
         companyName: 'PQR Inc.',
         mobileNumber: '0123456789',
         emailAddress: 'james.davis@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 11,
@@ -96,7 +106,8 @@ export const dummyUserTableData = [
         companyName: 'STU Corp.',
         mobileNumber: '9876543210',
         emailAddress: 'olivia.miller@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 12,
@@ -105,7 +116,8 @@ export const dummyUserTableData = [
         companyName: 'VWX Ltd.',
         mobileNumber: '8765432109',
         emailAddress: 'william.rodriguez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 13,
@@ -114,7 +126,8 @@ export const dummyUserTableData = [
         companyName: 'YZA Inc.',
         mobileNumber: '7654321098',
         emailAddress: 'ava.martinez@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 14,
@@ -123,7 +136,8 @@ export const dummyUserTableData = [
         companyName: 'BCD Corp.',
         mobileNumber: '6543210987',
         emailAddress: 'alexander.hernandez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 15,
@@ -132,7 +146,8 @@ export const dummyUserTableData = [
         companyName: 'EFG Ltd.',
         mobileNumber: '5432109876',
         emailAddress: 'mia.gonzalez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 16,
@@ -141,7 +156,8 @@ export const dummyUserTableData = [
         companyName: 'HIJ Inc.',
         mobileNumber: '4321098765',
         emailAddress: 'ethan.perez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 17,
@@ -150,7 +166,8 @@ export const dummyUserTableData = [
         companyName: 'KLM Corp.',
         mobileNumber: '3210987654',
         emailAddress: 'isabella.sanchez@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 18,
@@ -159,7 +176,8 @@ export const dummyUserTableData = [
         companyName: 'NOP Ltd.',
         mobileNumber: '2109876543',
         emailAddress: 'alexander.gonzalez@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 19,
@@ -168,7 +186,8 @@ export const dummyUserTableData = [
         companyName: 'QRS Inc.',
         mobileNumber: '1098765432',
         emailAddress: 'sophia.rivera@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 20,
@@ -177,7 +196,8 @@ export const dummyUserTableData = [
         companyName: 'TUV Corp.',
         mobileNumber: '0987654321',
         emailAddress: 'mason.brooks@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 21,
@@ -186,7 +206,8 @@ export const dummyUserTableData = [
         companyName: 'WXY Ltd.',
         mobileNumber: '9876543210',
         emailAddress: 'amelia.roberts@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 22,
@@ -195,7 +216,8 @@ export const dummyUserTableData = [
         companyName: 'ZAB Inc.',
         mobileNumber: '8765432109',
         emailAddress: 'logan.cook@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 23,
@@ -204,7 +226,8 @@ export const dummyUserTableData = [
         companyName: 'CDE Corp.',
         mobileNumber: '7654321098',
         emailAddress: 'evelyn.bailey@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 24,
@@ -213,7 +236,8 @@ export const dummyUserTableData = [
         companyName: 'FGH Ltd.',
         mobileNumber: '6543210987',
         emailAddress: 'lucas.james@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 25,
@@ -222,7 +246,8 @@ export const dummyUserTableData = [
         companyName: 'IJK Inc.',
         mobileNumber: '5432109876',
         emailAddress: 'abigail.phillips@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 26,
@@ -231,7 +256,8 @@ export const dummyUserTableData = [
         companyName: 'LMN Corp.',
         mobileNumber: '4321098765',
         emailAddress: 'jackson.evans@example.com',
-        isVerified: false
+        status: 'PENDING'
+        //isVerified: false
     },
     {
         id: 27,
@@ -240,7 +266,8 @@ export const dummyUserTableData = [
         companyName: 'OPQ Ltd.',
         mobileNumber: '3210987654',
         emailAddress: 'charlotte.howard@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 28,
@@ -249,7 +276,8 @@ export const dummyUserTableData = [
         companyName: 'RST Inc.',
         mobileNumber: '2109876543',
         emailAddress: 'daniel.morales@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 29,
@@ -258,7 +286,8 @@ export const dummyUserTableData = [
         companyName: 'UVW Corp.',
         mobileNumber: '1098765432',
         emailAddress: 'harper.ward@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 30,
@@ -267,7 +296,8 @@ export const dummyUserTableData = [
         companyName: 'XYZ Ltd.',
         mobileNumber: '0987654321',
         emailAddress: 'aiden.torres@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 31,
@@ -276,7 +306,8 @@ export const dummyUserTableData = [
         companyName: '123 Inc.',
         mobileNumber: '9876543210',
         emailAddress: 'madison.flores@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 32,
@@ -285,7 +316,8 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '8765432109',
         emailAddress: 'elijah.nguyen@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 33,
@@ -294,7 +326,8 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '7654321098',
         emailAddress: 'avery.king@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 34,
@@ -303,7 +336,8 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '6543210987',
         emailAddress: 'grayson.scott@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 35,
@@ -312,7 +346,8 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '5432109876',
         emailAddress: 'scarlett.gomez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 36,
@@ -321,7 +356,8 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '4321098765',
         emailAddress: 'logan.hill@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 37,
@@ -330,7 +366,8 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '3210987654',
         emailAddress: 'lily.perez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 38,
@@ -339,7 +376,8 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '2109876543',
         emailAddress: 'owen.collins@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 39,
@@ -348,7 +386,8 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '1098765432',
         emailAddress: 'liam.stewart@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 40,
@@ -357,7 +396,8 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '0987654321',
         emailAddress: 'zoe.mitchell@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 41,
@@ -366,7 +406,8 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '9876543210',
         emailAddress: 'jackson.rogers@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 42,
@@ -375,7 +416,8 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '8765432109',
         emailAddress: 'chloe.price@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 43,
@@ -384,7 +426,8 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '7654321098',
         emailAddress: 'carter.ward@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 44,
@@ -393,7 +436,8 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '6543210987',
         emailAddress: 'emma.brooks@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 45,
@@ -402,7 +446,8 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '5432109876',
         emailAddress: 'aiden.turner@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 46,
@@ -411,7 +456,8 @@ export const dummyUserTableData = [
         companyName: '123 Company',
         mobileNumber: '4321098765',
         emailAddress: 'grace.scott@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 47,
@@ -420,7 +466,8 @@ export const dummyUserTableData = [
         companyName: '456 Corp.',
         mobileNumber: '3210987654',
         emailAddress: 'ethan.gonzalez@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 48,
@@ -429,7 +476,8 @@ export const dummyUserTableData = [
         companyName: '789 Ltd.',
         mobileNumber: '2109876543',
         emailAddress: 'hannah.evans@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 49,
@@ -438,7 +486,8 @@ export const dummyUserTableData = [
         companyName: 'ABC Inc.',
         mobileNumber: '1098765432',
         emailAddress: 'luke.ward@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     },
     {
         id: 50,
@@ -447,7 +496,8 @@ export const dummyUserTableData = [
         companyName: 'XYZ Corp.',
         mobileNumber: '0987654321',
         emailAddress: 'leah.morris@example.com',
-        isVerified: true
+        status: 'PENDING'
+        //isVerified: true
     }
 ];
 
@@ -462,7 +512,7 @@ export const dummyProductTableData = [
         brandName: 'Comfort Seating',
         exWorkPrice: '150.00',
         byColor: 'Red',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '9401.61.00.90',
         unitMeasure: 'Piece',
         weight: '12.5 kg',
@@ -470,7 +520,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Fabric, Steel',
         productFeatures: 'Ergonomic, Swivel',
-        isActive: false
+        approvalStatus: 'REJECTED'
     },
     {
         id: 2,
@@ -482,7 +532,7 @@ export const dummyProductTableData = [
         brandName: 'Tech Innovators',
         exWorkPrice: '1200.00',
         byColor: 'Black',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8471.30.10.00',
         unitMeasure: 'Piece',
         weight: '2.5 kg',
@@ -490,7 +540,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: '16GB RAM, 1TB SSD, GTX 3080',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 3,
@@ -502,7 +552,7 @@ export const dummyProductTableData = [
         brandName: 'Fashion Hub',
         exWorkPrice: '30.00',
         byColor: 'White',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '6205.20.00.10',
         unitMeasure: 'Piece',
         weight: '0.3 kg',
@@ -510,7 +560,7 @@ export const dummyProductTableData = [
         byGender: 'Male',
         material: 'Cotton',
         productFeatures: 'Wrinkle-Free, Slim Fit',
-        isActive: true
+        approvalStatus: 'REJECTED'
     },
     {
         id: 4,
@@ -522,7 +572,7 @@ export const dummyProductTableData = [
         brandName: 'AutoSafe',
         exWorkPrice: '100.00',
         byColor: 'Black',
-        bySize: 'R17',
+        bySize: ['R17'],
         originHsnCode: '4011.20.10.00',
         unitMeasure: 'Piece',
         weight: '10.5 kg',
@@ -530,7 +580,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Rubber',
         productFeatures: 'All-weather, High Traction',
-        isActive: true
+        approvalStatus: 'REJECTED'
     },
     {
         id: 5,
@@ -542,7 +592,7 @@ export const dummyProductTableData = [
         brandName: 'CleanTech',
         exWorkPrice: '300.00',
         byColor: 'Silver',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8508.11.00.00',
         unitMeasure: 'Piece',
         weight: '5 kg',
@@ -550,7 +600,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Smart Navigation, Rechargeable',
-        isActive: true
+        approvalStatus: 'PENDING'
     },
     {
         id: 6,
@@ -562,7 +612,7 @@ export const dummyProductTableData = [
         brandName: 'ToyWorld',
         exWorkPrice: '20.00',
         byColor: 'Blue',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '9503.00.21.00',
         unitMeasure: 'Piece',
         weight: '0.5 kg',
@@ -570,7 +620,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic',
         productFeatures: 'Articulated, Collectible',
-        isActive: true
+        approvalStatus: 'REJECTED'
     },
     {
         id: 7,
@@ -582,7 +632,7 @@ export const dummyProductTableData = [
         brandName: 'ToolMaster',
         exWorkPrice: '80.00',
         byColor: 'Yellow',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8467.21.00.00',
         unitMeasure: 'Piece',
         weight: '1.8 kg',
@@ -590,7 +640,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Rechargeable, High Torque',
-        isActive: true
+        approvalStatus: 'REJECTED'
     },
     {
         id: 8,
@@ -602,7 +652,7 @@ export const dummyProductTableData = [
         brandName: 'BookWorld',
         exWorkPrice: '15.00',
         byColor: 'Red',
-        bySize: 'S',
+        bySize: ['S'],
         originHsnCode: '4901.99.00.10',
         unitMeasure: 'Piece',
         weight: '0.4 kg',
@@ -610,7 +660,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Paper',
         productFeatures: 'Bestseller, Illustrated',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 9,
@@ -622,7 +672,7 @@ export const dummyProductTableData = [
         brandName: 'Sporty',
         exWorkPrice: '25.00',
         byColor: 'White',
-        bySize: '5',
+        bySize: ['5'],
         originHsnCode: '9506.62.00.00',
         unitMeasure: 'Piece',
         weight: '0.6 kg',
@@ -630,7 +680,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Synthetic Leather',
         productFeatures: 'Durable, Water-Resistant',
-        isActive: true
+        approvalStatus: 'PENDING'
     },
     {
         id: 10,
@@ -642,7 +692,7 @@ export const dummyProductTableData = [
         brandName: 'JewelCraft',
         exWorkPrice: '500.00',
         byColor: 'Gold',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '7113.19.10.00',
         unitMeasure: 'Piece',
         weight: '0.1 kg',
@@ -650,7 +700,7 @@ export const dummyProductTableData = [
         byGender: 'Female',
         material: 'Gold',
         productFeatures: 'Pure Gold, Handcrafted',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 11,
@@ -662,7 +712,7 @@ export const dummyProductTableData = [
         brandName: 'GardenStyle',
         exWorkPrice: '15.00',
         byColor: 'Green',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '6913.10.00.00',
         unitMeasure: 'Piece',
         weight: '1.2 kg',
@@ -670,7 +720,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Ceramic',
         productFeatures: 'Hand-Painted, Durable',
-        isActive: true
+        approvalStatus: 'PENDING'
     },
     {
         id: 12,
@@ -682,7 +732,7 @@ export const dummyProductTableData = [
         brandName: 'HealthPlus',
         exWorkPrice: '25.00',
         byColor: 'White',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '2106.90.92.00',
         unitMeasure: 'Piece',
         weight: '0.2 kg',
@@ -690,7 +740,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic',
         productFeatures: 'Contains Vitamins A-Z, 100 Tablets',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 13,
@@ -702,7 +752,7 @@ export const dummyProductTableData = [
         brandName: 'BeautyLine',
         exWorkPrice: '10.00',
         byColor: 'Red',
-        bySize: 'S',
+        bySize: ['S'],
         originHsnCode: '3304.10.00.00',
         unitMeasure: 'Piece',
         weight: '0.05 kg',
@@ -710,7 +760,7 @@ export const dummyProductTableData = [
         byGender: 'Female',
         material: 'Wax, Pigment',
         productFeatures: 'Long-lasting, Matte Finish',
-        isActive: true
+        approvalStatus: 'REJECTED'
     },
     {
         id: 14,
@@ -722,7 +772,7 @@ export const dummyProductTableData = [
         brandName: 'KitchenPro',
         exWorkPrice: '150.00',
         byColor: 'Black',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '8509.40.00.00',
         unitMeasure: 'Piece',
         weight: '3 kg',
@@ -730,7 +780,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Plastic, Metal',
         productFeatures: 'Multiple Speed Settings, Dishwasher Safe',
-        isActive: true
+        approvalStatus: 'PENDING'
     },
     {
         id: 15,
@@ -742,7 +792,7 @@ export const dummyProductTableData = [
         brandName: 'OutdoorGear',
         exWorkPrice: '100.00',
         byColor: 'Green',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '6306.22.00.00',
         unitMeasure: 'Piece',
         weight: '5 kg',
@@ -750,7 +800,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Polyester, Fiberglass',
         productFeatures: 'Waterproof, Easy Setup',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 16,
@@ -762,7 +812,7 @@ export const dummyProductTableData = [
         brandName: 'PetComfort',
         exWorkPrice: '40.00',
         byColor: 'Brown',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '6307.90.20.00',
         unitMeasure: 'Piece',
         weight: '1 kg',
@@ -770,7 +820,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Fabric, Foam',
         productFeatures: 'Soft, Washable Cover',
-        isActive: true
+        approvalStatus: 'REJECTED'
     },
     {
         id: 17,
@@ -782,7 +832,7 @@ export const dummyProductTableData = [
         brandName: 'NoteMaster',
         exWorkPrice: '5.00',
         byColor: 'Blue',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '4820.10.00.00',
         unitMeasure: 'Piece',
         weight: '0.5 kg',
@@ -790,7 +840,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Paper, Metal',
         productFeatures: '200 Pages, Ruled',
-        isActive: true
+        approvalStatus: 'PENDING'
     },
     {
         id: 18,
@@ -802,7 +852,7 @@ export const dummyProductTableData = [
         brandName: 'RunFast',
         exWorkPrice: '60.00',
         byColor: 'White',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '6404.11.00.00',
         unitMeasure: 'Pair',
         weight: '1 kg',
@@ -810,7 +860,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Mesh, Rubber',
         productFeatures: 'Lightweight, Breathable',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
     },
     {
         id: 19,
@@ -822,7 +872,7 @@ export const dummyProductTableData = [
         brandName: 'OfficeComfort',
         exWorkPrice: '200.00',
         byColor: 'Black',
-        bySize: 'L',
+        bySize: ['L'],
         originHsnCode: '9401.30.00.00',
         unitMeasure: 'Piece',
         weight: '15 kg',
@@ -830,7 +880,7 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Mesh, Metal',
         productFeatures: 'Adjustable, Lumbar Support',
-        isActive: true
+        approvalStatus: 'PENDING'
     },
     {
         id: 20,
@@ -842,7 +892,7 @@ export const dummyProductTableData = [
         brandName: 'MusicMaster',
         exWorkPrice: '120.00',
         byColor: 'Brown',
-        bySize: 'M',
+        bySize: ['M'],
         originHsnCode: '9202.90.10.00',
         unitMeasure: 'Piece',
         weight: '2.5 kg',
@@ -850,6 +900,64 @@ export const dummyProductTableData = [
         byGender: 'Unisex',
         material: 'Wood',
         productFeatures: '6 Strings, Steel Strings',
-        isActive: true
+        approvalStatus: 'ACCEPTED'
+    }
+];
+
+export const dummyProductsListTableData = [
+    {
+        productId: 1,
+        originHsnCode: '9401.61.00.90',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Furniture',
+        productType: 'Chair',
+        productDisplayName: 'Red Lounge Chair',
+        customerProductDescription: 'Modern red lounge chair',
+        manufacturerName: 'Furniture Co.',
+        status: 'REJECTED'
+    },
+    {
+        productId: 2,
+        originHsnCode: '8471.30.10.00',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Electronics',
+        productType: 'Laptop',
+        productDisplayName: 'Gaming Laptop Pro',
+        customerProductDescription: 'High performance gaming laptop',
+        manufacturerName: 'Tech Innovators',
+        status: 'APPROVED'
+    },
+    {
+        productId: 3,
+        originHsnCode: '6403.59.00.90',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Footwear',
+        productType: 'Sneakers',
+        productDisplayName: 'Running Sneakers',
+        customerProductDescription: 'Comfortable running sneakers',
+        manufacturerName: 'Sporty Shoes Inc.',
+        status: 'PENDING'
+    },
+    {
+        productId: 4,
+        originHsnCode: '6201.99.00.90',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Apparel',
+        productType: 'Jacket',
+        productDisplayName: 'Winter Jacket',
+        customerProductDescription: 'Warm and stylish winter jacket',
+        manufacturerName: 'Fashion Hub',
+        status: 'INREVIEW'
+    },
+    {
+        productId: 5,
+        originHsnCode: '9506.99.80.00',
+        uploadImage: 'assets/images/products/product.jpg',
+        productCategory: 'Sports Equipment',
+        productType: 'Yoga Mat',
+        productDisplayName: 'Eco-friendly Yoga Mat',
+        customerProductDescription: 'Non-slip, eco-friendly yoga mat',
+        manufacturerName: 'Yoga Essentials',
+        status: 'ONHOLD'
     }
 ];
