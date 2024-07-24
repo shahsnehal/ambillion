@@ -1,44 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { TableFilter } from 'components/common/table/tableFilter';
 import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import {
     customStyles,
-    productTableColumns,
-    productViewEditDeleteActionColumn,
-    ProductDataRow
+    productsListTableColumns,
+    productViewEditDeleteActionColumn
 } from 'utils/table/columns';
-import { dummyProductTableData } from 'utils/table/data';
-import { DeleteConfirmationModal } from 'components/common/modal/deleteConfirmationModal';
+import { ConfirmationModal } from 'components/common/modal/confirmationModal';
+import { ROUTES } from 'constants/common';
+import { RootState } from 'config/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteProductRequest, getProductsRequest } from 'Modules/product-module/action/actions';
 
 type SelectableDeleteRowData = {
     productid: number | null;
     productName: string;
 };
 
-export const ProductList = () => {
+export const UserProducts = () => {
+    // const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [productData, setProductData] = useState(dummyProductTableData);
+    const [pending, setPending] = useState<boolean>(true);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
     });
+    const { products } = useSelector((state: RootState) => state.productModule);
 
-    const filteredItems = productData.filter((item) =>
-        item.productDisplayName?.toLowerCase().includes(filterText.toLowerCase())
+    useEffect(() => {
+        setPending(true);
+        dispatch(getProductsRequest());
+        setPending(false);
+    }, []);
+
+    const filteredItems = products?.filter((item) =>
+        item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleAddProduct = () => {
-        navigate('/products/addProduct');
+        navigate(ROUTES.ADDPRODUCT);
     };
 
     //Product Edit Logic
-    const handleEdit = (editedRow: ProductDataRow) => {
-        console.log('editRow', editedRow);
+    // const handleEdit = (row: ProductDataRow) => {
+    //     navigate(`/products/edit/${row.id}`);
+    // };
+
+    const handleEdit = () => {
+        navigate('/products/edit');
     };
 
     const handleView = (productId: number) => {
@@ -51,14 +66,21 @@ export const ProductList = () => {
         setShowConfirmationModal(true);
     };
 
-    //Confirm Delete Logic
+    // Confirm Delete Logic
+    // const handleConfirmDelete = () => {
+    //     if (selectDeleteProduct.productid) {
+    //         const updatedData = productData.filter(
+    //             (item) => item.id !== selectDeleteProduct.productid
+    //         );
+    //         setProductData(updatedData);
+    //         setResetPaginationToggle(!resetPaginationToggle);
+    //         setShowConfirmationModal(false);
+    //     }
+    // };
+
     const handleConfirmDelete = () => {
-        if (selectDeleteProduct.productid) {
-            const updatedData = productData.filter(
-                (item) => item.id !== selectDeleteProduct.productid
-            );
-            setProductData(updatedData);
-            setResetPaginationToggle(!resetPaginationToggle);
+        if (selectDeleteProduct?.productid) {
+            dispatch(deleteProductRequest(selectDeleteProduct.productid));
             setShowConfirmationModal(false);
         }
     };
@@ -100,12 +122,13 @@ export const ProductList = () => {
         <>
             <DataTable
                 columns={[
-                    ...productTableColumns,
+                    ...productsListTableColumns,
                     productViewEditDeleteActionColumn(handleView, handleEdit, handleDelete)
                 ]}
                 data={filteredItems}
                 defaultSortFieldId={'Status'}
                 defaultSortAsc={false}
+                progressPending={pending}
                 pagination
                 title=" "
                 selectableRows
@@ -118,7 +141,7 @@ export const ProductList = () => {
                 persistTableHead
                 customStyles={customStyles}
             />
-            <DeleteConfirmationModal
+            <ConfirmationModal
                 isOpen={showConfirmationModal}
                 onClose={() => setShowConfirmationModal(false)}
                 onConfirm={handleConfirmDelete}
@@ -127,6 +150,7 @@ export const ProductList = () => {
                 content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
                 closeLabel="Cancel"
                 confirmLabel="Delete"
+                actionInProgressLabel="Deleting..."
             />
         </>
     );

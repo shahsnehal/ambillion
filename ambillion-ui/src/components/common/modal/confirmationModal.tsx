@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-type DeleteConfirmationModalProps = {
+type ConfirmationModalProps = {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
@@ -11,9 +11,10 @@ type DeleteConfirmationModalProps = {
     confirmLabel?: string;
     closeBtnClassName?: string;
     confirmBtnClassName?: string;
+    actionInProgressLabel?: string;
 };
 
-export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
+export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     onClose,
     onConfirm,
@@ -23,22 +24,23 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
     closeLabel = 'Close',
     confirmLabel = 'Confirm',
     closeBtnClassName = 'btn btn-muted',
-    confirmBtnClassName = 'btn btn-danger'
+    confirmBtnClassName = 'btn btn-danger',
+    actionInProgressLabel = 'Performing Action...'
 }) => {
-    const [isDeleting, setIsDeleting] = useState<boolean>(false);
+    const [isPerformingAction, setIsPerformingAction] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isDeleting) {
+        if (isPerformingAction) {
             setTimeout(() => {
                 onConfirm();
                 onClose();
-                setIsDeleting(false);
-            }, 2000);
+                setIsPerformingAction(false);
+            }, 1000);
         }
-    }, [isDeleting]);
+    }, [isPerformingAction]);
 
     const handleConfirmClick = () => {
-        setIsDeleting(true);
+        setIsPerformingAction(true);
     };
 
     return (
@@ -61,7 +63,7 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={onClose}
-                                disabled={isDeleting}
+                                disabled={isPerformingAction}
                             ></button>
                         </div>
                         <div className="modal-body">
@@ -73,7 +75,7 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
                                 className={closeBtnClassName}
                                 data-bs-dismiss="modal"
                                 onClick={onClose}
-                                disabled={isDeleting}
+                                disabled={isPerformingAction}
                             >
                                 {closeLabel}
                             </button>
@@ -81,9 +83,9 @@ export const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = (
                                 type="button"
                                 className={confirmBtnClassName}
                                 onClick={handleConfirmClick}
-                                disabled={isLoading || isDeleting}
+                                disabled={isLoading || isPerformingAction}
                             >
-                                {isDeleting ? 'Deleting...' : confirmLabel}
+                                {isPerformingAction ? actionInProgressLabel : confirmLabel}
                             </button>
                         </div>
                     </div>

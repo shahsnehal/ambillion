@@ -1,6 +1,7 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { dummyProductTableData } from 'utils/table/data';
+import { hasRole } from 'global/globalFunction';
+import { userRoles } from 'constants/common';
 
 export const ProductDetail = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -107,10 +108,13 @@ export const ProductDetail = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="d-flex align-items-start justify-content-end gap-4 mt-4">
-                        <button className="btn btn-danger"> Reject </button>
-                        <button className="btn btn-primary"> Accept </button>
-                    </div>
+
+                    {hasRole(userRoles.OFFICER) && (
+                        <div className="d-flex align-items-start justify-content-end gap-4 mt-4">
+                            <button className="btn btn-danger"> Reject </button>
+                            <button className="btn btn-primary"> Accept </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

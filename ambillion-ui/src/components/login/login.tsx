@@ -1,16 +1,35 @@
+import { useState } from 'react';
 import { ROUTES } from 'constants/common';
 import { Formik, Field, ErrorMessage, Form } from 'formik';
+import { SigninData } from 'Modules/auth-module/type/types';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { signinRequest } from 'Modules/auth-module/action/actions';
+import { RootState } from 'config/store';
+import { Icon } from '@iconify/react';
 
 export const Login = () => {
     const navigate = useNavigate();
-    const RegisterSchemas = Yup.object().shape({
+    const dispatch = useDispatch();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const isLoading = useSelector((state: RootState) => state.authModule.isLoading);
+
+    const toggleShowPassword = () => setShowPassword(!showPassword);
+
+    // Validation schema for signin form
+    const SigninSchema = Yup.object().shape({
         email: Yup.string()
             .email('Please enter a valid Email Address')
             .required('Email is required'),
         password: Yup.string().required('Password is required')
     });
+
+    const handleSubmit = async (values: SigninData) => {
+        const { email, password } = values;
+        dispatch(signinRequest({ email, password, navigate }));
+    };
+
     return (
         <div id="main-wrapper" className="auth-customizer-none">
             <div className="position-relative overflow-hidden radial-gradient min-vh-100 w-100">
@@ -43,25 +62,13 @@ export const Login = () => {
                                             email: '',
                                             password: ''
                                         }}
-                                        validationSchema={RegisterSchemas}
-                                        onSubmit={(values, { setSubmitting }) => {
-                                            console.log(values);
-                                            // Simulating asynchronous operation, like an API call
-                                            setTimeout(() => {
-                                                // eslint-disable-next-line no-alert
-                                                alert(`${values?.email} has login successfully`);
-                                                setSubmitting(false);
-                                                navigate(ROUTES.DASHBOARD);
-                                            }, 1000);
-                                        }}
+                                        validationSchema={SigninSchema}
+                                        onSubmit={handleSubmit}
                                     >
                                         {(props) => (
                                             <Form>
                                                 <div className="mb-3">
-                                                    <label
-                                                        // htmlFor="userName"
-                                                        className="form-label"
-                                                    >
+                                                    <label className="form-label">
                                                         Email{' '}
                                                         <span className="text-danger"> *</span>
                                                     </label>
@@ -70,12 +77,11 @@ export const Login = () => {
                                                         name="email"
                                                         className={`form-control ${
                                                             props.touched.email &&
-                                                            props?.errors?.email
+                                                            props.errors.email
                                                                 ? 'is-invalid'
                                                                 : ''
                                                         }`}
                                                         id="email"
-                                                        aria-describedby="email"
                                                     />
                                                     <ErrorMessage
                                                         component="div"
@@ -84,30 +90,44 @@ export const Login = () => {
                                                     />
                                                 </div>
                                                 <div className="mb-4">
-                                                    <label
-                                                        htmlFor="exampleInputPassword1"
-                                                        className="form-label"
-                                                    >
+                                                    <label className="form-label">
                                                         Password{' '}
                                                         <span className="text-danger"> *</span>
                                                     </label>
-                                                    <Field
-                                                        type="password"
-                                                        name="password"
-                                                        className={`form-control ${
-                                                            props.touched.password &&
-                                                            props.errors.password
-                                                                ? 'is-invalid'
-                                                                : ''
-                                                        }`}
-                                                        id="password"
-                                                        aria-describedby="password"
-                                                    />
-                                                    <ErrorMessage
-                                                        component="div"
-                                                        name="password"
-                                                        className="invalid-feedback"
-                                                    />
+                                                    <div className="input-group">
+                                                        <Field
+                                                            type={
+                                                                showPassword ? 'text' : 'password'
+                                                            }
+                                                            name="password"
+                                                            className={`form-control ${props.touched.password && props.errors.password ? 'is-invalid' : ''}`}
+                                                            id="password"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            className="input-group-text cursor-pointer"
+                                                            onClick={toggleShowPassword}
+                                                            aria-label={
+                                                                showPassword
+                                                                    ? 'Hide password'
+                                                                    : 'Show password'
+                                                            }
+                                                        >
+                                                            <Icon
+                                                                icon={
+                                                                    showPassword
+                                                                        ? 'solar:eye-outline'
+                                                                        : 'solar:eye-closed-outline'
+                                                                }
+                                                                className="fs-5"
+                                                            />
+                                                        </button>
+                                                        <ErrorMessage
+                                                            component="div"
+                                                            name="password"
+                                                            className="invalid-feedback"
+                                                        />
+                                                    </div>
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-between mb-4">
                                                     <div className="form-check">
@@ -121,7 +141,7 @@ export const Login = () => {
                                                             className="form-check-label text-dark"
                                                             htmlFor="flexCheckChecked"
                                                         >
-                                                            Remeber this Device
+                                                            Remember this Device
                                                         </label>
                                                     </div>
                                                     <button
@@ -137,9 +157,11 @@ export const Login = () => {
                                                 <button
                                                     type="submit"
                                                     className="btn btn-primary w-100 py-8 mb-4 rounded-2"
-                                                    disabled={props.isSubmitting}
+                                                    disabled={
+                                                        !props.isValid || !props.dirty || isLoading
+                                                    }
                                                 >
-                                                    Sign In
+                                                    {isLoading ? 'Submitting...' : 'Sign In'}
                                                 </button>
                                                 <div className="d-flex align-items-center justify-content-center">
                                                     <p className="fs-4 mb-0 fw-medium">

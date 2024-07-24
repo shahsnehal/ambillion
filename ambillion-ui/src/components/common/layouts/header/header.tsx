@@ -1,8 +1,12 @@
 import { Icon } from '@iconify/react';
-import { ROUTES } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
+import { userLogout } from 'global/globalFunction';
 export const Header = () => {
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        userLogout(navigate);
+    };
 
     const handleSidebar = () => {
         const mainWrapper = document.getElementById('main-wrapper');
@@ -149,11 +153,17 @@ export const Header = () => {
                                                             </a>
                                                         </div>
                                                         <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            <a
+                                                            {/* <a
                                                                 onClick={() =>
                                                                     navigate(ROUTES.LOGIN)
                                                                 }
                                                                 className=" d-flex  align-items-center "
+                                                            >
+                                                                Sign Out
+                                                            </a> */}
+                                                            <a
+                                                                onClick={handleLogout}
+                                                                className="d-flex align-items-center"
                                                             >
                                                                 Sign Out
                                                             </a>
