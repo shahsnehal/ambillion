@@ -22,7 +22,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
         homeLabel = 'users';
     } else if (userRole === userRoles.MANUFACTURER) {
         homeRoute = ROUTES.PRODUCTSBYUSERID;
-        homeLabel = 'Products';
+        homeLabel = 'productsList';
     } else if (userRole === userRoles.OFFICER) {
         homeRoute = ROUTES.PRODUCTS;
         homeLabel = 'Products';

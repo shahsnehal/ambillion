@@ -32,7 +32,7 @@ export const ROUTES = {
     DASHBOARD: '/dashboard',
     USERSLIST: '/users',
     PRODUCTS: '/products',
-    PRODUCTSBYUSERID: '/products/:userId',
+    PRODUCTSBYUSERID: '/productsList',
     ADDPRODUCT: '/products/addProduct',
     EDITPRODUCT: '/products/edit/:Id',
     PRODUCTDETAILS: '/products/:productId',

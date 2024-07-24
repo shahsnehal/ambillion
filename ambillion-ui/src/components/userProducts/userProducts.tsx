@@ -32,8 +32,6 @@ export const UserProducts = () => {
         productName: ''
     });
     const { products } = useSelector((state: RootState) => state.productModule);
-    // const userIDStr = localStorage.getItem('profileID');
-    // const userID = userIDStr ? parseInt(userIDStr, 10) : 0;
 
     useEffect(() => {
         setPending(true);

@@ -72,7 +72,7 @@ function App() {
                                         <Route
                                             path={ROUTES.PRODUCTSBYUSERID}
                                             element={
-                                                <Layout title="product">
+                                                <Layout title="productslist">
                                                     <UserProductsPage />
                                                 </Layout>
                                             }
