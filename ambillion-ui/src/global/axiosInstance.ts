@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
     async (config: AdaptAxiosRequestConfig) => {
         const accessToken = localStorage.getItem('accessToken') ?? null;
         if (accessToken) {
-            config.headers.Authorization = `${accessToken}`;
+            config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
     },

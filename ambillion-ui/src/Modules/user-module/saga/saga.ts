@@ -31,23 +31,17 @@ function* handleFetchUsers() {
 }
 
 //Update User Status API
-const updateUserStatus = async (
-    userId: number,
-    status: string,
-    profileID: number
-): Promise<AxiosResponse> => {
-    return await axiosInstance.patch(`${apiUrl.updateUserStatus}/${profileID}`, {
+const updateUserStatus = async (userId: number, status: string): Promise<AxiosResponse> => {
+    return await axiosInstance.patch(`${apiUrl.updateUserStatus}`, {
         userId,
         status
     });
 };
 
 function* handleUpdateUserStatus(action: UpdateUserStatusRequestAction) {
-    const profileIDStr = localStorage.getItem('profileID');
-    const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
     try {
         const { userId, status } = action.payload;
-        yield call(updateUserStatus, userId, status, profileID);
+        yield call(updateUserStatus, userId, status);
         yield put({ type: UPDATE_USER_STATUS_SUCCESS, payload: { userId, status } });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';

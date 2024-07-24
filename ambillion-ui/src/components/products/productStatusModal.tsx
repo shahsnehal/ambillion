@@ -9,12 +9,10 @@ type ProductStatusModalProps = {
     productId: string;
     currentStatus: string;
     currentComment: string;
-    onConfirm: (productId: string, userId: string, newStatus: string, comment: string) => void;
+    onConfirm: (productId: string, newStatus: string, comment: string) => void;
 };
 
 type ProductStatusKeys = keyof typeof productStatus;
-
-const userId = localStorage.getItem('profileID') ?? '';
 
 export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     isOpen,
@@ -34,8 +32,8 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     }, [currentStatus, currentComment]);
 
     const handleConfirm = () => {
-        if (productId && userId) {
-            onConfirm(productId, userId, newStatus, newComment);
+        if (productId) {
+            onConfirm(productId, newStatus, newComment);
         }
         onClose();
     };

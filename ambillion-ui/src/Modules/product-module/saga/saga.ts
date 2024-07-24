@@ -69,13 +69,11 @@ function* handleFetchProductsListByUser() {
 // Update product status API
 const updateProductStatusAPI = async (
     productId: string,
-    userId: string,
     status: string,
     comments: string
 ): Promise<AxiosResponse> => {
     return await axiosInstance.patch(`${apiUrl.updateProductStatus}`, {
         productId,
-        userId,
         status,
         comments
     });
@@ -83,11 +81,11 @@ const updateProductStatusAPI = async (
 
 function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
     try {
-        const { productId, userId, status, comments } = action.payload;
-        yield call(updateProductStatusAPI, productId, userId, status, comments);
+        const { productId, status, comments } = action.payload;
+        yield call(updateProductStatusAPI, productId, status, comments);
         yield put({
             type: UPDATE_PRODUCT_STATUS_SUCCESS,
-            payload: { productId, userId, status, comments }
+            payload: { productId, status, comments }
         });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';

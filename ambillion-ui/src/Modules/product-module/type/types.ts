@@ -95,12 +95,12 @@ export type FetchAllProductsFailureAction = {
 
 export type UpdateProductStatusRequestAction = {
     type: typeof UPDATE_PRODUCT_STATUS_REQUEST;
-    payload: { productId: string; userId: string; comments: string; status: string };
+    payload: { productId: string; comments: string; status: string };
 };
 
 export type UpdateProductStatusSuccessAction = {
     type: typeof UPDATE_PRODUCT_STATUS_SUCCESS;
-    payload: { productId: string; userId: string; comments: string; status: string };
+    payload: { productId: string; comments: string; status: string };
 };
 
 export type UpdateProductStatusFailureAction = {

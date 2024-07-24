@@ -53,12 +53,11 @@ export const Products = () => {
 
     const handleConfirmStatusChange = (
         productId: string,
-        userId: string,
         newStatus: string,
         newComment: string
     ) => {
         if (productId !== null) {
-            dispatch(updateProductStatusRequest(productId, userId, newStatus, newComment));
+            dispatch(updateProductStatusRequest(productId, newStatus, newComment));
         }
         handleCloseModal();
     };
