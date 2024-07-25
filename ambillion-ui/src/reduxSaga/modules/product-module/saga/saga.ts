@@ -1,8 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
-    GET_PRODUCTSLIST_BY_USER_REQUEST,
-    GET_PRODUCTSLIST_BY_USER_SUCCESS,
-    GET_PRODUCTSLIST_BY_USER_FAILURE,
     ADD_PRODUCT_REQUEST,
     ADD_PRODUCT_SUCCESS,
     ADD_PRODUCT_FAILURE,
@@ -16,9 +13,9 @@ import {
     GET_PRODUCTDETAILS_BY_ID_SUCCESS,
     GET_PRODUCTDETAILS_BY_ID_FAILURE,
     ProductFormValues,
-    FETCH_ALL_PRODUCTS_REQUEST,
-    FETCH_ALL_PRODUCTS_SUCCESS,
-    FETCH_ALL_PRODUCTS_FAILURE,
+    FETCH_PRODUCTS_REQUEST,
+    FETCH_PRODUCTS_SUCCESS,
+    FETCH_PRODUCTS_FAILURE,
     UPDATE_PRODUCT_STATUS_REQUEST,
     UPDATE_PRODUCT_STATUS_SUCCESS,
     UPDATE_PRODUCT_STATUS_FAILURE,
@@ -29,41 +26,20 @@ import axiosInstance from 'utils/global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
 // Fetch ALLProducts API
-const fetchAllProductsAPI = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getAllProducts);
+const fetchProductsAPI = async (): Promise<AxiosResponse> => {
+    return await axiosInstance.get(apiUrl.products);
 };
 
-function* handleFetchAllProducts() {
+function* handleFetchProducts() {
     try {
-        const response: AxiosResponse = yield call(fetchAllProductsAPI);
-        yield put({ type: FETCH_ALL_PRODUCTS_SUCCESS, payload: { data: response.data.data } });
+        const response: AxiosResponse = yield call(fetchProductsAPI);
+        yield put({ type: FETCH_PRODUCTS_SUCCESS, payload: { data: response.data.data } });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
             errorMessage = error.message;
         }
-        yield put({ type: FETCH_ALL_PRODUCTS_FAILURE, error: errorMessage });
-    }
-}
-
-//Fetch ProductsList For Particular User
-const fetchProductsListByUser = async (userID: number): Promise<AxiosResponse> => {
-    return await axiosInstance.get(`${apiUrl.PRODUCTSLIST}/${userID}`);
-};
-
-function* handleFetchProductsListByUser() {
-    try {
-        const userIDStr = localStorage.getItem('profileID');
-        // const userIDStr = getLocalStorageItem<string>('profileID');
-        const userID = userIDStr ? parseInt(userIDStr, 10) : 0;
-        const response: AxiosResponse = yield call(fetchProductsListByUser, userID);
-        yield put({ type: GET_PRODUCTSLIST_BY_USER_SUCCESS, payload: response.data });
-    } catch (error: unknown) {
-        let errorMessage = 'An unknown error occurred';
-        if (error instanceof Error) {
-            errorMessage = error.message;
-        }
-        yield put({ type: GET_PRODUCTSLIST_BY_USER_FAILURE, error: errorMessage });
+        yield put({ type: FETCH_PRODUCTS_FAILURE, error: errorMessage });
     }
 }
 
@@ -73,7 +49,7 @@ const updateProductStatusAPI = async (
     status: string,
     comments: string
 ): Promise<AxiosResponse> => {
-    return await axiosInstance.patch(`${apiUrl.updateProductStatus}`, {
+    return await axiosInstance.patch(`${apiUrl.products}`, {
         productId,
         status,
         comments
@@ -99,7 +75,7 @@ function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
 
 //Add Product API
 const addProduct = async (productData: ProductFormValues): Promise<AxiosResponse> => {
-    return await axiosInstance.post(apiUrl.addProduct, productData);
+    return await axiosInstance.post(apiUrl.products, productData);
 };
 
 function* handleAddProduct(action: {
@@ -121,7 +97,7 @@ function* handleAddProduct(action: {
 
 //Edit Product API
 const editProduct = async (productData: ProductFormValues): Promise<AxiosResponse> => {
-    return await axiosInstance.put(`${apiUrl.updateProduct}`, productData);
+    return await axiosInstance.put(`${apiUrl.products}`, productData);
 };
 
 function* handleEditProduct(action: {
@@ -143,7 +119,7 @@ function* handleEditProduct(action: {
 
 //Delete Product API
 const deleteProduct = async (productId: number): Promise<AxiosResponse> => {
-    return await axiosInstance.delete(`${apiUrl.deleteProduct}/${productId}`);
+    return await axiosInstance.delete(`${apiUrl.products}/${productId}`);
 };
 
 function* handleDeleteProduct(action: { type: typeof DELETE_PRODUCT_REQUEST; payload: number }) {
@@ -162,7 +138,7 @@ function* handleDeleteProduct(action: { type: typeof DELETE_PRODUCT_REQUEST; pay
 
 //Fetch ProductsDetailsBy ID API
 const fetchProductDetailsById = async (productId: number): Promise<AxiosResponse> => {
-    return await axiosInstance.get(`${apiUrl.getProductDetailsById}/${productId}`);
+    return await axiosInstance.get(`${apiUrl.products}/${productId}`);
 };
 
 function* handleFetchProductDetailsById(action: {
@@ -182,8 +158,7 @@ function* handleFetchProductDetailsById(action: {
 }
 
 export default function* productSaga() {
-    yield takeLatest(GET_PRODUCTSLIST_BY_USER_REQUEST, handleFetchProductsListByUser);
-    yield takeLatest(FETCH_ALL_PRODUCTS_REQUEST, handleFetchAllProducts);
+    yield takeLatest(FETCH_PRODUCTS_REQUEST, handleFetchProducts);
     yield takeLatest(UPDATE_PRODUCT_STATUS_REQUEST, handleUpdateProductStatus);
     yield takeLatest(ADD_PRODUCT_REQUEST, handleAddProduct);
     yield takeLatest(EDIT_PRODUCT_REQUEST, handleEditProduct);

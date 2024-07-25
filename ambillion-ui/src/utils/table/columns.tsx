@@ -1,7 +1,7 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
-import { User } from 'Modules/user-module/type/types';
-import { Product } from 'Modules/product-module/type/types';
+import { User } from 'reduxSaga/modules/user-module/type/types';
+import { Product } from 'reduxSaga/modules/product-module/type/types';
 import { userStatus, productStatus } from 'constants/common';
 import productImage from 'assets/images/product.jpg';
 

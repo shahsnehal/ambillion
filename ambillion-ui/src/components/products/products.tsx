@@ -8,11 +8,11 @@ import {
     productsTableColumns,
     ProductStatusChangeActionColumn
 } from 'utils/table/columns';
-import { RootState } from 'config/store';
+import { RootState } from 'reduxSaga/config/store';
 import {
     fetchProductsRequest,
     updateProductStatusRequest
-} from 'Modules/product-module/action/actions';
+} from 'reduxSaga/modules/product-module/action/actions';
 
 export const Products = () => {
     const dispatch = useDispatch();

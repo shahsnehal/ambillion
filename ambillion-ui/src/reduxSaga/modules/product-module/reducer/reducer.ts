@@ -1,7 +1,4 @@
 import {
-    GET_PRODUCTSLIST_BY_USER_REQUEST,
-    GET_PRODUCTSLIST_BY_USER_SUCCESS,
-    GET_PRODUCTSLIST_BY_USER_FAILURE,
     ADD_PRODUCT_REQUEST,
     ADD_PRODUCT_SUCCESS,
     ADD_PRODUCT_FAILURE,
@@ -14,9 +11,9 @@ import {
     GET_PRODUCTDETAILS_BY_ID_REQUEST,
     GET_PRODUCTDETAILS_BY_ID_SUCCESS,
     GET_PRODUCTDETAILS_BY_ID_FAILURE,
-    FETCH_ALL_PRODUCTS_REQUEST,
-    FETCH_ALL_PRODUCTS_SUCCESS,
-    FETCH_ALL_PRODUCTS_FAILURE,
+    FETCH_PRODUCTS_REQUEST,
+    FETCH_PRODUCTS_SUCCESS,
+    FETCH_PRODUCTS_FAILURE,
     UPDATE_PRODUCT_STATUS_REQUEST,
     UPDATE_PRODUCT_STATUS_SUCCESS,
     UPDATE_PRODUCT_STATUS_FAILURE,
@@ -40,25 +37,21 @@ const initialState: ProductState = {
 
 export const productReducer = (state = initialState, action: ProductActionTypes): ProductState => {
     switch (action.type) {
-        case GET_PRODUCTSLIST_BY_USER_REQUEST:
         case ADD_PRODUCT_REQUEST:
         case EDIT_PRODUCT_REQUEST:
         case DELETE_PRODUCT_REQUEST:
-        case FETCH_ALL_PRODUCTS_REQUEST:
+        case FETCH_PRODUCTS_REQUEST:
         case UPDATE_PRODUCT_STATUS_REQUEST:
         case GET_PRODUCTDETAILS_BY_ID_REQUEST:
             return { ...state, isLoading: true, error: null };
 
-        case FETCH_ALL_PRODUCTS_SUCCESS:
+        case FETCH_PRODUCTS_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 error: null,
                 products: action.payload.data
             };
-
-        case GET_PRODUCTSLIST_BY_USER_SUCCESS:
-            return { ...state, isLoading: false, error: null, products: action.payload.data };
 
         case ADD_PRODUCT_SUCCESS:
             return {
@@ -105,8 +98,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 )
             };
 
-        case GET_PRODUCTSLIST_BY_USER_FAILURE:
-        case FETCH_ALL_PRODUCTS_FAILURE:
+        case FETCH_PRODUCTS_FAILURE:
         case ADD_PRODUCT_FAILURE:
         case EDIT_PRODUCT_FAILURE:
         case DELETE_PRODUCT_FAILURE:

@@ -8,18 +8,10 @@ export const apiUrl = {
     tokenRefresh: '/auth/refresh-tokens',
 
     //user-Module
-    getUser: '/users',
-    updateUserStatus: '/users',
+    users: '/users',
 
     //product-Module
-    getAllProducts: '/products',
-    PRODUCTSLIST: '/products',
-    updateProductStatus: '/products',
-
-    addProduct: '/products/addProduct',
-    getProductDetailsById: '/products',
-    updateProduct: '/products/updateProduct',
-    deleteProduct: '/products/deleteProduct'
+    products: '/products'
 };
 
 // Routing path constants

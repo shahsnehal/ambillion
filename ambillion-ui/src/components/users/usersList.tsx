@@ -4,8 +4,11 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { customStyles, UserStatusChangeActionColumn, userTableColumns } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
-import { fetchUsersRequest, updateUserStatusRequest } from 'Modules/user-module/action/actions';
-import { RootState } from 'config/store';
+import {
+    fetchUsersRequest,
+    updateUserStatusRequest
+} from 'reduxSaga/modules/user-module/action/actions';
+import { RootState } from 'reduxSaga/config/store';
 import { userStatus } from 'constants/common';
 
 export const actionType = {

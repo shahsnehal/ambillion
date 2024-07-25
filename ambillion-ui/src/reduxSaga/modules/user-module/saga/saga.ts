@@ -14,7 +14,7 @@ import { apiUrl } from 'constants/common';
 
 //Fetch UsersList API
 const fetchUsers = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getUser);
+    return await axiosInstance.get(apiUrl.users);
 };
 
 function* handleFetchUsers() {
@@ -32,7 +32,7 @@ function* handleFetchUsers() {
 
 //Update User Status API
 const updateUserStatus = async (userId: number, status: string): Promise<AxiosResponse> => {
-    return await axiosInstance.patch(`${apiUrl.updateUserStatus}`, {
+    return await axiosInstance.patch(`${apiUrl.users}`, {
         userId,
         status
     });

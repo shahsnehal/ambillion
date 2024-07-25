@@ -2,10 +2,10 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProductRequest } from 'Modules/product-module/action/actions';
+import { addProductRequest } from 'reduxSaga/modules/product-module/action/actions';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from 'config/store';
-import { ProductFormValues } from 'Modules/product-module/type/types';
+import { RootState } from 'reduxSaga/config/store';
+import { ProductFormValues } from 'reduxSaga/modules/product-module/type/types';
 
 type ProductFormModalProps = {
     initialValues?: ProductFormValues;

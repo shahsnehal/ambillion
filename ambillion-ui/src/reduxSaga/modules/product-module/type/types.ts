@@ -1,10 +1,6 @@
-export const FETCH_ALL_PRODUCTS_REQUEST = 'FETCH_PRODUCTS_REQUEST';
-export const FETCH_ALL_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
-export const FETCH_ALL_PRODUCTS_FAILURE = 'FETCH_PRODUCTS_FAILURE';
-
-export const GET_PRODUCTSLIST_BY_USER_REQUEST = 'GET_PRODUCTS_REQUEST';
-export const GET_PRODUCTSLIST_BY_USER_SUCCESS = 'GET_PRODUCTS_SUCCESS';
-export const GET_PRODUCTSLIST_BY_USER_FAILURE = 'GET_PRODUCTS_FAILURE';
+export const FETCH_PRODUCTS_REQUEST = 'FETCH_PRODUCTS_REQUEST';
+export const FETCH_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS';
+export const FETCH_PRODUCTS_FAILURE = 'FETCH_PRODUCTS_FAILURE';
 
 export const ADD_PRODUCT_REQUEST = 'ADD_PRODUCT_REQUEST';
 export const ADD_PRODUCT_SUCCESS = 'ADD_PRODUCT_SUCCESS';
@@ -65,31 +61,17 @@ export type ProductFormValues = {
     [key: string]: unknown;
 };
 
-export type FetchProductsListByUserRequestAction = {
-    type: typeof GET_PRODUCTSLIST_BY_USER_REQUEST;
+export type FetchProductsRequestAction = {
+    type: typeof FETCH_PRODUCTS_REQUEST;
 };
 
-export type FetchProductsListByUserSuccessAction = {
-    type: typeof GET_PRODUCTSLIST_BY_USER_SUCCESS;
+export type FetchProductsSuccessAction = {
+    type: typeof FETCH_PRODUCTS_SUCCESS;
     payload: { data: Product[] };
 };
 
-export type FetchProductsListByUserFailureAction = {
-    type: typeof GET_PRODUCTSLIST_BY_USER_FAILURE;
-    error: string;
-};
-
-export type FetchAllProductsRequestAction = {
-    type: typeof FETCH_ALL_PRODUCTS_REQUEST;
-};
-
-export type FetchAllProductsSuccessAction = {
-    type: typeof FETCH_ALL_PRODUCTS_SUCCESS;
-    payload: { data: Product[] };
-};
-
-export type FetchAllProductsFailureAction = {
-    type: typeof FETCH_ALL_PRODUCTS_FAILURE;
+export type FetchProductsFailureAction = {
+    type: typeof FETCH_PRODUCTS_FAILURE;
     error: string;
 };
 
@@ -169,12 +151,9 @@ export type FetchProductDetailsByIdFailureAction = {
 };
 
 export type ProductActionTypes =
-    | FetchProductsListByUserRequestAction
-    | FetchProductsListByUserSuccessAction
-    | FetchProductsListByUserFailureAction
-    | FetchAllProductsRequestAction
-    | FetchAllProductsSuccessAction
-    | FetchAllProductsFailureAction
+    | FetchProductsRequestAction
+    | FetchProductsSuccessAction
+    | FetchProductsFailureAction
     | UpdateProductStatusRequestAction
     | UpdateProductStatusSuccessAction
     | UpdateProductStatusFailureAction

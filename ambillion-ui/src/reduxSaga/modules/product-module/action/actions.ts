@@ -1,6 +1,4 @@
 import {
-    GET_PRODUCTSLIST_BY_USER_REQUEST,
-    FetchProductsListByUserRequestAction,
     ADD_PRODUCT_REQUEST,
     AddProductRequestAction,
     EDIT_PRODUCT_REQUEST,
@@ -10,18 +8,14 @@ import {
     GET_PRODUCTDETAILS_BY_ID_REQUEST,
     FetchProductDetailsByIdRequestAction,
     ProductFormValues,
-    FETCH_ALL_PRODUCTS_REQUEST,
-    FetchAllProductsRequestAction,
+    FETCH_PRODUCTS_REQUEST,
+    FetchProductsRequestAction,
     UPDATE_PRODUCT_STATUS_REQUEST,
     UpdateProductStatusRequestAction
 } from '../type/types';
 
-export const getProductsRequest = (): FetchProductsListByUserRequestAction => ({
-    type: GET_PRODUCTSLIST_BY_USER_REQUEST
-});
-
-export const fetchProductsRequest = (): FetchAllProductsRequestAction => ({
-    type: FETCH_ALL_PRODUCTS_REQUEST
+export const fetchProductsRequest = (): FetchProductsRequestAction => ({
+    type: FETCH_PRODUCTS_REQUEST
 });
 
 export const updateProductStatusRequest = (

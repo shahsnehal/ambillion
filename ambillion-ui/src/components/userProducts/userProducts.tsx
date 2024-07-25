@@ -10,9 +10,12 @@ import {
 } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ROUTES } from 'constants/common';
-import { RootState } from 'config/store';
+import { RootState } from 'reduxSaga/config/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProductRequest, getProductsRequest } from 'Modules/product-module/action/actions';
+import {
+    deleteProductRequest,
+    fetchProductsRequest
+} from 'reduxSaga/modules/product-module/action/actions';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -32,7 +35,7 @@ export const UserProducts = () => {
     const { isLoading, products } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
-        dispatch(getProductsRequest());
+        dispatch(fetchProductsRequest());
     }, []);
 
     const filteredItems = products?.filter((item) =>
