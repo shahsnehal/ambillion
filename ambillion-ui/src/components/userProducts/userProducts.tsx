@@ -65,6 +65,18 @@ export const UserProducts = () => {
         setShowConfirmationModal(true);
     };
 
+    // Confirm Delete Logic
+    // const handleConfirmDelete = () => {
+    //     if (selectDeleteProduct.productid) {
+    //         const updatedData = productData.filter(
+    //             (item) => item.id !== selectDeleteProduct.productid
+    //         );
+    //         setProductData(updatedData);
+    //         setResetPaginationToggle(!resetPaginationToggle);
+    //         setShowConfirmationModal(false);
+    //     }
+    // };
+
     const handleConfirmDelete = () => {
         if (selectDeleteProduct?.productid) {
             dispatch(deleteProductRequest(selectDeleteProduct.productid));
