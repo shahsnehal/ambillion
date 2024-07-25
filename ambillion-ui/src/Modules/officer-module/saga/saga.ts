@@ -14,7 +14,7 @@ import { apiUrl } from 'constants/common';
 
 // Fetch products API
 const fetchProductsAPI = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getProducts);
+    return await axiosInstance.get(apiUrl.products);
 };
 
 function* handleFetchProducts() {
@@ -36,7 +36,7 @@ const updateProductStatusAPI = async (
     status: string,
     profileID: number
 ): Promise<AxiosResponse> => {
-    return await axiosInstance.patch(`${apiUrl.updateProductStatus}/${profileID}`, {
+    return await axiosInstance.patch(`${apiUrl.products}`, {
         productId,
         status
     });

@@ -13,7 +13,7 @@ import {
 import { apiUrl } from 'constants/common';
 
 const fetchUsersAPI = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getUserList);
+    return await axiosInstance.get(apiUrl.users);
 };
 
 function* handleFetchUsers() {
@@ -29,23 +29,17 @@ function* handleFetchUsers() {
     }
 }
 
-const updateUserStatusAPI = async (
-    userId: number,
-    status: string,
-    profileID: number
-): Promise<AxiosResponse> => {
-    return await axiosInstance.patch(`${apiUrl.updateUserStatus}/${profileID}`, {
+const updateUserStatusAPI = async (userId: number, status: string): Promise<AxiosResponse> => {
+    return await axiosInstance.patch(`${apiUrl.users}`, {
         userId,
         status
     });
 };
 
 function* handleUpdateUserStatus(action: UpdateUserStatusRequestAction) {
-    const profileIDStr = localStorage.getItem('profileID');
-    const profileID = profileIDStr ? parseInt(profileIDStr, 10) : 0;
     try {
         const { userId, status } = action.payload;
-        yield call(updateUserStatusAPI, userId, status, profileID);
+        yield call(updateUserStatusAPI, userId, status);
         yield put({ type: UPDATE_USER_STATUS_SUCCESS, payload: { userId, status } });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';

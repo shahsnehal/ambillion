@@ -29,7 +29,7 @@ import axiosInstance from 'global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
 const getProducts = async (userID: number): Promise<AxiosResponse> => {
-    return await axiosInstance.get(`${apiUrl.getProductById}/${userID}`);
+    return await axiosInstance.get(`${apiUrl.products}`);
 };
 
 function* handleGetProducts() {
@@ -48,7 +48,7 @@ function* handleGetProducts() {
 }
 
 const addProduct = async (productData: ProductFormValues): Promise<AxiosResponse> => {
-    return await axiosInstance.post(apiUrl.addProduct, productData);
+    return await axiosInstance.post(apiUrl.products, productData);
 };
 
 function* handleAddProduct(action: {
@@ -69,7 +69,7 @@ function* handleAddProduct(action: {
 }
 
 const editProduct = async (productData: ProductFormValues): Promise<AxiosResponse> => {
-    return await axiosInstance.put(`${apiUrl.updateProduct}`, productData);
+    return await axiosInstance.put(`${apiUrl.products}`, productData);
 };
 
 function* handleEditProduct(action: {
@@ -90,7 +90,7 @@ function* handleEditProduct(action: {
 }
 
 const deleteProduct = async (productId: number): Promise<AxiosResponse> => {
-    return await axiosInstance.delete(`${apiUrl.deleteProduct}/${productId}`);
+    return await axiosInstance.delete(`${apiUrl.products}/${productId}`);
 };
 
 function* handleDeleteProduct(action: { type: typeof DELETE_PRODUCT_REQUEST; payload: number }) {
@@ -108,7 +108,7 @@ function* handleDeleteProduct(action: { type: typeof DELETE_PRODUCT_REQUEST; pay
 }
 
 const getProductById = async (productId: number): Promise<AxiosResponse> => {
-    return await axiosInstance.get(`${apiUrl.getProductById}/${productId}`);
+    return await axiosInstance.get(`${apiUrl.products}/${productId}`);
 };
 
 function* handleGetProductById(action: {
@@ -129,7 +129,7 @@ function* handleGetProductById(action: {
 
 // Fetch ALLProducts API
 const fetchProductsAPI = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getProducts);
+    return await axiosInstance.get(apiUrl.products);
 };
 
 function* handleFetchProducts() {
@@ -151,7 +151,7 @@ const updateProductStatusAPI = async (
     status: string,
     profileID: number
 ): Promise<AxiosResponse> => {
-    return await axiosInstance.patch(`${apiUrl.updateProductStatus}/${profileID}`, {
+    return await axiosInstance.patch(`${apiUrl.products}/${profileID}`, {
         productId,
         status
     });
