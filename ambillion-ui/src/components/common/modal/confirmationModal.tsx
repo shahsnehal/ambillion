@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 type ConfirmationModalProps = {
     isOpen: boolean;
@@ -27,20 +27,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     confirmBtnClassName = 'btn btn-danger',
     actionInProgressLabel = 'Performing Action...'
 }) => {
-    const [isPerformingAction, setIsPerformingAction] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (isPerformingAction) {
-            setTimeout(() => {
-                onConfirm();
-                onClose();
-                setIsPerformingAction(false);
-            }, 1000);
-        }
-    }, [isPerformingAction]);
-
     const handleConfirmClick = () => {
-        setIsPerformingAction(true);
+        onConfirm();
+        onClose();
     };
 
     return (
@@ -63,7 +52,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
                                 onClick={onClose}
-                                disabled={isPerformingAction}
+                                disabled={isLoading}
                             ></button>
                         </div>
                         <div className="modal-body">
@@ -75,7 +64,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                 className={closeBtnClassName}
                                 data-bs-dismiss="modal"
                                 onClick={onClose}
-                                disabled={isPerformingAction}
+                                disabled={isLoading}
                             >
                                 {closeLabel}
                             </button>
@@ -83,9 +72,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                 type="button"
                                 className={confirmBtnClassName}
                                 onClick={handleConfirmClick}
-                                disabled={isLoading || isPerformingAction}
+                                disabled={isLoading}
                             >
-                                {isPerformingAction ? actionInProgressLabel : confirmLabel}
+                                {isLoading ? actionInProgressLabel : confirmLabel}
                             </button>
                         </div>
                     </div>

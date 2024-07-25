@@ -4,9 +4,10 @@ import { productStatus } from 'constants/common';
 type ProductStatusModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    productId: number;
+    productId: string;
     currentStatus: string;
-    onConfirm: (productId: number, newStatus: string, comments: string) => void;
+    currentComment: string;
+    onConfirm: (productId: string, newStatus: string, comment: string) => void;
 };
 
 type ProductStatusKeys = keyof typeof productStatus;
@@ -16,17 +17,19 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     onClose,
     productId,
     currentStatus,
+    currentComment,
     onConfirm
 }) => {
     const [newStatus, setNewStatus] = useState<string>(currentStatus);
-    const [comments, setComments] = useState<string>('');
+    const [newComment, setNewComment] = useState<string>(currentComment);
 
     useEffect(() => {
         setNewStatus(currentStatus);
-    }, [currentStatus]);
+        setNewComment(currentComment);
+    }, [currentStatus, currentComment]);
 
     const handleConfirm = () => {
-        onConfirm(productId, newStatus, comments);
+        onConfirm(productId, newStatus, newComment);
         onClose();
     };
 
@@ -68,15 +71,15 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                 </select>
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="comments" className="form-label">
+                                <label htmlFor="comment" className="form-label">
                                     Comments
                                 </label>
                                 <textarea
-                                    id="comments"
+                                    id="comment"
                                     className="form-control"
                                     rows={3}
-                                    value={comments}
-                                    onChange={(e) => setComments(e.target.value)}
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
                                 ></textarea>
                             </div>
                         </div>
@@ -89,7 +92,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                 className="btn btn-primary"
                                 onClick={handleConfirm}
                             >
-                                Confirm
+                                confirm
                             </button>
                         </div>
                     </div>

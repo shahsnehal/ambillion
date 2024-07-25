@@ -1,18 +1,20 @@
 import React from 'react';
 import { ROUTES, userRoles } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
+// import { getLocalStorageItem } from 'utils/global/globalFunction';
 
 export const NotAuthorized: React.FC = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem('role');
+    // const userRole = getLocalStorageItem<string>('role');
 
     const handleNavigation = () => {
         switch (userRole) {
             case userRoles.ADMIN:
-                navigate(ROUTES.USERSLIST);
+                navigate(ROUTES.USERS);
                 break;
             case userRoles.MANUFACTURER:
-                navigate(ROUTES.PRODUCTSBYUSERID);
+                navigate(ROUTES.PRODUCTSLIST);
                 break;
             case userRoles.OFFICER:
                 navigate(ROUTES.PRODUCTS);

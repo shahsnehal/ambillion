@@ -10,9 +10,12 @@ import {
 } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ROUTES } from 'constants/common';
-import { RootState } from 'config/store';
+import { RootState } from 'reduxSaga/config/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteProductRequest, getProductsRequest } from 'Modules/product-module/action/actions';
+import {
+    deleteProductRequest,
+    fetchProductsRequest
+} from 'reduxSaga/modules/product-module/action/actions';
 
 type SelectableDeleteRowData = {
     productid: number | null;
@@ -20,23 +23,19 @@ type SelectableDeleteRowData = {
 };
 
 export const UserProducts = () => {
-    // const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [pending, setPending] = useState<boolean>(true);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
         productid: null,
         productName: ''
     });
-    const { products } = useSelector((state: RootState) => state.productModule);
+    const { isLoading, products } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
-        setPending(true);
-        dispatch(getProductsRequest());
-        setPending(false);
+        dispatch(fetchProductsRequest());
     }, []);
 
     const filteredItems = products?.filter((item) =>
@@ -57,7 +56,7 @@ export const UserProducts = () => {
     };
 
     const handleView = (productId: number) => {
-        navigate(`/products/${productId}`);
+        navigate(`/productsList/${productId}`);
     };
 
     //Product Delete Logic
@@ -65,18 +64,6 @@ export const UserProducts = () => {
         setSelectDeleteProduct({ productid: params.id, productName: params.productDisplayName });
         setShowConfirmationModal(true);
     };
-
-    // Confirm Delete Logic
-    // const handleConfirmDelete = () => {
-    //     if (selectDeleteProduct.productid) {
-    //         const updatedData = productData.filter(
-    //             (item) => item.id !== selectDeleteProduct.productid
-    //         );
-    //         setProductData(updatedData);
-    //         setResetPaginationToggle(!resetPaginationToggle);
-    //         setShowConfirmationModal(false);
-    //     }
-    // };
 
     const handleConfirmDelete = () => {
         if (selectDeleteProduct?.productid) {
@@ -128,7 +115,7 @@ export const UserProducts = () => {
                 data={filteredItems}
                 defaultSortFieldId={'Status'}
                 defaultSortAsc={false}
-                progressPending={pending}
+                progressPending={isLoading}
                 pagination
                 title=" "
                 selectableRows

@@ -8,19 +8,10 @@ export const apiUrl = {
     tokenRefresh: '/auth/refresh-tokens',
 
     //user-Module
-    getUserList: '/users',
-    updateUserStatus: '/users',
+    users: '/users',
 
-    //Manufacture-product-Module
-    productsByUserID: '/products',
-    addProduct: '/products/addProduct',
-    getProductById: '/products',
-    updateProduct: '/products',
-    deleteProduct: '/products/deleteProduct',
-
-    //Officer-Module
-    getProducts: '/products',
-    updateProductStatus: '/officer'
+    //product-Module
+    products: '/products'
 };
 
 // Routing path constants
@@ -29,15 +20,16 @@ export const ROUTES = {
     LOGIN: '/login',
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgotPassword',
+    NOT_AUTHORIZES: '/unAthorized',
     DASHBOARD: '/dashboard',
-    USERSLIST: '/users',
+    USERS: '/users',
     PRODUCTS: '/products',
-    PRODUCTSBYUSERID: '/productsList',
+    PRODUCTSLIST: '/productsList',
+
     UPDATEPRODUCT: '/products',
-    ADDPRODUCT: '/products/addProduct',
+    ADDPRODUCT: '/productsList/addProduct',
     EDITPRODUCT: '/products/edit/:Id',
-    PRODUCTDETAILS: '/products/:productId',
-    NOT_AUTHORIZES: '/unAthorized'
+    PRODUCTDETAILS: '/productsList/:productId'
 };
 
 // Recaptcha Configuration
@@ -66,7 +58,7 @@ export const userRoles = {
 };
 
 export const roleRedirects = {
-    [userRoles.ADMIN]: ROUTES.USERSLIST,
-    [userRoles.MANUFACTURER]: ROUTES.PRODUCTSBYUSERID,
+    [userRoles.ADMIN]: ROUTES.USERS,
+    [userRoles.MANUFACTURER]: ROUTES.PRODUCTSLIST,
     [userRoles.OFFICER]: ROUTES.PRODUCTS
 };

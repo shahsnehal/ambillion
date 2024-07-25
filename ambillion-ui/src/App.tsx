@@ -50,7 +50,7 @@ function App() {
                                         }
                                     >
                                         <Route
-                                            path={ROUTES.USERSLIST}
+                                            path={ROUTES.USERS}
                                             element={
                                                 <Layout title="Users">
                                                     <UsersPage />
@@ -70,7 +70,7 @@ function App() {
                                         }
                                     >
                                         <Route
-                                            path={ROUTES.PRODUCTSBYUSERID}
+                                            path={ROUTES.PRODUCTSLIST}
                                             element={
                                                 <Layout title="productslist">
                                                     <UserProductsPage />
