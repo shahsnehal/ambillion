@@ -20,6 +20,7 @@ const fetchUsers = async (): Promise<AxiosResponse> => {
 function* handleFetchUsers() {
     try {
         const response: AxiosResponse = yield call(fetchUsers);
+        console.log('userRes', response);
         yield put({ type: FETCH_USERS_SUCCESS, payload: response.data.data });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';

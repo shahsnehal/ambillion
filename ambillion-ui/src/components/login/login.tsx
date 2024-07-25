@@ -26,6 +26,7 @@ export const Login = () => {
     });
 
     const handleSubmit = async (values: SigninData) => {
+        console.log('values', values);
         const { email, password } = values;
         dispatch(signinRequest({ email, password, navigate }));
     };

@@ -38,7 +38,7 @@ export const UserProducts = () => {
         dispatch(fetchProductsRequest());
     }, []);
 
-    const filteredItems = products?.filter((item) =>
+    const filteredItems = products.filter((item) =>
         item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
     );
 

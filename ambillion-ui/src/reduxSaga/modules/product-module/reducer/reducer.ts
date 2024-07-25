@@ -46,6 +46,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
             return { ...state, isLoading: true, error: null };
 
         case FETCH_PRODUCTS_SUCCESS:
+            console.log('productPay', action.payload);
             return {
                 ...state,
                 isLoading: false,

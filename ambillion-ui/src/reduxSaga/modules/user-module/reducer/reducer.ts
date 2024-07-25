@@ -26,6 +26,7 @@ export const userReducer = (state = initialState, action: UserActionTypes): User
         case FETCH_USERS_REQUEST:
             return { ...state, isLoading: true, error: null };
         case FETCH_USERS_SUCCESS:
+            console.log('userPay', action.payload);
             return {
                 ...state,
                 isLoading: false,

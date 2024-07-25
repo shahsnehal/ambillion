@@ -33,7 +33,8 @@ const fetchProductsAPI = async (): Promise<AxiosResponse> => {
 function* handleFetchProducts() {
     try {
         const response: AxiosResponse = yield call(fetchProductsAPI);
-        yield put({ type: FETCH_PRODUCTS_SUCCESS, payload: { data: response.data.data } });
+        console.log('proRes', response);
+        yield put({ type: FETCH_PRODUCTS_SUCCESS, payload: { data: response.data } });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
