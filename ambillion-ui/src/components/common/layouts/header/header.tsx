@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
-import { userLogout } from 'global/globalFunction';
+import { userLogout } from 'utils/global/globalFunction';
 export const Header = () => {
     const navigate = useNavigate();
 

@@ -1,7 +1,7 @@
 import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
-import { User } from 'Modules/user-module/type/types';
-import { Product } from 'Modules/product-module/type/types';
+import { User } from 'reduxSaga/modules/user-module/type/types';
+import { Product } from 'reduxSaga/modules/product-module/type/types';
 import { userStatus, productStatus } from 'constants/common';
 import productImage from 'assets/images/product.jpg';
 
@@ -80,7 +80,8 @@ type UserStatusChangeActionProps = {
 type ProductStatusChangeActionProps = {
     productId: number;
     currentStatus: string;
-    onOpenModal: (productId: number, status: string) => void;
+    currentComment: string;
+    onOpenModal: (productId: number, status: string, comments: string) => void;
 };
 
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
@@ -96,7 +97,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
                 data-placement="left"
                 title="Approve"
                 onClick={onApprove}
-                disabled={status === 'ACCEPTED'}
+                disabled={status === userStatus.ACCEPTED}
             >
                 <Icon icon="solar:check-circle-outline" className="fs-5" />
             </button>
@@ -106,7 +107,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
                 data-placement="left"
                 title="Reject"
                 onClick={onReject}
-                disabled={status === 'REJECTED'}
+                disabled={status === userStatus.REJECTED}
             >
                 <Icon icon="solar:close-circle-outline" className="fs-5" />
             </button>
@@ -117,6 +118,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
 export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps> = ({
     productId,
     currentStatus,
+    currentComment,
     onOpenModal
 }) => {
     return (
@@ -126,7 +128,7 @@ export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps>
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Change Status"
-                onClick={() => onOpenModal(productId, currentStatus)}
+                onClick={() => onOpenModal(productId, currentStatus, currentComment)}
             >
                 <Icon icon="solar:pen-outline" className="fs-5" />
             </button>
@@ -152,14 +154,15 @@ export const UserStatusChangeActionColumn = (
 });
 
 export const ProductStatusChangeActionColumn = (
-    onOpenModal: (productId: number, currentStatus: string) => void
+    onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
 ) => ({
     name: 'Action',
     cell: (row: Product) => (
         <ProductStatusChangeAction
             productId={row.product_id}
             currentStatus={row.status}
-            onOpenModal={() => onOpenModal(row.product_id, row.status)}
+            currentComment={row.comments}
+            onOpenModal={() => onOpenModal(row.product_id.toString(), row.status, row.comments)}
         />
     ),
     ignoreRowClick: false,

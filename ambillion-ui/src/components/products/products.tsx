@@ -8,25 +8,25 @@ import {
     productsTableColumns,
     ProductStatusChangeActionColumn
 } from 'utils/table/columns';
-import { RootState } from 'config/store';
-import { fetchProductsRequest } from 'Modules/officer-module/action/actions';
-import { updateProductStatusRequest } from 'Modules/product-module/action/actions';
+import { RootState } from 'reduxSaga/config/store';
+import {
+    fetchProductsRequest,
+    updateProductStatusRequest
+} from 'reduxSaga/modules/product-module/action/actions';
 
 export const Products = () => {
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+    const [selectedProductId, setSelectedProductId] = useState<string>('');
     const [currentStatus, setCurrentStatus] = useState<string>('');
-    const [pending, setPending] = useState<boolean>(true);
+    const [currentComment, setCurrentComment] = useState<string>('');
 
-    const { products } = useSelector((state: RootState) => state.productModule);
+    const { products, isLoading } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
-        setPending(true);
         dispatch(fetchProductsRequest());
-        setPending(false);
     }, []);
 
     const filteredItems = useMemo(
@@ -37,21 +37,27 @@ export const Products = () => {
         [filterText, products]
     );
 
-    const handleOpenModal = (productId: number, status: string) => {
-        setSelectedProduct(productId);
+    const handleOpenModal = (productId: string, status: string, comments: string) => {
+        setSelectedProductId(productId);
         setCurrentStatus(status);
+        setCurrentComment(comments);
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setSelectedProduct(null);
+        setSelectedProductId('');
         setCurrentStatus('');
+        setCurrentComment('');
     };
 
-    const handleConfirmStatusChange = (productId: number, newStatus: string) => {
+    const handleConfirmStatusChange = (
+        productId: string,
+        newStatus: string,
+        newComment: string
+    ) => {
         if (productId !== null) {
-            dispatch(updateProductStatusRequest(productId, newStatus));
+            dispatch(updateProductStatusRequest(productId, newStatus, newComment));
         }
         handleCloseModal();
     };
@@ -88,7 +94,7 @@ export const Products = () => {
                 data={filteredItems}
                 defaultSortFieldId="Status"
                 defaultSortAsc={false}
-                progressPending={pending}
+                progressPending={isLoading}
                 pagination
                 title=" "
                 selectableRows
@@ -105,8 +111,9 @@ export const Products = () => {
             <ProductStatusModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                productId={selectedProduct ?? 0}
+                productId={selectedProductId ?? 0}
                 currentStatus={currentStatus}
+                currentComment={currentComment}
                 onConfirm={handleConfirmStatusChange}
             />
         </>
