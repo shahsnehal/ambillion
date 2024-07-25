@@ -1,5 +1,5 @@
 import { ROUTES } from 'constants/common';
-import { getUserRole } from 'global/globalFunction';
+import { getUserRole } from 'utils/global/globalFunction';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,6 +10,7 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     const isAuthenticated = localStorage.getItem('accessToken');
+    // const isAuthenticated = getLocalStorageItem<string>('accessToken');
     const userRole = getUserRole();
 
     if (!isAuthenticated) {

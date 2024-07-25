@@ -10,7 +10,7 @@ import {
     SIGNIN_REQUEST
 } from '../type/types';
 import { apiUrl, roleRedirects, ROUTES } from 'constants/common';
-import axiosInstance from 'global/axiosInstance';
+import axiosInstance from 'utils/global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
 const signup = async (signupData: SignupData): Promise<AxiosResponse> => {
@@ -53,6 +53,10 @@ function* handleSignin(action: {
         localStorage.setItem('profileID', userProfileID);
         localStorage.setItem('role', userRole);
         localStorage.setItem('accessToken', access.token);
+
+        // setLocalStorageItem('profileID', userProfileID);
+        // setLocalStorageItem('role', userRole);
+        // setLocalStorageItem('accessToken', access.token);
 
         //optimized
         const redirectPath = roleRedirects[userRole];

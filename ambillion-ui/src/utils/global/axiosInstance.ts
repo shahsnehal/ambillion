@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { apiUrl } from 'constants/common';
 import { toast } from 'react-toastify';
-// import { refreshAccessToken } from './globalFunction';
 
 type AdaptAxiosRequestConfig = AxiosRequestConfig & {
     headers: AxiosRequestHeaders;
@@ -18,6 +17,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     async (config: AdaptAxiosRequestConfig) => {
         const accessToken = localStorage.getItem('accessToken') ?? null;
+        // const accessToken: string | null = getLocalStorageItem<string>('accessToken');
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { productStatus } from 'constants/common';
-import { useSelector } from 'react-redux';
-import { RootState } from 'config/store';
 
 type ProductStatusModalProps = {
     isOpen: boolean;
@@ -22,7 +20,6 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     currentComment,
     onConfirm
 }) => {
-    const { isLoading } = useSelector((state: RootState) => state.productModule);
     const [newStatus, setNewStatus] = useState<string>(currentStatus);
     const [newComment, setNewComment] = useState<string>(currentComment);
 
@@ -32,9 +29,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     }, [currentStatus, currentComment]);
 
     const handleConfirm = () => {
-        if (productId) {
-            onConfirm(productId, newStatus, newComment);
-        }
+        onConfirm(productId, newStatus, newComment);
         onClose();
     };
 
@@ -96,9 +91,8 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                 type="button"
                                 className="btn btn-primary"
                                 onClick={handleConfirm}
-                                disabled={isLoading}
                             >
-                                {isLoading ? 'Confirming...' : 'Confirm'}
+                                confirm
                             </button>
                         </div>
                     </div>

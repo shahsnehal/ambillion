@@ -25,7 +25,7 @@ import {
     UpdateProductStatusRequestAction
 } from '../type/types';
 import { apiUrl, ROUTES } from 'constants/common';
-import axiosInstance from 'global/axiosInstance';
+import axiosInstance from 'utils/global/axiosInstance';
 import { AxiosResponse } from 'axios';
 
 // Fetch ALLProducts API
@@ -54,6 +54,7 @@ const fetchProductsListByUser = async (userID: number): Promise<AxiosResponse> =
 function* handleFetchProductsListByUser() {
     try {
         const userIDStr = localStorage.getItem('profileID');
+        // const userIDStr = getLocalStorageItem<string>('profileID');
         const userID = userIDStr ? parseInt(userIDStr, 10) : 0;
         const response: AxiosResponse = yield call(fetchProductsListByUser, userID);
         yield put({ type: GET_PRODUCTSLIST_BY_USER_SUCCESS, payload: response.data });

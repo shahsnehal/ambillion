@@ -53,7 +53,7 @@ export const UserProducts = () => {
     };
 
     const handleView = (productId: number) => {
-        navigate(`/products/${productId}`);
+        navigate(`/productsList/${productId}`);
     };
 
     //Product Delete Logic

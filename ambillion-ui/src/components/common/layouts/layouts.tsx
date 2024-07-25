@@ -4,7 +4,7 @@ import { Breadcrumb } from '../breadCrumb/breadCrumb';
 import { ROUTES, userRoles } from 'constants/common';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Footer } from './footer/footer';
-import { getUserRole } from 'global/globalFunction';
+import { getUserRole } from 'utils/global/globalFunction';
 
 export const Layout = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const navigate = useNavigate();
@@ -47,17 +47,17 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                             {userRole === userRoles.ADMIN && (
                                 <li className="sidebar-item custom-sidebar-link">
                                     <a
-                                        className={`sidebar-link ${isActive(ROUTES.USERSLIST) ? 'active' : ''}`}
+                                        className={`sidebar-link ${isActive(ROUTES.USERS) ? 'active' : ''}`}
                                         id="get-url"
                                         onClick={() => {
-                                            navigate(ROUTES.USERSLIST);
+                                            navigate(ROUTES.USERS);
                                         }}
                                     >
                                         <Icon
                                             icon="solar:user-circle-line-duotone"
                                             className="aside-icon"
                                         />
-                                        <span className="hide-menu">USERS LIST</span>
+                                        <span className="hide-menu">USERS</span>
                                     </a>
                                 </li>
                             )}

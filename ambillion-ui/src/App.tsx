@@ -50,7 +50,7 @@ function App() {
                                         }
                                     >
                                         <Route
-                                            path={ROUTES.USERSLIST}
+                                            path={ROUTES.USERS}
                                             element={
                                                 <Layout title="Users">
                                                     <UsersPage />

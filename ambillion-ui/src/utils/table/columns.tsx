@@ -97,7 +97,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
                 data-placement="left"
                 title="Approve"
                 onClick={onApprove}
-                disabled={status === 'ACCEPTED'}
+                disabled={status === userStatus.ACCEPTED}
             >
                 <Icon icon="solar:check-circle-outline" className="fs-5" />
             </button>
@@ -107,7 +107,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
                 data-placement="left"
                 title="Reject"
                 onClick={onReject}
-                disabled={status === 'REJECTED'}
+                disabled={status === userStatus.REJECTED}
             >
                 <Icon icon="solar:close-circle-outline" className="fs-5" />
             </button>

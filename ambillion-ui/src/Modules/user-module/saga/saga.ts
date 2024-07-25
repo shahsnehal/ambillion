@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import axiosInstance from 'global/axiosInstance';
+import axiosInstance from 'utils/global/axiosInstance';
 import { AxiosResponse } from 'axios';
 import {
     FETCH_USERS_REQUEST,
@@ -14,7 +14,7 @@ import { apiUrl } from 'constants/common';
 
 //Fetch UsersList API
 const fetchUsers = async (): Promise<AxiosResponse> => {
-    return await axiosInstance.get(apiUrl.getUserList);
+    return await axiosInstance.get(apiUrl.getUser);
 };
 
 function* handleFetchUsers() {

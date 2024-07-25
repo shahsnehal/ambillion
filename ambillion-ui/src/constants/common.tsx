@@ -8,7 +8,7 @@ export const apiUrl = {
     tokenRefresh: '/auth/refresh-tokens',
 
     //user-Module
-    getUserList: '/users',
+    getUser: '/users',
     updateUserStatus: '/users',
 
     //product-Module
@@ -30,14 +30,14 @@ export const ROUTES = {
     FORGOT_PASSWORD: '/forgotPassword',
     NOT_AUTHORIZES: '/unAthorized',
     DASHBOARD: '/dashboard',
-    USERSLIST: '/users',
+    USERS: '/users',
     PRODUCTS: '/products',
     PRODUCTSLIST: '/productsList',
 
     UPDATEPRODUCT: '/products',
-    ADDPRODUCT: '/products/addProduct',
+    ADDPRODUCT: '/productsList/addProduct',
     EDITPRODUCT: '/products/edit/:Id',
-    PRODUCTDETAILS: '/products/:productId'
+    PRODUCTDETAILS: '/productsList/:productId'
 };
 
 // Recaptcha Configuration
@@ -66,7 +66,7 @@ export const userRoles = {
 };
 
 export const roleRedirects = {
-    [userRoles.ADMIN]: ROUTES.USERSLIST,
+    [userRoles.ADMIN]: ROUTES.USERS,
     [userRoles.MANUFACTURER]: ROUTES.PRODUCTSLIST,
     [userRoles.OFFICER]: ROUTES.PRODUCTS
 };

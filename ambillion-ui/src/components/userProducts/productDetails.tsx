@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { dummyProductTableData } from 'utils/table/data';
-import { hasRole } from 'global/globalFunction';
+import { hasRole } from 'utils/global/globalFunction';
 import { userRoles } from 'constants/common';
 
 export const ProductDetail = () => {
