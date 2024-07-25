@@ -44,7 +44,6 @@ export const ForgotPassword = () => {
                                         }}
                                         validationSchema={RegisterSchemas}
                                         onSubmit={(values, { setSubmitting }) => {
-                                            console.log(values);
                                             // Simulating asynchronous operation, like an API call
                                             setTimeout(() => {
                                                 // eslint-disable-next-line no-alert

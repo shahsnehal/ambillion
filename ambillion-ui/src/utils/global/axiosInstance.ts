@@ -33,7 +33,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => {
         const responseCode = response?.data?.code;
-        console.log('axios', response.data);
         if ([200, 201, 202, 203].includes(responseCode)) {
             const responseMessage = response?.data?.message;
             if (responseMessage) toast.success(responseMessage);

@@ -44,7 +44,7 @@ function* handleSignin(action: {
 }) {
     try {
         const response: AxiosResponse = yield call(signin, action.payload);
-        const responseData = response.data.data;
+        const responseData = response.data;
         const { userprofile_id: userProfileID, role_name: userRole } = responseData.user;
         const { access } = responseData.tokens;
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });

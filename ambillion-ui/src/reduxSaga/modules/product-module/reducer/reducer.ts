@@ -46,12 +46,11 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
             return { ...state, isLoading: true, error: null };
 
         case FETCH_PRODUCTS_SUCCESS:
-            console.log('productPay', action.payload);
             return {
                 ...state,
                 isLoading: false,
                 error: null,
-                products: action.payload.data
+                products: action.payload
             };
 
         case ADD_PRODUCT_SUCCESS:
