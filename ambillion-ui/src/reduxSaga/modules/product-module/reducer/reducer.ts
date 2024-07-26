@@ -50,7 +50,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 ...state,
                 isLoading: false,
                 error: null,
-                products: action.payload.data
+                products: action.payload
             };
 
         case ADD_PRODUCT_SUCCESS:

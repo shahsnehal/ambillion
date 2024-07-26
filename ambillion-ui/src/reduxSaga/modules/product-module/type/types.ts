@@ -67,7 +67,7 @@ export type FetchProductsRequestAction = {
 
 export type FetchProductsSuccessAction = {
     type: typeof FETCH_PRODUCTS_SUCCESS;
-    payload: { data: Product[] };
+    payload: Product[];
 };
 
 export type FetchProductsFailureAction = {

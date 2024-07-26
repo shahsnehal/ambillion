@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
             const responseMessage = response?.data?.message;
             if (responseMessage) toast.success(responseMessage);
         }
-        return response;
+        return response.data;
     },
     async (error) => {
         const data = error ?? error.response ? error.response.data : null;
