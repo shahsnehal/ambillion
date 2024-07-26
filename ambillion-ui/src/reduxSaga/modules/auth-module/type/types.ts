@@ -68,6 +68,7 @@ export type User = {
     email: string;
     first_name: string;
     last_name: string;
+    name: string;
     company_name: string;
     mobile_number: string;
     profile_image: string | null;

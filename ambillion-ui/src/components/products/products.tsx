@@ -92,8 +92,6 @@ export const Products = () => {
                     ProductStatusChangeActionColumn(handleOpenModal)
                 ]}
                 data={filteredItems}
-                defaultSortFieldId="Status"
-                defaultSortAsc={false}
                 progressPending={isLoading}
                 pagination
                 title=" "

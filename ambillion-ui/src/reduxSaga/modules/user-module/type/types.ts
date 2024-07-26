@@ -10,9 +10,11 @@ export type User = {
     userprofile_id: number;
     first_name: string;
     last_name: string;
+    name: string;
     email: string;
     company_name?: string;
     mobile_number: string;
+    created_timestamp: string;
     status: string;
 };
 

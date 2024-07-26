@@ -1,8 +1,11 @@
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
-import { userLogout } from 'utils/global/globalFunction';
+import { userLogout, getUserData } from 'utils/global/globalFunction';
+
 export const Header = () => {
     const navigate = useNavigate();
+    const userData = getUserData();
+    const { first_name: Name, email: Email, role_name: RoleName } = userData;
 
     const handleLogout = () => {
         userLogout(navigate);
@@ -123,10 +126,10 @@ export const Header = () => {
                                                         />
                                                         <div className="ms-3">
                                                             <h5 className="mb-0 fs-4">
-                                                                James White
+                                                                {Name} ( {RoleName} )
                                                             </h5>
                                                             <p className="mb-0 d-flex align-items-center text-muted">
-                                                                info@ambillion.com
+                                                                {Email}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -153,17 +156,9 @@ export const Header = () => {
                                                             </a>
                                                         </div>
                                                         <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            {/* <a
-                                                                onClick={() =>
-                                                                    navigate(ROUTES.LOGIN)
-                                                                }
-                                                                className=" d-flex  align-items-center "
-                                                            >
-                                                                Sign Out
-                                                            </a> */}
                                                             <a
                                                                 onClick={handleLogout}
-                                                                className="d-flex align-items-center"
+                                                                className="d-flex align-items-center custom-sidebar-link"
                                                             >
                                                                 Sign Out
                                                             </a>
