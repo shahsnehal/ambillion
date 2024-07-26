@@ -8,30 +8,16 @@ import {
     productsListTableColumns,
     productViewEditDeleteActionColumn
 } from 'utils/table/columns';
-import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ROUTES } from 'constants/common';
 import { RootState } from 'reduxSaga/config/store';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    deleteProductRequest,
-    fetchProductsRequest
-} from 'reduxSaga/modules/product-module/action/actions';
-
-type SelectableDeleteRowData = {
-    productid: number | null;
-    productName: string;
-};
+import { fetchProductsRequest } from 'reduxSaga/modules/product-module/action/actions';
 
 export const UserProducts = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
-    const [selectDeleteProduct, setSelectDeleteProduct] = useState<SelectableDeleteRowData>({
-        productid: null,
-        productName: ''
-    });
     const { isLoading, products } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
@@ -57,31 +43,6 @@ export const UserProducts = () => {
 
     const handleView = (productId: number) => {
         navigate(`/productsList/${productId}`);
-    };
-
-    //Product Delete Logic
-    const handleDelete = (params: { id: number; productDisplayName: string }) => {
-        setSelectDeleteProduct({ productid: params.id, productName: params.productDisplayName });
-        setShowConfirmationModal(true);
-    };
-
-    // Confirm Delete Logic
-    // const handleConfirmDelete = () => {
-    //     if (selectDeleteProduct.productid) {
-    //         const updatedData = productData.filter(
-    //             (item) => item.id !== selectDeleteProduct.productid
-    //         );
-    //         setProductData(updatedData);
-    //         setResetPaginationToggle(!resetPaginationToggle);
-    //         setShowConfirmationModal(false);
-    //     }
-    // };
-
-    const handleConfirmDelete = () => {
-        if (selectDeleteProduct?.productid) {
-            dispatch(deleteProductRequest(selectDeleteProduct.productid));
-            setShowConfirmationModal(false);
-        }
     };
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -118,39 +79,24 @@ export const UserProducts = () => {
     }, [filterText, resetPaginationToggle]);
 
     return (
-        <>
-            <DataTable
-                columns={[
-                    ...productsListTableColumns,
-                    productViewEditDeleteActionColumn(handleView, handleEdit, handleDelete)
-                ]}
-                data={filteredItems}
-                defaultSortFieldId={'Status'}
-                defaultSortAsc={false}
-                progressPending={isLoading}
-                pagination
-                title=" "
-                selectableRows
-                fixedHeader
-                highlightOnHover
-                fixedHeaderScrollHeight="450px"
-                paginationResetDefaultPage={resetPaginationToggle}
-                subHeader
-                subHeaderComponent={subHeaderComponentMemo}
-                persistTableHead
-                customStyles={customStyles}
-            />
-            <ConfirmationModal
-                isOpen={showConfirmationModal}
-                onClose={() => setShowConfirmationModal(false)}
-                onConfirm={handleConfirmDelete}
-                isLoading={false}
-                title="Delete Product"
-                content={`Are you sure you want to delete the product "${selectDeleteProduct.productName}"?`}
-                closeLabel="Cancel"
-                confirmLabel="Delete"
-                actionInProgressLabel="Deleting..."
-            />
-        </>
+        <DataTable
+            columns={[
+                ...productsListTableColumns,
+                productViewEditDeleteActionColumn(handleView, handleEdit)
+            ]}
+            data={filteredItems}
+            progressPending={isLoading}
+            pagination
+            title=" "
+            selectableRows
+            fixedHeader
+            highlightOnHover
+            fixedHeaderScrollHeight="450px"
+            paginationResetDefaultPage={resetPaginationToggle}
+            subHeader
+            subHeaderComponent={subHeaderComponentMemo}
+            persistTableHead
+            customStyles={customStyles}
+        />
     );
 };

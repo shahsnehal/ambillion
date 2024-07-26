@@ -1,12 +1,12 @@
 import React from 'react';
 import { ROUTES, userRoles } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
-// import { getLocalStorageItem } from 'utils/global/globalFunction';
+import { getUserData } from 'utils/global/globalFunction';
 
 export const NotAuthorized: React.FC = () => {
     const navigate = useNavigate();
-    const userRole = localStorage.getItem('role');
-    // const userRole = getLocalStorageItem<string>('role');
+    const userData = getUserData();
+    const { role_name: userRole } = userData;
 
     const handleNavigation = () => {
         switch (userRole) {

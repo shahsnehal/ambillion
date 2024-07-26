@@ -45,11 +45,12 @@ function* handleSignin(action: {
     try {
         const response: AxiosResponse = yield call(signin, action.payload);
         const responseData = response.data;
-        const { userprofile_id: userProfileID, role_name: userRole } = responseData.user;
+        const userData = responseData.user;
         const { access } = responseData.tokens;
+        const { userprofile_id: userProfileID, role_name: userRole } = userData;
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
-        //optimized
+        localStorage.setItem('userData', JSON.stringify(userData));
         localStorage.setItem('profileID', userProfileID);
         localStorage.setItem('role', userRole);
         localStorage.setItem('accessToken', access.token);
@@ -58,7 +59,6 @@ function* handleSignin(action: {
         // setLocalStorageItem('role', userRole);
         // setLocalStorageItem('accessToken', access.token);
 
-        //optimized
         const redirectPath = roleRedirects[userRole];
         action.payload.navigate(redirectPath);
     } catch (error: unknown) {

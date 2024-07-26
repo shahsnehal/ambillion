@@ -7,6 +7,15 @@ export const userLogout = (navigate: (path: string) => void) => {
     }, 5);
 };
 
+export const getUserData = () => {
+    try {
+        const userData = JSON.parse(localStorage.getItem('userData') ?? '{}');
+        return userData;
+    } catch (error) {
+        return null;
+    }
+};
+
 type StorageValue = string | number | boolean | object | null;
 
 export const setLocalStorageItem = (key: string, value: StorageValue): void => {
