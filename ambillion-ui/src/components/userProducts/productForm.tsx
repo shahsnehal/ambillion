@@ -24,8 +24,8 @@ const ProductFormSchema = Yup.object().shape({
         ),
     productFeature: Yup.string().required('Features are required'),
     productCustomFields: Yup.object().shape({
-        FieldName: Yup.string().required('Field name is required'),
-        FieldValue: Yup.string().required('Field value is required')
+        FieldName: Yup.string(),
+        FieldValue: Yup.string()
     })
 });
 
@@ -179,7 +179,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                         <div className="col-sm-12">
                                             <button
                                                 type="button"
-                                                className="btn btn-secondary"
+                                                className="btn btn-primary"
                                                 onClick={() => setCustomFieldAdded(true)}
                                             >
                                                 Add Product Field
@@ -194,15 +194,8 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                     Property Name:
                                                 </label>
                                                 <Field
-                                                    type="text"
                                                     name="productCustomFields.FieldName"
-                                                    className={`form-control ${
-                                                        props.touched.productCustomFields
-                                                            ?.FieldName &&
-                                                        props.errors.productCustomFields?.FieldName
-                                                            ? 'is-invalid'
-                                                            : ''
-                                                    }`}
+                                                    className={`form-control ${props.errors.productCustomFields?.FieldName ? 'is-invalid' : ''}`}
                                                     placeholder="Enter field name"
                                                 />
                                                 <ErrorMessage
@@ -217,15 +210,8 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                     Property Value:
                                                 </label>
                                                 <Field
-                                                    type="text"
                                                     name="productCustomFields.FieldValue"
-                                                    className={`form-control ${
-                                                        props.touched.productCustomFields
-                                                            ?.FieldValue &&
-                                                        props.errors.productCustomFields?.FieldValue
-                                                            ? 'is-invalid'
-                                                            : ''
-                                                    }`}
+                                                    className={`form-control ${props.errors.productCustomFields?.FieldValue ? 'is-invalid' : ''}`}
                                                     placeholder="Enter field value"
                                                 />
                                                 <ErrorMessage
@@ -238,7 +224,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             <div className="col-sm-12 mt-2">
                                                 <button
                                                     type="button"
-                                                    className="btn btn-secondary"
+                                                    className="btn btn-primary"
                                                     disabled
                                                 >
                                                     Add Product Field

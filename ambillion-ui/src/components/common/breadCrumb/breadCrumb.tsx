@@ -19,17 +19,20 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
                         {pathnames.map((value, index) => {
                             const to = `/${pathnames.slice(0, index + 1).join('/')}`;
                             const isLast = index === pathnames.length - 1;
+
                             return (
                                 <li
                                     key={to}
-                                    className={`breadcrumb-item ${isLast ? 'text-primary' : ''}`}
+                                    className={`breadcrumb-item ${!isLast ? 'text-primary' : ''}`}
                                     aria-current={isLast ? 'page' : undefined}
                                 >
                                     {isLast ? (
-                                        value.charAt(0).toUpperCase() + value.slice(1)
+                                        <span>
+                                            {value.charAt(0).toUpperCase() + value.slice(1)}
+                                        </span>
                                     ) : (
                                         <a
-                                            className="text-decoration-none"
+                                            className="text-decoration-none text-primary custom-sidebar-link"
                                             onClick={() => navigate(to)}
                                         >
                                             {value.charAt(0).toUpperCase() + value.slice(1)}
