@@ -46,9 +46,9 @@ axiosInstance.interceptors.response.use(
         if (error.code && !data) {
             toast.error(error.message);
         } else if (data?.error) {
-            if (data.code === 401) {
-                logout();
-            }
+            // if (data.code === 401) {
+            //     logout();
+            // }
             toast.error(data?.message);
         }
         return Promise.reject(data);
