@@ -11,7 +11,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
     const location = useLocation();
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
     const { first_name: Name, role_name: userRole } = userProfile;
-    const isActive = (route: string) => location.pathname === route;
+    const isActive = (route: string) => location.pathname.startsWith(route);
 
     return (
         <div id="main-wrapper">
@@ -33,7 +33,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                             alt="user"
                                         />
                                     </span>
-                                    <span className="hide-menu fw-medium">{Name} </span>
+                                    <span className="hide-menu fw-medium">{Name}</span>
                                 </a>
                             </li>
                             <li className="nav-small-cap">
@@ -49,9 +49,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.USERS) ? 'active' : ''}`}
                                         id="get-url"
-                                        onClick={() => {
-                                            navigate(ROUTES.USERS);
-                                        }}
+                                        onClick={() => navigate(ROUTES.USERS)}
                                     >
                                         <Icon
                                             icon="solar:user-circle-line-duotone"
@@ -66,9 +64,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.PRODUCTSLIST) ? 'active' : ''}`}
                                         id="get-url"
-                                        onClick={() => {
-                                            navigate(ROUTES.PRODUCTSLIST);
-                                        }}
+                                        onClick={() => navigate(ROUTES.PRODUCTSLIST)}
                                     >
                                         <Icon icon="gridicons:product" className="aside-icon" />
                                         <span className="hide-menu">PRODUCTSLIST</span>
@@ -80,9 +76,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
                                         id="get-url"
-                                        onClick={() => {
-                                            navigate(ROUTES.PRODUCTS);
-                                        }}
+                                        onClick={() => navigate(ROUTES.PRODUCTS)}
                                     >
                                         <Icon icon="gridicons:product" className="aside-icon" />
                                         <span className="hide-menu">PRODUCTS</span>
