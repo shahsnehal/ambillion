@@ -1,14 +1,14 @@
 import { Icon } from '@iconify/react';
-import { useNavigate } from 'react-router-dom';
-import { userLogout, getUserData } from 'utils/global/globalFunction';
+import { localStorageKey } from 'constants/common';
+import { logout } from 'utils/common';
+import { getLocalStorage } from 'utils/localStorage';
 
 export const Header = () => {
-    const navigate = useNavigate();
-    const userData = getUserData();
-    const { first_name: Name, email: Email, role_name: RoleName } = userData;
+    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
+    const { name: userName, email, role_name: roleName } = userProfile;
 
     const handleLogout = () => {
-        userLogout(navigate);
+        logout();
     };
 
     const handleSidebar = () => {
@@ -126,10 +126,10 @@ export const Header = () => {
                                                         />
                                                         <div className="ms-3">
                                                             <h5 className="mb-0 fs-4">
-                                                                {Name} ( {RoleName} )
+                                                                {userName} ( {roleName} )
                                                             </h5>
                                                             <p className="mb-0 d-flex align-items-center text-muted">
-                                                                {Email}
+                                                                {email}
                                                             </p>
                                                         </div>
                                                     </div>

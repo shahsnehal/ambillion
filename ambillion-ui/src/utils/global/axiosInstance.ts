@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
-import { apiUrl } from 'constants/common';
+import { apiUrl, localStorageKey } from 'constants/common';
 import { toast } from 'react-toastify';
+import { getLocalStorage } from 'utils/localStorage';
 
 type AdaptAxiosRequestConfig = AxiosRequestConfig & {
     headers: AxiosRequestHeaders;
@@ -16,7 +17,7 @@ const axiosInstance = axios.create({
 // Request interceptor for API calls
 axiosInstance.interceptors.request.use(
     async (config: AdaptAxiosRequestConfig) => {
-        const accessToken = localStorage.getItem('accessToken') ?? null;
+        const accessToken = getLocalStorage(localStorageKey.JWT_TOKEN);
         // const accessToken: string | null = getLocalStorageItem<string>('accessToken');
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -40,14 +41,13 @@ axiosInstance.interceptors.response.use(
         return response.data;
     },
     async (error) => {
-        const data = error ?? error.response ? error.response.data : null;
+        const data = error ?? error?.response ? error?.response?.data : null;
         if (error.code && !data) {
-            // toast.error(generic.status[error.code]);
-            return Promise.reject(data);
-        } else if (data && data.message) {
-            toast.error(data.message);
-            return Promise.reject(data);
+            toast.error(error.message);
+        } else if (data && data?.error) {
+            toast.error(data?.message);
         }
+        return Promise.reject(data);
     }
 );
 
