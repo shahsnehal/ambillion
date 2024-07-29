@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { apiUrl, localStorageKey } from 'constants/common';
 import { toast } from 'react-toastify';
+import { logout } from 'utils/common';
 import { getLocalStorage } from 'utils/localStorage';
 
 type AdaptAxiosRequestConfig = AxiosRequestConfig & {
@@ -44,7 +45,10 @@ axiosInstance.interceptors.response.use(
         const data = error ?? error?.response ? error?.response?.data : null;
         if (error.code && !data) {
             toast.error(error.message);
-        } else if (data && data?.error) {
+        } else if (data?.error) {
+            if (data.code === 401) {
+                logout();
+            }
             toast.error(data?.message);
         }
         return Promise.reject(data);
