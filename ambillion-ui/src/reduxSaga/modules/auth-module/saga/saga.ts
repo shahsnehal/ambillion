@@ -9,9 +9,10 @@ import {
     SIGNIN_FAILURE,
     SIGNIN_REQUEST
 } from '../type/types';
-import { apiUrl, roleRedirects, ROUTES } from 'constants/common';
+import { apiUrl, localStorageKey, roleRedirects, ROUTES } from 'constants/common';
 import axiosInstance from 'utils/global/axiosInstance';
 import { AxiosResponse } from 'axios';
+import { setLocalStorage } from 'utils/localStorage';
 
 const signup = async (signupData: SignupData): Promise<AxiosResponse> => {
     return await axiosInstance.post(apiUrl.signUp, signupData);
@@ -45,20 +46,14 @@ function* handleSignin(action: {
     try {
         const response: AxiosResponse = yield call(signin, action.payload);
         const responseData = response.data;
-        const { userprofile_id: userProfileID, role_name: userRole } = responseData.user;
+        const userData = responseData.user;
         const { access } = responseData.tokens;
+        const { role_name: userRole } = userData;
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
-        //optimized
-        localStorage.setItem('profileID', userProfileID);
-        localStorage.setItem('role', userRole);
-        localStorage.setItem('accessToken', access.token);
+        setLocalStorage(localStorageKey.USER_PROFILE, userData);
+        setLocalStorage(localStorageKey.JWT_TOKEN, access.token);
 
-        // setLocalStorageItem('profileID', userProfileID);
-        // setLocalStorageItem('role', userRole);
-        // setLocalStorageItem('accessToken', access.token);
-
-        //optimized
         const redirectPath = roleRedirects[userRole];
         action.payload.navigate(redirectPath);
     } catch (error: unknown) {

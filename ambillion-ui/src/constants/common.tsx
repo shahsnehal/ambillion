@@ -28,8 +28,14 @@ export const ROUTES = {
 
     UPDATEPRODUCT: '/products',
     ADDPRODUCT: '/productsList/addProduct',
-    EDITPRODUCT: '/products/edit/:Id',
+    EDITPRODUCT: '/productsList/editProduct',
     PRODUCTDETAILS: '/productsList/:productId'
+};
+
+// localStorageKey
+export const localStorageKey = {
+    USER_PROFILE: 'userProfile',
+    JWT_TOKEN: 'jwtToken'
 };
 
 // Recaptcha Configuration
@@ -62,3 +68,11 @@ export const roleRedirects = {
     [userRoles.MANUFACTURER]: ROUTES.PRODUCTSLIST,
     [userRoles.OFFICER]: ROUTES.PRODUCTS
 };
+
+export const productCategories = [
+    { id: '1', name: 'Electronics' },
+    { id: '2', name: 'Clothing' },
+    { id: '3', name: 'Home & Garden' },
+    { id: '4', name: 'Books' },
+    { id: '5', name: 'Sports & Outdoors' }
+];

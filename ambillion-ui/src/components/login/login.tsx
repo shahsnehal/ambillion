@@ -75,6 +75,7 @@ export const Login = () => {
                                                     <Field
                                                         type="email"
                                                         name="email"
+                                                        autoFocus
                                                         className={`form-control ${
                                                             props.touched.email &&
                                                             props.errors.email
@@ -130,20 +131,6 @@ export const Login = () => {
                                                     </div>
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-between mb-4">
-                                                    <div className="form-check">
-                                                        <input
-                                                            className="form-check-input primary"
-                                                            type="checkbox"
-                                                            value=""
-                                                            id="flexCheckChecked"
-                                                        />
-                                                        <label
-                                                            className="form-check-label text-dark"
-                                                            htmlFor="flexCheckChecked"
-                                                        >
-                                                            Remember this Device
-                                                        </label>
-                                                    </div>
                                                     <button
                                                         className="btn text-primary fw-medium"
                                                         type="button"

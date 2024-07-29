@@ -1,11 +1,14 @@
 import { Icon } from '@iconify/react';
-import { useNavigate } from 'react-router-dom';
-import { userLogout } from 'utils/global/globalFunction';
+import { localStorageKey } from 'constants/common';
+import { logout } from 'utils/common';
+import { getLocalStorage } from 'utils/localStorage';
+
 export const Header = () => {
-    const navigate = useNavigate();
+    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
+    const { name: userName, email, role_name: roleName } = userProfile;
 
     const handleLogout = () => {
-        userLogout(navigate);
+        logout();
     };
 
     const handleSidebar = () => {
@@ -123,10 +126,10 @@ export const Header = () => {
                                                         />
                                                         <div className="ms-3">
                                                             <h5 className="mb-0 fs-4">
-                                                                James White
+                                                                {userName} ( {roleName} )
                                                             </h5>
                                                             <p className="mb-0 d-flex align-items-center text-muted">
-                                                                info@ambillion.com
+                                                                {email}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -153,17 +156,9 @@ export const Header = () => {
                                                             </a>
                                                         </div>
                                                         <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            {/* <a
-                                                                onClick={() =>
-                                                                    navigate(ROUTES.LOGIN)
-                                                                }
-                                                                className=" d-flex  align-items-center "
-                                                            >
-                                                                Sign Out
-                                                            </a> */}
                                                             <a
                                                                 onClick={handleLogout}
-                                                                className="d-flex align-items-center"
+                                                                className="d-flex align-items-center custom-sidebar-link"
                                                             >
                                                                 Sign Out
                                                             </a>

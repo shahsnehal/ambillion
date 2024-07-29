@@ -3,7 +3,6 @@ import { Icon } from '@iconify/react';
 import { User } from 'reduxSaga/modules/user-module/type/types';
 import { Product } from 'reduxSaga/modules/product-module/type/types';
 import { userStatus, productStatus } from 'constants/common';
-import productImage from 'assets/images/product.jpg';
 
 export const customStyles = {
     rows: {
@@ -57,16 +56,10 @@ const getProductStatusClass = (status: string): string => {
     }
 };
 
-type DeleteActionParams = {
-    id: number;
-    productDisplayName: string;
-};
-
-type ProductViewEditDeleteActionProps = {
+type ProductViewEditActionProps = {
     row: Product;
     onView: (id: number) => void;
     onEdit: (row: Product) => void;
-    onDelete: (params: DeleteActionParams) => void;
 };
 
 //UserStatusChangeTypes
@@ -128,6 +121,7 @@ export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps>
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Change Status"
+                disabled={currentStatus === productStatus.APPROVED}
                 onClick={() => onOpenModal(productId, currentStatus, currentComment)}
             >
                 <Icon icon="solar:pen-outline" className="fs-5" />
@@ -171,11 +165,10 @@ export const ProductStatusChangeActionColumn = (
 });
 
 // ProductEditDeleteAction component renders edit and delete actions for a table row.
-export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionProps> = ({
+export const ProductViewEditAction: React.FC<ProductViewEditActionProps> = ({
     row,
     onView,
-    onEdit,
-    onDelete
+    onEdit
 }) => {
     const handleView = () => {
         onView(row.product_id);
@@ -183,10 +176,6 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
 
     const handleEdit = () => {
         onEdit(row);
-    };
-
-    const handleDelete = () => {
-        onDelete({ id: row.product_id, productDisplayName: row.product_displayname });
     };
 
     return (
@@ -209,34 +198,17 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
             >
                 <Icon icon="solar:pen-outline" className="fs-5" />
             </button>
-            <button
-                className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
-                data-toggle="tooltip"
-                data-placement="left"
-                title="Delete"
-                onClick={handleDelete}
-            >
-                <Icon icon="solar:trash-bin-minimalistic-outline" className="fs-5" />
-            </button>
         </div>
     );
 };
 
 //  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
-export const productViewEditDeleteActionColumn = (
+export const productViewEditActionColumn = (
     onView: (id: number) => void,
-    onEdit: (id: Product) => void,
-    onDelete: (params: DeleteActionParams) => void
+    onEdit: (id: Product) => void
 ) => ({
     name: 'Actions',
-    cell: (row: Product) => (
-        <ProductViewEditDeleteAction
-            row={row}
-            onView={onView}
-            onEdit={onEdit}
-            onDelete={onDelete}
-        />
-    ),
+    cell: (row: Product) => <ProductViewEditAction row={row} onView={onView} onEdit={onEdit} />,
     ignoreRowClick: false,
     allowOverflow: true,
     button: true
@@ -244,13 +216,8 @@ export const productViewEditDeleteActionColumn = (
 
 export const userTableColumns: TableColumn<User>[] = [
     {
-        name: 'First Name',
-        selector: (row) => row.first_name,
-        sortable: true
-    },
-    {
-        name: 'Last Name',
-        selector: (row) => row.last_name,
+        name: 'Name',
+        selector: (row) => row.name,
         sortable: true
     },
     {
@@ -259,17 +226,25 @@ export const userTableColumns: TableColumn<User>[] = [
         sortable: true
     },
     {
-        name: 'Mobile Number',
-        selector: (row) => row.mobile_number,
-        sortable: true
-    },
-    {
         name: 'Email Address',
         selector: (row) => row.email,
         sortable: true
     },
     {
-        id: 'Status',
+        name: 'Mobile Number',
+        selector: (row) => row.mobile_number,
+        sortable: true
+    },
+    {
+        name: 'Created Date',
+        selector: (row) => {
+            const date = new Date(row.created_timestamp);
+            const [formattedDate] = date.toISOString().split('T');
+            return formattedDate;
+        },
+        sortable: true
+    },
+    {
         name: 'Status',
         selector: (row) => row.status,
         sortable: true,
@@ -284,24 +259,18 @@ export const userTableColumns: TableColumn<User>[] = [
 //ProductListTableColumn For Officer
 export const productsTableColumns: TableColumn<Product>[] = [
     {
+        name: 'Name',
+        selector: (row) => row.product_displayname,
+        sortable: true
+    },
+    {
         name: 'HSN Code',
         selector: (row) => row.origin_hsn_code,
         sortable: true
     },
-    // {
-    //     name: 'Manufacturer Name',
-    //     selector: (row) => row.manufacturerName,
-    //     sortable: true
-    // },
-    {
-        name: 'Image',
-        // selector: (row) => row.product_custom_fields,
-        cell: (row) => <img src={productImage} alt={row.product_displayname} width="50" />,
-        sortable: false
-    },
     {
         name: 'Category',
-        selector: (row) => row.product_category_id,
+        selector: (row) => row.category_name,
         sortable: true
     },
     {
@@ -309,19 +278,14 @@ export const productsTableColumns: TableColumn<Product>[] = [
         selector: (row) => row.product_feature,
         sortable: true
     },
-    {
-        name: 'Name',
-        selector: (row) => row.product_displayname,
-        sortable: true
-    },
+
     {
         name: 'Description',
         selector: (row) => row.customer_product_description,
         sortable: true
     },
     {
-        id: 'Status',
-        name: 'Status',
+        name: 'Export Status',
         selector: (row) => row.status,
         sortable: true,
         cell: (row) => (
@@ -335,19 +299,18 @@ export const productsTableColumns: TableColumn<Product>[] = [
 //ProductsTableColumn For Manufacturer
 export const productsListTableColumns: TableColumn<Product>[] = [
     {
+        name: 'Name',
+        selector: (row) => row.product_displayname,
+        sortable: true
+    },
+    {
         name: 'HSN Code',
         selector: (row) => row.origin_hsn_code,
         sortable: true
     },
     {
-        name: 'Image',
-        // selector: (row) => row.product_custom_fields,
-        cell: (row) => <img src={productImage} alt={row.product_displayname} width="50" />,
-        sortable: false
-    },
-    {
         name: 'Category',
-        selector: (row) => row.product_category_id,
+        selector: (row) => row.category_name,
         sortable: true
     },
     {
@@ -355,19 +318,14 @@ export const productsListTableColumns: TableColumn<Product>[] = [
         selector: (row) => row.product_feature,
         sortable: true
     },
-    {
-        name: 'Name',
-        selector: (row) => row.product_displayname,
-        sortable: true
-    },
+
     {
         name: 'Description',
         selector: (row) => row.customer_product_description,
         sortable: true
     },
     {
-        id: 'Status',
-        name: 'Status',
+        name: 'Export Status',
         selector: (row) => row.status,
         sortable: true,
         cell: (row) => (

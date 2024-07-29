@@ -1,27 +1,30 @@
-import { ROUTES } from 'constants/common';
-import { getUserRole } from 'utils/global/globalFunction';
+import { localStorageKey, ROUTES } from 'constants/common';
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
+import { getLocalStorage } from 'utils/localStorage';
+import { logout } from 'utils/common';
 
 type ProtectedRouteProps = {
     allowedRoles: string[];
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
-    const isAuthenticated = localStorage.getItem('accessToken');
-    // const isAuthenticated = getLocalStorageItem<string>('accessToken');
-    const userRole = getUserRole();
-
-    if (!isAuthenticated) {
-        toast.error('You are not authenticated. Please log in.');
-        return <Navigate to={ROUTES.LOGIN} />;
+    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE) || {};
+    const { role_name: userRole } = userProfile || null;
+    const jwtToken = getLocalStorage(localStorageKey.JWT_TOKEN);
+    if (jwtToken) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const decodedJwtToken: any = jwtDecode(jwtToken);
+        const currentTime = Date.now() / 1000;
+        if (decodedJwtToken?.exp < currentTime) {
+            logout();
+        } else if (!allowedRoles.includes(userRole || '')) {
+            return <Navigate to={ROUTES.NOT_AUTHORIZES} />;
+        }
+    } else {
+        return <Navigate to={ROUTES.LOGIN} replace />;
     }
-
-    if (!allowedRoles.includes(userRole || '')) {
-        return <Navigate to={ROUTES.NOT_AUTHORIZES} />;
-    }
-
     return <Outlet />;
 };
 

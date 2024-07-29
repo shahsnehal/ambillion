@@ -32,7 +32,7 @@ export const Products = () => {
     const filteredItems = useMemo(
         () =>
             products?.filter((item) =>
-                item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
+                item.product_displayname.toLowerCase().includes(filterText.toLowerCase())
             ),
         [filterText, products]
     );
@@ -92,8 +92,6 @@ export const Products = () => {
                     ProductStatusChangeActionColumn(handleOpenModal)
                 ]}
                 data={filteredItems}
-                defaultSortFieldId="Status"
-                defaultSortAsc={false}
                 progressPending={isLoading}
                 pagination
                 title=" "

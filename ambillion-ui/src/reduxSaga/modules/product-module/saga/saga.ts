@@ -85,7 +85,7 @@ function* handleAddProduct(action: {
     try {
         const response: AxiosResponse = yield call(addProduct, action.payload);
         yield put({ type: ADD_PRODUCT_SUCCESS, payload: response.data });
-        action.payload.navigate(ROUTES.PRODUCTS);
+        action.payload.navigate(ROUTES.PRODUCTSLIST);
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {

@@ -115,6 +115,7 @@ export const Registration = () => {
                                                         <Field
                                                             type="text"
                                                             name="firstName"
+                                                            autoFocus
                                                             className={`form-control ${
                                                                 props.touched.firstName &&
                                                                 props.errors.firstName

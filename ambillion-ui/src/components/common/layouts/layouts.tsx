@@ -1,16 +1,16 @@
 import { Icon } from '@iconify/react';
 import { Header } from './header/header';
 import { Breadcrumb } from '../breadCrumb/breadCrumb';
-import { ROUTES, userRoles } from 'constants/common';
+import { localStorageKey, ROUTES, userRoles } from 'constants/common';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Footer } from './footer/footer';
-import { getUserRole } from 'utils/global/globalFunction';
+import { getLocalStorage } from 'utils/localStorage';
 
 export const Layout = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const userRole = getUserRole();
-
+    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
+    const { first_name: Name, role_name: userRole } = userProfile;
     const isActive = (route: string) => location.pathname === route;
 
     return (
@@ -33,7 +33,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                             alt="user"
                                         />
                                     </span>
-                                    <span className="hide-menu fw-medium">James White </span>
+                                    <span className="hide-menu fw-medium">{Name} </span>
                                 </a>
                             </li>
                             <li className="nav-small-cap">
@@ -89,14 +89,6 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     </a>
                                 </li>
                             )}
-                            <li className="sidebar-item custom-sidebar-link">
-                                <a className="sidebar-link" aria-expanded="false">
-                                    <div className="d-flex">
-                                        <Icon icon="solar:question-circle-linear" />
-                                    </div>
-                                    <span className="hide-menu">SERVICES</span>
-                                </a>
-                            </li>
                             <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">

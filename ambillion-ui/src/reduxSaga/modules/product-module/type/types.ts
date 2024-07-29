@@ -24,12 +24,13 @@ export const UPDATE_PRODUCT_STATUS_FAILURE = 'UPDATE_PRODUCT_STATUS_FAILURE';
 
 export type Product = {
     product_id: number;
-    product_category_id: number;
+    category_id: number;
     product_displayname: string;
     customer_product_description: string;
     origin_hsn_code: string;
     product_feature: string;
-    product_custom_fields: string;
+    product_custom_fields?: string;
+    category_name: string;
     audit_user_id: number;
     audit_timestamp: string;
     created_date: string;
@@ -42,23 +43,29 @@ export type Product = {
 };
 
 export type ProductFormValues = {
+    productDisplayName?: string;
+    originHsnCode?: string;
+    productCategoryId?: string;
+    customerProductDescription?: string;
+    productFeature?: string;
+    productCustomFields: {
+        FieldName: string;
+        FieldValue: string;
+    };
+
     uploadImage?: string | null | ArrayBuffer;
     productCategory?: string;
     productType?: string;
-    productDisplayName?: string;
-    customerProductDescription?: string;
     brandName?: string;
     exWorkPrice?: string;
     byColor?: string;
     bySize?: string[];
-    originHsnCode?: string;
     unitMeasure?: string;
     weight?: string;
     dimensions?: string;
     byGender?: string;
     material?: string;
-    productFeatures?: string;
-    [key: string]: unknown;
+    // [key: string]: unknown;
 };
 
 export type FetchProductsRequestAction = {
