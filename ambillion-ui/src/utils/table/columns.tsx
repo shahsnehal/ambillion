@@ -218,7 +218,8 @@ export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'Name',
         selector: (row) => row.name,
-        sortable: true
+        sortable: true,
+        wrap: true
     },
     {
         name: 'Company Name',
@@ -228,7 +229,9 @@ export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'Email Address',
         selector: (row) => row.email,
-        sortable: true
+        sortable: true,
+        grow: 1,
+        wrap: true
     },
     {
         name: 'Mobile Number',
