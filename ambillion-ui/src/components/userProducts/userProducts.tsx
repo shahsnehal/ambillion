@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     customStyles,
     productsListTableColumns,
-    productViewEditDeleteActionColumn
+    productViewEditActionColumn
 } from 'utils/table/columns';
 import { ROUTES } from 'constants/common';
 import { RootState } from 'reduxSaga/config/store';
@@ -25,7 +25,7 @@ export const UserProducts = () => {
     }, []);
 
     const filteredItems = products.filter((item) =>
-        item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
+        item.product_displayname.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleAddProduct = () => {
@@ -38,7 +38,7 @@ export const UserProducts = () => {
     // };
 
     const handleEdit = () => {
-        navigate('/products/edit');
+        navigate('/productsList');
     };
 
     const handleView = (productId: number) => {
@@ -82,7 +82,7 @@ export const UserProducts = () => {
         <DataTable
             columns={[
                 ...productsListTableColumns,
-                productViewEditDeleteActionColumn(handleView, handleEdit)
+                productViewEditActionColumn(handleView, handleEdit)
             ]}
             data={filteredItems}
             progressPending={isLoading}

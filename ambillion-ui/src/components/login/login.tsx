@@ -118,7 +118,7 @@ export const Login = () => {
                                                                 icon={
                                                                     showPassword
                                                                         ? 'solar:eye-outline'
-                                                                        : 'weui--eyes-off-filled'
+                                                                        : 'solar:eye-closed-outline'
                                                                 }
                                                                 className="fs-5"
                                                             />

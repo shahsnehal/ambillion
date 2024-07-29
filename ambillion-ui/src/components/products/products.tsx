@@ -32,7 +32,7 @@ export const Products = () => {
     const filteredItems = useMemo(
         () =>
             products?.filter((item) =>
-                item.product_displayname?.toLowerCase().includes(filterText.toLowerCase())
+                item.product_displayname.toLowerCase().includes(filterText.toLowerCase())
             ),
         [filterText, products]
     );
