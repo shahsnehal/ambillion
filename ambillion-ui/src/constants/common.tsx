@@ -32,6 +32,12 @@ export const ROUTES = {
     PRODUCTDETAILS: '/productsList/:productId'
 };
 
+// localStorageKey
+export const localStorageKey = {
+    USER_PROFILE: 'userProfile',
+    JWT_TOKEN: 'jwtToken'
+};
+
 // Recaptcha Configuration
 export const googleRecaptchaConfig = {
     captchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY

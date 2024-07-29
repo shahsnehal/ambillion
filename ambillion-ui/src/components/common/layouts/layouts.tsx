@@ -1,18 +1,16 @@
 import { Icon } from '@iconify/react';
 import { Header } from './header/header';
 import { Breadcrumb } from '../breadCrumb/breadCrumb';
-import { ROUTES, userRoles } from 'constants/common';
+import { localStorageKey, ROUTES, userRoles } from 'constants/common';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Footer } from './footer/footer';
-import { getUserRole, getUserData } from 'utils/global/globalFunction';
+import { getLocalStorage } from 'utils/localStorage';
 
 export const Layout = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const userRole = getUserRole();
-    const userData = getUserData();
-    const { first_name: Name } = userData;
-
+    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
+    const { first_name: Name, role_name: userRole } = userProfile;
     const isActive = (route: string) => location.pathname === route;
 
     return (
