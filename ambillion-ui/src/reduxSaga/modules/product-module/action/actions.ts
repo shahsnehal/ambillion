@@ -32,7 +32,7 @@ export const addProductRequest = (
     navigate: (path: string) => void
 ): AddProductRequestAction => ({
     type: ADD_PRODUCT_REQUEST,
-    payload: { product, navigate }
+    payload: { ...product, navigate }
 });
 
 export const editProductRequest = (
@@ -40,7 +40,7 @@ export const editProductRequest = (
     navigate: (path: string) => void
 ): EditProductRequestAction => ({
     type: EDIT_PRODUCT_REQUEST,
-    payload: { product, navigate }
+    payload: { ...product, navigate }
 });
 
 export const deleteProductRequest = (productId: number): DeleteProductRequestAction => ({

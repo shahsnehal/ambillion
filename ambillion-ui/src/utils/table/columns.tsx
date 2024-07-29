@@ -56,7 +56,7 @@ const getProductStatusClass = (status: string): string => {
     }
 };
 
-type ProductViewEditDeleteActionProps = {
+type ProductViewEditActionProps = {
     row: Product;
     onView: (id: number) => void;
     onEdit: (row: Product) => void;
@@ -165,7 +165,7 @@ export const ProductStatusChangeActionColumn = (
 });
 
 // ProductEditDeleteAction component renders edit and delete actions for a table row.
-export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionProps> = ({
+export const ProductViewEditAction: React.FC<ProductViewEditActionProps> = ({
     row,
     onView,
     onEdit
@@ -203,14 +203,12 @@ export const ProductViewEditDeleteAction: React.FC<ProductViewEditDeleteActionPr
 };
 
 //  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
-export const productViewEditDeleteActionColumn = (
+export const productViewEditActionColumn = (
     onView: (id: number) => void,
     onEdit: (id: Product) => void
 ) => ({
     name: 'Actions',
-    cell: (row: Product) => (
-        <ProductViewEditDeleteAction row={row} onView={onView} onEdit={onEdit} />
-    ),
+    cell: (row: Product) => <ProductViewEditAction row={row} onView={onView} onEdit={onEdit} />,
     ignoreRowClick: false,
     allowOverflow: true,
     button: true
@@ -272,7 +270,7 @@ export const productsTableColumns: TableColumn<Product>[] = [
     },
     {
         name: 'Category',
-        selector: (row) => row.product_category_id,
+        selector: (row) => row.category_name,
         sortable: true
     },
     {
@@ -312,7 +310,7 @@ export const productsListTableColumns: TableColumn<Product>[] = [
     },
     {
         name: 'Category',
-        selector: (row) => row.product_category_id,
+        selector: (row) => row.category_name,
         sortable: true
     },
     {
