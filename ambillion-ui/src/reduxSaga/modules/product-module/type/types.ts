@@ -14,9 +14,9 @@ export const DELETE_PRODUCT_REQUEST = 'DELETE_PRODUCT_REQUEST';
 export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS';
 export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE';
 
-export const GET_PRODUCTDETAILS_BY_ID_REQUEST = 'GET_PRODUCT_BY_ID_REQUEST';
-export const GET_PRODUCTDETAILS_BY_ID_SUCCESS = 'GET_PRODUCT_BY_ID_SUCCESS';
-export const GET_PRODUCTDETAILS_BY_ID_FAILURE = 'GET_PRODUCT_BY_ID_FAILURE';
+export const GET_PRODUCTDETAILS_REQUEST = 'GET_PRODUCT_BY_ID_REQUEST';
+export const GET_PRODUCTDETAILS_SUCCESS = 'GET_PRODUCT_BY_ID_SUCCESS';
+export const GET_PRODUCTDETAILS_FAILURE = 'GET_PRODUCT_BY_ID_FAILURE';
 
 export const UPDATE_PRODUCT_STATUS_REQUEST = 'UPDATE_PRODUCT_STATUS_REQUEST';
 export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
@@ -142,18 +142,18 @@ export type DeleteProductFailureAction = {
     error: string;
 };
 
-export type FetchProductDetailsByIdRequestAction = {
-    type: typeof GET_PRODUCTDETAILS_BY_ID_REQUEST;
-    payload: number;
+export type FetchProductDetailsRequestAction = {
+    type: typeof GET_PRODUCTDETAILS_REQUEST;
+    payload: number | string;
 };
 
-export type FetchProductDetailsByIdSuccessAction = {
-    type: typeof GET_PRODUCTDETAILS_BY_ID_SUCCESS;
+export type FetchProductDetailsSuccessAction = {
+    type: typeof GET_PRODUCTDETAILS_SUCCESS;
     payload: Product;
 };
 
-export type FetchProductDetailsByIdFailureAction = {
-    type: typeof GET_PRODUCTDETAILS_BY_ID_FAILURE;
+export type FetchProductDetailsFailureAction = {
+    type: typeof GET_PRODUCTDETAILS_FAILURE;
     error: string;
 };
 
@@ -173,6 +173,6 @@ export type ProductActionTypes =
     | DeleteProductRequestAction
     | DeleteProductSuccessAction
     | DeleteProductFailureAction
-    | FetchProductDetailsByIdRequestAction
-    | FetchProductDetailsByIdSuccessAction
-    | FetchProductDetailsByIdFailureAction;
+    | FetchProductDetailsRequestAction
+    | FetchProductDetailsSuccessAction
+    | FetchProductDetailsFailureAction;

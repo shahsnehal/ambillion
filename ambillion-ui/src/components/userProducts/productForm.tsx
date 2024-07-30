@@ -115,7 +115,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             id="productCategoryId"
                                         >
                                             <option value="" disabled>
-                                                Please Select
+                                                -- Select a Category --
                                             </option>
                                             {productCategories.map((category) => (
                                                 <option key={category.id} value={category.name}>

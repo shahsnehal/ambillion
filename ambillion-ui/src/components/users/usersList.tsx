@@ -10,6 +10,7 @@ import {
 } from 'reduxSaga/modules/user-module/action/actions';
 import { RootState } from 'reduxSaga/config/store';
 import { userStatus } from 'constants/common';
+import { CustomLoader } from 'common/loaders/loader';
 
 export const actionType = {
     APPROVE: 'APPROVE',
@@ -97,6 +98,7 @@ export const UserList: React.FC = () => {
                 ]}
                 data={filteredItems}
                 progressPending={isLoading}
+                progressComponent={<CustomLoader />}
                 pagination
                 selectableRows
                 fixedHeader

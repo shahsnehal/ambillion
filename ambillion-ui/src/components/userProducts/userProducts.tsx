@@ -12,6 +12,7 @@ import { ROUTES } from 'constants/common';
 import { RootState } from 'reduxSaga/config/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProductsRequest } from 'reduxSaga/modules/product-module/action/actions';
+import { CustomLoader } from 'common/loaders/loader';
 
 export const UserProducts = () => {
     const navigate = useNavigate();
@@ -86,6 +87,7 @@ export const UserProducts = () => {
             ]}
             data={filteredItems}
             progressPending={isLoading}
+            progressComponent={<CustomLoader />}
             pagination
             selectableRows
             fixedHeader

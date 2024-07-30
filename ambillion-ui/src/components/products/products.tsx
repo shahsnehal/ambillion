@@ -13,6 +13,7 @@ import {
     fetchProductsRequest,
     updateProductStatusRequest
 } from 'reduxSaga/modules/product-module/action/actions';
+import { CustomLoader } from 'common/loaders/loader';
 
 export const Products = () => {
     const dispatch = useDispatch();
@@ -93,6 +94,7 @@ export const Products = () => {
                 ]}
                 data={filteredItems}
                 progressPending={isLoading}
+                progressComponent={<CustomLoader />}
                 pagination
                 selectableRows
                 fixedHeader
