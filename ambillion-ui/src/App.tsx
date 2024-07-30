@@ -2,7 +2,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Loader } from 'common/loaders/loader';
 import Layout from 'components/common/layouts/layouts';
-import { ProductDetail } from 'components/userProducts/productDetails';
+import { ProductDetails } from 'components/userProducts/productDetails';
 import { ROUTES, userRoles } from 'constants/common';
 import { ErrorBoundary } from 'pages/errors/error';
 import { ForgotPasswordPage } from 'pages/forgotPassword/forgotPassword';
@@ -77,12 +77,24 @@ function App() {
                                                 </Layout>
                                             }
                                         />
+                                    </Route>
 
+                                    <Route
+                                        element={
+                                            <ProtectedRoute
+                                                allowedRoles={[
+                                                    userRoles.OFFICER,
+                                                    userRoles.ADMIN,
+                                                    userRoles.MANUFACTURER
+                                                ]}
+                                            />
+                                        }
+                                    >
                                         <Route
                                             path={ROUTES.PRODUCTDETAILS}
                                             element={
                                                 <Layout title="product detail">
-                                                    <ProductDetail />
+                                                    <ProductDetails />
                                                 </Layout>
                                             }
                                         />

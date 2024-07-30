@@ -8,9 +8,9 @@ import {
     DELETE_PRODUCT_REQUEST,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_FAILURE,
-    GET_PRODUCTDETAILS_BY_ID_REQUEST,
-    GET_PRODUCTDETAILS_BY_ID_SUCCESS,
-    GET_PRODUCTDETAILS_BY_ID_FAILURE,
+    GET_PRODUCTDETAILS_REQUEST,
+    GET_PRODUCTDETAILS_SUCCESS,
+    GET_PRODUCTDETAILS_FAILURE,
     FETCH_PRODUCTS_REQUEST,
     FETCH_PRODUCTS_SUCCESS,
     FETCH_PRODUCTS_FAILURE,
@@ -25,14 +25,14 @@ type ProductState = {
     isLoading: boolean;
     error: string | null;
     products: Product[];
-    selectedProduct: Product | null;
+    selectedProductDetails: Product | null;
 };
 
 const initialState: ProductState = {
     isLoading: false,
     error: null,
     products: [],
-    selectedProduct: null
+    selectedProductDetails: null
 };
 
 export const productReducer = (state = initialState, action: ProductActionTypes): ProductState => {
@@ -42,7 +42,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
         case DELETE_PRODUCT_REQUEST:
         case FETCH_PRODUCTS_REQUEST:
         case UPDATE_PRODUCT_STATUS_REQUEST:
-        case GET_PRODUCTDETAILS_BY_ID_REQUEST:
+        case GET_PRODUCTDETAILS_REQUEST:
             return { ...state, isLoading: true, error: null };
 
         case FETCH_PRODUCTS_SUCCESS:
@@ -79,8 +79,13 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 error: null
             };
 
-        case GET_PRODUCTDETAILS_BY_ID_SUCCESS:
-            return { ...state, isLoading: false, selectedProduct: action.payload, error: null };
+        case GET_PRODUCTDETAILS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                selectedProductDetails: action.payload,
+                error: null
+            };
 
         case UPDATE_PRODUCT_STATUS_SUCCESS:
             return {
@@ -103,7 +108,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
         case EDIT_PRODUCT_FAILURE:
         case DELETE_PRODUCT_FAILURE:
         case UPDATE_PRODUCT_STATUS_FAILURE:
-        case GET_PRODUCTDETAILS_BY_ID_FAILURE:
+        case GET_PRODUCTDETAILS_FAILURE:
             return { ...state, isLoading: false, error: action.error };
 
         default:
