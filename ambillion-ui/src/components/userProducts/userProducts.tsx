@@ -55,7 +55,7 @@ export const UserProducts = () => {
         };
 
         return (
-            <div className="d-flex align-items-start justify-content-between gap-4">
+            <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
                 <div>
                     <button
                         className="btn btn-primary text-white icon-center"
@@ -89,7 +89,6 @@ export const UserProducts = () => {
             progressPending={isLoading}
             progressComponent={<CustomLoader />}
             pagination
-            title=" "
             selectableRows
             fixedHeader
             highlightOnHover
