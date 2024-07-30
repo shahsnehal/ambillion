@@ -74,14 +74,16 @@ export const UserList: React.FC = () => {
         };
 
         return (
-            <TableFilter
-                onFilter={(e: { target: { value: React.SetStateAction<string> } }) =>
-                    setFilterText(e.target.value)
-                }
-                onClear={handleClear}
-                filterText={filterText}
-                placeholder="Filter By Email"
-            />
+            <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
+                <TableFilter
+                    onFilter={(e: { target: { value: React.SetStateAction<string> } }) =>
+                        setFilterText(e.target.value)
+                    }
+                    onClear={handleClear}
+                    filterText={filterText}
+                    placeholder="Filter By Email"
+                />
+            </div>
         );
     }, [filterText, resetPaginationToggle]);
 
@@ -96,7 +98,6 @@ export const UserList: React.FC = () => {
                 data={filteredItems}
                 progressPending={isLoading}
                 pagination
-                title=" "
                 selectableRows
                 fixedHeader
                 highlightOnHover
