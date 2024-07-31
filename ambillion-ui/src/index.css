@@ -16713,23 +16713,6 @@ fieldset:disabled .btn {
 
 .btn-primary {
     --bs-btn-color: #fff;
-    --bs-btn-bg: #f33e5a;
-    --bs-btn-border-color: #f33e5a;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #cf354d;
-    --bs-btn-hover-border-color: #c23248;
-    --bs-btn-focus-shadow-rgb: 245, 91, 115;
-    --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #c23248;
-    --bs-btn-active-border-color: #b62f44;
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #f33e5a;
-    --bs-btn-disabled-border-color: #f33e5a;
-}
-
-.btn-secondary {
-    --bs-btn-color: #fff;
     --bs-btn-bg: #1781fd;
     --bs-btn-border-color: #1781fd;
     --bs-btn-hover-color: #fff;
@@ -16743,6 +16726,23 @@ fieldset:disabled .btn {
     --bs-btn-disabled-color: #fff;
     --bs-btn-disabled-bg: #1781fd;
     --bs-btn-disabled-border-color: #1781fd;
+}
+
+.btn-secondary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #f33e5a;
+    --bs-btn-border-color: #f33e5a;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #cf354d;
+    --bs-btn-hover-border-color: #c23248;
+    --bs-btn-focus-shadow-rgb: 245, 91, 115;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #c23248;
+    --bs-btn-active-border-color: #b62f44;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #f33e5a;
+    --bs-btn-disabled-border-color: #f33e5a;
 }
 
 .btn-success {

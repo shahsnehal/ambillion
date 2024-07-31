@@ -13,6 +13,7 @@ import {
     fetchProductsRequest,
     updateProductStatusRequest
 } from 'reduxSaga/modules/product-module/action/actions';
+import { CustomLoader } from 'common/loaders/loader';
 
 export const Products = () => {
     const dispatch = useDispatch();
@@ -71,7 +72,7 @@ export const Products = () => {
         };
 
         return (
-            <div className="d-flex align-items-start justify-content-between gap-4">
+            <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
                 <TableFilter
                     onFilter={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setFilterText(e.target.value)
@@ -93,8 +94,8 @@ export const Products = () => {
                 ]}
                 data={filteredItems}
                 progressPending={isLoading}
+                progressComponent={<CustomLoader />}
                 pagination
-                title=" "
                 selectableRows
                 fixedHeader
                 highlightOnHover

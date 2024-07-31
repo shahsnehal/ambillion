@@ -9,9 +9,9 @@ import {
     DELETE_PRODUCT_REQUEST,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_FAILURE,
-    GET_PRODUCTDETAILS_BY_ID_REQUEST,
-    GET_PRODUCTDETAILS_BY_ID_SUCCESS,
-    GET_PRODUCTDETAILS_BY_ID_FAILURE,
+    FETCH_PRODUCTDETAILS_REQUEST,
+    FETCH_PRODUCTDETAILS_SUCCESS,
+    FETCH_PRODUCTDETAILS_FAILURE,
     ProductFormValues,
     FETCH_PRODUCTS_REQUEST,
     FETCH_PRODUCTS_SUCCESS,
@@ -137,23 +137,23 @@ function* handleDeleteProduct(action: { type: typeof DELETE_PRODUCT_REQUEST; pay
 }
 
 //Fetch ProductsDetailsBy ID API
-const fetchProductDetailsById = async (productId: number): Promise<AxiosResponse> => {
+const fetchProductDetailsById = async (productId: number | string): Promise<AxiosResponse> => {
     return await axiosInstance.get(`${apiUrl.products}/${productId}`);
 };
 
-function* handleFetchProductDetailsById(action: {
-    type: typeof GET_PRODUCTDETAILS_BY_ID_REQUEST;
+function* handleFetchProductDetails(action: {
+    type: typeof FETCH_PRODUCTDETAILS_REQUEST;
     payload: number;
 }) {
     try {
         const response: AxiosResponse = yield call(fetchProductDetailsById, action.payload);
-        yield put({ type: GET_PRODUCTDETAILS_BY_ID_SUCCESS, payload: response.data });
+        yield put({ type: FETCH_PRODUCTDETAILS_SUCCESS, payload: response.data });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
             errorMessage = error.message;
         }
-        yield put({ type: GET_PRODUCTDETAILS_BY_ID_FAILURE, error: errorMessage });
+        yield put({ type: FETCH_PRODUCTDETAILS_FAILURE, error: errorMessage });
     }
 }
 
@@ -163,5 +163,5 @@ export default function* productSaga() {
     yield takeLatest(ADD_PRODUCT_REQUEST, handleAddProduct);
     yield takeLatest(EDIT_PRODUCT_REQUEST, handleEditProduct);
     yield takeLatest(DELETE_PRODUCT_REQUEST, handleDeleteProduct);
-    yield takeLatest(GET_PRODUCTDETAILS_BY_ID_REQUEST, handleFetchProductDetailsById);
+    yield takeLatest(FETCH_PRODUCTDETAILS_REQUEST, handleFetchProductDetails);
 }

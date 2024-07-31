@@ -25,8 +25,6 @@ export const ROUTES = {
     USERS: '/users',
     PRODUCTS: '/products',
     PRODUCTSLIST: '/productsList',
-
-    UPDATEPRODUCT: '/products',
     ADDPRODUCT: '/productsList/addProduct',
     EDITPRODUCT: '/productsList/editProduct',
     PRODUCTDETAILS: '/productsList/:productId'

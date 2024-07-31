@@ -5,8 +5,8 @@ import {
     EditProductRequestAction,
     DELETE_PRODUCT_REQUEST,
     DeleteProductRequestAction,
-    GET_PRODUCTDETAILS_BY_ID_REQUEST,
-    FetchProductDetailsByIdRequestAction,
+    FETCH_PRODUCTDETAILS_REQUEST,
+    FetchProductDetailsRequestAction,
     ProductFormValues,
     FETCH_PRODUCTS_REQUEST,
     FetchProductsRequestAction,
@@ -48,7 +48,9 @@ export const deleteProductRequest = (productId: number): DeleteProductRequestAct
     payload: productId
 });
 
-export const getProductByIdRequest = (productId: number): FetchProductDetailsByIdRequestAction => ({
-    type: GET_PRODUCTDETAILS_BY_ID_REQUEST,
+export const getProductDetailsRequest = (
+    productId: number | string
+): FetchProductDetailsRequestAction => ({
+    type: FETCH_PRODUCTDETAILS_REQUEST,
     payload: productId
 });

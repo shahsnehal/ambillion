@@ -12,6 +12,7 @@ import { ROUTES } from 'constants/common';
 import { RootState } from 'reduxSaga/config/store';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProductsRequest } from 'reduxSaga/modules/product-module/action/actions';
+import { CustomLoader } from 'common/loaders/loader';
 
 export const UserProducts = () => {
     const navigate = useNavigate();
@@ -38,11 +39,11 @@ export const UserProducts = () => {
     // };
 
     const handleEdit = () => {
-        navigate('/productsList');
+        navigate(`${ROUTES.PRODUCTSLIST}`);
     };
 
     const handleView = (productId: number) => {
-        navigate(`/productsList/${productId}`);
+        navigate(`${ROUTES.PRODUCTSLIST}/${productId}`);
     };
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -54,7 +55,7 @@ export const UserProducts = () => {
         };
 
         return (
-            <div className="d-flex align-items-start justify-content-between gap-4">
+            <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
                 <div>
                     <button
                         className="btn btn-primary text-white icon-center"
@@ -86,8 +87,8 @@ export const UserProducts = () => {
             ]}
             data={filteredItems}
             progressPending={isLoading}
+            progressComponent={<CustomLoader />}
             pagination
-            title=" "
             selectableRows
             fixedHeader
             highlightOnHover

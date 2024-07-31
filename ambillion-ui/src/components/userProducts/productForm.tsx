@@ -6,7 +6,7 @@ import { addProductRequest } from 'reduxSaga/modules/product-module/action/actio
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reduxSaga/config/store';
 import { ProductFormValues } from 'reduxSaga/modules/product-module/type/types';
-import { productCategories } from 'constants/common';
+import { productCategories, ROUTES } from 'constants/common';
 
 type ProductFormModalProps = {
     initialValues?: ProductFormValues;
@@ -23,10 +23,7 @@ const ProductFormSchema = Yup.object().shape({
             'HSN Code must be 10 characters long and can only include digits and capital letters'
         ),
     productFeature: Yup.string().required('Features are required'),
-    productCustomFields: Yup.object().shape({
-        FieldName: Yup.string(),
-        FieldValue: Yup.string()
-    })
+    productCustomFields: Yup.object().shape({})
 });
 
 export const ProductForm: React.FC<ProductFormModalProps> = ({
@@ -76,6 +73,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                         <Field
                                             type="text"
                                             name="productDisplayName"
+                                            autoFocus
                                             className={`form-control ${props.touched.productDisplayName && props.errors.productDisplayName ? 'is-invalid' : ''}`}
                                             id="productDisplayName"
                                         />
@@ -115,7 +113,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             id="productCategoryId"
                                         >
                                             <option value="" disabled>
-                                                Please Select
+                                                -- Select a Category --
                                             </option>
                                             {productCategories.map((category) => (
                                                 <option key={category.id} value={category.name}>
@@ -234,7 +232,13 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                     )}
                                 </div>
 
-                                <div className="d-grid gap-2 mt-2">
+                                <div className="d-flex justify-content-end gap-2 mt-2">
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={() => navigate(ROUTES.PRODUCTSLIST)}
+                                    >
+                                        Cancel
+                                    </button>
                                     <button
                                         type="submit"
                                         className="btn btn-primary"

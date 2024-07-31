@@ -39,7 +39,7 @@ const getUserStatusClass = (status: string): string => {
     }
 };
 
-const getProductStatusClass = (status: string): string => {
+export const getProductStatusClass = (status: string): string => {
     switch (status) {
         case productStatus.APPROVED:
             return 'bg-success-subtle text-success';
@@ -108,6 +108,23 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     );
 };
 
+export const UserStatusChangeActionColumn = (
+    onApprove: (userId: number) => void,
+    onReject: (userId: number) => void
+) => ({
+    name: 'Actions',
+    cell: (row: User) => (
+        <UserStatusChangeAction
+            status={row.status}
+            onApprove={() => onApprove(row.userprofile_id)}
+            onReject={() => onReject(row.userprofile_id)}
+        />
+    ),
+    ignoreRowClick: false,
+    allowOverflow: true,
+    button: true
+});
+
 export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps> = ({
     productId,
     currentStatus,
@@ -129,23 +146,6 @@ export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps>
         </div>
     );
 };
-
-export const UserStatusChangeActionColumn = (
-    onApprove: (userId: number) => void,
-    onReject: (userId: number) => void
-) => ({
-    name: 'Actions',
-    cell: (row: User) => (
-        <UserStatusChangeAction
-            status={row.status}
-            onApprove={() => onApprove(row.userprofile_id)}
-            onReject={() => onReject(row.userprofile_id)}
-        />
-    ),
-    ignoreRowClick: false,
-    allowOverflow: true,
-    button: true
-});
 
 export const ProductStatusChangeActionColumn = (
     onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
