@@ -39,11 +39,11 @@ export const UserProducts = () => {
     // };
 
     const handleEdit = () => {
-        navigate('/productsList');
+        navigate(`${ROUTES.PRODUCTSLIST}`);
     };
 
     const handleView = (productId: number) => {
-        navigate(`/productsList/${productId}`);
+        navigate(`${ROUTES.PRODUCTSLIST}/${productId}`);
     };
 
     const subHeaderComponentMemo = React.useMemo(() => {

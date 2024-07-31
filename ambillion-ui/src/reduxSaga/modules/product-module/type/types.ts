@@ -14,9 +14,9 @@ export const DELETE_PRODUCT_REQUEST = 'DELETE_PRODUCT_REQUEST';
 export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS';
 export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE';
 
-export const GET_PRODUCTDETAILS_REQUEST = 'GET_PRODUCT_BY_ID_REQUEST';
-export const GET_PRODUCTDETAILS_SUCCESS = 'GET_PRODUCT_BY_ID_SUCCESS';
-export const GET_PRODUCTDETAILS_FAILURE = 'GET_PRODUCT_BY_ID_FAILURE';
+export const FETCH_PRODUCTDETAILS_REQUEST = 'FETCH_PRODUCTDETAILS_REQUEST';
+export const FETCH_PRODUCTDETAILS_SUCCESS = 'FETCH_PRODUCTDETAILS_SUCCESS';
+export const FETCH_PRODUCTDETAILS_FAILURE = 'FETCH_PRODUCTDETAILS_FAILURE';
 
 export const UPDATE_PRODUCT_STATUS_REQUEST = 'UPDATE_PRODUCT_STATUS_REQUEST';
 export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
@@ -143,17 +143,17 @@ export type DeleteProductFailureAction = {
 };
 
 export type FetchProductDetailsRequestAction = {
-    type: typeof GET_PRODUCTDETAILS_REQUEST;
+    type: typeof FETCH_PRODUCTDETAILS_REQUEST;
     payload: number | string;
 };
 
 export type FetchProductDetailsSuccessAction = {
-    type: typeof GET_PRODUCTDETAILS_SUCCESS;
+    type: typeof FETCH_PRODUCTDETAILS_SUCCESS;
     payload: Product;
 };
 
 export type FetchProductDetailsFailureAction = {
-    type: typeof GET_PRODUCTDETAILS_FAILURE;
+    type: typeof FETCH_PRODUCTDETAILS_FAILURE;
     error: string;
 };
 
