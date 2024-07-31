@@ -1,17 +1,23 @@
 import { CustomLoader } from 'common/loaders/loader';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RootState } from 'reduxSaga/config/store';
 import { getProductDetailsRequest } from 'reduxSaga/modules/product-module/action/actions';
+import { ROUTES } from 'constants/common';
+import { getProductStatusClass } from 'utils/table/columns';
 import uploadImages from 'assets/images/product.jpg';
 
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
+    const parsedCustomFields = selectedProductDetails?.product_custom_fields
+        ? JSON.parse(selectedProductDetails.product_custom_fields)
+        : null;
 
     useEffect(() => {
         if (productId) {
@@ -56,24 +62,49 @@ export const ProductDetails: React.FC = () => {
                                     </p>
                                 </div>
                                 <div className="col-lg-6">
-                                    <div className="product-details bg-light p-4 rounded">
-                                        <div className="mb-3">
-                                            <strong>Category:</strong>{' '}
-                                            {selectedProductDetails?.category_name}
-                                        </div>
-                                        <div className="mb-3">
-                                            <strong>Description:</strong>{' '}
-                                            {selectedProductDetails?.customer_product_description}
-                                        </div>
-                                        <div className="mb-3">
-                                            <strong>Features:</strong>{' '}
-                                            {selectedProductDetails?.product_feature}
-                                        </div>
-                                        <div className="mb-3">
-                                            <strong>status:</strong>{' '}
-                                            {selectedProductDetails?.status}
+                                    <div className="shop-content">
+                                        <div className="d-flex align-items-center gap-2 mb-2">
+                                            {' '}
+                                            <div className="mb-3">
+                                                <strong>Status:</strong>{' '}
+                                                <span
+                                                    className={`badge ${getProductStatusClass(selectedProductDetails?.status ?? '')} rounded fw-semibold p-2`}
+                                                >
+                                                    {selectedProductDetails?.status}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <div className="mb-3">
+                                        <strong>Category:</strong>{' '}
+                                        {selectedProductDetails?.category_name}
+                                    </div>
+                                    <div className="mb-3">
+                                        <strong>Description:</strong>{' '}
+                                        {selectedProductDetails?.customer_product_description}
+                                    </div>
+                                    <div className="mb-3">
+                                        <strong>Features:</strong>{' '}
+                                        {selectedProductDetails?.product_feature}
+                                    </div>
+
+                                    {parsedCustomFields && (
+                                        <div className="mb-3">
+                                            <div>
+                                                <strong>{parsedCustomFields.FieldName}:</strong>{' '}
+                                                <span>{parsedCustomFields.FieldValue}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={() => navigate(ROUTES.PRODUCTSLIST)}
+                                    >
+                                        Back
+                                    </button>
                                 </div>
                             </div>
                         </div>

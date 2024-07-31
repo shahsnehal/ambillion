@@ -39,7 +39,7 @@ const getUserStatusClass = (status: string): string => {
     }
 };
 
-const getProductStatusClass = (status: string): string => {
+export const getProductStatusClass = (status: string): string => {
     switch (status) {
         case productStatus.APPROVED:
             return 'bg-success-subtle text-success';

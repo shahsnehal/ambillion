@@ -5,7 +5,7 @@ import {
     EditProductRequestAction,
     DELETE_PRODUCT_REQUEST,
     DeleteProductRequestAction,
-    GET_PRODUCTDETAILS_REQUEST,
+    FETCH_PRODUCTDETAILS_REQUEST,
     FetchProductDetailsRequestAction,
     ProductFormValues,
     FETCH_PRODUCTS_REQUEST,
@@ -51,6 +51,6 @@ export const deleteProductRequest = (productId: number): DeleteProductRequestAct
 export const getProductDetailsRequest = (
     productId: number | string
 ): FetchProductDetailsRequestAction => ({
-    type: GET_PRODUCTDETAILS_REQUEST,
+    type: FETCH_PRODUCTDETAILS_REQUEST,
     payload: productId
 });
