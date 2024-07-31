@@ -29,7 +29,10 @@ export type Product = {
     customer_product_description: string;
     origin_hsn_code: string;
     product_feature: string;
-    product_custom_fields?: string;
+    product_custom_fields?: {
+        FieldName: string;
+        FieldValue: string;
+    };
     category_name: string;
     audit_user_id: number;
     audit_timestamp: string;
