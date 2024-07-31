@@ -15,10 +15,6 @@ export const ProductDetails: React.FC = () => {
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
-    const parsedCustomFields = selectedProductDetails?.product_custom_fields
-        ? JSON.parse(selectedProductDetails.product_custom_fields)
-        : null;
-
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
@@ -89,14 +85,28 @@ export const ProductDetails: React.FC = () => {
                                         {selectedProductDetails?.product_feature}
                                     </div>
 
-                                    {parsedCustomFields && (
-                                        <div className="mb-3">
-                                            <div>
-                                                <strong>{parsedCustomFields.FieldName}:</strong>{' '}
-                                                <span>{parsedCustomFields.FieldValue}</span>
+                                    {selectedProductDetails?.product_custom_fields &&
+                                        selectedProductDetails?.product_custom_fields.FieldName &&
+                                        selectedProductDetails?.product_custom_fields
+                                            .FieldValue && (
+                                            <div className="mb-3">
+                                                <div>
+                                                    <strong>
+                                                        {
+                                                            selectedProductDetails
+                                                                ?.product_custom_fields.FieldName
+                                                        }
+                                                        :
+                                                    </strong>{' '}
+                                                    <span>
+                                                        {
+                                                            selectedProductDetails
+                                                                ?.product_custom_fields.FieldValue
+                                                        }
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
                                 </div>
                                 <div className="d-flex justify-content-end mt-3">
                                     <button
