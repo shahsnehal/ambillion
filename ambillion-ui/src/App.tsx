@@ -2,20 +2,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Loader } from 'common/loaders/loader';
 import Layout from 'components/common/layouts/layouts';
-import { ProductDetails } from 'components/userProducts/productDetails';
+import { ProductDetails } from 'components/products/productDetails';
 import { ROUTES, userRoles } from 'constants/common';
 import { ErrorBoundary } from 'pages/errors/error';
 import { ForgotPasswordPage } from 'pages/forgotPassword/forgotPassword';
 import { LoginPage } from 'pages/login/login';
 import { NotFound } from 'pages/notFound/notFound';
-import { UserProductsPage } from 'pages/userProducts/userProducts';
 import { RegisterPage } from 'pages/register/register';
 import React from 'react';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { UsersPage } from 'pages/users/users';
 import ProtectedRoute from 'common/privatesRoute/protectedRoute';
 import { NotAuthorized } from 'common/privatesRoute/notAuthorized';
-import { ProductForm } from 'components/userProducts/productForm';
+import { ProductForm } from 'components/products/productForm';
 import { ProductsPage } from 'pages/products/products';
 
 function App() {
@@ -63,26 +62,6 @@ function App() {
                                         element={
                                             <ProtectedRoute
                                                 allowedRoles={[
-                                                    userRoles.ADMIN,
-                                                    userRoles.MANUFACTURER
-                                                ]}
-                                            />
-                                        }
-                                    >
-                                        <Route
-                                            path={ROUTES.PRODUCTSLIST}
-                                            element={
-                                                <Layout title="productslist">
-                                                    <UserProductsPage />
-                                                </Layout>
-                                            }
-                                        />
-                                    </Route>
-
-                                    <Route
-                                        element={
-                                            <ProtectedRoute
-                                                allowedRoles={[
                                                     userRoles.OFFICER,
                                                     userRoles.ADMIN,
                                                     userRoles.MANUFACTURER
@@ -90,6 +69,14 @@ function App() {
                                             />
                                         }
                                     >
+                                        <Route
+                                            path={ROUTES.PRODUCTS}
+                                            element={
+                                                <Layout title="Products">
+                                                    <ProductsPage />
+                                                </Layout>
+                                            }
+                                        />
                                         <Route
                                             path={ROUTES.PRODUCTDETAILS}
                                             element={
@@ -121,23 +108,6 @@ function App() {
                                             element={
                                                 <Layout title="Edit Product">
                                                     <ProductForm />
-                                                </Layout>
-                                            }
-                                        />
-                                    </Route>
-
-                                    <Route
-                                        element={
-                                            <ProtectedRoute
-                                                allowedRoles={[userRoles.OFFICER, userRoles.ADMIN]}
-                                            />
-                                        }
-                                    >
-                                        <Route
-                                            path={ROUTES.PRODUCTS}
-                                            element={
-                                                <Layout title="Products">
-                                                    <ProductsPage />
                                                 </Layout>
                                             }
                                         />

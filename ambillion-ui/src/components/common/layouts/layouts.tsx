@@ -59,30 +59,18 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     </a>
                                 </li>
                             )}
-                            {userRole === userRoles.MANUFACTURER && (
-                                <li className="sidebar-item custom-sidebar-link">
-                                    <a
-                                        className={`sidebar-link ${isActive(ROUTES.PRODUCTSLIST) ? 'active' : ''}`}
-                                        id="get-url"
-                                        onClick={() => navigate(ROUTES.PRODUCTSLIST)}
-                                    >
-                                        <Icon icon="gridicons:product" className="aside-icon" />
-                                        <span className="hide-menu">PRODUCTSLIST</span>
-                                    </a>
-                                </li>
-                            )}
-                            {(userRole === userRoles.OFFICER || userRole === userRoles.ADMIN) && (
-                                <li className="sidebar-item custom-sidebar-link">
-                                    <a
-                                        className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
-                                        id="get-url"
-                                        onClick={() => navigate(ROUTES.PRODUCTS)}
-                                    >
-                                        <Icon icon="gridicons:product" className="aside-icon" />
-                                        <span className="hide-menu">PRODUCTS</span>
-                                    </a>
-                                </li>
-                            )}
+
+                            <li className="sidebar-item custom-sidebar-link">
+                                <a
+                                    className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
+                                    id="get-url"
+                                    onClick={() => navigate(ROUTES.PRODUCTS)}
+                                >
+                                    <Icon icon="gridicons:product" className="aside-icon" />
+                                    <span className="hide-menu">PRODUCTS</span>
+                                </a>
+                            </li>
+
                             <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">

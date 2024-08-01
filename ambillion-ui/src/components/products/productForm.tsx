@@ -235,7 +235,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                 <div className="d-flex justify-content-end gap-2 mt-2">
                                     <button
                                         className="btn btn-secondary"
-                                        onClick={() => navigate(ROUTES.PRODUCTSLIST)}
+                                        onClick={() => navigate(ROUTES.PRODUCTS)}
                                     >
                                         Cancel
                                     </button>
