@@ -13,7 +13,7 @@ export const NotAuthorized: React.FC = () => {
                 navigate(ROUTES.USERS);
                 break;
             case userRoles.MANUFACTURER:
-                navigate(ROUTES.PRODUCTSLIST);
+                navigate(ROUTES.PRODUCTS);
                 break;
             case userRoles.OFFICER:
                 navigate(ROUTES.PRODUCTS);
