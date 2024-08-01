@@ -21,13 +21,11 @@ export const ROUTES = {
     REGISTER: '/register',
     FORGOT_PASSWORD: '/forgotPassword',
     NOT_AUTHORIZES: '/unAthorized',
-    DASHBOARD: '/dashboard',
     USERS: '/users',
     PRODUCTS: '/products',
-    PRODUCTSLIST: '/productsList',
-    ADDPRODUCT: '/productsList/addProduct',
-    EDITPRODUCT: '/productsList/editProduct',
-    PRODUCTDETAILS: '/productsList/:productId'
+    ADDPRODUCT: '/products/addProduct',
+    EDITPRODUCT: '/products/editProduct',
+    PRODUCTDETAILS: '/products/:productId'
 };
 
 // localStorageKey
@@ -63,7 +61,7 @@ export const userRoles = {
 
 export const roleRedirects = {
     [userRoles.ADMIN]: ROUTES.USERS,
-    [userRoles.MANUFACTURER]: ROUTES.PRODUCTSLIST,
+    [userRoles.MANUFACTURER]: ROUTES.PRODUCTS,
     [userRoles.OFFICER]: ROUTES.PRODUCTS
 };
 

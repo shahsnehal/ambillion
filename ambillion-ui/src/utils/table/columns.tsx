@@ -2,12 +2,15 @@ import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 import { User } from 'reduxSaga/modules/user-module/type/types';
 import { Product } from 'reduxSaga/modules/product-module/type/types';
-import { userStatus, productStatus } from 'constants/common';
+import { userStatus, productStatus, userRoles } from 'constants/common';
 
 export const customStyles = {
     rows: {
         style: {
-            minHeight: '50px' // override the row height
+            minHeight: '50px', // override the row height
+            '&:hover': {
+                cursor: 'pointer'
+            }
         }
     },
     headCells: {
@@ -56,25 +59,11 @@ export const getProductStatusClass = (status: string): string => {
     }
 };
 
-type ProductViewEditActionProps = {
-    row: Product;
-    onView: (id: number) => void;
-    onEdit: (row: Product) => void;
-};
-
 //UserStatusChangeTypes
 type UserStatusChangeActionProps = {
     status: string;
     onApprove: () => void;
     onReject: () => void;
-};
-
-//ProductStatusChangeTypes
-type ProductStatusChangeActionProps = {
-    productId: number;
-    currentStatus: string;
-    currentComment: string;
-    onOpenModal: (productId: number, status: string, comments: string) => void;
 };
 
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
@@ -125,95 +114,6 @@ export const UserStatusChangeActionColumn = (
     button: true
 });
 
-export const ProductStatusChangeAction: React.FC<ProductStatusChangeActionProps> = ({
-    productId,
-    currentStatus,
-    currentComment,
-    onOpenModal
-}) => {
-    return (
-        <div className="d-flex gap-2">
-            <button
-                className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2"
-                data-toggle="tooltip"
-                data-placement="left"
-                title="Change Status"
-                disabled={currentStatus === productStatus.APPROVED}
-                onClick={() => onOpenModal(productId, currentStatus, currentComment)}
-            >
-                <Icon icon="solar:pen-outline" className="fs-5" />
-            </button>
-        </div>
-    );
-};
-
-export const ProductStatusChangeActionColumn = (
-    onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
-) => ({
-    name: 'Action',
-    cell: (row: Product) => (
-        <ProductStatusChangeAction
-            productId={row.product_id}
-            currentStatus={row.status}
-            currentComment={row.comments}
-            onOpenModal={() => onOpenModal(row.product_id.toString(), row.status, row.comments)}
-        />
-    ),
-    ignoreRowClick: false,
-    allowOverflow: true,
-    button: true
-});
-
-// ProductEditDeleteAction component renders edit and delete actions for a table row.
-export const ProductViewEditAction: React.FC<ProductViewEditActionProps> = ({
-    row,
-    onView,
-    onEdit
-}) => {
-    const handleView = () => {
-        onView(row.product_id);
-    };
-
-    const handleEdit = () => {
-        onEdit(row);
-    };
-
-    return (
-        <div className="d-flex gap-2">
-            <button
-                className="btn btn-muted rounded-circle d-flex align-items-center justify-content-center p-2"
-                data-toggle="tooltip"
-                data-placement="left"
-                title="View"
-                onClick={handleView}
-            >
-                <Icon icon="solar:eye-outline" className="fs-5" />
-            </button>
-            <button
-                className="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2"
-                data-toggle="tooltip"
-                data-placement="left"
-                title="Edit"
-                onClick={handleEdit}
-            >
-                <Icon icon="solar:pen-outline" className="fs-5" />
-            </button>
-        </div>
-    );
-};
-
-//  productEditDeleteActionColumn configures the Edit/Delete Actions column for a React data table.
-export const productViewEditActionColumn = (
-    onView: (id: number) => void,
-    onEdit: (id: Product) => void
-) => ({
-    name: 'Actions',
-    cell: (row: Product) => <ProductViewEditAction row={row} onView={onView} onEdit={onEdit} />,
-    ignoreRowClick: false,
-    allowOverflow: true,
-    button: true
-});
-
 export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'Name',
@@ -259,6 +159,80 @@ export const userTableColumns: TableColumn<User>[] = [
     }
 ];
 
+//Product Table Type
+type ProductActionColumnProps = {
+    row: Product;
+    onEdit: (row: Product) => void;
+    productId: number;
+    currentStatus: string;
+    currentComment: string;
+    onOpenModal: (productId: number, status: string, comments: string) => void;
+    userRole: string;
+};
+
+export const ProductAction: React.FC<ProductActionColumnProps> = ({
+    row,
+    onEdit,
+    productId,
+    currentStatus,
+    currentComment,
+    onOpenModal,
+    userRole
+}) => {
+    const handleEdit = () => {
+        onEdit(row);
+    };
+    return (
+        <div className="d-flex gap-2">
+            {(userRole === userRoles.ADMIN || userRole === userRoles.OFFICER) && (
+                <button
+                    className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2"
+                    data-toggle="tooltip"
+                    data-placement="left"
+                    title="Change Status"
+                    disabled={currentStatus === productStatus.APPROVED}
+                    onClick={() => onOpenModal(productId, currentStatus, currentComment)}
+                >
+                    <Icon icon="solar:pen-outline" className="fs-5" />
+                </button>
+            )}
+            {userRole === userRoles.MANUFACTURER && (
+                <button
+                    className="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2"
+                    data-toggle="tooltip"
+                    data-placement="left"
+                    title="Edit"
+                    onClick={handleEdit}
+                >
+                    <Icon icon="solar:pen-outline" className="fs-5" />
+                </button>
+            )}
+        </div>
+    );
+};
+
+export const ProductActionColumn = (
+    userRole: string,
+    onEdit: (id: Product) => void,
+    onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
+) => ({
+    name: 'Action',
+    cell: (row: Product) => (
+        <ProductAction
+            row={row}
+            onEdit={onEdit}
+            productId={row.product_id}
+            currentStatus={row.status}
+            currentComment={row.comments}
+            onOpenModal={() => onOpenModal(row.product_id.toString(), row.status, row.comments)}
+            userRole={userRole}
+        />
+    ),
+    ignoreRowClick: false,
+    allowOverflow: true,
+    button: true
+});
+
 //ProductListTableColumn For Officer
 export const productsTableColumns: TableColumn<Product>[] = [
     {
@@ -281,47 +255,6 @@ export const productsTableColumns: TableColumn<Product>[] = [
         selector: (row) => row.product_feature,
         sortable: true
     },
-
-    {
-        name: 'Description',
-        selector: (row) => row.customer_product_description,
-        sortable: true
-    },
-    {
-        name: 'Export Status',
-        selector: (row) => row.status,
-        sortable: true,
-        cell: (row) => (
-            <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
-                {row.status}
-            </span>
-        )
-    }
-];
-
-//ProductsTableColumn For Manufacturer
-export const productsListTableColumns: TableColumn<Product>[] = [
-    {
-        name: 'Name',
-        selector: (row) => row.product_displayname,
-        sortable: true
-    },
-    {
-        name: 'HSN Code',
-        selector: (row) => row.origin_hsn_code,
-        sortable: true
-    },
-    {
-        name: 'Category',
-        selector: (row) => row.category_name,
-        sortable: true
-    },
-    {
-        name: 'Feature',
-        selector: (row) => row.product_feature,
-        sortable: true
-    },
-
     {
         name: 'Description',
         selector: (row) => row.customer_product_description,

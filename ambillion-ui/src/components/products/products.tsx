@@ -1,22 +1,25 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { Icon } from '@iconify/react';
 import { useSelector, useDispatch } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import { TableFilter } from 'components/common/table/tableFilter';
 import { ProductStatusModal } from './productStatusModal';
-import {
-    customStyles,
-    productsTableColumns,
-    ProductStatusChangeActionColumn
-} from 'utils/table/columns';
+import { customStyles, productsTableColumns, ProductActionColumn } from 'utils/table/columns';
 import { RootState } from 'reduxSaga/config/store';
 import {
     fetchProductsRequest,
     updateProductStatusRequest
 } from 'reduxSaga/modules/product-module/action/actions';
 import { CustomLoader } from 'common/loaders/loader';
+import { getLocalStorage } from 'utils/localStorage';
+import { localStorageKey, ROUTES, userRoles } from 'constants/common';
+import { useNavigate } from 'react-router-dom';
 
 export const Products = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE) || {};
+    const { role_name: userRole } = userProfile || null;
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +33,7 @@ export const Products = () => {
         dispatch(fetchProductsRequest());
     }, []);
 
+    //Filter Functionality
     const filteredItems = useMemo(
         () =>
             products?.filter((item) =>
@@ -38,6 +42,7 @@ export const Products = () => {
         [filterText, products]
     );
 
+    //ProductStatus Change ModalOpen
     const handleOpenModal = (productId: string, status: string, comments: string) => {
         setSelectedProductId(productId);
         setCurrentStatus(status);
@@ -45,6 +50,7 @@ export const Products = () => {
         setIsModalOpen(true);
     };
 
+    //ProductStatus Change ModalClose
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedProductId('');
@@ -52,6 +58,7 @@ export const Products = () => {
         setCurrentComment('');
     };
 
+    //ProductStatus Change Functionality
     const handleConfirmStatusChange = (
         productId: string,
         newStatus: string,
@@ -61,6 +68,21 @@ export const Products = () => {
             dispatch(updateProductStatusRequest(productId, newStatus, newComment));
         }
         handleCloseModal();
+    };
+
+    //AddProduct Route
+    const handleAddProduct = () => {
+        navigate(ROUTES.ADDPRODUCT);
+    };
+
+    //EditProduct Route
+    const handleEdit = () => {
+        navigate(`${ROUTES.PRODUCTS}`);
+    };
+
+    //ProductDetailView Route
+    const handleView = (productId: number) => {
+        navigate(`${ROUTES.PRODUCTS}/${productId}`);
     };
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -73,14 +95,27 @@ export const Products = () => {
 
         return (
             <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
-                <TableFilter
-                    onFilter={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setFilterText(e.target.value)
-                    }
-                    onClear={handleClear}
-                    filterText={filterText}
-                    placeholder="Filter By Product Name"
-                />
+                {userRole === userRoles.MANUFACTURER && (
+                    <div>
+                        <button
+                            className="btn btn-primary text-white icon-center gap-2 mt-3"
+                            onClick={() => handleAddProduct()}
+                        >
+                            <Icon icon="tabler:plus" />
+                            Add Product
+                        </button>
+                    </div>
+                )}
+                <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
+                    <TableFilter
+                        onFilter={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setFilterText(e.target.value)
+                        }
+                        onClear={handleClear}
+                        filterText={filterText}
+                        placeholder="Filter By Product Name"
+                    />
+                </div>
             </div>
         );
     }, [filterText, resetPaginationToggle]);
@@ -90,11 +125,12 @@ export const Products = () => {
             <DataTable
                 columns={[
                     ...productsTableColumns,
-                    ProductStatusChangeActionColumn(handleOpenModal)
+                    ProductActionColumn(userRole, handleEdit, handleOpenModal)
                 ]}
                 data={filteredItems}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
+                onRowClicked={(row) => handleView(row.product_id)}
                 pagination
                 selectableRows
                 fixedHeader

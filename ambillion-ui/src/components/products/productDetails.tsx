@@ -111,7 +111,7 @@ export const ProductDetails: React.FC = () => {
                                 <div className="d-flex justify-content-end mt-3">
                                     <button
                                         className="btn btn-secondary"
-                                        onClick={() => navigate(ROUTES.PRODUCTSLIST)}
+                                        onClick={() => navigate(ROUTES.PRODUCTS)}
                                     >
                                         Back
                                     </button>
