@@ -27,7 +27,7 @@ export const UserList: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchUsersRequest());
-    }, [dispatch]);
+    }, []);
 
     const filteredItems = users.filter((user) =>
         user.email?.toLowerCase().includes(filterText.toLowerCase())

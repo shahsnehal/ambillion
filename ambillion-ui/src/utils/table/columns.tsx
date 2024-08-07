@@ -59,13 +59,14 @@ export const getProductStatusClass = (status: string): string => {
     }
 };
 
-//UserStatusChangeTypes
+//User Status Change Types
 type UserStatusChangeActionProps = {
     status: string;
     onApprove: () => void;
     onReject: () => void;
 };
 
+//User Staus Change Action
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     status,
     onApprove,
@@ -97,6 +98,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     );
 };
 
+//User Status Change Action Column
 export const UserStatusChangeActionColumn = (
     onApprove: (userId: number) => void,
     onReject: (userId: number) => void
@@ -114,6 +116,7 @@ export const UserStatusChangeActionColumn = (
     button: true
 });
 
+//User Table Columns
 export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'Name',
@@ -170,6 +173,7 @@ type ProductActionColumnProps = {
     userRole: string;
 };
 
+//Product Table Actions
 export const ProductAction: React.FC<ProductActionColumnProps> = ({
     row,
     onEdit,
@@ -211,6 +215,7 @@ export const ProductAction: React.FC<ProductActionColumnProps> = ({
     );
 };
 
+//Product Table Action Column
 export const ProductActionColumn = (
     userRole: string,
     onEdit: (id: Product) => void,
@@ -233,7 +238,7 @@ export const ProductActionColumn = (
     button: true
 });
 
-//ProductListTableColumn For Officer
+//Product Table Columns
 export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'Name',

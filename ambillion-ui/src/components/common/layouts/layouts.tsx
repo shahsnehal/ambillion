@@ -71,6 +71,19 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 </a>
                             </li>
 
+                            {userRole === userRoles.ADMIN && (
+                                <li className="sidebar-item custom-sidebar-link">
+                                    <a
+                                        className={`sidebar-link ${isActive(ROUTES.PRODUCT_CATEGORIES) ? 'active' : ''}`}
+                                        id="get-url"
+                                        onClick={() => navigate(ROUTES.PRODUCT_CATEGORIES)}
+                                    >
+                                        <Icon icon="bx:category" className="aside-icon" />
+                                        <span className="hide-menu">CATEGORIES</span>
+                                    </a>
+                                </li>
+                            )}
+
                             <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">
