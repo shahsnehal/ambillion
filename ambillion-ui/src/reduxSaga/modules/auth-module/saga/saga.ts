@@ -48,11 +48,13 @@ function* handleSignin(action: {
         const responseData = response.data;
         const userData = responseData.user;
         const { access } = responseData.tokens;
+        const productCategories = responseData.productCatgories;
 
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
         setLocalStorage(localStorageKey.USER_PROFILE, userData);
         setLocalStorage(localStorageKey.JWT_TOKEN, access.token);
+        setLocalStorage(localStorageKey.PRODUCT_CATEGORIES, productCategories);
 
         action.payload.navigate(ROUTES.PRODUCTS);
     } catch (error: unknown) {
