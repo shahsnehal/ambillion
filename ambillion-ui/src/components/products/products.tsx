@@ -22,7 +22,7 @@ export const Products = () => {
     const { role_name: userRole } = userProfile || null;
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedProductId, setSelectedProductId] = useState<string>('');
     const [currentStatus, setCurrentStatus] = useState<string>('');
     const [currentComment, setCurrentComment] = useState<string>('');
@@ -143,14 +143,16 @@ export const Products = () => {
                 customStyles={customStyles}
             />
 
-            <ProductStatusModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                productId={selectedProductId ?? 0}
-                currentStatus={currentStatus}
-                currentComment={currentComment}
-                onConfirm={handleConfirmStatusChange}
-            />
+            {isModalOpen && (
+                <ProductStatusModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    productId={selectedProductId ?? 0}
+                    currentStatus={currentStatus}
+                    currentComment={currentComment}
+                    onConfirm={handleConfirmStatusChange}
+                />
+            )}
         </>
     );
 };

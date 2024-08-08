@@ -11,7 +11,10 @@ export const apiUrl = {
     users: '/users',
 
     //product-Module
-    products: '/products'
+    products: '/products',
+
+    //productCategories-Module
+    productCategories: '/categories'
 };
 
 // Routing path constants
@@ -25,7 +28,8 @@ export const ROUTES = {
     PRODUCTS: '/products',
     ADDPRODUCT: '/products/addProduct',
     EDITPRODUCT: '/products/editProduct',
-    PRODUCTDETAILS: '/products/:productId'
+    PRODUCTDETAILS: '/products/:productId',
+    PRODUCT_CATEGORIES: '/productCategories'
 };
 
 // localStorageKey
@@ -57,12 +61,6 @@ export const userRoles = {
     ADMIN: 'ADMIN',
     MANUFACTURER: 'MANUFACTURER',
     OFFICER: 'OFFICER'
-};
-
-export const roleRedirects = {
-    [userRoles.ADMIN]: ROUTES.USERS,
-    [userRoles.MANUFACTURER]: ROUTES.PRODUCTS,
-    [userRoles.OFFICER]: ROUTES.PRODUCTS
 };
 
 export const productCategories = [

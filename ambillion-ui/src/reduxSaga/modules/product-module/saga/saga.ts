@@ -124,7 +124,6 @@ const deleteProduct = async (productId: number): Promise<AxiosResponse> => {
 
 function* handleDeleteProduct(action: { type: typeof DELETE_PRODUCT_REQUEST; payload: number }) {
     try {
-        // const response: AxiosResponse = yield call(deleteProduct, action.payload);
         yield call(deleteProduct, action.payload);
         yield put({ type: DELETE_PRODUCT_SUCCESS, payload: action.payload });
     } catch (error: unknown) {

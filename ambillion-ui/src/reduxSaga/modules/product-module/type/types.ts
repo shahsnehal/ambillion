@@ -48,7 +48,7 @@ export type Product = {
 export type ProductFormValues = {
     productDisplayName?: string;
     originHsnCode?: string;
-    productCategoryId?: string;
+    productCategoryId: string | number | undefined;
     customerProductDescription?: string;
     productFeature?: string;
     productCustomFields: {

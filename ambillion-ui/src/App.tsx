@@ -16,6 +16,7 @@ import ProtectedRoute from 'common/privatesRoute/protectedRoute';
 import { NotAuthorized } from 'common/privatesRoute/notAuthorized';
 import { ProductForm } from 'components/products/productForm';
 import { ProductsPage } from 'pages/products/products';
+import { ProductCategoriesPage } from 'pages/productCategories/productCategories';
 
 function App() {
     return (
@@ -53,6 +54,15 @@ function App() {
                                             element={
                                                 <Layout title="Users">
                                                     <UsersPage />
+                                                </Layout>
+                                            }
+                                        />
+
+                                        <Route
+                                            path={ROUTES.PRODUCT_CATEGORIES}
+                                            element={
+                                                <Layout title="Product Categories">
+                                                    <ProductCategoriesPage />
                                                 </Layout>
                                             }
                                         />

@@ -1,25 +1,16 @@
 import React from 'react';
-import { localStorageKey, ROUTES, userRoles } from 'constants/common';
+import { localStorageKey, ROUTES } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
 import { getLocalStorage } from 'utils/localStorage';
 
 export const NotAuthorized: React.FC = () => {
     const navigate = useNavigate();
-    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
+    const jwtToken = getLocalStorage(localStorageKey.JWT_TOKEN);
     const handleNavigation = () => {
-        const { role_name: userRole } = userProfile;
-        switch (userRole) {
-            case userRoles.ADMIN:
-                navigate(ROUTES.USERS);
-                break;
-            case userRoles.MANUFACTURER:
-                navigate(ROUTES.PRODUCTS);
-                break;
-            case userRoles.OFFICER:
-                navigate(ROUTES.PRODUCTS);
-                break;
-            default:
-                navigate(ROUTES.LOGIN);
+        if (jwtToken) {
+            navigate(ROUTES.PRODUCTS);
+        } else {
+            navigate(ROUTES.LOGIN);
         }
     };
 

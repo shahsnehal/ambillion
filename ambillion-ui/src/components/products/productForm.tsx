@@ -7,22 +7,23 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reduxSaga/config/store';
 import { ProductFormValues } from 'reduxSaga/modules/product-module/type/types';
 import { productCategories, ROUTES } from 'constants/common';
+import { Icon } from '@iconify/react';
 
 type ProductFormModalProps = {
     initialValues?: ProductFormValues;
 };
 
 const ProductFormSchema = Yup.object().shape({
-    productCategoryId: Yup.string().required('Category is required'),
-    productDisplayName: Yup.string().required('Display Name is required'),
-    customerProductDescription: Yup.string().required('Description is required'),
+    productCategoryId: Yup.string().required('Category is required !'),
+    productDisplayName: Yup.string().required('Display Name is required !'),
+    customerProductDescription: Yup.string().required('Description is required !'),
     originHsnCode: Yup.string()
-        .required('HSN Code is required')
+        .required('HSN Code is required !')
         .matches(
-            /^[A-Z0-9]{10}$/,
-            'HSN Code must be 10 characters long and can only include digits and capital letters'
+            /^\d{10,}$/,
+            'HSN Code must be at least 10 digits long and can only include numbers !'
         ),
-    productFeature: Yup.string().required('Features are required'),
+    productFeature: Yup.string().required('Features are required !'),
     productCustomFields: Yup.object().shape({})
 });
 
@@ -177,9 +178,10 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                         <div className="col-sm-12">
                                             <button
                                                 type="button"
-                                                className="btn btn-primary"
+                                                className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
                                                 onClick={() => setCustomFieldAdded(true)}
                                             >
+                                                <Icon icon="tabler:plus" className="me-1" />
                                                 Add Product Field
                                             </button>
                                         </div>
@@ -222,9 +224,10 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             <div className="col-sm-12 mt-2">
                                                 <button
                                                     type="button"
-                                                    className="btn btn-primary"
+                                                    className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
                                                     disabled
                                                 >
+                                                    <Icon icon="tabler:plus" className="me-1" />
                                                     Add Product Field
                                                 </button>
                                             </div>

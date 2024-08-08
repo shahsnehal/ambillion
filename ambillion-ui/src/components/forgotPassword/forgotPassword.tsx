@@ -7,8 +7,8 @@ export const ForgotPassword = () => {
     const navigate = useNavigate();
     const RegisterSchemas = Yup.object().shape({
         email: Yup.string()
-            .email('Please enter a valid Email Address')
-            .required('Email Address is required')
+            .email('Please enter a valid Email Address !')
+            .required('Email Address is required !')
     });
     return (
         <div id="main-wrapper" className="auth-customizer-none">

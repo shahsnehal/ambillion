@@ -20,9 +20,9 @@ export const Login = () => {
     // Validation schema for signin form
     const SigninSchema = Yup.object().shape({
         email: Yup.string()
-            .email('Please enter a valid Email Address')
-            .required('Email is required'),
-        password: Yup.string().required('Password is required')
+            .email('Please enter a valid Email Address !')
+            .required('Email is required !'),
+        password: Yup.string().required('Password is required !')
     });
 
     const handleSubmit = async (values: SigninData) => {

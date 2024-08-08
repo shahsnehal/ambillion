@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import React from 'react';
 
 type ConfirmationModalProps = {
@@ -12,6 +13,8 @@ type ConfirmationModalProps = {
     closeBtnClassName?: string;
     confirmBtnClassName?: string;
     actionInProgressLabel?: string;
+    confirmIcon?: string;
+    closeIcon?: string;
 };
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -25,7 +28,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     confirmLabel = 'Confirm',
     closeBtnClassName = 'btn btn-muted',
     confirmBtnClassName = 'btn btn-danger',
-    actionInProgressLabel = 'Performing Action...'
+    actionInProgressLabel = 'Performing Action...',
+    confirmIcon = 'solar:trash-bin-minimalistic-outline',
+    closeIcon = 'carbon:close-outline'
 }) => {
     const handleConfirmClick = () => {
         onConfirm();
@@ -66,6 +71,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                 onClick={onClose}
                                 disabled={isLoading}
                             >
+                                <Icon icon={closeIcon} className="fs-5 me-1" />
                                 {closeLabel}
                             </button>
                             <button
@@ -74,6 +80,7 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                                 onClick={handleConfirmClick}
                                 disabled={isLoading}
                             >
+                                <Icon icon={confirmIcon} className="fs-5 me-1" />
                                 {isLoading ? actionInProgressLabel : confirmLabel}
                             </button>
                         </div>
