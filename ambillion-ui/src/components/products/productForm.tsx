@@ -6,8 +6,10 @@ import { addProductRequest } from 'reduxSaga/modules/product-module/action/actio
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reduxSaga/config/store';
 import { ProductFormValues } from 'reduxSaga/modules/product-module/type/types';
-import { productCategories, ROUTES } from 'constants/common';
+import { localStorageKey, ROUTES } from 'constants/common';
 import { Icon } from '@iconify/react';
+import { getLocalStorage } from 'utils/localStorage';
+import { ProductCategory } from 'reduxSaga/modules/productCategories-module/type/types';
 
 type ProductFormModalProps = {
     initialValues?: ProductFormValues;
@@ -41,15 +43,16 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
     const dispatch = useDispatch();
     const isLoading = useSelector((state: RootState) => state.productModule.isLoading);
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
+    const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
 
     const handleSubmit = async (values: ProductFormValues) => {
         const selectedCategory = productCategories.find(
-            (category) => category.name === values.productCategoryId
+            (category: ProductCategory) => category.category_name === values.productCategoryId
         );
 
         const payload = {
             ...values,
-            productCategoryId: selectedCategory ? selectedCategory.id : ''
+            productCategoryId: selectedCategory ? selectedCategory.category_id.toString() : ''
         };
         dispatch(addProductRequest(payload, navigate));
     };
@@ -116,9 +119,12 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             <option value="" disabled>
                                                 -- Select a Category --
                                             </option>
-                                            {productCategories.map((category) => (
-                                                <option key={category.id} value={category.name}>
-                                                    {category.name}
+                                            {productCategories.map((category: ProductCategory) => (
+                                                <option
+                                                    key={category.category_id}
+                                                    value={category.category_name}
+                                                >
+                                                    {category.category_name}
                                                 </option>
                                             ))}
                                         </Field>

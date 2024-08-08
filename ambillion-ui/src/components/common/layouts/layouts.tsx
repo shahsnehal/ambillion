@@ -10,7 +10,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
     const navigate = useNavigate();
     const location = useLocation();
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
-    const { first_name: Name, role_name: userRole } = userProfile;
+    const { first_name: Name, role_name: userRole, profile_image: profileImage } = userProfile;
     const isActive = (route: string) => location.pathname.startsWith(route);
 
     return (
@@ -27,7 +27,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 >
                                     <span className="d-flex">
                                         <img
-                                            src="assets/images/profile/user-1.jpg"
+                                            src={profileImage}
                                             className="rounded"
                                             width="30"
                                             alt="user"

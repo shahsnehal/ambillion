@@ -5,7 +5,7 @@ import { getLocalStorage } from 'utils/localStorage';
 
 export const Header = () => {
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
-    const { name: userName, email, role_name: roleName } = userProfile;
+    const { name: userName, email, role_name: roleName, profile_image: profileImage } = userProfile;
 
     const handleLogout = () => {
         logout();
@@ -102,7 +102,7 @@ export const Header = () => {
                                             aria-expanded="false"
                                         >
                                             <img
-                                                src="assets/images/profile/user-1.jpg"
+                                                src={profileImage}
                                                 alt="user"
                                                 className="profile-pic rounded round-30"
                                             />
@@ -118,11 +118,11 @@ export const Header = () => {
                                                 <div className=" py-3 border-bottom">
                                                     <div className="d-flex align-items-center px-3">
                                                         <img
-                                                            src="assets/images/profile/user-1.jpg"
+                                                            src={profileImage}
                                                             className="rounded"
                                                             width="50"
                                                             height="50"
-                                                            alt="ample-img"
+                                                            alt="user"
                                                         />
                                                         <div className="ms-3">
                                                             <h5 className="mb-0 fs-4">

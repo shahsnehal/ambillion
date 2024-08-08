@@ -35,7 +35,8 @@ export const ROUTES = {
 // localStorageKey
 export const localStorageKey = {
     USER_PROFILE: 'userProfile',
-    JWT_TOKEN: 'jwtToken'
+    JWT_TOKEN: 'jwtToken',
+    PRODUCT_CATEGORIES: 'productCategories'
 };
 
 // Recaptcha Configuration
@@ -62,11 +63,3 @@ export const userRoles = {
     MANUFACTURER: 'MANUFACTURER',
     OFFICER: 'OFFICER'
 };
-
-export const productCategories = [
-    { id: '1', name: 'Electronics' },
-    { id: '2', name: 'Clothing' },
-    { id: '3', name: 'Home & Garden' },
-    { id: '4', name: 'Books' },
-    { id: '5', name: 'Sports & Outdoors' }
-];
