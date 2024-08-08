@@ -44,16 +44,22 @@ const getUserStatusClass = (status: string): string => {
 
 export const getProductStatusClass = (status: string): string => {
     switch (status) {
+        case productStatus.PENDING:
+            return 'bg-warning-subtle text-warning';
+        case productStatus.UNDER_VERIFICATION:
+            return 'bg-info-subtle text-info';
+        case productStatus.VERIFIED:
+            return 'bg-success-subtle text-success';
+        case productStatus.INFO_NEEDED:
+            return 'bg-secondary-subtle text-secondary';
+        case productStatus.SENT_FOR_APPROVAL:
+            return 'bg-info-subtle text-info';
+        case productStatus.UNDER_EXPORT_APPROVAL:
+            return 'bg-info-subtle text-info';
+        case productStatus.EXPORT_INFO_NEEDED:
+            return 'bg-secondary-subtle text-secondary';
         case productStatus.APPROVED:
             return 'bg-success-subtle text-success';
-        case productStatus.REJECTED:
-            return 'bg-danger-subtle text-danger';
-        case productStatus.PENDING:
-            return 'bg-info-subtle text-info';
-        case productStatus.INREVIEW:
-            return 'bg-warning-subtle text-warning';
-        case productStatus.ONHOLD:
-            return 'bg-secondary-subtle text-secondary';
         default:
             return '';
     }
@@ -166,10 +172,7 @@ export const userTableColumns: TableColumn<User>[] = [
 type ProductActionColumnProps = {
     row: Product;
     onEdit: (row: Product) => void;
-    productId: number;
     currentStatus: string;
-    currentComment: string;
-    onOpenModal: (productId: number, status: string, comments: string) => void;
     userRole: string;
 };
 
@@ -177,10 +180,7 @@ type ProductActionColumnProps = {
 export const ProductAction: React.FC<ProductActionColumnProps> = ({
     row,
     onEdit,
-    productId,
     currentStatus,
-    currentComment,
-    onOpenModal,
     userRole
 }) => {
     const handleEdit = () => {
@@ -195,7 +195,6 @@ export const ProductAction: React.FC<ProductActionColumnProps> = ({
                     data-placement="left"
                     title="Change Status"
                     disabled={currentStatus === productStatus.APPROVED}
-                    onClick={() => onOpenModal(productId, currentStatus, currentComment)}
                 >
                     <Icon icon="solar:pen-outline" className="fs-5" />
                 </button>
@@ -215,23 +214,10 @@ export const ProductAction: React.FC<ProductActionColumnProps> = ({
     );
 };
 
-//Product Table Action Column
-export const ProductActionColumn = (
-    userRole: string,
-    onEdit: (id: Product) => void,
-    onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
-) => ({
+export const ProductActionColumn = (userRole: string, onEdit: (id: Product) => void) => ({
     name: 'Action',
     cell: (row: Product) => (
-        <ProductAction
-            row={row}
-            onEdit={onEdit}
-            productId={row.product_id}
-            currentStatus={row.status}
-            currentComment={row.comments}
-            onOpenModal={() => onOpenModal(row.product_id.toString(), row.status, row.comments)}
-            userRole={userRole}
-        />
+        <ProductAction row={row} onEdit={onEdit} currentStatus={row.status} userRole={userRole} />
     ),
     ignoreRowClick: false,
     allowOverflow: true,
