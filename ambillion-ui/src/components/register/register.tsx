@@ -26,24 +26,24 @@ export const Registration = () => {
     const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     const RegisterSchemas = Yup.object().shape({
-        firstName: Yup.string().required('FirstName is required'),
-        lastName: Yup.string().required('LastName is required'),
+        firstName: Yup.string().required('FirstName is required !'),
+        lastName: Yup.string().required('LastName is required !'),
         companyName: Yup.string(),
         mobileNumber: Yup.string()
-            .required('Mobile Number is required')
-            .matches(/^\d{10}$/, 'Mobile Number must be exactly 10 digits'),
+            .required('Mobile Number is required !')
+            .matches(/^\d{10}$/, 'Mobile Number must be exactly 10 digits !'),
         email: Yup.string()
-            .email('Please enter a valid Email Address')
-            .required('Email Address is required'),
+            .email('Please enter a valid Email Address !')
+            .required('Email Address is required !'),
         password: Yup.string()
             .matches(passwordRules, {
                 message:
-                    'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special'
+                    'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special !'
             })
-            .required('Password is required'),
+            .required('Password is required !'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), ''], 'Passwords must match')
-            .required('Confirm Password is required')
+            .oneOf([Yup.ref('password'), ''], 'Passwords must match !')
+            .required('Confirm Password is required !')
     });
 
     const captchaOnChange = (value: string | null) => {

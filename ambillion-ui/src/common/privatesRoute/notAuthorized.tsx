@@ -5,10 +5,9 @@ import { getLocalStorage } from 'utils/localStorage';
 
 export const NotAuthorized: React.FC = () => {
     const navigate = useNavigate();
-    const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
+    const jwtToken = getLocalStorage(localStorageKey.JWT_TOKEN);
     const handleNavigation = () => {
-        const { role_name: userRole } = userProfile;
-        if (userRole) {
+        if (jwtToken) {
             navigate(ROUTES.PRODUCTS);
         } else {
             navigate(ROUTES.LOGIN);

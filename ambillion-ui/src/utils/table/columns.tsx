@@ -75,7 +75,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     return (
         <div className="d-flex gap-2">
             <button
-                className="btn btn-success rounded-circle d-flex align-items-center justify-content-center p-2"
+                className="btn btn-success btn-rounded d-flex align-items-center justify-content-center p-2"
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Approve"
@@ -85,7 +85,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
                 <Icon icon="solar:check-circle-outline" className="fs-5" />
             </button>
             <button
-                className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                className="btn btn-secondary btn-rounded d-flex align-items-center justify-content-center p-2"
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Reject"

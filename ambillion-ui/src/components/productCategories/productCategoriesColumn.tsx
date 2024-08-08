@@ -32,7 +32,7 @@ export const ProductCategoryAction: React.FC<ProductCategoryActionColumnProps> =
     return (
         <div className="d-flex gap-2">
             <button
-                className="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2"
+                className="btn btn-warning btn-rounded d-flex align-items-center ms-2 justify-content-center p-2"
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Edit"
@@ -41,7 +41,7 @@ export const ProductCategoryAction: React.FC<ProductCategoryActionColumnProps> =
                 <Icon icon="solar:pen-outline" className="fs-5" />
             </button>
             <button
-                className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                className="btn btn-secondary btn-rounded d-flex align-items-center ms-2 justify-content-center p-2"
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Delete"

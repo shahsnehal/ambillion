@@ -18,7 +18,7 @@ import {
     productCategoryTableColumns
 } from './productCategoriesColumn';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
-import { ProductCategoryModal } from './addUpdateCategoryModal';
+import { ProductCategoryModal } from './productCategoryModal';
 import {
     ProductCategory,
     ProductCategoryFormValues
@@ -118,10 +118,10 @@ export const ProductCategories = () => {
             <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
                 <div>
                     <button
-                        className="btn btn-primary text-white icon-center gap-2 mt-3"
+                        className="btn btn-rounded btn-primary ms-2 gap-2 mt-3"
                         onClick={() => handleAddProductCategory()}
                     >
-                        <Icon icon="tabler:plus" />
+                        <Icon icon="tabler:plus" className="me-1" />
                         Add Category
                     </button>
                 </div>
@@ -164,24 +164,31 @@ export const ProductCategories = () => {
                 customStyles={customStyles}
             />
 
-            <ConfirmationModal
-                isOpen={!!selectedDeleteProductCategory}
-                onClose={handleCloseModal}
-                onConfirm={handleDeleteConfirmAction}
-                title={'Delete ProductCategory'}
-                content={`Are you sure you want to Delete ${selectedDeleteProductCategory?.productCategoryName} category?`}
-                confirmLabel={'Delete'}
-                confirmBtnClassName={'btn btn-danger'}
-                isLoading={false}
-                actionInProgressLabel={'Deleting...'}
-            />
+            {selectedDeleteProductCategory && (
+                <ConfirmationModal
+                    isOpen={!!selectedDeleteProductCategory}
+                    onClose={handleCloseModal}
+                    onConfirm={handleDeleteConfirmAction}
+                    title={'Delete ProductCategory'}
+                    content={`Are you sure you want to Delete ${selectedDeleteProductCategory?.productCategoryName} category?`}
+                    confirmLabel={'Delete'}
+                    confirmBtnClassName={
+                        'btn btn-rounded btn-secondary d-flex align-items-center ms-2'
+                    }
+                    closeBtnClassName={'btn btn-rounded btn-muted ms-2'}
+                    isLoading={false}
+                    actionInProgressLabel={'Deleting...'}
+                />
+            )}
 
-            <ProductCategoryModal
-                isOpen={isProductCategoryModalOpen}
-                onClose={handleCloseModal}
-                productCategoryFormData={productCategoryFormData}
-                onSubmit={handleSubmit}
-            />
+            {isProductCategoryModalOpen && (
+                <ProductCategoryModal
+                    isOpen={isProductCategoryModalOpen}
+                    onClose={handleCloseModal}
+                    productCategoryFormData={productCategoryFormData}
+                    onSubmit={handleSubmit}
+                />
+            )}
         </>
     );
 };

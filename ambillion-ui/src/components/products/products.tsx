@@ -143,14 +143,16 @@ export const Products = () => {
                 customStyles={customStyles}
             />
 
-            <ProductStatusModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                productId={selectedProductId ?? 0}
-                currentStatus={currentStatus}
-                currentComment={currentComment}
-                onConfirm={handleConfirmStatusChange}
-            />
+            {isModalOpen && (
+                <ProductStatusModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    productId={selectedProductId ?? 0}
+                    currentStatus={currentStatus}
+                    currentComment={currentComment}
+                    onConfirm={handleConfirmStatusChange}
+                />
+            )}
         </>
     );
 };

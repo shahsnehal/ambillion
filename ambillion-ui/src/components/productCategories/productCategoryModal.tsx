@@ -2,6 +2,7 @@ import React from 'react';
 import { Formik, Field, ErrorMessage, Form, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { ProductCategoryFormValues } from 'reduxSaga/modules/productCategories-module/type/types';
+import { Icon } from '@iconify/react';
 
 export type ProductCategoryModalProps = {
     isOpen: boolean;
@@ -12,13 +13,13 @@ export type ProductCategoryModalProps = {
 
 const validationSchema = Yup.object({
     categoryName: Yup.string()
-        .required('Category Name is required')
+        .required('Category Name is required !')
         .trim()
-        .max(100, 'Category Name must be at most 100 characters long'),
+        .max(100, 'Category Name must be at most 100 characters long !'),
     categoryDescription: Yup.string()
-        .required('Description is required')
+        .required('Description is required !')
         .trim()
-        .max(500, 'Description must be at most 500 characters long')
+        .max(500, 'Description must be at most 500 characters long !')
 });
 
 export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
@@ -109,16 +110,21 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                     <div className="modal-footer">
                                         <button
                                             type="button"
-                                            className="btn btn-secondary"
+                                            className="btn btn-rounded btn-secondary ms-2"
                                             onClick={onClose}
                                         >
+                                            <Icon
+                                                icon="carbon:close-outline"
+                                                className="fs-5 me-1"
+                                            />
                                             Close
                                         </button>
                                         <button
                                             type="submit"
-                                            className="btn btn-primary"
+                                            className="btn btn-rounded btn-primary ms-2"
                                             disabled={!formikProps.isValid || !formikProps.dirty}
                                         >
+                                            <Icon icon="tabler:plus" className="fs-5 me-1" />
                                             {productCategoryFormData?.categoryId
                                                 ? 'Save Changes'
                                                 : 'Add Category'}
