@@ -11,7 +11,10 @@ export const apiUrl = {
     users: '/users',
 
     //product-Module
-    products: '/products'
+    products: '/products',
+
+    //productCategories-Module
+    productCategories: '/categories'
 };
 
 // Routing path constants
@@ -25,13 +28,15 @@ export const ROUTES = {
     PRODUCTS: '/products',
     ADDPRODUCT: '/products/addProduct',
     EDITPRODUCT: '/products/editProduct',
-    PRODUCTDETAILS: '/products/:productId'
+    PRODUCTDETAILS: '/products/:productId',
+    PRODUCT_CATEGORIES: '/productCategories'
 };
 
 // localStorageKey
 export const localStorageKey = {
     USER_PROFILE: 'userProfile',
-    JWT_TOKEN: 'jwtToken'
+    JWT_TOKEN: 'jwtToken',
+    PRODUCT_CATEGORIES: 'productCategories'
 };
 
 // Recaptcha Configuration
@@ -46,11 +51,14 @@ export const userStatus = {
 };
 
 export const productStatus = {
-    APPROVED: 'APPROVED',
-    REJECTED: 'REJECTED',
     PENDING: 'PENDING',
-    INREVIEW: 'INREVIEW',
-    ONHOLD: 'ONHOLD'
+    UNDER_VERIFICATION: 'UNDER_VERIFICATION',
+    VERIFIED: 'VERIFIED',
+    INFO_NEEDED: 'INFO_NEEDED',
+    SENT_FOR_APPROVAL: 'SENT_FOR_APPROVAL',
+    UNDER_EXPORT_APPROVAL: 'UNDER_EXPORT_APPROVAL',
+    EXPORT_INFO_NEEDED: 'EXPORT_INFO_NEEDED',
+    APPROVED: 'APPROVED'
 };
 
 export const userRoles = {
@@ -58,17 +66,3 @@ export const userRoles = {
     MANUFACTURER: 'MANUFACTURER',
     OFFICER: 'OFFICER'
 };
-
-export const roleRedirects = {
-    [userRoles.ADMIN]: ROUTES.USERS,
-    [userRoles.MANUFACTURER]: ROUTES.PRODUCTS,
-    [userRoles.OFFICER]: ROUTES.PRODUCTS
-};
-
-export const productCategories = [
-    { id: '1', name: 'Electronics' },
-    { id: '2', name: 'Clothing' },
-    { id: '3', name: 'Home & Garden' },
-    { id: '4', name: 'Books' },
-    { id: '5', name: 'Sports & Outdoors' }
-];

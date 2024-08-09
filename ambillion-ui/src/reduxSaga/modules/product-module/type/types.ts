@@ -22,6 +22,29 @@ export const UPDATE_PRODUCT_STATUS_REQUEST = 'UPDATE_PRODUCT_STATUS_REQUEST';
 export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
 export const UPDATE_PRODUCT_STATUS_FAILURE = 'UPDATE_PRODUCT_STATUS_FAILURE';
 
+export type NoteProps = {
+    note_id: string | number;
+    created_by: string;
+    note_created_at: string;
+    note_description: string;
+    user_role: string;
+};
+
+export type ProductDocumentsProps = {
+    document_id: string | number;
+    document_name: string;
+    filetype: string;
+    contentpath: string;
+    audit_timestamp: string;
+    created_by: string;
+    role: string;
+    base64Data: string;
+};
+export type ProductDocument = {
+    documentType: string;
+    documentName: string;
+    documentData: string;
+};
 export type Product = {
     product_id: number;
     category_id: number;
@@ -43,19 +66,21 @@ export type Product = {
     country_id: number;
     status: string;
     comments: string;
+    notes: NoteProps[] | null;
+    productDocuments: ProductDocumentsProps[] | null;
 };
 
 export type ProductFormValues = {
     productDisplayName?: string;
     originHsnCode?: string;
-    productCategoryId?: string;
+    productCategoryId: string | number | undefined;
     customerProductDescription?: string;
     productFeature?: string;
     productCustomFields: {
         FieldName: string;
         FieldValue: string;
     };
-
+    productDocuments: ProductDocument[];
     uploadImage?: string | null | ArrayBuffer;
     productCategory?: string;
     productType?: string;

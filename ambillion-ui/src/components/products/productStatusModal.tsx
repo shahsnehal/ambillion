@@ -1,35 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { productStatus } from 'constants/common';
-
+import { Icon } from '@iconify/react';
+import React, { useState } from 'react';
 type ProductStatusModalProps = {
     isOpen: boolean;
     onClose: () => void;
     productId: string;
-    currentStatus: string;
-    currentComment: string;
-    onConfirm: (productId: string, newStatus: string, comment: string) => void;
+    onConfirm: (productId: string, comment: string) => void;
 };
-
-type ProductStatusKeys = keyof typeof productStatus;
 
 export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     isOpen,
     onClose,
     productId,
-    currentStatus,
-    currentComment,
     onConfirm
 }) => {
-    const [newStatus, setNewStatus] = useState<string>(currentStatus);
-    const [newComment, setNewComment] = useState<string>(currentComment);
-
-    useEffect(() => {
-        setNewStatus(currentStatus);
-        setNewComment(currentComment);
-    }, [currentStatus, currentComment]);
-
+    const [comments, setComments] = useState<string>('');
+    const isSendDisabled = comments.trim().length === 0;
     const handleConfirm = () => {
-        onConfirm(productId, newStatus, newComment);
+        onConfirm(productId, comments);
         onClose();
     };
 
@@ -51,26 +38,6 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
-                                <label htmlFor="status" className="form-label">
-                                    Status
-                                </label>
-                                <select
-                                    id="status"
-                                    className="form-select"
-                                    value={newStatus}
-                                    onChange={(e) => setNewStatus(e.target.value)}
-                                >
-                                    {Object.keys(productStatus).map((status) => (
-                                        <option
-                                            key={status}
-                                            value={productStatus[status as ProductStatusKeys]}
-                                        >
-                                            {status.charAt(0) + status.slice(1).toLowerCase()}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="mb-3">
                                 <label htmlFor="comment" className="form-label">
                                     Comments
                                 </label>
@@ -78,21 +45,28 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                     id="comment"
                                     className="form-control"
                                     rows={3}
-                                    value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
+                                    value={comments}
+                                    onChange={(e) => setComments(e.target.value)}
                                 ></textarea>
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={onClose}>
-                                Close
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-rounded ms-2"
+                                onClick={onClose}
+                            >
+                                <Icon icon="carbon:close-outline" className="fs-5 me-1" />
+                                Cancel
                             </button>
                             <button
                                 type="button"
-                                className="btn btn-primary"
+                                className="btn btn-primary btn-rounded ms-2"
                                 onClick={handleConfirm}
+                                disabled={isSendDisabled}
                             >
-                                confirm
+                                <Icon icon="icon-park-outline:send" className="fs-5 me-1" />
+                                Send
                             </button>
                         </div>
                     </div>

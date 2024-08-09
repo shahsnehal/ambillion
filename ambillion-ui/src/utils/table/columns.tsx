@@ -44,28 +44,35 @@ const getUserStatusClass = (status: string): string => {
 
 export const getProductStatusClass = (status: string): string => {
     switch (status) {
+        case productStatus.PENDING:
+            return 'bg-warning-subtle text-warning';
+        case productStatus.UNDER_VERIFICATION:
+            return 'bg-info-subtle text-info';
+        case productStatus.VERIFIED:
+            return 'bg-success-subtle text-success';
+        case productStatus.INFO_NEEDED:
+            return 'bg-secondary-subtle text-secondary';
+        case productStatus.SENT_FOR_APPROVAL:
+            return 'bg-info-subtle text-info';
+        case productStatus.UNDER_EXPORT_APPROVAL:
+            return 'bg-info-subtle text-info';
+        case productStatus.EXPORT_INFO_NEEDED:
+            return 'bg-secondary-subtle text-secondary';
         case productStatus.APPROVED:
             return 'bg-success-subtle text-success';
-        case productStatus.REJECTED:
-            return 'bg-danger-subtle text-danger';
-        case productStatus.PENDING:
-            return 'bg-info-subtle text-info';
-        case productStatus.INREVIEW:
-            return 'bg-warning-subtle text-warning';
-        case productStatus.ONHOLD:
-            return 'bg-secondary-subtle text-secondary';
         default:
             return '';
     }
 };
 
-//UserStatusChangeTypes
+//User Status Change Types
 type UserStatusChangeActionProps = {
     status: string;
     onApprove: () => void;
     onReject: () => void;
 };
 
+//User Staus Change Action
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     status,
     onApprove,
@@ -74,7 +81,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     return (
         <div className="d-flex gap-2">
             <button
-                className="btn btn-success rounded-circle d-flex align-items-center justify-content-center p-2"
+                className="btn btn-success btn-rounded d-flex align-items-center justify-content-center p-2"
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Approve"
@@ -84,7 +91,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
                 <Icon icon="solar:check-circle-outline" className="fs-5" />
             </button>
             <button
-                className="btn btn-danger rounded-circle d-flex align-items-center justify-content-center p-2"
+                className="btn btn-secondary btn-rounded d-flex align-items-center justify-content-center p-2"
                 data-toggle="tooltip"
                 data-placement="left"
                 title="Reject"
@@ -97,6 +104,7 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     );
 };
 
+//User Status Change Action Column
 export const UserStatusChangeActionColumn = (
     onApprove: (userId: number) => void,
     onReject: (userId: number) => void
@@ -114,6 +122,7 @@ export const UserStatusChangeActionColumn = (
     button: true
 });
 
+//User Table Columns
 export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'Name',
@@ -163,20 +172,15 @@ export const userTableColumns: TableColumn<User>[] = [
 type ProductActionColumnProps = {
     row: Product;
     onEdit: (row: Product) => void;
-    productId: number;
     currentStatus: string;
-    currentComment: string;
-    onOpenModal: (productId: number, status: string, comments: string) => void;
     userRole: string;
 };
 
+//Product Table Actions
 export const ProductAction: React.FC<ProductActionColumnProps> = ({
     row,
     onEdit,
-    productId,
     currentStatus,
-    currentComment,
-    onOpenModal,
     userRole
 }) => {
     const handleEdit = () => {
@@ -191,7 +195,6 @@ export const ProductAction: React.FC<ProductActionColumnProps> = ({
                     data-placement="left"
                     title="Change Status"
                     disabled={currentStatus === productStatus.APPROVED}
-                    onClick={() => onOpenModal(productId, currentStatus, currentComment)}
                 >
                     <Icon icon="solar:pen-outline" className="fs-5" />
                 </button>
@@ -211,29 +214,17 @@ export const ProductAction: React.FC<ProductActionColumnProps> = ({
     );
 };
 
-export const ProductActionColumn = (
-    userRole: string,
-    onEdit: (id: Product) => void,
-    onOpenModal: (productId: string, currentStatus: string, currentComment: string) => void
-) => ({
+export const ProductActionColumn = (userRole: string, onEdit: (id: Product) => void) => ({
     name: 'Action',
     cell: (row: Product) => (
-        <ProductAction
-            row={row}
-            onEdit={onEdit}
-            productId={row.product_id}
-            currentStatus={row.status}
-            currentComment={row.comments}
-            onOpenModal={() => onOpenModal(row.product_id.toString(), row.status, row.comments)}
-            userRole={userRole}
-        />
+        <ProductAction row={row} onEdit={onEdit} currentStatus={row.status} userRole={userRole} />
     ),
     ignoreRowClick: false,
     allowOverflow: true,
     button: true
 });
 
-//ProductListTableColumn For Officer
+//Product Table Columns
 export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'Name',
@@ -268,6 +259,7 @@ export const productsTableColumns: TableColumn<Product>[] = [
             <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
                 {row.status}
             </span>
-        )
+        ),
+        grow: 1.5
     }
 ];

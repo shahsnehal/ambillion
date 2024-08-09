@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prefer-destructuring */
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -6,24 +8,39 @@ import { addProductRequest } from 'reduxSaga/modules/product-module/action/actio
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'reduxSaga/config/store';
 import { ProductFormValues } from 'reduxSaga/modules/product-module/type/types';
-import { productCategories, ROUTES } from 'constants/common';
+import { localStorageKey, ROUTES } from 'constants/common';
+import { getLocalStorage } from 'utils/localStorage';
+import { ProductCategory } from 'reduxSaga/modules/productCategories-module/type/types';
+import Dropzone from 'common/FileUpload/uploadFile';
+import { Icon } from '@iconify/react';
 
 type ProductFormModalProps = {
     initialValues?: ProductFormValues;
 };
 
+// Define schema for individual document
+const documentSchema = Yup.object({
+    documentType: Yup.string().required('Document type is required'),
+    documentName: Yup.string().required('Document name is required'),
+    documentData: Yup.string().required('Document data is required')
+});
 const ProductFormSchema = Yup.object().shape({
-    productCategoryId: Yup.string().required('Category is required'),
-    productDisplayName: Yup.string().required('Display Name is required'),
-    customerProductDescription: Yup.string().required('Description is required'),
+    productCategoryId: Yup.string().required('Category is required !').trim(),
+    productDisplayName: Yup.string().required('Display Name is required !').trim(),
+    customerProductDescription: Yup.string().required('Description is required !').trim(),
     originHsnCode: Yup.string()
-        .required('HSN Code is required')
+        .required('HSN Code is required !')
+        .trim()
         .matches(
-            /^[A-Z0-9]{10}$/,
-            'HSN Code must be 10 characters long and can only include digits and capital letters'
+            /^\d{10,}$/,
+            'HSN Code must be at least 10 digits long and can only include numbers !'
         ),
-    productFeature: Yup.string().required('Features are required'),
-    productCustomFields: Yup.object().shape({})
+    productFeature: Yup.string().required('Features are required !').trim(),
+    productCustomFields: Yup.object().shape({}),
+    productDocuments: Yup.array()
+        .of(documentSchema)
+        .required('At least one document is required !')
+        .min(1, 'At least one document is required !')
 });
 
 export const ProductForm: React.FC<ProductFormModalProps> = ({
@@ -33,24 +50,42 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
         customerProductDescription: '',
         originHsnCode: '',
         productFeature: '',
-        productCustomFields: { FieldName: '', FieldValue: '' }
+        productCustomFields: { FieldName: '', FieldValue: '' },
+        productDocuments: []
     }
 }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const isLoading = useSelector((state: RootState) => state.productModule.isLoading);
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
+    const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
 
     const handleSubmit = async (values: ProductFormValues) => {
         const selectedCategory = productCategories.find(
-            (category) => category.name === values.productCategoryId
+            (category: ProductCategory) => category.category_name === values.productCategoryId
         );
 
         const payload = {
             ...values,
-            productCategoryId: selectedCategory ? selectedCategory.id : ''
+            productCategoryId: selectedCategory ? selectedCategory.category_id.toString() : ''
         };
         dispatch(addProductRequest(payload, navigate));
+    };
+    const convertBase64 = (file: any) => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                resolve(reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        });
+    };
+    const removeDataUriPrefix = (dataUri: string): string => {
+        const base64String = dataUri.split(',')[1];
+        return base64String || '';
     };
 
     return (
@@ -115,9 +150,12 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             <option value="" disabled>
                                                 -- Select a Category --
                                             </option>
-                                            {productCategories.map((category) => (
-                                                <option key={category.id} value={category.name}>
-                                                    {category.name}
+                                            {productCategories.map((category: ProductCategory) => (
+                                                <option
+                                                    key={category.category_id}
+                                                    value={category.category_name}
+                                                >
+                                                    {category.category_name}
                                                 </option>
                                             ))}
                                         </Field>
@@ -172,18 +210,42 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                     </div>
                                 </div>
 
+                                <Dropzone
+                                    name="Attachment"
+                                    onFileChange={async (uploadedFiles) => {
+                                        // Process each file
+                                        let base64File = '';
+                                        const fileData = uploadedFiles[uploadedFiles.length - 1];
+                                        if (fileData) {
+                                            base64File = removeDataUriPrefix(
+                                                String(await convertBase64(fileData))
+                                            );
+                                            props.setFieldValue('productDocuments', [
+                                                ...props.values.productDocuments, // Preserve existing documents
+                                                {
+                                                    documentType: fileData.type,
+                                                    documentName: fileData.name,
+                                                    documentData: base64File
+                                                }
+                                            ]);
+                                        }
+                                    }}
+                                    formikField="productDocuments"
+                                    label="Attachment"
+                                />
                                 <div className="row mb-3">
-                                    {!customFieldAdded && (
+                                    {/* {!customFieldAdded && (
                                         <div className="col-sm-12">
                                             <button
                                                 type="button"
-                                                className="btn btn-primary"
+                                                className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
                                                 onClick={() => setCustomFieldAdded(true)}
                                             >
+                                                <Icon icon="tabler:plus" className="me-1" />
                                                 Add Product Field
                                             </button>
                                         </div>
-                                    )}
+                                    )} */}
 
                                     {customFieldAdded && (
                                         <>
@@ -218,32 +280,42 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                     className="invalid-feedback"
                                                 />
                                             </div>
-
-                                            <div className="col-sm-12 mt-2">
+                                            {/* <div className="col-sm-12 mt-2">
                                                 <button
                                                     type="button"
-                                                    className="btn btn-primary"
+                                                    className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
                                                     disabled
                                                 >
+                                                    <Icon icon="tabler:plus" className="me-1" />
                                                     Add Product Field
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </>
                                     )}
                                 </div>
 
                                 <div className="d-flex justify-content-end gap-2 mt-2">
                                     <button
-                                        className="btn btn-secondary"
+                                        className="btn btn-rounded btn-secondary d-flex align-items-center ms-2"
                                         onClick={() => navigate(ROUTES.PRODUCTS)}
                                     >
+                                        <Icon icon="icon-park-outline:back" className="me-1" />
                                         Cancel
                                     </button>
                                     <button
+                                        type="button"
+                                        className="btn btn-rounded btn-info d-flex align-items-center ms-2"
+                                        onClick={() => setCustomFieldAdded(true)}
+                                    >
+                                        <Icon icon="tabler:plus" className="me-1" />
+                                        Add Product Property
+                                    </button>
+                                    <button
                                         type="submit"
-                                        className="btn btn-primary"
+                                        className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
                                         disabled={!props.isValid || !props.dirty || isLoading}
                                     >
+                                        <Icon icon="tabler:plus" className="me-1" />
                                         {isLoading ? 'Adding...' : 'Add Product'}
                                     </button>
                                 </div>

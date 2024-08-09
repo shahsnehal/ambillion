@@ -27,7 +27,7 @@ export const UserList: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchUsersRequest());
-    }, [dispatch]);
+    }, []);
 
     const filteredItems = users.filter((user) =>
         user.email?.toLowerCase().includes(filterText.toLowerCase())
@@ -111,29 +111,39 @@ export const UserList: React.FC = () => {
                 customStyles={customStyles}
             />
 
-            <ConfirmationModal
-                isOpen={currentActionType !== null}
-                onClose={handleCloseModal}
-                onConfirm={handleConfirmAction}
-                title={
-                    currentActionType === actionType.APPROVE
-                        ? 'Approve Confirmation'
-                        : 'Reject Confirmation'
-                }
-                content={
-                    currentActionType === actionType.APPROVE
-                        ? 'Are you sure you want to approve?'
-                        : 'Are you sure you want to reject?'
-                }
-                confirmLabel={currentActionType === actionType.APPROVE ? 'Approve' : 'Reject'}
-                confirmBtnClassName={
-                    currentActionType === actionType.APPROVE ? 'btn btn-success' : 'btn btn-danger'
-                }
-                isLoading={false}
-                actionInProgressLabel={
-                    currentActionType === actionType.APPROVE ? 'Approving...' : 'Rejecting...'
-                }
-            />
+            {currentActionType !== null && (
+                <ConfirmationModal
+                    isOpen={currentActionType !== null}
+                    onClose={handleCloseModal}
+                    onConfirm={handleConfirmAction}
+                    title={
+                        currentActionType === actionType.APPROVE
+                            ? 'Approve Confirmation'
+                            : 'Reject Confirmation'
+                    }
+                    content={
+                        currentActionType === actionType.APPROVE
+                            ? 'Are you sure you want to approve?'
+                            : 'Are you sure you want to reject?'
+                    }
+                    confirmLabel={currentActionType === actionType.APPROVE ? 'Approve' : 'Reject'}
+                    confirmBtnClassName={
+                        currentActionType === actionType.APPROVE
+                            ? 'btn btn-success'
+                            : 'btn btn-secondary'
+                    }
+                    isLoading={false}
+                    actionInProgressLabel={
+                        currentActionType === actionType.APPROVE ? 'Approving...' : 'Rejecting...'
+                    }
+                    confirmIcon={
+                        currentActionType === actionType.APPROVE
+                            ? 'mdi:check-circle-outline'
+                            : 'fluent:text-change-reject-24-filled'
+                    }
+                    closeBtnClassName="btn btn-rounded btn-muted ms-2"
+                />
+            )}
         </>
     );
 };
