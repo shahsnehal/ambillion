@@ -9,6 +9,7 @@ export const ForgotPassword = () => {
         email: Yup.string()
             .email('Please enter a valid Email Address !')
             .required('Email Address is required !')
+            .trim()
     });
     return (
         <div id="main-wrapper" className="auth-customizer-none">

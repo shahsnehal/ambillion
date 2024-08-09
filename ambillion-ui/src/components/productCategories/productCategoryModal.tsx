@@ -16,10 +16,7 @@ const validationSchema = Yup.object({
         .required('Category Name is required !')
         .trim()
         .max(100, 'Category Name must be at most 100 characters long !'),
-    categoryDescription: Yup.string()
-        .required('Description is required !')
-        .trim()
-        .max(500, 'Description must be at most 500 characters long !')
+    categoryDescription: Yup.string().required('Description is required !').trim()
 });
 
 export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({

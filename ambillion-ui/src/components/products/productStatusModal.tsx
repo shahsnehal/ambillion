@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 type ProductStatusModalProps = {
     isOpen: boolean;
@@ -13,6 +14,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     onConfirm
 }) => {
     const [comments, setComments] = useState<string>('');
+    const isSendDisabled = comments.trim().length === 0;
     const handleConfirm = () => {
         onConfirm(productId, comments);
         onClose();
@@ -49,14 +51,21 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" onClick={onClose}>
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-rounded ms-2"
+                                onClick={onClose}
+                            >
+                                <Icon icon="carbon:close-outline" className="fs-5 me-1" />
                                 Cancel
                             </button>
                             <button
                                 type="button"
-                                className="btn btn-primary"
+                                className="btn btn-primary btn-rounded ms-2"
                                 onClick={handleConfirm}
+                                disabled={isSendDisabled}
                             >
+                                <Icon icon="icon-park-outline:send" className="fs-5 me-1" />
                                 Send
                             </button>
                         </div>

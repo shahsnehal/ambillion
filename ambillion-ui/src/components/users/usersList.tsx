@@ -141,6 +141,7 @@ export const UserList: React.FC = () => {
                             ? 'mdi:check-circle-outline'
                             : 'fluent:text-change-reject-24-filled'
                     }
+                    closeBtnClassName="btn btn-rounded btn-muted ms-2"
                 />
             )}
         </>
