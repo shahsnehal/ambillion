@@ -21,8 +21,9 @@ export const Login = () => {
     const SigninSchema = Yup.object().shape({
         email: Yup.string()
             .email('Please enter a valid Email Address !')
-            .required('Email is required !'),
-        password: Yup.string().required('Password is required !')
+            .required('Email is required !')
+            .trim(),
+        password: Yup.string().required('Password is required !').trim()
     });
 
     const handleSubmit = async (values: SigninData) => {

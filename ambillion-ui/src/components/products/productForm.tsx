@@ -25,16 +25,17 @@ const documentSchema = Yup.object({
     documentData: Yup.string().required('Document data is required')
 });
 const ProductFormSchema = Yup.object().shape({
-    productCategoryId: Yup.string().required('Category is required !'),
-    productDisplayName: Yup.string().required('Display Name is required !'),
-    customerProductDescription: Yup.string().required('Description is required !'),
+    productCategoryId: Yup.string().required('Category is required !').trim(),
+    productDisplayName: Yup.string().required('Display Name is required !').trim(),
+    customerProductDescription: Yup.string().required('Description is required !').trim(),
     originHsnCode: Yup.string()
         .required('HSN Code is required !')
+        .trim()
         .matches(
             /^\d{10,}$/,
             'HSN Code must be at least 10 digits long and can only include numbers !'
         ),
-    productFeature: Yup.string().required('Features are required !'),
+    productFeature: Yup.string().required('Features are required !').trim(),
     productCustomFields: Yup.object().shape({}),
     productDocuments: Yup.array()
         .of(documentSchema)

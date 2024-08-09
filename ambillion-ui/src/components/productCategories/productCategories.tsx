@@ -171,12 +171,14 @@ export const ProductCategories = () => {
                     onConfirm={handleDeleteConfirmAction}
                     title={'Delete ProductCategory'}
                     content={`Are you sure you want to Delete ${selectedDeleteProductCategory?.productCategoryName} category?`}
-                    confirmLabel={'Delete'}
+                    confirmLabel={'Yes'}
+                    closeLabel={'No'}
                     confirmBtnClassName={
-                        'btn btn-rounded btn-secondary d-flex align-items-center ms-2'
+                        'btn btn-rounded btn-success d-flex align-items-center ms-2'
                     }
-                    closeBtnClassName={'btn btn-rounded btn-muted ms-2'}
+                    closeBtnClassName={'btn btn-rounded btn-secondary ms-2'}
                     isLoading={false}
+                    confirmIcon={'pepicons-pop:checkmark-circle'}
                     actionInProgressLabel={'Deleting...'}
                 />
             )}

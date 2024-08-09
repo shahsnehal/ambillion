@@ -259,6 +259,7 @@ export const productsTableColumns: TableColumn<Product>[] = [
             <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
                 {row.status}
             </span>
-        )
+        ),
+        grow: 1.5
     }
 ];

@@ -288,9 +288,11 @@ export const ProductDetails: React.FC = () => {
                 }
                 content={`Are you sure you want to ${userRole === userRoles.ADMIN ? 'Verify' : 'Approve'} ?`}
                 confirmLabel={userRole === userRoles.ADMIN ? 'Verify' : 'Approve'}
-                confirmBtnClassName="btn btn-rounded btn-success"
+                confirmBtnClassName="btn btn-rounded btn-success ms-2"
                 isLoading={false}
                 actionInProgressLabel="loading"
+                confirmIcon="pepicons-pop:checkmark-circle"
+                closeBtnClassName="btn btn-rounded btn-secondary ms-2"
             />
         </>
     );
