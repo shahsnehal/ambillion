@@ -229,10 +229,11 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                             ]);
                                         }
                                     }}
+                                    formikField="productDocuments"
                                     label="Attachment"
                                 />
                                 <div className="row mb-3">
-                                    {!customFieldAdded && (
+                                    {/* {!customFieldAdded && (
                                         <div className="col-sm-12">
                                             <button
                                                 type="button"
@@ -243,7 +244,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                 Add Product Field
                                             </button>
                                         </div>
-                                    )}
+                                    )} */}
 
                                     {customFieldAdded && (
                                         <>
@@ -278,7 +279,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                     className="invalid-feedback"
                                                 />
                                             </div>
-                                            <div className="col-sm-12 mt-2">
+                                            {/* <div className="col-sm-12 mt-2">
                                                 <button
                                                     type="button"
                                                     className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
@@ -287,7 +288,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                     <Icon icon="tabler:plus" className="me-1" />
                                                     Add Product Field
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </>
                                     )}
                                 </div>
@@ -299,6 +300,14 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                     >
                                         <Icon icon="icon-park-outline:back" className="me-1" />
                                         Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-rounded btn-info d-flex align-items-center ms-2"
+                                        onClick={() => setCustomFieldAdded(true)}
+                                    >
+                                        <Icon icon="tabler:plus" className="me-1" />
+                                        Add Product Property
                                     </button>
                                     <button
                                         type="submit"
