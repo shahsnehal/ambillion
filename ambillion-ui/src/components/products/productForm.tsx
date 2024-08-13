@@ -154,6 +154,7 @@ export const ProductForm: React.FC<ProductFormModalProps> = ({
                                                 <option
                                                     key={category.category_id}
                                                     value={category.category_name}
+                                                    title={category.category_description}
                                                 >
                                                     {category.category_name}
                                                 </option>

@@ -33,7 +33,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">Change Product Status</h5>
+                            <h5 className="modal-title">Request Additional Information</h5>
                             <button type="button" className="btn-close" onClick={onClose}></button>
                         </div>
                         <div className="modal-body">
