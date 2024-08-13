@@ -20,6 +20,8 @@ export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
+    const [modalAction, setModalAction] = useState<keyof typeof productStatus | null>(null);
+    const [currentProductId, setCurrentProductId] = useState<string | null>(null);
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE) || {};
     const { role_name: userRole } = userProfile || null;
     const dispatch = useDispatch();
@@ -33,14 +35,33 @@ export const ProductDetails: React.FC = () => {
         }
     }, []);
 
-    const SendForVerification = (productId: string) => {
-        dispatch(updateProductStatusRequest(productId, productStatus.UNDER_VERIFICATION, ''));
+    //Manufacture Confirmation For the Approval Of Product
+    const handleConfirmAction = (productId: string, action: keyof typeof productStatus) => {
+        if (action === productStatus.UNDER_VERIFICATION && productId) {
+            dispatch(updateProductStatusRequest(productId, productStatus.UNDER_VERIFICATION, ''));
+        } else if (action === productStatus.UNDER_EXPORT_APPROVAL && productId) {
+            dispatch(
+                updateProductStatusRequest(productId, productStatus.UNDER_EXPORT_APPROVAL, '')
+            );
+        }
         navigate(ROUTES.PRODUCTS);
+        setIsConfirmModal(false);
+        setModalAction(null);
+        setCurrentProductId(null);
     };
-    const SendForApproval = (productId: string) => {
-        dispatch(updateProductStatusRequest(productId, productStatus.UNDER_EXPORT_APPROVAL, ''));
-        navigate(ROUTES.PRODUCTS);
+
+    //Manufacture Approval Send For ADMIN verification of Product
+    const handleSendForVerification = (id: string) => {
+        setCurrentProductId(id);
+        setModalAction(productStatus.UNDER_VERIFICATION);
     };
+
+    //Manufacture Approval Send For OFFICER verification of Product
+    const handleSendForApproval = (id: string) => {
+        setCurrentProductId(id);
+        setModalAction(productStatus.UNDER_EXPORT_APPROVAL);
+    };
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
@@ -55,7 +76,7 @@ export const ProductDetails: React.FC = () => {
         }
     };
     const handleSendForMoreInfo = (productId: string, comments: string) => {
-        const updatedStatus = getRoleBasedStatus() || '';
+        const updatedStatus = getRoleBasedStatus() ?? '';
         dispatch(updateProductStatusRequest(productId, updatedStatus, comments));
         navigate(ROUTES.PRODUCTS);
     };
@@ -174,7 +195,7 @@ export const ProductDetails: React.FC = () => {
                                                     icon="pepicons-pop:checkmark-circle"
                                                     className="me-1"
                                                 />
-                                                Approved
+                                                Mark Approve
                                             </button>
                                         </>
                                     )}
@@ -208,7 +229,7 @@ export const ProductDetails: React.FC = () => {
                                                     icon="pepicons-pop:checkmark-circle"
                                                     className="me-1"
                                                 />
-                                                Verify
+                                                Mark Verify
                                             </button>
                                         </>
                                     )}
@@ -223,7 +244,7 @@ export const ProductDetails: React.FC = () => {
                                                         productStatus.INFO_NEEDED
                                                 }
                                                 onClick={() =>
-                                                    SendForVerification(
+                                                    handleSendForVerification(
                                                         String(selectedProductDetails?.product_id)
                                                     )
                                                 }
@@ -243,7 +264,7 @@ export const ProductDetails: React.FC = () => {
                                                         productStatus.EXPORT_INFO_NEEDED
                                                 }
                                                 onClick={() =>
-                                                    SendForApproval(
+                                                    handleSendForApproval(
                                                         String(selectedProductDetails?.product_id)
                                                     )
                                                 }
@@ -294,6 +315,32 @@ export const ProductDetails: React.FC = () => {
                 confirmIcon="pepicons-pop:checkmark-circle"
                 closeBtnClassName="btn btn-rounded btn-secondary ms-2"
             />
+            {modalAction && (
+                <ConfirmationModal
+                    isOpen={!!modalAction}
+                    onClose={() => setModalAction(null)}
+                    onConfirm={() => {
+                        if (currentProductId && modalAction) {
+                            handleConfirmAction(currentProductId, modalAction);
+                        }
+                    }}
+                    title={
+                        modalAction === productStatus.UNDER_VERIFICATION
+                            ? 'Confirm Sending for Verification'
+                            : 'Confirm Sending for Approval'
+                    }
+                    content={`Are you sure you want to ${
+                        modalAction === productStatus.UNDER_VERIFICATION
+                            ? 'send for verification'
+                            : 'send for approval'
+                    }?`}
+                    confirmLabel="Yes"
+                    closeLabel="No"
+                    confirmIcon="pepicons-pop:checkmark-circle"
+                    closeBtnClassName="btn btn-rounded btn-secondary ms-2"
+                    confirmBtnClassName="btn btn-rounded btn-success ms-2"
+                />
+            )}
         </>
     );
 };
