@@ -28,6 +28,7 @@ export type NoteProps = {
     note_created_at: string;
     note_description: string;
     user_role: string;
+    user_id: string | number;
 };
 
 export type ProductDocumentsProps = {
@@ -118,7 +119,7 @@ export type FetchProductsFailureAction = {
 
 export type UpdateProductStatusRequestAction = {
     type: typeof UPDATE_PRODUCT_STATUS_REQUEST;
-    payload: { productId: string; comments: string; status: string };
+    payload: { productId: string; comments: string; status: string; commentFor?: string };
 };
 
 export type UpdateProductStatusSuccessAction = {

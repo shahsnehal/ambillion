@@ -47,19 +47,21 @@ function* handleFetchProducts() {
 const updateProductStatusAPI = async (
     productId: string,
     status: string,
-    comments: string
+    comments: string,
+    commentFor?: string
 ): Promise<AxiosResponse> => {
     return await axiosInstance.patch(`${apiUrl.products}`, {
         productId,
         status,
-        comments
+        comments,
+        commentFor
     });
 };
 
 function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
     try {
-        const { productId, status, comments } = action.payload;
-        yield call(updateProductStatusAPI, productId, status, comments);
+        const { productId, status, comments, commentFor } = action.payload;
+        yield call(updateProductStatusAPI, productId, status, comments, commentFor);
         yield put({
             type: UPDATE_PRODUCT_STATUS_SUCCESS,
             payload: { productId, status, comments }

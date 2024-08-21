@@ -74,7 +74,7 @@ export const ProductDetails: React.FC = () => {
 
     const handleConfirmAction = () => {
         if (currentProductId && actionType) {
-            dispatch(updateProductStatusRequest(currentProductId, actionType, ''));
+            dispatch(updateProductStatusRequest(currentProductId, actionType, '', ''));
             navigate(ROUTES.PRODUCTS);
             setIsConfirmModalOpen(false);
         }
@@ -100,9 +100,26 @@ export const ProductDetails: React.FC = () => {
             return selectedProductDetails?.status;
         }
     };
+
+    const getCommentFor = (updatedStatus: string) => {
+        if (
+            updatedStatus === productStatus.UNDER_VERIFICATION ||
+            updatedStatus === productStatus.INFO_NEEDED
+        ) {
+            return userRoles.MANUFACTURER;
+        } else if (
+            updatedStatus === productStatus.UNDER_EXPORT_APPROVAL ||
+            updatedStatus === productStatus.EXPORT_INFO_NEEDED
+        ) {
+            return userRoles.OFFICER;
+        } else {
+            return '';
+        }
+    };
     const handleSendForMoreInfo = (productId: string, comments: string) => {
         const updatedStatus = getRoleBasedStatus() ?? '';
-        dispatch(updateProductStatusRequest(productId, updatedStatus, comments));
+        const commentFor = getCommentFor(updatedStatus);
+        dispatch(updateProductStatusRequest(productId, updatedStatus, comments, commentFor));
         navigate(ROUTES.PRODUCTS);
     };
 
@@ -254,26 +271,6 @@ export const ProductDetails: React.FC = () => {
                                                 />
                                                 Mark Verify
                                             </button>
-                                        </>
-                                    )}
-                                    {userRole === userRoles.MANUFACTURER && (
-                                        <>
-                                            <button
-                                                className="btn  btn-rounded btn-primary d-flex align-items-center"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.PENDING &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.INFO_NEEDED
-                                                }
-                                                onClick={() => setIsModalOpen(true)}
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:send"
-                                                    className="me-1"
-                                                />
-                                                Send For Verification
-                                            </button>
                                             <button
                                                 className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
                                                 disabled={
@@ -296,6 +293,21 @@ export const ProductDetails: React.FC = () => {
                                                 Send For Approval
                                             </button>
                                         </>
+                                    )}
+                                    {userRole === userRoles.MANUFACTURER && (
+                                        <button
+                                            className="btn  btn-rounded btn-primary d-flex align-items-center"
+                                            disabled={
+                                                selectedProductDetails?.status !==
+                                                    productStatus.PENDING &&
+                                                selectedProductDetails?.status !==
+                                                    productStatus.INFO_NEEDED
+                                            }
+                                            onClick={() => setIsModalOpen(true)}
+                                        >
+                                            <Icon icon="icon-park-outline:send" className="me-1" />
+                                            Send For Verification
+                                        </button>
                                     )}
                                     <button
                                         className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"
