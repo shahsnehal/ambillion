@@ -77,7 +77,7 @@ export type Product = {
     status: string;
     comments: string;
     notes: NoteProps[] | null;
-    productDocuments: ProductDocumentsProps[] | null;
+    product_documents: ProductDocumentsProps[] | null;
 };
 
 export type ProductFormValues = {
