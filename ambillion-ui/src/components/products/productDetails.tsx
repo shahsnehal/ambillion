@@ -39,6 +39,11 @@ export const ProductDetails: React.FC = () => {
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
+    //Get Product Properties
+    const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
+        ? (selectedProductDetails?.product_custom_fields as unknown as ProductCustomField[])
+        : [];
+    console.log('selectedProductDetails', selectedProductDetails);
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
@@ -188,7 +193,9 @@ export const ProductDetails: React.FC = () => {
                                 <div className="mt-1">
                                     <h6 className="fw-semibold mb-0 text-dark mb-3">Documents</h6>
                                     <ViewDocuments
-                                        documents={selectedProductDetails?.productDocuments || null}
+                                        documents={
+                                            selectedProductDetails?.product_documents || null
+                                        }
                                     />
                                 </div>
                                 <hr className="mt-4"></hr>
