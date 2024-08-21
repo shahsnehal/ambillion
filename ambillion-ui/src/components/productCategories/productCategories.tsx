@@ -8,16 +8,13 @@ import { RootState } from 'reduxSaga/config/store';
 import { CustomLoader } from 'common/loaders/loader';
 import {
     addProductCategoryRequest,
-    deleteProductCategoryRequest,
     fetchProductCategoriesRequest,
     updateProductCategoryRequest
 } from 'reduxSaga/modules/productCategories-module/action/actions';
 import {
     ProductCategoryActionColumn,
-    ProductCategoryDeleteActionParams,
     productCategoryTableColumns
 } from './productCategoriesColumn';
-import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ProductCategoryModal } from './productCategoryModal';
 import {
     ProductCategory,
@@ -28,8 +25,6 @@ export const ProductCategories = () => {
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-    const [selectedDeleteProductCategory, setSelectedDeleteProductCategory] =
-        useState<ProductCategoryDeleteActionParams | null>(null);
     const [isProductCategoryModalOpen, setIsProductCategoryModalOpen] = useState<boolean>(false);
     const [productCategoryFormData, setProductCategoryFormData] =
         useState<ProductCategoryFormValues | null>(null);
@@ -58,22 +53,6 @@ export const ProductCategories = () => {
         setIsProductCategoryModalOpen(true);
     };
 
-    //Delete ProductCategory
-    const handleDeleteProductCategory = (params: ProductCategoryDeleteActionParams) => {
-        setSelectedDeleteProductCategory(params);
-    };
-
-    //Delete Confirmation logic
-    const handleDeleteConfirmAction = () => {
-        if (
-            selectedDeleteProductCategory &&
-            selectedDeleteProductCategory?.productCategoryId !== ''
-        ) {
-            dispatch(deleteProductCategoryRequest(selectedDeleteProductCategory.productCategoryId));
-            handleCloseModal();
-        }
-    };
-
     // Add & Edit Confirmation Logic
     const handleSubmit = (values: ProductCategoryFormValues) => {
         if (values.categoryId) {
@@ -92,7 +71,6 @@ export const ProductCategories = () => {
 
     //HandleCloseModal For All Actions
     const handleCloseModal = () => {
-        setSelectedDeleteProductCategory(null);
         setProductCategoryFormData(null);
         setIsProductCategoryModalOpen(false);
     };
@@ -145,10 +123,7 @@ export const ProductCategories = () => {
             <DataTable
                 columns={[
                     ...productCategoryTableColumns,
-                    ProductCategoryActionColumn(
-                        handleEditProductCategory,
-                        handleDeleteProductCategory
-                    )
+                    ProductCategoryActionColumn(handleEditProductCategory)
                 ]}
                 data={filteredItems}
                 progressPending={isLoading}
@@ -163,25 +138,6 @@ export const ProductCategories = () => {
                 persistTableHead
                 customStyles={customStyles}
             />
-
-            {selectedDeleteProductCategory && (
-                <ConfirmationModal
-                    isOpen={!!selectedDeleteProductCategory}
-                    onClose={handleCloseModal}
-                    onConfirm={handleDeleteConfirmAction}
-                    title={'Delete ProductCategory'}
-                    content={`Are you sure you want to Delete ${selectedDeleteProductCategory?.productCategoryName} category?`}
-                    confirmLabel={'Yes'}
-                    closeLabel={'No'}
-                    confirmBtnClassName={
-                        'btn btn-rounded btn-success d-flex align-items-center ms-2'
-                    }
-                    closeBtnClassName={'btn btn-rounded btn-secondary ms-2'}
-                    isLoading={false}
-                    confirmIcon={'pepicons-pop:checkmark-circle'}
-                    actionInProgressLabel={'Deleting...'}
-                />
-            )}
 
             {isProductCategoryModalOpen && (
                 <ProductCategoryModal

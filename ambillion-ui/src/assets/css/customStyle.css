@@ -2,3 +2,8 @@
 .custom-sidebar-link {
     cursor: pointer;
 }
+
+/* Css For CustomField */
+.customField-delete-icon {
+    margin-top: 2.2rem;
+}

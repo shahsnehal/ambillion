@@ -15,11 +15,23 @@ import { getLocalStorage } from 'utils/localStorage';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import NoteList from 'common/notes/noteList';
 import ViewDocuments from 'components/documents/viewDocuments';
+import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
 
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+    const [modalConfig, setModalConfig] = useState<{
+        title: string;
+        content: string;
+        confirmLabel: string;
+    }>({
+        title: '',
+        content: '',
+        confirmLabel: ''
+    });
+    const [actionType, setActionType] = useState<keyof typeof productStatus | null>(null);
+    const [currentProductId, setCurrentProductId] = useState<string | null>(null);
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE) || {};
     const { role_name: userRole } = userProfile || null;
     const dispatch = useDispatch();
@@ -33,45 +45,84 @@ export const ProductDetails: React.FC = () => {
         }
     }, []);
 
-    const SendForVerification = (productId: string) => {
-        dispatch(updateProductStatusRequest(productId, productStatus.UNDER_VERIFICATION, ''));
-        navigate(ROUTES.PRODUCTS);
+    const handleAction = (productId: string, action: keyof typeof productStatus | null) => {
+        const config = {
+            [productStatus.VERIFIED]: {
+                title: 'Verification Confirmation',
+                content: 'Are you sure you want to verify this product?',
+                confirmLabel: 'Verify'
+            },
+            [productStatus.APPROVED]: {
+                title: 'Approve Confirmation',
+                content: 'Are you sure you want to approve this product?',
+                confirmLabel: 'Approve'
+            },
+            [productStatus.UNDER_EXPORT_APPROVAL]: {
+                title: 'Confirm Sending for Approval',
+                content: 'Are you sure you want to send for approval?',
+                confirmLabel: 'Yes'
+            }
+        };
+
+        if (action && action in config) {
+            setModalConfig(config[action as keyof typeof config]);
+            setActionType(action);
+            setCurrentProductId(productId);
+            setIsConfirmModalOpen(true);
+        }
     };
-    const SendForApproval = (productId: string) => {
-        dispatch(updateProductStatusRequest(productId, productStatus.UNDER_EXPORT_APPROVAL, ''));
-        navigate(ROUTES.PRODUCTS);
+
+    const handleConfirmAction = () => {
+        if (currentProductId && actionType) {
+            dispatch(updateProductStatusRequest(currentProductId, actionType, '', ''));
+            navigate(ROUTES.PRODUCTS);
+            setIsConfirmModalOpen(false);
+        }
     };
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
+    //Get Product Properties
+    const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
+        ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
+        : [];
 
     const getRoleBasedStatus = () => {
         if (userRole === userRoles.ADMIN) {
             return productStatus.INFO_NEEDED;
         } else if (userRole === userRoles.OFFICER) {
             return productStatus.EXPORT_INFO_NEEDED;
+        } else if (userRole === userRoles.MANUFACTURER) {
+            return productStatus.UNDER_VERIFICATION;
         } else {
             return selectedProductDetails?.status;
         }
     };
+
+    const getCommentFor = (updatedStatus: string) => {
+        if (
+            updatedStatus === productStatus.UNDER_VERIFICATION ||
+            updatedStatus === productStatus.INFO_NEEDED
+        ) {
+            return userRoles.MANUFACTURER;
+        } else if (
+            updatedStatus === productStatus.UNDER_EXPORT_APPROVAL ||
+            updatedStatus === productStatus.EXPORT_INFO_NEEDED
+        ) {
+            return userRoles.OFFICER;
+        } else {
+            return '';
+        }
+    };
     const handleSendForMoreInfo = (productId: string, comments: string) => {
-        const updatedStatus = getRoleBasedStatus() || '';
-        dispatch(updateProductStatusRequest(productId, updatedStatus, comments));
+        const updatedStatus = getRoleBasedStatus() ?? '';
+        const commentFor = getCommentFor(updatedStatus);
+        dispatch(updateProductStatusRequest(productId, updatedStatus, comments, commentFor));
         navigate(ROUTES.PRODUCTS);
     };
 
-    const handleVerify = () => {
-        const updatedStatus =
-            userRole === userRoles.ADMIN ? productStatus.VERIFIED : productStatus.APPROVED;
-        dispatch(
-            updateProductStatusRequest(
-                String(selectedProductDetails?.product_id),
-                updatedStatus,
-                ''
-            )
-        );
-        navigate(ROUTES.PRODUCTS);
-    };
     return (
         <>
             {isLoading ? (
@@ -109,25 +160,29 @@ export const ProductDetails: React.FC = () => {
                                         <h6 className="mb-0 fs-4">Features:</h6>
                                         {selectedProductDetails?.product_feature}
                                     </div>
-                                    {selectedProductDetails?.product_custom_fields &&
-                                        selectedProductDetails?.product_custom_fields.FieldName &&
-                                        selectedProductDetails?.product_custom_fields
-                                            .FieldValue && (
-                                            <div className="d-flex align-items-center gap-8 mt-2">
-                                                <h6 className="mb-0 fs-4">
-                                                    {
-                                                        selectedProductDetails
-                                                            ?.product_custom_fields.FieldName
-                                                    }
-                                                    :
-                                                </h6>
-
-                                                {
-                                                    selectedProductDetails?.product_custom_fields
-                                                        .FieldValue
-                                                }
-                                            </div>
-                                        )}
+                                    {selectedProductDetails?.product_custom_fields && (
+                                        <div className="d-flex flex-column gap-2 mt-2">
+                                            {productProperties.length > 0 && (
+                                                <div className="d-flex flex-column gap-2 mt-2">
+                                                    {productProperties.map(
+                                                        (productProperties, index) => (
+                                                            <div
+                                                                key={`${productProperties.FieldName}-${index}`}
+                                                                className="d-flex align-items-center gap-8"
+                                                            >
+                                                                <h6 className="mb-0 fs-4">
+                                                                    {productProperties.FieldName}:
+                                                                </h6>
+                                                                <span>
+                                                                    {productProperties.FieldValue}
+                                                                </span>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                                 <hr className="mt-4"></hr>
                                 <div className="mt-1">
@@ -166,15 +221,18 @@ export const ProductDetails: React.FC = () => {
                                                     selectedProductDetails?.status !==
                                                     productStatus.UNDER_EXPORT_APPROVAL
                                                 }
-                                                onClick={() => {
-                                                    setIsConfirmModal(true);
-                                                }}
+                                                onClick={() =>
+                                                    handleAction(
+                                                        String(selectedProductDetails?.product_id),
+                                                        productStatus.APPROVED
+                                                    )
+                                                }
                                             >
                                                 <Icon
                                                     icon="pepicons-pop:checkmark-circle"
                                                     className="me-1"
                                                 />
-                                                Approved
+                                                Mark Approve
                                             </button>
                                         </>
                                     )}
@@ -200,39 +258,18 @@ export const ProductDetails: React.FC = () => {
                                                     selectedProductDetails?.status !==
                                                     productStatus.UNDER_VERIFICATION
                                                 }
-                                                onClick={() => {
-                                                    setIsConfirmModal(true);
-                                                }}
+                                                onClick={() =>
+                                                    handleAction(
+                                                        String(selectedProductDetails?.product_id),
+                                                        productStatus.VERIFIED
+                                                    )
+                                                }
                                             >
                                                 <Icon
                                                     icon="pepicons-pop:checkmark-circle"
                                                     className="me-1"
                                                 />
-                                                Verify
-                                            </button>
-                                        </>
-                                    )}
-                                    {userRole === userRoles.MANUFACTURER && (
-                                        <>
-                                            <button
-                                                className="btn  btn-rounded btn-primary d-flex align-items-center"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.PENDING &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.INFO_NEEDED
-                                                }
-                                                onClick={() =>
-                                                    SendForVerification(
-                                                        String(selectedProductDetails?.product_id)
-                                                    )
-                                                }
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:send"
-                                                    className="me-1"
-                                                />
-                                                Send For Verification
+                                                Mark Verify
                                             </button>
                                             <button
                                                 className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
@@ -243,8 +280,9 @@ export const ProductDetails: React.FC = () => {
                                                         productStatus.EXPORT_INFO_NEEDED
                                                 }
                                                 onClick={() =>
-                                                    SendForApproval(
-                                                        String(selectedProductDetails?.product_id)
+                                                    handleAction(
+                                                        String(selectedProductDetails?.product_id),
+                                                        productStatus.UNDER_EXPORT_APPROVAL
                                                     )
                                                 }
                                             >
@@ -255,6 +293,21 @@ export const ProductDetails: React.FC = () => {
                                                 Send For Approval
                                             </button>
                                         </>
+                                    )}
+                                    {userRole === userRoles.MANUFACTURER && (
+                                        <button
+                                            className="btn  btn-rounded btn-primary d-flex align-items-center"
+                                            disabled={
+                                                selectedProductDetails?.status !==
+                                                    productStatus.PENDING &&
+                                                selectedProductDetails?.status !==
+                                                    productStatus.INFO_NEEDED
+                                            }
+                                            onClick={() => setIsModalOpen(true)}
+                                        >
+                                            <Icon icon="icon-park-outline:send" className="me-1" />
+                                            Send For Verification
+                                        </button>
                                     )}
                                     <button
                                         className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"
@@ -269,31 +322,34 @@ export const ProductDetails: React.FC = () => {
                     </div>
                 </div>
             )}
-            <ProductStatusModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                productId={String(selectedProductDetails?.product_id)}
-                onConfirm={handleSendForMoreInfo}
-            />
-            <ConfirmationModal
-                isOpen={isConfirmModal}
-                onClose={() => {
-                    setIsConfirmModal(false);
-                }}
-                onConfirm={handleVerify}
-                title={
-                    userRole === userRoles.ADMIN
-                        ? 'Verification Confirmation'
-                        : 'Approve Confirmation'
-                }
-                content={`Are you sure you want to ${userRole === userRoles.ADMIN ? 'Verify' : 'Approve'} ?`}
-                confirmLabel={userRole === userRoles.ADMIN ? 'Verify' : 'Approve'}
-                confirmBtnClassName="btn btn-rounded btn-success ms-2"
-                isLoading={false}
-                actionInProgressLabel="loading"
-                confirmIcon="pepicons-pop:checkmark-circle"
-                closeBtnClassName="btn btn-rounded btn-secondary ms-2"
-            />
+            {isModalOpen && (
+                <ProductStatusModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    productId={String(selectedProductDetails?.product_id)}
+                    onConfirm={handleSendForMoreInfo}
+                    title={
+                        userRole === userRoles.MANUFACTURER
+                            ? 'Additional Comments'
+                            : 'Request Additional Information'
+                    }
+                />
+            )}
+            {isConfirmModalOpen && (
+                <ConfirmationModal
+                    isOpen={isConfirmModalOpen}
+                    onClose={() => setIsConfirmModalOpen(false)}
+                    onConfirm={handleConfirmAction}
+                    title={modalConfig.title}
+                    content={modalConfig.content}
+                    confirmLabel={modalConfig.confirmLabel}
+                    confirmBtnClassName="btn btn-rounded btn-success ms-2"
+                    isLoading={false}
+                    actionInProgressLabel="loading"
+                    confirmIcon="pepicons-pop:checkmark-circle"
+                    closeBtnClassName="btn btn-rounded btn-secondary ms-2"
+                />
+            )}
         </>
     );
 };
