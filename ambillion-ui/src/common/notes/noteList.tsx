@@ -29,10 +29,10 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
                                             className="note-title text-truncate"
                                             data-noteheading={note.created_by}
                                         >
-                                            {`${note.created_by}( ${note.user_role})`}
+                                            {`${note.created_by} ( ${note.user_role} )`}
                                         </h6>
                                         <p className="note-date fs-2">
-                                            {new Date(note.note_created_at).toLocaleDateString()}
+                                            {new Date(note.note_created_at).toLocaleDateString()}{' '}
                                             {new Date(note.note_created_at).toLocaleTimeString()}
                                         </p>
                                         <div className="note-content">
