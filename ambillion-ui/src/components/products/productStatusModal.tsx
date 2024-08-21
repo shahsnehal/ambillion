@@ -1,22 +1,26 @@
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
+import { trimValues } from 'utils/common';
 type ProductStatusModalProps = {
     isOpen: boolean;
     onClose: () => void;
     productId: string;
     onConfirm: (productId: string, comment: string) => void;
+    title: string;
 };
 
 export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     isOpen,
     onClose,
     productId,
-    onConfirm
+    onConfirm,
+    title
 }) => {
     const [comments, setComments] = useState<string>('');
     const isSendDisabled = comments.trim().length === 0;
     const handleConfirm = () => {
-        onConfirm(productId, comments);
+        const trimmedComments = trimValues(comments);
+        onConfirm(productId, trimmedComments);
         onClose();
     };
 
@@ -33,7 +37,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">Request Additional Information</h5>
+                            <h5 className="modal-title">{title}</h5>
                             <button type="button" className="btn-close" onClick={onClose}></button>
                         </div>
                         <div className="modal-body">

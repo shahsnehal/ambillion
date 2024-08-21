@@ -9,6 +9,7 @@ import { SignupData } from 'reduxSaga/modules/auth-module/type/types';
 import { signupRequest } from 'reduxSaga/modules/auth-module/action/actions';
 import { RootState } from 'reduxSaga/config/store';
 import { Icon } from '@iconify/react';
+import { trimValues } from 'utils/common';
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const SITE_KEY = googleRecaptchaConfig.captchaSiteKey ?? '';
@@ -26,8 +27,8 @@ export const Registration = () => {
     const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
     const RegisterSchemas = Yup.object().shape({
-        firstName: Yup.string().required('FirstName is required !').trim(),
-        lastName: Yup.string().required('LastName is required !').trim(),
+        firstName: Yup.string().trim().required('FirstName is required !'),
+        lastName: Yup.string().trim().required('LastName is required !'),
         companyName: Yup.string().trim(),
         mobileNumber: Yup.string()
             .required('Mobile Number is required !')
@@ -42,12 +43,12 @@ export const Registration = () => {
                 message:
                     'password must contain 8 or more characters with at least one of each: uppercase, lowercase, number and special !'
             })
-            .required('Password is required !')
-            .trim(),
+            .trim()
+            .required('Password is required !'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), ''], 'Passwords must match !')
-            .required('Confirm Password is required !')
             .trim()
+            .required('Confirm Password is required !')
     });
 
     const captchaOnChange = (value: string | null) => {
@@ -59,7 +60,8 @@ export const Registration = () => {
     };
 
     const handleSubmit = async (values: SignupData) => {
-        const { firstName, lastName, companyName, mobileNumber, email, password } = values;
+        const trimmedValues = trimValues(values);
+        const { firstName, lastName, companyName, mobileNumber, email, password } = trimmedValues;
         dispatch(
             signupRequest({
                 firstName,

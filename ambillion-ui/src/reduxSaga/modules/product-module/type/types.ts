@@ -45,6 +45,18 @@ export type ProductDocument = {
     documentName: string;
     documentData: string;
 };
+export type ProductCustomField = {
+    FieldName: string;
+    FieldValue: string;
+};
+export type CustomFieldErrors = {
+    FieldName?: string;
+    FieldValue?: string;
+};
+export type CustomFieldTouched = {
+    FieldName?: boolean;
+    FieldValue?: boolean;
+};
 export type Product = {
     product_id: number;
     category_id: number;
@@ -52,10 +64,7 @@ export type Product = {
     customer_product_description: string;
     origin_hsn_code: string;
     product_feature: string;
-    product_custom_fields?: {
-        FieldName: string;
-        FieldValue: string;
-    };
+    product_custom_fields?: string;
     category_name: string;
     audit_user_id: number;
     audit_timestamp: string;
@@ -76,10 +85,7 @@ export type ProductFormValues = {
     productCategoryId: string | number | undefined;
     customerProductDescription?: string;
     productFeature?: string;
-    productCustomFields: {
-        FieldName: string;
-        FieldValue: string;
-    };
+    productCustomFields: ProductCustomField[];
     productDocuments: ProductDocument[];
     uploadImage?: string | null | ArrayBuffer;
     productCategory?: string;

@@ -3,6 +3,7 @@ import { Formik, Field, ErrorMessage, Form, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { ProductCategoryFormValues } from 'reduxSaga/modules/productCategories-module/type/types';
 import { Icon } from '@iconify/react';
+import { trimValues } from 'utils/common';
 
 export type ProductCategoryModalProps = {
     isOpen: boolean;
@@ -47,7 +48,8 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                             initialValues={initialValues}
                             validationSchema={validationSchema}
                             onSubmit={(values, { resetForm }) => {
-                                onSubmit(values);
+                                const trimmedValues = trimValues(values);
+                                onSubmit(trimmedValues);
                                 resetForm();
                             }}
                         >

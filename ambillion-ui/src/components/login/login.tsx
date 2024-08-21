@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signinRequest } from 'reduxSaga/modules/auth-module/action/actions';
 import { RootState } from 'reduxSaga/config/store';
 import { Icon } from '@iconify/react';
+import { trimValues } from 'utils/common';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -27,7 +28,8 @@ export const Login = () => {
     });
 
     const handleSubmit = async (values: SigninData) => {
-        const { email, password } = values;
+        const trimmedValues = trimValues(values);
+        const { email, password } = trimmedValues;
         dispatch(signinRequest({ email, password, navigate }));
     };
 
