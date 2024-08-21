@@ -39,9 +39,10 @@ export const ProductDetails: React.FC = () => {
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
+
     //Get Product Properties
     const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
-        ? (selectedProductDetails?.product_custom_fields as unknown as ProductCustomField[])
+        ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
         : [];
     console.log('selectedProductDetails', selectedProductDetails);
     useEffect(() => {
@@ -88,11 +89,6 @@ export const ProductDetails: React.FC = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-
-    //Get Product Properties
-    const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
-        ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
-        : [];
 
     const getRoleBasedStatus = () => {
         if (userRole === userRoles.ADMIN) {
