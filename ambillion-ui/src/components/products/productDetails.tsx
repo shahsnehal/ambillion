@@ -92,7 +92,14 @@ export const ProductDetails: React.FC = () => {
 
     const getRoleBasedStatus = () => {
         if (userRole === userRoles.ADMIN) {
-            return productStatus.INFO_NEEDED;
+            if (
+                selectedProductDetails?.status === productStatus.VERIFIED ||
+                selectedProductDetails?.status === productStatus.EXPORT_INFO_NEEDED
+            ) {
+                return productStatus.UNDER_EXPORT_APPROVAL;
+            } else {
+                return productStatus.INFO_NEEDED;
+            }
         } else if (userRole === userRoles.OFFICER) {
             return productStatus.EXPORT_INFO_NEEDED;
         } else if (userRole === userRoles.MANUFACTURER) {
@@ -273,6 +280,22 @@ export const ProductDetails: React.FC = () => {
                                                     className="me-1"
                                                 />
                                                 Mark Verify
+                                            </button>
+                                            <button
+                                                className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
+                                                disabled={
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.VERIFIED &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.EXPORT_INFO_NEEDED
+                                                }
+                                                onClick={() => setIsModalOpen(true)}
+                                            >
+                                                <Icon
+                                                    icon="icon-park-outline:send"
+                                                    className="me-1"
+                                                />
+                                                Send For Approval
                                             </button>
                                         </>
                                     )}
