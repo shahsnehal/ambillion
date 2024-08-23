@@ -84,6 +84,22 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 </li>
                             )}
 
+                            {userRole === userRoles.ADMIN && (
+                                <li className="sidebar-item custom-sidebar-link">
+                                    <a
+                                        className={`sidebar-link ${isActive(ROUTES.PRODUCT_DOCUMENTTYPE) ? 'active' : ''}`}
+                                        id="get-url"
+                                        onClick={() => navigate(ROUTES.PRODUCT_DOCUMENTTYPE)}
+                                    >
+                                        <Icon
+                                            icon="mdi:file-document-outline"
+                                            className="aside-icon"
+                                        />
+                                        <span className="hide-menu">DOCUMENT TYPE</span>
+                                    </a>
+                                </li>
+                            )}
+
                             <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">

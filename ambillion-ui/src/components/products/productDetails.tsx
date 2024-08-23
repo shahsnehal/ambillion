@@ -44,7 +44,7 @@ export const ProductDetails: React.FC = () => {
     const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
         ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
         : [];
-    console.log('selectedProductDetails', selectedProductDetails);
+
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
@@ -274,29 +274,9 @@ export const ProductDetails: React.FC = () => {
                                                 />
                                                 Mark Verify
                                             </button>
-                                            <button
-                                                className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.VERIFIED &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.EXPORT_INFO_NEEDED
-                                                }
-                                                onClick={() =>
-                                                    handleAction(
-                                                        String(selectedProductDetails?.product_id),
-                                                        productStatus.UNDER_EXPORT_APPROVAL
-                                                    )
-                                                }
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:send"
-                                                    className="me-1"
-                                                />
-                                                Send For Approval
-                                            </button>
                                         </>
                                     )}
+
                                     {userRole === userRoles.MANUFACTURER && (
                                         <button
                                             className="btn  btn-rounded btn-primary d-flex align-items-center"
