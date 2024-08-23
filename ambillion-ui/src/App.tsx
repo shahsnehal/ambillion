@@ -17,6 +17,7 @@ import { NotAuthorized } from 'common/privatesRoute/notAuthorized';
 import { ProductForm } from 'components/products/productForm';
 import { ProductsPage } from 'pages/products/products';
 import { ProductCategoriesPage } from 'pages/productCategories/productCategories';
+import { ProductDocumentTypePage } from 'pages/productDocumentType/productDocumentType';
 
 function App() {
     return (
@@ -63,6 +64,15 @@ function App() {
                                             element={
                                                 <Layout title="Product Categories">
                                                     <ProductCategoriesPage />
+                                                </Layout>
+                                            }
+                                        />
+
+                                        <Route
+                                            path={ROUTES.PRODUCT_DOCUMENTTYPE}
+                                            element={
+                                                <Layout title="Product DocumentType">
+                                                    <ProductDocumentTypePage />
                                                 </Layout>
                                             }
                                         />
