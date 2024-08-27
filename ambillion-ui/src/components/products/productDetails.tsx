@@ -328,7 +328,9 @@ export const ProductDetails: React.FC = () => {
                                                     selectedProductDetails?.status ===
                                                         productStatus.APPROVED ||
                                                     selectedProductDetails?.status ===
-                                                        productStatus.UNDER_VERIFICATION
+                                                        productStatus.UNDER_VERIFICATION ||
+                                                    selectedProductDetails?.status ===
+                                                        productStatus.VERIFIED
                                                 }
                                                 className="btn btn-rounded btn-warning d-flex align-items-center ms-2"
                                                 onClick={() =>

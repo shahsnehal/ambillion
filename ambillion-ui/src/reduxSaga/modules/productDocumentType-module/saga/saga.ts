@@ -39,6 +39,7 @@ const addProductDocumentType = async (documentData: {
     documentTypeName: string;
     documentTypeDescription: string;
     documentTypeFormat: string;
+    documentCategoryId: number | string;
 }): Promise<AxiosResponse> => {
     return await axiosInstance.post(apiUrl.productDocumentType, documentData);
 };
@@ -62,14 +63,17 @@ const updateProductDocumentType = async (documentData: {
     documentTypeName: string;
     documentTypeDescription: string;
     documentTypeFormat: string;
+    documentCategoryId: number | string;
 }): Promise<AxiosResponse> => {
-    const { documentTypeName, documentTypeDescription, documentTypeFormat } = documentData;
+    const { documentTypeName, documentTypeDescription, documentTypeFormat, documentCategoryId } =
+        documentData;
     return await axiosInstance.patch(
         `${apiUrl.productDocumentType}/${documentData.documentTypeId}`,
         {
             documentTypeName,
             documentTypeDescription,
-            documentTypeFormat
+            documentTypeFormat,
+            documentCategoryId
         }
     );
 };

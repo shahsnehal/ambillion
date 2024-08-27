@@ -22,14 +22,14 @@ export const png = { 'image/png': ['.png'] };
 
 //DocumentType Formats
 export const fileFormats = [
-    { label: 'PDF', value: 'pdf' },
-    { label: 'DOC', value: 'doc' },
-    { label: 'DOCX', value: 'docx' },
-    { label: 'XLS', value: 'xls' },
-    { label: 'XLSX', value: 'xlsx' },
-    { label: 'CSV', value: 'csv' },
-    { label: 'TXT', value: 'txt' },
-    { label: 'JPEG', value: 'jpeg' },
-    { label: 'JPG', value: 'jpg' },
-    { label: 'PNG', value: 'png' }
+    { label: 'PDF', value: 'PDF' },
+    { label: 'DOC', value: 'DOC' },
+    { label: 'DOCX', value: 'DOCX' },
+    { label: 'XLS', value: 'XLS' },
+    { label: 'XLSX', value: 'XLSX' },
+    { label: 'CSV', value: 'CSV' },
+    { label: 'TXT', value: 'TXT' },
+    { label: 'JPEG', value: 'JPEG' },
+    { label: 'JPG', value: 'JPG' },
+    { label: 'PNG', value: 'PNG' }
 ];
