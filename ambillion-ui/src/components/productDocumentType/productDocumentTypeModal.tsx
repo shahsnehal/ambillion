@@ -5,6 +5,9 @@ import { ProductDocumentTypeFormValues } from 'reduxSaga/modules/productDocument
 import { Icon } from '@iconify/react';
 import { fileFormats } from 'constants/fileType';
 import { trimValues } from 'utils/common';
+import { getLocalStorage } from 'utils/localStorage';
+import { localStorageKey } from 'constants/common';
+import { ProductCategory } from 'reduxSaga/modules/productCategories-module/type/types';
 
 export type ProductDocumentTypeModalProps = {
     isOpen: boolean;
@@ -19,7 +22,8 @@ const validationSchema = Yup.object({
         .trim()
         .max(100, 'DocumentType Name must be at most 100 characters long!'),
     documentTypeDescription: Yup.string().required('DocumentType is required!').trim(),
-    documentTypeFormat: Yup.string().required('DocumentType is required!').trim()
+    documentTypeFormat: Yup.string().required('DocumentType is required!').trim(),
+    documentCategoryId: Yup.string().required('DocumentType Category is required!')
 });
 
 export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> = ({
@@ -29,12 +33,16 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
     onSubmit
 }) => {
     if (!isOpen) return null;
+    const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
+
+    console.log('productCategories', productCategories);
 
     const initialValues: ProductDocumentTypeFormValues = {
         documentTypeId: documentTypeFormData?.documentTypeId ?? '',
         documentTypeName: documentTypeFormData?.documentTypeName ?? '',
         documentTypeDescription: documentTypeFormData?.documentTypeDescription ?? '',
-        documentTypeFormat: documentTypeFormData?.documentTypeFormat ?? ''
+        documentTypeFormat: documentTypeFormData?.documentTypeFormat ?? '',
+        documentCategoryId: documentTypeFormData?.documentCategoryId ?? ''
     };
 
     return (
@@ -139,6 +147,42 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
                                             <ErrorMessage
                                                 component="div"
                                                 name="documentTypeFormat"
+                                                className="invalid-feedback"
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label
+                                                htmlFor="documentCategoryId"
+                                                className="form-label"
+                                            >
+                                                Document Category{' '}
+                                                <span className="text-danger">*</span>
+                                            </label>
+                                            <Field
+                                                as="select"
+                                                name="documentCategoryId"
+                                                className={`form-control ${formikProps.touched.documentCategoryId && formikProps.errors.documentCategoryId ? 'is-invalid' : ''}`}
+                                                id="documentCategoryId"
+                                            >
+                                                <option value="" disabled>
+                                                    -- Select Category --
+                                                </option>
+                                                {productCategories.map(
+                                                    (category: ProductCategory) => (
+                                                        <option
+                                                            key={category.category_id}
+                                                            value={category.category_id}
+                                                            title={category.category_description}
+                                                        >
+                                                            {category.category_name}
+                                                        </option>
+                                                    )
+                                                )}
+                                            </Field>
+
+                                            <ErrorMessage
+                                                component="div"
+                                                name="documentCategoryId"
                                                 className="invalid-feedback"
                                             />
                                         </div>

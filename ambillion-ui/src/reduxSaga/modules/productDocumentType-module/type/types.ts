@@ -15,6 +15,9 @@ export type ProductDocumentsType = {
     document_type_name: string;
     document_type_description: string;
     document_type_format: string;
+    category_id: number | string;
+    category_name: string;
+    mandatory: boolean;
 };
 
 export type ProductDocumentTypeFormValues = {
@@ -22,6 +25,7 @@ export type ProductDocumentTypeFormValues = {
     documentTypeName: string;
     documentTypeDescription: string;
     documentTypeFormat: string;
+    documentCategoryId: number | string;
 };
 
 export type FetchProductDocumentTypeRequestAction = {
@@ -44,6 +48,7 @@ export type AddProductDocumentTypeRequestAction = {
         documentTypeName: string;
         documentTypeDescription: string;
         documentTypeFormat: string;
+        documentCategoryId: number | string;
     };
 };
 
@@ -64,6 +69,7 @@ export type UpdateProductDocumentTypeRequestAction = {
         documentTypeName: string;
         documentTypeDescription: string;
         documentTypeFormat: string;
+        documentCategoryId: number | string;
     };
 };
 
