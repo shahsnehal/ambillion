@@ -30,7 +30,7 @@ export const ROUTES = {
     USERS: '/users',
     PRODUCTS: '/products',
     ADDPRODUCT: '/products/addProduct',
-    EDITPRODUCT: '/products/editProduct',
+    EDITPRODUCT: '/products/editProduct/:productId',
     PRODUCTDETAILS: '/products/:productId',
     PRODUCT_CATEGORIES: '/productCategories',
     PRODUCT_DOCUMENTTYPE: '/productDocumentType'
