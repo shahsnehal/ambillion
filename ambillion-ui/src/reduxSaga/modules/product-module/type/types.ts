@@ -81,6 +81,7 @@ export type Product = {
 };
 
 export type ProductFormValues = {
+    productId: number | string;
     productDisplayName?: string;
     originHsnCode?: string;
     productCategoryId: string | number | undefined;
@@ -88,19 +89,6 @@ export type ProductFormValues = {
     productFeature?: string;
     productCustomFields: ProductCustomField[];
     productDocuments: ProductDocument[];
-    uploadImage?: string | null | ArrayBuffer;
-    productCategory?: string;
-    productType?: string;
-    brandName?: string;
-    exWorkPrice?: string;
-    byColor?: string;
-    bySize?: string[];
-    unitMeasure?: string;
-    weight?: string;
-    dimensions?: string;
-    byGender?: string;
-    material?: string;
-    // [key: string]: unknown;
 };
 
 export type FetchProductsRequestAction = {
@@ -149,7 +137,11 @@ export type AddProductFailureAction = {
 
 export type EditProductRequestAction = {
     type: typeof EDIT_PRODUCT_REQUEST;
-    payload: ProductFormValues & { navigate: (path: string) => void };
+    payload: {
+        productId: number | string;
+        product: ProductFormValues;
+        navigate: (path: string) => void;
+    };
 };
 
 export type EditProductSuccessAction = {

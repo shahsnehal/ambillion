@@ -71,6 +71,7 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
                                 </div>
                                 <div className="d-flex justify-content-between">
                                     <button
+                                        type="button"
                                         className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
                                         data-toggle="tooltip"
                                         data-placement="bottom"
@@ -86,6 +87,7 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
                                         <Icon icon="solar:file-download-outline" className="fs-6" />
                                     </button>
                                     <button
+                                        type="button"
                                         className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
                                         data-toggle="tooltip"
                                         data-placement="bottom"
