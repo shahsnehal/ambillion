@@ -39,11 +39,12 @@ export const ProductDetails: React.FC = () => {
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
+
     //Get Product Properties
     const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
-        ? (selectedProductDetails?.product_custom_fields as unknown as ProductCustomField[])
+        ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
         : [];
-    console.log('selectedProductDetails', selectedProductDetails);
+
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
@@ -91,7 +92,14 @@ export const ProductDetails: React.FC = () => {
 
     const getRoleBasedStatus = () => {
         if (userRole === userRoles.ADMIN) {
-            return productStatus.INFO_NEEDED;
+            if (
+                selectedProductDetails?.status === productStatus.VERIFIED ||
+                selectedProductDetails?.status === productStatus.EXPORT_INFO_NEEDED
+            ) {
+                return productStatus.UNDER_EXPORT_APPROVAL;
+            } else {
+                return productStatus.INFO_NEEDED;
+            }
         } else if (userRole === userRoles.OFFICER) {
             return productStatus.EXPORT_INFO_NEEDED;
         } else if (userRole === userRoles.MANUFACTURER) {
@@ -153,9 +161,14 @@ export const ProductDetails: React.FC = () => {
                                         </span>
                                     </div>
                                     <h4>{selectedProductDetails?.product_displayname}</h4>
-                                    <p className="mb-3">
+                                    <div className="d-flex align-items-center gap-8 mb-3">
+                                        <h6 className="mb-0 fs-4">HSN Code:</h6>
+                                        {selectedProductDetails?.origin_hsn_code}
+                                    </div>
+                                    <div className="d-flex align-items-center gap-8 mb-3">
+                                        <h6 className="mb-0 fs-4">Product Description:</h6>
                                         {selectedProductDetails?.customer_product_description}
-                                    </p>
+                                    </div>
                                     <div className="d-flex align-items-center gap-8">
                                         <h6 className="mb-0 fs-4">Features:</h6>
                                         {selectedProductDetails?.product_feature}
@@ -281,12 +294,7 @@ export const ProductDetails: React.FC = () => {
                                                     selectedProductDetails?.status !==
                                                         productStatus.EXPORT_INFO_NEEDED
                                                 }
-                                                onClick={() =>
-                                                    handleAction(
-                                                        String(selectedProductDetails?.product_id),
-                                                        productStatus.UNDER_EXPORT_APPROVAL
-                                                    )
-                                                }
+                                                onClick={() => setIsModalOpen(true)}
                                             >
                                                 <Icon
                                                     icon="icon-park-outline:send"
@@ -296,20 +304,45 @@ export const ProductDetails: React.FC = () => {
                                             </button>
                                         </>
                                     )}
+
                                     {userRole === userRoles.MANUFACTURER && (
-                                        <button
-                                            className="btn  btn-rounded btn-primary d-flex align-items-center"
-                                            disabled={
-                                                selectedProductDetails?.status !==
-                                                    productStatus.PENDING &&
-                                                selectedProductDetails?.status !==
-                                                    productStatus.INFO_NEEDED
-                                            }
-                                            onClick={() => setIsModalOpen(true)}
-                                        >
-                                            <Icon icon="icon-park-outline:send" className="me-1" />
-                                            Send For Verification
-                                        </button>
+                                        <>
+                                            <button
+                                                className="btn  btn-rounded btn-primary d-flex align-items-center"
+                                                disabled={
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.PENDING &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.INFO_NEEDED
+                                                }
+                                                onClick={() => setIsModalOpen(true)}
+                                            >
+                                                <Icon
+                                                    icon="icon-park-outline:send"
+                                                    className="me-1"
+                                                />
+                                                Send For Verification
+                                            </button>
+                                            <button
+                                                disabled={
+                                                    selectedProductDetails?.status ===
+                                                        productStatus.APPROVED ||
+                                                    selectedProductDetails?.status ===
+                                                        productStatus.UNDER_VERIFICATION ||
+                                                    selectedProductDetails?.status ===
+                                                        productStatus.VERIFIED
+                                                }
+                                                className="btn btn-rounded btn-warning d-flex align-items-center ms-2"
+                                                onClick={() =>
+                                                    navigate(
+                                                        `${ROUTES.PRODUCTS}/editProduct/${productId}`
+                                                    )
+                                                }
+                                            >
+                                                <Icon icon="mdi:pencil" className="me-1" />
+                                                Edit Product
+                                            </button>
+                                        </>
                                     )}
                                     <button
                                         className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"

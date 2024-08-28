@@ -14,10 +14,19 @@ export const DELETE_PRODUCT_CATEGORY_REQUEST = 'DELETE_PRODUCT_CATEGORY_REQUEST'
 export const DELETE_PRODUCT_CATEGORY_SUCCESS = 'DELETE_PRODUCT_CATEGORY_SUCCESS';
 export const DELETE_PRODUCT_CATEGORY_FAILURE = 'DELETE_PRODUCT_CATEGORY_FAILURE';
 
+export type CategoryDocuments = {
+    document_type_id: number | string;
+    document_type_name: string;
+    document_type_description: string;
+    document_type_format: string;
+    mandatory: boolean;
+};
+
 export type ProductCategory = {
     category_id: number | string;
     category_name: string;
     category_description: string;
+    documents: CategoryDocuments[];
 };
 
 export type ProductCategoryFormValues = {

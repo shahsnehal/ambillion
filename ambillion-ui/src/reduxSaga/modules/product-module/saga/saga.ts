@@ -77,7 +77,10 @@ function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
 
 //Add Product API
 const addProduct = async (productData: ProductFormValues): Promise<AxiosResponse> => {
-    return await axiosInstance.post(apiUrl.products, productData);
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    /* eslint-disable no-unused-vars */
+    const { productId, ...addedfield } = productData;
+    return await axiosInstance.post(apiUrl.products, addedfield);
 };
 
 function* handleAddProduct(action: {
@@ -85,9 +88,10 @@ function* handleAddProduct(action: {
     payload: ProductFormValues & { navigate: (path: string) => void };
 }) {
     try {
-        const response: AxiosResponse = yield call(addProduct, action.payload);
+        const { navigate, ...productData } = action.payload;
+        const response: AxiosResponse = yield call(addProduct, productData);
         yield put({ type: ADD_PRODUCT_SUCCESS, payload: response.data });
-        action.payload.navigate(ROUTES.PRODUCTS);
+        navigate(ROUTES.PRODUCTS);
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
@@ -99,17 +103,23 @@ function* handleAddProduct(action: {
 
 //Edit Product API
 const editProduct = async (productData: ProductFormValues): Promise<AxiosResponse> => {
-    return await axiosInstance.put(`${apiUrl.products}`, productData);
+    const { productId, ...restParams } = productData;
+    return await axiosInstance.patch(`${apiUrl.products}/${productId}`, restParams);
 };
 
 function* handleEditProduct(action: {
     type: typeof EDIT_PRODUCT_REQUEST;
-    payload: ProductFormValues & { navigate: (path: string) => void };
+    payload: {
+        productId: number | string;
+        product: ProductFormValues;
+        navigate: (path: string) => void;
+    };
 }) {
     try {
-        const response: AxiosResponse = yield call(editProduct, action.payload);
+        const { productId, product, navigate } = action.payload;
+        const response: AxiosResponse = yield call(editProduct, { ...product, productId });
         yield put({ type: EDIT_PRODUCT_SUCCESS, payload: response.data });
-        action.payload.navigate(ROUTES.PRODUCTS);
+        navigate(`${ROUTES.PRODUCTS}/${productId}`);
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {

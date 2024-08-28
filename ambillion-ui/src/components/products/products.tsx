@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useSelector, useDispatch } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import { TableFilter } from 'components/common/table/tableFilter';
-import { customStyles, productsTableColumns, ProductActionColumn } from 'utils/table/columns';
+import { customStyles, productsTableColumns } from 'utils/table/columns';
 import { RootState } from 'reduxSaga/config/store';
 import { fetchProductsRequest } from 'reduxSaga/modules/product-module/action/actions';
 import { CustomLoader } from 'common/loaders/loader';
@@ -18,7 +18,6 @@ export const Products = () => {
     const { role_name: userRole } = userProfile || null;
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
-
     const { products, isLoading } = useSelector((state: RootState) => state.productModule);
 
     useEffect(() => {
@@ -37,11 +36,6 @@ export const Products = () => {
     //AddProduct Route
     const handleAddProduct = () => {
         navigate(ROUTES.ADDPRODUCT);
-    };
-
-    //EditProduct Route
-    const handleEdit = () => {
-        navigate(`${ROUTES.PRODUCTS}`);
     };
 
     //ProductDetailView Route
@@ -86,7 +80,7 @@ export const Products = () => {
 
     return (
         <DataTable
-            columns={[...productsTableColumns, ProductActionColumn(userRole, handleEdit)]}
+            columns={[...productsTableColumns]}
             data={filteredItems}
             progressPending={isLoading}
             progressComponent={<CustomLoader />}

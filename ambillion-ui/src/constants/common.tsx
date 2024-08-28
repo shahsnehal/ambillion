@@ -16,8 +16,8 @@ export const apiUrl = {
     //productCategories-Module
     productCategories: '/categories',
 
-    //document-Module
-    documents: '/documents'
+    //ProductDocumentType-Module
+    productDocumentType: '/productdocumenttype'
 };
 
 // Routing path constants
@@ -30,10 +30,10 @@ export const ROUTES = {
     USERS: '/users',
     PRODUCTS: '/products',
     ADDPRODUCT: '/products/addProduct',
-    EDITPRODUCT: '/products/editProduct',
+    EDITPRODUCT: '/products/editProduct/:productId',
     PRODUCTDETAILS: '/products/:productId',
     PRODUCT_CATEGORIES: '/productCategories',
-    DOCUMENTS: '/documents'
+    PRODUCT_DOCUMENTTYPE: '/productDocumentType'
 };
 
 // localStorageKey

@@ -2,7 +2,7 @@ import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 import { User } from 'reduxSaga/modules/user-module/type/types';
 import { Product } from 'reduxSaga/modules/product-module/type/types';
-import { userStatus, productStatus, userRoles } from 'constants/common';
+import { userStatus, productStatus } from 'constants/common';
 
 export const customStyles = {
     rows: {
@@ -168,62 +168,6 @@ export const userTableColumns: TableColumn<User>[] = [
     }
 ];
 
-//Product Table Type
-type ProductActionColumnProps = {
-    row: Product;
-    onEdit: (row: Product) => void;
-    currentStatus: string;
-    userRole: string;
-};
-
-//Product Table Actions
-export const ProductAction: React.FC<ProductActionColumnProps> = ({
-    row,
-    onEdit,
-    currentStatus,
-    userRole
-}) => {
-    const handleEdit = () => {
-        onEdit(row);
-    };
-    return (
-        <div className="d-flex gap-2">
-            {(userRole === userRoles.ADMIN || userRole === userRoles.OFFICER) && (
-                <button
-                    className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2"
-                    data-toggle="tooltip"
-                    data-placement="left"
-                    title="Change Status"
-                    disabled={currentStatus === productStatus.APPROVED}
-                >
-                    <Icon icon="solar:pen-outline" className="fs-5" />
-                </button>
-            )}
-            {userRole === userRoles.MANUFACTURER && (
-                <button
-                    className="btn btn-warning rounded-circle d-flex align-items-center justify-content-center p-2"
-                    data-toggle="tooltip"
-                    data-placement="left"
-                    title="Edit"
-                    onClick={handleEdit}
-                >
-                    <Icon icon="solar:pen-outline" className="fs-5" />
-                </button>
-            )}
-        </div>
-    );
-};
-
-export const ProductActionColumn = (userRole: string, onEdit: (id: Product) => void) => ({
-    name: 'Action',
-    cell: (row: Product) => (
-        <ProductAction row={row} onEdit={onEdit} currentStatus={row.status} userRole={userRole} />
-    ),
-    ignoreRowClick: false,
-    allowOverflow: true,
-    button: true
-});
-
 //Product Table Columns
 export const productsTableColumns: TableColumn<Product>[] = [
     {
@@ -249,7 +193,8 @@ export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'Description',
         selector: (row) => row.customer_product_description,
-        sortable: true
+        sortable: true,
+        grow: 1.5
     },
     {
         name: 'Export Status',

@@ -17,7 +17,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     title
 }) => {
     const [comments, setComments] = useState<string>('');
-    const isSendDisabled = comments.trim().length === 0;
+    // const isSendDisabled = comments.trim().length === 0;
     const handleConfirm = () => {
         const trimmedComments = trimValues(comments);
         onConfirm(productId, trimmedComments);
@@ -67,7 +67,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                 type="button"
                                 className="btn btn-primary btn-rounded ms-2"
                                 onClick={handleConfirm}
-                                disabled={isSendDisabled}
+                                // disabled={isSendDisabled}
                             >
                                 <Icon icon="icon-park-outline:send" className="fs-5 me-1" />
                                 Send

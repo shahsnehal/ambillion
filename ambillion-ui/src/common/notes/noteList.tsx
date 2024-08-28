@@ -33,7 +33,7 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
                                         >
                                             {note?.user_id === userProfile?.userprofile_id
                                                 ? 'You'
-                                                : `${note?.created_by}( ${note?.user_role})`}
+                                                : `${note?.created_by}( ${note?.user_role} )`}
                                         </h6>
                                         <p className="note-date fs-2">
                                             {new Date(note.note_created_at).toLocaleDateString()}{' '}

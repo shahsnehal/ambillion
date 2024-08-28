@@ -19,3 +19,17 @@ export const txt = { 'text/plain': ['.txt'] };
 export const jpeg = { 'image/jpeg': ['.jpg', '.jpeg'] };
 export const png = { 'image/png': ['.png'] };
 // export const gif = { 'image/gif': ['.gif'] };
+
+//DocumentType Formats
+export const fileFormats = [
+    { label: 'PDF', value: 'PDF' },
+    { label: 'DOC', value: 'DOC' },
+    { label: 'DOCX', value: 'DOCX' },
+    { label: 'XLS', value: 'XLS' },
+    { label: 'XLSX', value: 'XLSX' },
+    { label: 'CSV', value: 'CSV' },
+    { label: 'TXT', value: 'TXT' },
+    { label: 'JPEG', value: 'JPEG' },
+    { label: 'JPG', value: 'JPG' },
+    { label: 'PNG', value: 'PNG' }
+];

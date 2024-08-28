@@ -37,11 +37,12 @@ export const addProductRequest = (
 });
 
 export const editProductRequest = (
+    productId: number | string,
     product: ProductFormValues,
     navigate: (path: string) => void
 ): EditProductRequestAction => ({
     type: EDIT_PRODUCT_REQUEST,
-    payload: { ...product, navigate }
+    payload: { productId, product, navigate }
 });
 
 export const deleteProductRequest = (productId: number): DeleteProductRequestAction => ({
