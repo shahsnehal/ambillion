@@ -15,14 +15,16 @@ export const addProductDocumentTypeRequest = (
     documentTypeName: string,
     documentTypeDescription: string,
     documentTypeFormat: string,
-    documentCategoryId: number | string
+    documentCategoryId: number | string,
+    mandatory: boolean
 ): AddProductDocumentTypeRequestAction => ({
     type: ADD_PRODUCT_DOCUMENT_TYPE_REQUEST,
     payload: {
         documentTypeName,
         documentTypeDescription,
         documentTypeFormat,
-        documentCategoryId
+        documentCategoryId,
+        mandatory
     }
 });
 
@@ -31,7 +33,8 @@ export const updateProductDocumentTypeRequest = (
     documentTypeName: string,
     documentTypeDescription: string,
     documentTypeFormat: string,
-    documentCategoryId: number | string
+    documentCategoryId: number | string,
+    mandatory: boolean
 ): UpdateProductDocumentTypeRequestAction => ({
     type: UPDATE_PRODUCT_DOCUMENT_TYPE_REQUEST,
     payload: {
@@ -39,6 +42,7 @@ export const updateProductDocumentTypeRequest = (
         documentTypeName,
         documentTypeDescription,
         documentTypeFormat,
-        documentCategoryId
+        documentCategoryId,
+        mandatory
     }
 });

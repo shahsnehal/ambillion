@@ -40,6 +40,7 @@ const addProductDocumentType = async (documentData: {
     documentTypeDescription: string;
     documentTypeFormat: string;
     documentCategoryId: number | string;
+    mandatory: boolean;
 }): Promise<AxiosResponse> => {
     return await axiosInstance.post(apiUrl.productDocumentType, documentData);
 };
@@ -64,16 +65,23 @@ const updateProductDocumentType = async (documentData: {
     documentTypeDescription: string;
     documentTypeFormat: string;
     documentCategoryId: number | string;
+    mandatory: boolean;
 }): Promise<AxiosResponse> => {
-    const { documentTypeName, documentTypeDescription, documentTypeFormat, documentCategoryId } =
-        documentData;
+    const {
+        documentTypeName,
+        documentTypeDescription,
+        documentTypeFormat,
+        documentCategoryId,
+        mandatory
+    } = documentData;
     return await axiosInstance.patch(
         `${apiUrl.productDocumentType}/${documentData.documentTypeId}`,
         {
             documentTypeName,
             documentTypeDescription,
             documentTypeFormat,
-            documentCategoryId
+            documentCategoryId,
+            mandatory
         }
     );
 };

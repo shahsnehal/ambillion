@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-destructuring */
-import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,7 +19,10 @@ import {
 } from 'reduxSaga/modules/product-module/type/types';
 import { localStorageKey, ROUTES } from 'constants/common';
 import { getLocalStorage } from 'utils/localStorage';
-import { ProductCategory } from 'reduxSaga/modules/productCategories-module/type/types';
+import {
+    CategoryDocuments,
+    ProductCategory
+} from 'reduxSaga/modules/productCategories-module/type/types';
 import Dropzone from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
 import { trimValues } from 'utils/common';
@@ -65,6 +68,8 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { productId } = useParams<{ productId: string }>();
+    const [documents, setDocuments] = useState<CategoryDocuments[]>([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
     const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
     const { selectedProductDetails, isLoading } = useSelector(
@@ -106,6 +111,37 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             dispatch(getProductDetailsRequest(productId));
         }
     }, []);
+
+    useEffect(() => {
+        if (initialValues.productCategoryId) {
+            setSelectedCategoryId(initialValues.productCategoryId.toString());
+        }
+    }, [initialValues.productCategoryId]);
+
+    useEffect(() => {
+        if (selectedCategoryId) {
+            const selectedCategory = productCategories.find(
+                (category: ProductCategory) =>
+                    category.category_id.toString() === selectedCategoryId
+            );
+            if (selectedCategory) {
+                setDocuments(selectedCategory.documents || []);
+            }
+        } else {
+            setDocuments([]);
+        }
+    }, [selectedCategoryId]);
+
+    const handleCategoryChange = useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>, formik: FormikProps<ProductFormValues>) => {
+            const newCategoryId = event.target.value;
+            if (newCategoryId !== selectedCategoryId) {
+                setSelectedCategoryId(newCategoryId);
+                formik.setFieldValue('productCategoryId', newCategoryId);
+            }
+        },
+        [selectedCategoryId]
+    );
 
     const handleSubmit = async (values: ProductFormValues) => {
         const trimmedValues = trimValues(values);
@@ -224,6 +260,12 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 name="productCategoryId"
                                                 className={`form-control ${props.touched.productCategoryId && props.errors.productCategoryId ? 'is-invalid' : ''}`}
                                                 id="productCategoryId"
+                                                onChange={(
+                                                    event: React.ChangeEvent<HTMLSelectElement>
+                                                ) => {
+                                                    handleCategoryChange(event, props);
+                                                }}
+                                                value={props.values.productCategoryId}
                                             >
                                                 <option value="" disabled>
                                                     -- Select a Category --
@@ -248,6 +290,45 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                             />
                                         </div>
                                     </div>
+
+                                    {props.values.productCategoryId && (
+                                        <div className="col-sm-12 mt-3">
+                                            <label htmlFor="documents" className="form-label">
+                                                Required To Attach Documents for Selected Category :
+                                            </label>
+                                            {documents.length > 0 ? (
+                                                <table className="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Description</th>
+                                                            <th>Format</th>
+                                                            <th>Mandatory</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {documents.map((doc) => (
+                                                            <tr key={doc.document_type_id}>
+                                                                <td>{doc.document_type_name}</td>
+                                                                <td>
+                                                                    {doc.document_type_description}
+                                                                </td>
+                                                                <td>{doc.document_type_format}</td>
+                                                                <td>
+                                                                    {doc.mandatory ? 'Yes' : 'No'}
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            ) : (
+                                                <p>
+                                                    No documents required for the selected category.
+                                                </p>
+                                            )}
+                                        </div>
+                                    )}
+
                                     <div className="row mb-3">
                                         <div className="col-sm-12">
                                             <label

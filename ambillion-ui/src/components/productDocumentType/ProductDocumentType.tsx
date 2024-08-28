@@ -44,7 +44,8 @@ export const ProductDocumentType = () => {
             documentTypeName: '',
             documentTypeDescription: '',
             documentTypeFormat: '',
-            documentCategoryId: ''
+            documentCategoryId: '',
+            mandatory: false
         });
         setIsDocumentTypeModalOpen(true);
     };
@@ -56,7 +57,8 @@ export const ProductDocumentType = () => {
             documentTypeName: row.document_type_name,
             documentTypeDescription: row.document_type_description,
             documentTypeFormat: row.document_type_format,
-            documentCategoryId: row.category_id
+            documentCategoryId: row.category_id,
+            mandatory: row.mandatory
         });
         setIsDocumentTypeModalOpen(true);
     };
@@ -70,7 +72,8 @@ export const ProductDocumentType = () => {
                     values.documentTypeName,
                     values.documentTypeDescription,
                     values.documentTypeFormat,
-                    values.documentCategoryId
+                    values.documentCategoryId,
+                    values.mandatory
                 )
             );
         } else {
@@ -79,7 +82,8 @@ export const ProductDocumentType = () => {
                     values.documentTypeName,
                     values.documentTypeDescription,
                     values.documentTypeFormat,
-                    values.documentCategoryId
+                    values.documentCategoryId,
+                    values.mandatory
                 )
             );
         }
