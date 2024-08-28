@@ -26,6 +26,7 @@ export type ProductDocumentTypeFormValues = {
     documentTypeDescription: string;
     documentTypeFormat: string;
     documentCategoryId: number | string;
+    mandatory: boolean;
 };
 
 export type FetchProductDocumentTypeRequestAction = {
@@ -49,6 +50,7 @@ export type AddProductDocumentTypeRequestAction = {
         documentTypeDescription: string;
         documentTypeFormat: string;
         documentCategoryId: number | string;
+        mandatory: boolean;
     };
 };
 
@@ -70,6 +72,7 @@ export type UpdateProductDocumentTypeRequestAction = {
         documentTypeDescription: string;
         documentTypeFormat: string;
         documentCategoryId: number | string;
+        mandatory: boolean;
     };
 };
 

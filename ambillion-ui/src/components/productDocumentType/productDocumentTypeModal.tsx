@@ -21,9 +21,9 @@ const validationSchema = Yup.object({
         .required('DocumentType Name is required!')
         .trim()
         .max(100, 'DocumentType Name must be at most 100 characters long!'),
-    documentTypeDescription: Yup.string().required('DocumentType is required!').trim(),
-    documentTypeFormat: Yup.string().required('DocumentType is required!').trim(),
-    documentCategoryId: Yup.string().required('DocumentType Category is required!')
+    documentTypeDescription: Yup.string().required('DocumentType Description is required!').trim(),
+    documentTypeFormat: Yup.string().required('DocumentType Format is required!').trim(),
+    documentCategoryId: Yup.string().required('Document Category is required!')
 });
 
 export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> = ({
@@ -33,16 +33,16 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
     onSubmit
 }) => {
     if (!isOpen) return null;
-    const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
 
-    console.log('productCategories', productCategories);
+    const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
 
     const initialValues: ProductDocumentTypeFormValues = {
         documentTypeId: documentTypeFormData?.documentTypeId ?? '',
         documentTypeName: documentTypeFormData?.documentTypeName ?? '',
         documentTypeDescription: documentTypeFormData?.documentTypeDescription ?? '',
         documentTypeFormat: documentTypeFormData?.documentTypeFormat ?? '',
-        documentCategoryId: documentTypeFormData?.documentCategoryId ?? ''
+        documentCategoryId: documentTypeFormData?.documentCategoryId ?? '',
+        mandatory: documentTypeFormData?.mandatory ?? false
     };
 
     return (
@@ -59,7 +59,12 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
                             initialValues={initialValues}
                             validationSchema={validationSchema}
                             onSubmit={(values, { resetForm }) => {
-                                const trimmedValues = trimValues(values);
+                                const formData = {
+                                    ...values,
+                                    documentCategoryId: String(values.documentCategoryId),
+                                    mandatory: Boolean(values.mandatory)
+                                };
+                                const trimmedValues = trimValues(formData);
                                 onSubmit(trimmedValues);
                                 resetForm();
                             }}
@@ -179,10 +184,42 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
                                                     )
                                                 )}
                                             </Field>
-
                                             <ErrorMessage
                                                 component="div"
                                                 name="documentCategoryId"
+                                                className="invalid-feedback"
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">
+                                                Mandatory <span className="text-danger">*</span>
+                                            </label>
+                                            <div className="form-check">
+                                                <Field
+                                                    type="checkbox"
+                                                    name="mandatory"
+                                                    id="mandatory"
+                                                    className="form-check-input"
+                                                    checked={formikProps.values.mandatory}
+                                                    onChange={(
+                                                        e: React.ChangeEvent<HTMLInputElement>
+                                                    ) => {
+                                                        formikProps.setFieldValue(
+                                                            'mandatory',
+                                                            e.target.checked
+                                                        );
+                                                    }}
+                                                />
+                                                <label
+                                                    className="form-check-label"
+                                                    htmlFor="mandatory"
+                                                >
+                                                    Is this document mandatory?
+                                                </label>
+                                            </div>
+                                            <ErrorMessage
+                                                component="div"
+                                                name="mandatory"
                                                 className="invalid-feedback"
                                             />
                                         </div>
