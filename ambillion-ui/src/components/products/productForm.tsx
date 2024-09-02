@@ -15,7 +15,8 @@ import {
     ProductFormValues,
     CustomFieldErrors,
     CustomFieldTouched,
-    ProductCustomField
+    ProductCustomField,
+    ProductDocument
 } from 'reduxSaga/modules/product-module/type/types';
 import { localStorageKey, ROUTES } from 'constants/common';
 import { getLocalStorage } from 'utils/localStorage';
@@ -23,10 +24,9 @@ import {
     CategoryDocuments,
     ProductCategory
 } from 'reduxSaga/modules/productCategories-module/type/types';
-import Dropzone from 'common/FileUpload/uploadFile';
+import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
 import { trimValues } from 'utils/common';
-import ViewDocuments from 'components/documents/viewDocuments';
 
 type ProductFormProps = {
     productFormData?: ProductFormValues | null;
@@ -64,47 +64,100 @@ const ProductFormSchema = Yup.object().shape({
         .min(1, 'At least one document is required !')
 });
 
+const defaultProductFormValues: ProductFormValues = {
+    productId: '',
+    productDisplayName: '',
+    productCategoryId: '',
+    originHsnCode: '',
+    customerProductDescription: '',
+    productFeature: '',
+    productCustomFields: [],
+    productDocuments: []
+};
+
 export const ProductForm: React.FC<ProductFormProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { productId } = useParams<{ productId: string }>();
-    const [documents, setDocuments] = useState<CategoryDocuments[]>([]);
+    const [categoryDocuments, setCategoryDocuments] = useState<CategoryDocuments[]>([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+    const [initialValues, setInitialValues] = useState<ProductFormValues>(defaultProductFormValues);
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
     const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
+    const [productDocumentFiles, setProductDocumentFiles] = useState<ExtendedFile[]>([]);
+    // const isAddMode = !productId;
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
-    const isAddMode = !productId;
 
-    const initialValues: ProductFormValues = {
-        productId: isAddMode ? '' : selectedProductDetails?.product_id ?? '',
-        productDisplayName: isAddMode ? '' : selectedProductDetails?.product_displayname ?? '',
-        productCategoryId: isAddMode ? '' : selectedProductDetails?.category_id ?? '',
-        originHsnCode: isAddMode ? '' : selectedProductDetails?.origin_hsn_code ?? '',
-        customerProductDescription: isAddMode
-            ? ''
-            : selectedProductDetails?.customer_product_description ?? '',
-        productFeature: isAddMode ? '' : selectedProductDetails?.product_feature ?? '',
-        productCustomFields: isAddMode
-            ? []
-            : selectedProductDetails?.product_custom_fields
-              ? selectedProductDetails.product_custom_fields
-                  ? (JSON.parse(
-                        selectedProductDetails.product_custom_fields
-                    ) as ProductCustomField[])
-                  : []
-              : [],
-        productDocuments: isAddMode
-            ? []
-            : selectedProductDetails?.product_documents
-              ? selectedProductDetails.product_documents.map((doc) => ({
-                    documentType: doc.filetype,
-                    documentName: doc.document_name,
-                    documentData: doc.contentpath
-                }))
-              : []
+    const convertBase64ToBlob = (base64Data: string, contentType: string): Blob => {
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: contentType });
     };
+
+    const convertDocumentContentToExtendedFile = (
+        documentData: ProductDocument,
+        docId: string
+    ): ExtendedFile => {
+        const blob = convertBase64ToBlob(documentData.documentData, documentData.documentType);
+
+        const extendedFile: ExtendedFile = new File([blob], documentData.documentName, {
+            type: documentData.documentType
+        });
+        extendedFile.documentId = docId;
+
+        return extendedFile;
+    };
+
+    useEffect(() => {
+        if (selectedProductDetails) {
+            const updatedDetails = {
+                productId: selectedProductDetails?.product_id ?? '',
+                productDisplayName: selectedProductDetails?.product_displayname ?? '',
+                productCategoryId: selectedProductDetails?.category_id ?? '',
+                originHsnCode: selectedProductDetails?.origin_hsn_code ?? '',
+                customerProductDescription:
+                    selectedProductDetails?.customer_product_description ?? '',
+                productFeature: selectedProductDetails?.product_feature ?? '',
+                productCustomFields: selectedProductDetails?.product_custom_fields
+                    ? selectedProductDetails.product_custom_fields
+                        ? (JSON.parse(
+                              selectedProductDetails.product_custom_fields
+                          ) as ProductCustomField[])
+                        : []
+                    : [],
+                productDocuments: selectedProductDetails?.product_documents
+                    ? selectedProductDetails.product_documents.map((doc) => ({
+                          documentType: doc.filetype,
+                          documentName: doc.document_name,
+                          documentData: doc.base64Data
+                      }))
+                    : []
+            };
+
+            setInitialValues(updatedDetails);
+            // setSelectedCategoryId(selectedProductDetails.category_id.toString());
+            // const convertedFiles = selectedProductDetails?.product_documents?.map(
+            //     (doc: any, index) => {
+            //         return convertDocumentContentToExtendedFile(doc, index.toString());
+            //     }
+            // );
+            // if (convertedFiles) setProductDocumentFiles(convertedFiles);
+        }
+    }, [selectedProductDetails]);
+    useEffect(() => {
+        if (initialValues?.productDocuments.length) {
+            const convertedFiles = initialValues.productDocuments.map((doc, index) => {
+                return convertDocumentContentToExtendedFile(doc, index.toString());
+            });
+            setProductDocumentFiles(convertedFiles);
+        }
+    }, [initialValues?.productDocuments]);
 
     useEffect(() => {
         if (productId) {
@@ -125,10 +178,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                     category.category_id.toString() === selectedCategoryId
             );
             if (selectedCategory) {
-                setDocuments(selectedCategory.documents || []);
+                setCategoryDocuments(selectedCategory.categoryDocuments || []);
             }
         } else {
-            setDocuments([]);
+            setCategoryDocuments([]);
         }
     }, [selectedCategoryId]);
 
@@ -179,6 +232,22 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             };
         });
     };
+    async function processFiles(uploadedFiles: any) {
+        // Map over the files and create an array of promises
+        const fileDataPromises = uploadedFiles.map(async (doc: any) => {
+            const base64File = removeDataUriPrefix(String(await convertBase64(doc)));
+            return {
+                documentType: doc.type,
+                documentName: doc.name,
+                documentData: base64File
+            };
+        });
+
+        // Wait for all promises to resolve
+        const fileData = await Promise.all(fileDataPromises);
+        return fileData;
+        // Now you can log the resolved file data
+    }
     const removeDataUriPrefix = (dataUri: string): string => {
         const base64String = dataUri.split(',')[1];
         return base64String || '';
@@ -293,10 +362,13 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
 
                                     {props.values.productCategoryId && (
                                         <div className="col-sm-12 mt-3">
-                                            <label htmlFor="documents" className="form-label">
+                                            <label
+                                                htmlFor="categoryDocuments"
+                                                className="form-label"
+                                            >
                                                 Required To Attach Documents for Selected Category :
                                             </label>
-                                            {documents.length > 0 ? (
+                                            {categoryDocuments.length > 0 ? (
                                                 <table className="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -307,7 +379,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {documents.map((doc) => (
+                                                        {categoryDocuments.map((doc) => (
                                                             <tr key={doc.document_type_id}>
                                                                 <td>{doc.document_type_name}</td>
                                                                 <td>
@@ -323,7 +395,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 </table>
                                             ) : (
                                                 <p>
-                                                    No documents required for the selected category.
+                                                    No Documents required for the selected category.
                                                 </p>
                                             )}
                                         </div>
@@ -372,38 +444,18 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                     </div>
                                     <Dropzone
                                         name="Attachment"
+                                        initialFiles={productDocumentFiles}
                                         onFileChange={async (uploadedFiles) => {
-                                            // Process each file
-                                            let base64File = '';
-                                            const fileData =
-                                                uploadedFiles[uploadedFiles.length - 1];
-                                            if (fileData) {
-                                                base64File = removeDataUriPrefix(
-                                                    String(await convertBase64(fileData))
-                                                );
-                                                props.setFieldValue('productDocuments', [
-                                                    ...props.values.productDocuments, // Preserve existing documents
-                                                    {
-                                                        documentType: fileData.type,
-                                                        documentName: fileData.name,
-                                                        documentData: base64File
-                                                    }
-                                                ]);
-                                            }
+                                            const fileData = await processFiles(uploadedFiles);
+
+                                            props.setFieldValue(
+                                                'productDocuments',
+                                                fileData || null
+                                            );
                                         }}
                                         formikField="productDocuments"
                                         label="Attachment"
                                     />
-
-                                    {props.values.productDocuments &&
-                                        props.values.productDocuments.length > 0 && (
-                                            <ViewDocuments
-                                                documents={
-                                                    selectedProductDetails?.product_documents ||
-                                                    null
-                                                }
-                                            />
-                                        )}
 
                                     {customFieldAdded ||
                                     props.values.productCustomFields.length > 0 ? (

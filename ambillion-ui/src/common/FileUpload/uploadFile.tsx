@@ -42,11 +42,17 @@ const Dropzone: React.FC<DropzoneProps> = ({
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [isDragActive, setIsDragActive] = useState(false);
     const [fileRejections, setFileRejections] = useState<any[]>([]);
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>(initialFiles || []);
+    const [uploadedFiles, setUploadedFiles] = useState<ExtendedFile[]>(initialFiles || []);
     const [confirmationMessage, setConfirmationMessage] = useState<string>('');
     const [confirmedAction, setConfirmedAction] = useState<(() => void) | null>(null);
     const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
     const DEFAULT_MAX_SIZE = Infinity;
+
+    useEffect(() => {
+        if (initialFiles) {
+            setUploadedFiles(initialFiles);
+        }
+    }, [initialFiles]);
 
     function convertFileSizeToBytes(fileSizeLimit?: number | FileSizeLimit): number {
         if (typeof fileSizeLimit === 'number') {
@@ -63,6 +69,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
             return DEFAULT_MAX_SIZE;
         }
     }
+
     const isFileSizeValid = (file: ExtendedFile) => {
         if (!maxFileSize) return true;
         const maxFileSizeInBytes = convertFileSizeToBytes(maxFileSize);
@@ -215,6 +222,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
         // onDragLeave,
         noClick: false
     });
+
     const renderUploadedFiles = () => {
         return uploadedFiles.map((file, index) => {
             const trimmedFileName =
