@@ -15,7 +15,8 @@ import {
     ProductFormValues,
     CustomFieldErrors,
     CustomFieldTouched,
-    ProductCustomField
+    ProductCustomField,
+    ProductDocument
 } from 'reduxSaga/modules/product-module/type/types';
 import { localStorageKey, ROUTES } from 'constants/common';
 import { getLocalStorage } from 'utils/localStorage';
@@ -23,10 +24,9 @@ import {
     CategoryDocuments,
     ProductCategory
 } from 'reduxSaga/modules/productCategories-module/type/types';
-import Dropzone from 'common/FileUpload/uploadFile';
+import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
 import { trimValues } from 'utils/common';
-import ViewDocuments from 'components/documents/viewDocuments';
 
 type ProductFormProps = {
     productFormData?: ProductFormValues | null;
@@ -68,14 +68,15 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { productId } = useParams<{ productId: string }>();
-    const [documents, setDocuments] = useState<CategoryDocuments[]>([]);
+    const [categoryDocuments, setCategoryDocuments] = useState<CategoryDocuments[]>([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
     const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
+    const [productDocumentFiles, setProductDocumentFiles] = useState<ExtendedFile[]>([]);
+    const isAddMode = !productId;
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
-    const isAddMode = !productId;
 
     const initialValues: ProductFormValues = {
         productId: isAddMode ? '' : selectedProductDetails?.product_id ?? '',
@@ -101,10 +102,44 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
               ? selectedProductDetails.product_documents.map((doc) => ({
                     documentType: doc.filetype,
                     documentName: doc.document_name,
-                    documentData: doc.contentpath
+                    documentData: doc.base64Data
                 }))
               : []
     };
+
+    const convertBase64ToBlob = (base64Data: string, contentType: string): Blob => {
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: contentType });
+    };
+
+    const convertDocumentContentToExtendedFile = (
+        documentData: ProductDocument,
+        docId: string
+    ): ExtendedFile => {
+        const blob = convertBase64ToBlob(documentData.documentData, documentData.documentType);
+
+        const extendedFile: ExtendedFile = new File([blob], documentData.documentName, {
+            type: documentData.documentType
+        });
+        extendedFile.documentId = docId;
+
+        return extendedFile;
+    };
+
+    console.log('productDocumentFiles', productDocumentFiles);
+    useEffect(() => {
+        if (initialValues?.productDocuments) {
+            const convertedFiles = initialValues.productDocuments.map((doc, index) => {
+                return convertDocumentContentToExtendedFile(doc, index.toString());
+            });
+            setProductDocumentFiles(convertedFiles);
+        }
+    }, []);
 
     useEffect(() => {
         if (productId) {
@@ -125,10 +160,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                     category.category_id.toString() === selectedCategoryId
             );
             if (selectedCategory) {
-                setDocuments(selectedCategory.documents || []);
+                setCategoryDocuments(selectedCategory.categoryDocuments || []);
             }
         } else {
-            setDocuments([]);
+            setCategoryDocuments([]);
         }
     }, [selectedCategoryId]);
 
@@ -293,10 +328,13 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
 
                                     {props.values.productCategoryId && (
                                         <div className="col-sm-12 mt-3">
-                                            <label htmlFor="documents" className="form-label">
+                                            <label
+                                                htmlFor="categoryDocuments"
+                                                className="form-label"
+                                            >
                                                 Required To Attach Documents for Selected Category :
                                             </label>
-                                            {documents.length > 0 ? (
+                                            {categoryDocuments.length > 0 ? (
                                                 <table className="table table-bordered">
                                                     <thead>
                                                         <tr>
@@ -307,7 +345,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {documents.map((doc) => (
+                                                        {categoryDocuments.map((doc) => (
                                                             <tr key={doc.document_type_id}>
                                                                 <td>{doc.document_type_name}</td>
                                                                 <td>
@@ -323,7 +361,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 </table>
                                             ) : (
                                                 <p>
-                                                    No documents required for the selected category.
+                                                    No Documents required for the selected category.
                                                 </p>
                                             )}
                                         </div>
@@ -372,6 +410,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                     </div>
                                     <Dropzone
                                         name="Attachment"
+                                        initialFiles={productDocumentFiles}
                                         onFileChange={async (uploadedFiles) => {
                                             // Process each file
                                             let base64File = '';
@@ -382,7 +421,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                     String(await convertBase64(fileData))
                                                 );
                                                 props.setFieldValue('productDocuments', [
-                                                    ...props.values.productDocuments, // Preserve existing documents
+                                                    ...props.values.productDocuments,
                                                     {
                                                         documentType: fileData.type,
                                                         documentName: fileData.name,
@@ -394,16 +433,6 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                         formikField="productDocuments"
                                         label="Attachment"
                                     />
-
-                                    {props.values.productDocuments &&
-                                        props.values.productDocuments.length > 0 && (
-                                            <ViewDocuments
-                                                documents={
-                                                    selectedProductDetails?.product_documents ||
-                                                    null
-                                                }
-                                            />
-                                        )}
 
                                     {customFieldAdded ||
                                     props.values.productCustomFields.length > 0 ? (
