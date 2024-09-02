@@ -192,7 +192,6 @@ const Dropzone: React.FC<DropzoneProps> = ({
         }
     };
     const deleteFile = (index: number) => {
-        console.log('indexDelete', index);
         const newFiles = uploadedFiles.filter((_, i) => i !== index);
         setUploadedFiles(newFiles);
         if (onFileChangeTest) onFileChangeTest(newFiles, name);
