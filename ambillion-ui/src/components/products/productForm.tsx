@@ -85,7 +85,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
     const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
     const [productDocumentFiles, setProductDocumentFiles] = useState<ExtendedFile[]>([]);
-    // const isAddMode = !productId;
+    const isAddMode = !productId;
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
@@ -115,7 +115,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     };
 
     useEffect(() => {
-        if (selectedProductDetails) {
+        if (selectedProductDetails && !isAddMode) {
             const productProperties: ProductCustomField[] = getProductCustomeFields(
                 selectedProductDetails?.product_custom_fields
             );
