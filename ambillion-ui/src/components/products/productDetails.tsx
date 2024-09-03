@@ -16,6 +16,7 @@ import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import NoteList from 'common/notes/noteList';
 import ViewDocuments from 'components/documents/viewDocuments';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
+import { getProductCustomeFields } from 'utils/common';
 
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -41,10 +42,10 @@ export const ProductDetails: React.FC = () => {
     );
 
     //Get Product Properties
-    const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
-        ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
-        : [];
 
+    const productProperties: ProductCustomField[] = getProductCustomeFields(
+        selectedProductDetails?.product_custom_fields
+    );
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));

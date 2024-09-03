@@ -26,7 +26,7 @@ import {
 } from 'reduxSaga/modules/productCategories-module/type/types';
 import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
-import { trimValues } from 'utils/common';
+import { getProductCustomeFields, trimValues } from 'utils/common';
 
 type ProductFormProps = {
     productFormData?: ProductFormValues | null;
@@ -116,6 +116,9 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
 
     useEffect(() => {
         if (selectedProductDetails) {
+            const productProperties: ProductCustomField[] = getProductCustomeFields(
+                selectedProductDetails?.product_custom_fields
+            );
             const updatedDetails = {
                 productId: selectedProductDetails?.product_id ?? '',
                 productDisplayName: selectedProductDetails?.product_displayname ?? '',
@@ -124,13 +127,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                 customerProductDescription:
                     selectedProductDetails?.customer_product_description ?? '',
                 productFeature: selectedProductDetails?.product_feature ?? '',
-                productCustomFields: selectedProductDetails?.product_custom_fields
-                    ? selectedProductDetails.product_custom_fields
-                        ? (JSON.parse(
-                              selectedProductDetails.product_custom_fields
-                          ) as ProductCustomField[])
-                        : []
-                    : [],
+                productCustomFields: productProperties,
                 productDocuments: selectedProductDetails?.product_documents
                     ? selectedProductDetails.product_documents.map((doc) => ({
                           documentType: doc.filetype,
@@ -141,13 +138,6 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             };
 
             setInitialValues(updatedDetails);
-            // setSelectedCategoryId(selectedProductDetails.category_id.toString());
-            // const convertedFiles = selectedProductDetails?.product_documents?.map(
-            //     (doc: any, index) => {
-            //         return convertDocumentContentToExtendedFile(doc, index.toString());
-            //     }
-            // );
-            // if (convertedFiles) setProductDocumentFiles(convertedFiles);
         }
     }, [selectedProductDetails]);
     useEffect(() => {
