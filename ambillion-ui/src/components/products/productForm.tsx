@@ -168,7 +168,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                     category.category_id.toString() === selectedCategoryId
             );
             if (selectedCategory) {
-                setCategoryDocuments(selectedCategory.categoryDocuments || []);
+                setCategoryDocuments(selectedCategory.documents || []);
             }
         } else {
             setCategoryDocuments([]);
