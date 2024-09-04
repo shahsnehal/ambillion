@@ -30,7 +30,6 @@ export const trimValues = (obj: any): any => {
 
 export const getProductCustomeFields = (customeFields: any): ProductCustomField[] => {
     const environment = process.env.REACT_APP_NODE_ENV;
-    console.log(environment);
 
     if (!customeFields) {
         return []; // Return an empty array if customeFields is undefined or null
@@ -42,7 +41,6 @@ export const getProductCustomeFields = (customeFields: any): ProductCustomField[
             try {
                 return JSON.parse(customeFields) as ProductCustomField[];
             } catch (error) {
-                console.error('Error parsing JSON:', error);
                 return [];
             }
         }

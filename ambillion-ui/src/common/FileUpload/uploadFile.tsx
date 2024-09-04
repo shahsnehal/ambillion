@@ -153,39 +153,6 @@ const Dropzone: React.FC<DropzoneProps> = ({
                     return newFiles;
                 });
             }
-
-            // if (fileRejections.length > 0) {
-            //     fileRejections.forEach((rejection: any) => {
-            //         const file = rejection.file;
-            //         const fileName = file.name;
-            //         const fileExtension = fileName
-            //             .slice(fileName.lastIndexOf('.') + 1)
-            //             .toLowerCase();
-            //         let errorObj: SingleAlertInfo = {
-            //             message: '',
-            //             alertType: 'error'
-            //         };
-            //         if (rejection.errors.some((e: any) => e.code === 'file-too-large')) {
-            //             errorObj.message = `Invalid file size. Maximum size allowed is ${
-            //                 convertFileSizeToBytes(maxFileSize) / (1024 * 1024)
-            //             } MB.`;
-            //         } else if (rejection.errors.some((e: any) => e.code === 'file-invalid-type')) {
-            //             if (allowedFileTypes) {
-            //                 errorObj.message = `Invalid file type "${fileExtension}". Allowed types are ${Object.keys(
-            //                     allowedFileTypes
-            //                 )
-            //                     .map((key) => allowedFileTypes[key].map((ext) => ext))
-            //                     .flat()
-            //                     .join(', ')}.`;
-            //             } else {
-            //                 errorObj.message = `Invalid file type "${fileExtension}".`;
-            //             }
-            //         } else {
-            //             errorObj.message = 'File could not be uploaded due to restrictions.';
-            //         }
-            //         // dispatch(setSingleAlertObj(errorObj));
-            //     });
-            // }
         } catch (error) {
             console.error('Error handling the file drop:', error);
             setIsDragActive(false);

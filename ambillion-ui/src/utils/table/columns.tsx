@@ -178,17 +178,20 @@ export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
         selector: (row) => row.origin_hsn_code,
-        sortable: true
+        sortable: true,
+        grow: 1.2
     },
     {
         name: 'Category',
         selector: (row) => row.category_name,
-        sortable: true
+        sortable: true,
+        grow: 0.7
     },
     {
         name: 'Feature',
         selector: (row) => row.product_feature,
-        sortable: true
+        sortable: true,
+        grow: 1.3
     },
     {
         name: 'Description',

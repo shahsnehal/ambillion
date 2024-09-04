@@ -41,7 +41,6 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     icon="solar:menu-dots-bold"
                                     className="nav-small-cap-icon fs-4"
                                 />
-                                <span className="hide-menu">HOME</span>
                             </li>
 
                             {userRole === userRoles.ADMIN && (

@@ -354,7 +354,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                         <div className="col-sm-12 mt-3">
                                             <label
                                                 htmlFor="categoryDocuments"
-                                                className="form-label"
+                                                className="form-label text-black"
                                             >
                                                 Required To Attach Documents for Selected Category :
                                             </label>
@@ -376,7 +376,13 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                     {doc.document_type_description}
                                                                 </td>
                                                                 <td>{doc.document_type_format}</td>
-                                                                <td>
+                                                                <td
+                                                                    className={
+                                                                        doc.mandatory
+                                                                            ? 'text-secondary'
+                                                                            : ''
+                                                                    }
+                                                                >
                                                                     {doc.mandatory ? 'Yes' : 'No'}
                                                                 </td>
                                                             </tr>
@@ -468,6 +474,22 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                 name={`productCustomFields[${index}].FieldName`}
                                                                 className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
                                                                 value={field.FieldName}
+                                                                onChange={(
+                                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                                ) => {
+                                                                    const updatedFields = [
+                                                                        ...props.values
+                                                                            .productCustomFields
+                                                                    ];
+                                                                    updatedFields[index] = {
+                                                                        ...updatedFields[index],
+                                                                        FieldName: e.target.value
+                                                                    };
+                                                                    props.setFieldValue(
+                                                                        'productCustomFields',
+                                                                        updatedFields
+                                                                    );
+                                                                }}
                                                             />
                                                             <ErrorMessage
                                                                 component="div"
@@ -490,6 +512,22 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                 name={`productCustomFields[${index}].FieldValue`}
                                                                 className={`form-control ${customFieldTouched?.[index]?.FieldValue && customFieldErrors?.[index]?.FieldValue ? 'is-invalid' : ''}`}
                                                                 value={field.FieldValue}
+                                                                onChange={(
+                                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                                ) => {
+                                                                    const updatedFields = [
+                                                                        ...props.values
+                                                                            .productCustomFields
+                                                                    ];
+                                                                    updatedFields[index] = {
+                                                                        ...updatedFields[index],
+                                                                        FieldValue: e.target.value
+                                                                    };
+                                                                    props.setFieldValue(
+                                                                        'productCustomFields',
+                                                                        updatedFields
+                                                                    );
+                                                                }}
                                                             />
                                                             <ErrorMessage
                                                                 component="div"
@@ -525,7 +563,13 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                     <div className="d-flex justify-content-end gap-2 mt-2">
                                         <button
                                             className="btn btn-rounded btn-secondary d-flex align-items-center ms-2"
-                                            onClick={() => navigate(ROUTES.PRODUCTS)}
+                                            onClick={() => {
+                                                if (isAddMode) {
+                                                    navigate(ROUTES.PRODUCTS);
+                                                } else {
+                                                    navigate(`${ROUTES.PRODUCTS}/${productId}`);
+                                                }
+                                            }}
                                         >
                                             <Icon icon="icon-park-outline:back" className="me-1" />
                                             Cancel

@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { localStorageKey } from 'constants/common';
 import { logout } from 'utils/common';
 import { getLocalStorage } from 'utils/localStorage';
+import logo from 'assets/images/logo-icon.svg';
 
 export const Header = () => {
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
@@ -35,9 +36,9 @@ export const Header = () => {
                                     <b className="logo-icon">
                                         <i className="wi wi-sunset"></i>
                                         <img
-                                            src="assets/images/logos/logo-icon.svg"
+                                            src={logo}
                                             alt="homepage"
-                                            width={210}
+                                            width={178}
                                             className="light-logo"
                                         />
                                     </b>
@@ -66,7 +67,7 @@ export const Header = () => {
                                         <i className="wi wi-sunset"></i>
 
                                         <img
-                                            src="assets/images/logos/logo-icon.svg"
+                                            src={logo}
                                             alt="homepage"
                                             width={160}
                                             className="light-logo"
