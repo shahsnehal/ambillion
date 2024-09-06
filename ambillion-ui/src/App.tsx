@@ -110,6 +110,26 @@ function App() {
                                     <Route
                                         element={
                                             <ProtectedRoute
+                                                allowedRoles={[
+                                                    userRoles.ADMIN,
+                                                    userRoles.MANUFACTURER
+                                                ]}
+                                            />
+                                        }
+                                    >
+                                        <Route
+                                            path={ROUTES.EDITPRODUCT}
+                                            element={
+                                                <Layout title="Edit Product">
+                                                    <ProductForm />
+                                                </Layout>
+                                            }
+                                        />
+                                    </Route>
+
+                                    <Route
+                                        element={
+                                            <ProtectedRoute
                                                 allowedRoles={[userRoles.MANUFACTURER]}
                                             />
                                         }
@@ -118,15 +138,6 @@ function App() {
                                             path={ROUTES.ADDPRODUCT}
                                             element={
                                                 <Layout title="add Product">
-                                                    <ProductForm />
-                                                </Layout>
-                                            }
-                                        />
-
-                                        <Route
-                                            path={ROUTES.EDITPRODUCT}
-                                            element={
-                                                <Layout title="Edit Product">
                                                     <ProductForm />
                                                 </Layout>
                                             }

@@ -1,11 +1,9 @@
+import logo from 'assets/images/logo-icon.svg';
+
 export const Loader = () => {
     return (
         <div className="preloader">
-            <img
-                src="../assets/images/logos/logo-icon.svg"
-                alt="loader"
-                className="lds-ripple img-fluid"
-            />
+            <img src={logo} alt="loader" className="lds-ripple img-fluid" />
         </div>
     );
 };

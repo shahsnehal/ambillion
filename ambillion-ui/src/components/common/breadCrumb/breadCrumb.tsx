@@ -8,7 +8,7 @@ type BreadcrumbProps = {
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const pathnames = location.pathname.split('/').filter((x) => x);
+    const pathnames = location.pathname.split('/').filter((x) => x && isNaN(Number(x)));
 
     return (
         <div className="shadow-none position-relative overflow-hidden mb-4">

@@ -16,6 +16,7 @@ import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import NoteList from 'common/notes/noteList';
 import ViewDocuments from 'components/documents/viewDocuments';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
+import { getProductCustomeFields } from 'utils/common';
 
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
@@ -41,10 +42,10 @@ export const ProductDetails: React.FC = () => {
     );
 
     //Get Product Properties
-    const productProperties: ProductCustomField[] = selectedProductDetails?.product_custom_fields
-        ? (JSON.parse(selectedProductDetails.product_custom_fields) as ProductCustomField[])
-        : [];
 
+    const productProperties: ProductCustomField[] = getProductCustomeFields(
+        selectedProductDetails?.product_custom_fields
+    );
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
@@ -306,44 +307,59 @@ export const ProductDetails: React.FC = () => {
                                     )}
 
                                     {userRole === userRoles.MANUFACTURER && (
-                                        <>
-                                            <button
-                                                className="btn  btn-rounded btn-primary d-flex align-items-center"
-                                                disabled={
+                                        <button
+                                            className="btn  btn-rounded btn-primary d-flex align-items-center"
+                                            disabled={
+                                                selectedProductDetails?.status !==
+                                                    productStatus.PENDING &&
+                                                selectedProductDetails?.status !==
+                                                    productStatus.INFO_NEEDED
+                                            }
+                                            onClick={() => setIsModalOpen(true)}
+                                        >
+                                            <Icon icon="icon-park-outline:send" className="me-1" />
+                                            Send For Verification
+                                        </button>
+                                    )}
+
+                                    {(userRole === userRoles.MANUFACTURER ||
+                                        userRole === userRoles.ADMIN) && (
+                                        <button
+                                            disabled={
+                                                // Common disable conditions for both roles
+                                                (selectedProductDetails?.status !==
+                                                    productStatus.PENDING &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.INFO_NEEDED &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.EXPORT_INFO_NEEDED &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.VERIFIED) ||
+                                                // Specific disable conditions for the manufacturer
+                                                (userRole === userRoles.MANUFACTURER &&
                                                     selectedProductDetails?.status !==
                                                         productStatus.PENDING &&
                                                     selectedProductDetails?.status !==
-                                                        productStatus.INFO_NEEDED
-                                                }
-                                                onClick={() => setIsModalOpen(true)}
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:send"
-                                                    className="me-1"
-                                                />
-                                                Send For Verification
-                                            </button>
-                                            <button
-                                                disabled={
-                                                    selectedProductDetails?.status ===
-                                                        productStatus.APPROVED ||
-                                                    selectedProductDetails?.status ===
-                                                        productStatus.UNDER_VERIFICATION ||
-                                                    selectedProductDetails?.status ===
-                                                        productStatus.VERIFIED
-                                                }
-                                                className="btn btn-rounded btn-warning d-flex align-items-center ms-2"
-                                                onClick={() =>
-                                                    navigate(
-                                                        `${ROUTES.PRODUCTS}/editProduct/${productId}`
-                                                    )
-                                                }
-                                            >
-                                                <Icon icon="mdi:pencil" className="me-1" />
-                                                Edit Product
-                                            </button>
-                                        </>
+                                                        productStatus.INFO_NEEDED) ||
+                                                // Specific disable conditions for the admin
+                                                (userRole === userRoles.ADMIN &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.EXPORT_INFO_NEEDED &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.VERIFIED)
+                                            }
+                                            className="btn btn-rounded btn-warning d-flex align-items-center ms-2"
+                                            onClick={() =>
+                                                navigate(
+                                                    `${ROUTES.PRODUCTS}/editProduct/${productId}`
+                                                )
+                                            }
+                                        >
+                                            <Icon icon="mdi:pencil" className="me-1" />
+                                            Edit Product
+                                        </button>
                                     )}
+
                                     <button
                                         className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"
                                         onClick={() => navigate(ROUTES.PRODUCTS)}

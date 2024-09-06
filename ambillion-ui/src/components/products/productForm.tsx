@@ -26,7 +26,7 @@ import {
 } from 'reduxSaga/modules/productCategories-module/type/types';
 import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
-import { trimValues } from 'utils/common';
+import { getProductCustomeFields, trimValues } from 'utils/common';
 
 type ProductFormProps = {
     productFormData?: ProductFormValues | null;
@@ -85,10 +85,11 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
     const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
     const [productDocumentFiles, setProductDocumentFiles] = useState<ExtendedFile[]>([]);
-    // const isAddMode = !productId;
+    const isAddMode = !productId;
     const { selectedProductDetails, isLoading } = useSelector(
         (state: RootState) => state.productModule
     );
+    const [productCustomFields, setProductCustomFields] = useState<ProductCustomField[]>([]);
 
     const convertBase64ToBlob = (base64Data: string, contentType: string): Blob => {
         const byteCharacters = atob(base64Data);
@@ -115,7 +116,11 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     };
 
     useEffect(() => {
-        if (selectedProductDetails) {
+        if (selectedProductDetails && !isAddMode) {
+            const productProperties: ProductCustomField[] = getProductCustomeFields(
+                selectedProductDetails?.product_custom_fields
+            );
+            setProductCustomFields(productProperties);
             const updatedDetails = {
                 productId: selectedProductDetails?.product_id ?? '',
                 productDisplayName: selectedProductDetails?.product_displayname ?? '',
@@ -124,13 +129,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                 customerProductDescription:
                     selectedProductDetails?.customer_product_description ?? '',
                 productFeature: selectedProductDetails?.product_feature ?? '',
-                productCustomFields: selectedProductDetails?.product_custom_fields
-                    ? selectedProductDetails.product_custom_fields
-                        ? (JSON.parse(
-                              selectedProductDetails.product_custom_fields
-                          ) as ProductCustomField[])
-                        : []
-                    : [],
+                productCustomFields: productProperties,
                 productDocuments: selectedProductDetails?.product_documents
                     ? selectedProductDetails.product_documents.map((doc) => ({
                           documentType: doc.filetype,
@@ -141,13 +140,6 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             };
 
             setInitialValues(updatedDetails);
-            // setSelectedCategoryId(selectedProductDetails.category_id.toString());
-            // const convertedFiles = selectedProductDetails?.product_documents?.map(
-            //     (doc: any, index) => {
-            //         return convertDocumentContentToExtendedFile(doc, index.toString());
-            //     }
-            // );
-            // if (convertedFiles) setProductDocumentFiles(convertedFiles);
         }
     }, [selectedProductDetails]);
     useEffect(() => {
@@ -178,7 +170,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                     category.category_id.toString() === selectedCategoryId
             );
             if (selectedCategory) {
-                setCategoryDocuments(selectedCategory.categoryDocuments || []);
+                setCategoryDocuments(selectedCategory.documents || []);
             }
         } else {
             setCategoryDocuments([]);
@@ -262,7 +254,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                         validationSchema={ProductFormSchema}
                         enableReinitialize
                         onSubmit={(values, { resetForm }) => {
-                            handleSubmit(values);
+                            handleSubmit({ ...values, productCustomFields });
                             resetForm();
                         }}
                     >
@@ -364,7 +356,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                         <div className="col-sm-12 mt-3">
                                             <label
                                                 htmlFor="categoryDocuments"
-                                                className="form-label"
+                                                className="form-label text-black"
                                             >
                                                 Required To Attach Documents for Selected Category :
                                             </label>
@@ -386,7 +378,13 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                     {doc.document_type_description}
                                                                 </td>
                                                                 <td>{doc.document_type_format}</td>
-                                                                <td>
+                                                                <td
+                                                                    className={
+                                                                        doc.mandatory
+                                                                            ? 'text-secondary'
+                                                                            : ''
+                                                                    }
+                                                                >
                                                                     {doc.mandatory ? 'Yes' : 'No'}
                                                                 </td>
                                                             </tr>
@@ -457,110 +455,133 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                         label="Attachment"
                                     />
 
-                                    {customFieldAdded ||
-                                    props.values.productCustomFields.length > 0 ? (
+                                    {productCustomFields.length > 0 || customFieldAdded ? (
                                         <div className="row mb-3">
-                                            {props.values.productCustomFields.map(
-                                                (field, index) => (
-                                                    <React.Fragment key={index}>
-                                                        <div className="col-sm-12 col-md-5">
-                                                            <label
-                                                                htmlFor={`productCustomFields[${index}].FieldName`}
-                                                                className="form-label mt-2"
-                                                            >
-                                                                Field Name{' '}
-                                                                <span className="text-danger">
-                                                                    *
-                                                                </span>
-                                                            </label>
-                                                            <Field
-                                                                type="text"
-                                                                name={`productCustomFields[${index}].FieldName`}
-                                                                className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
-                                                                value={field.FieldName}
-                                                            />
-                                                            <ErrorMessage
-                                                                component="div"
-                                                                name={`productCustomFields[${index}].FieldName`}
-                                                                className="invalid-feedback"
-                                                            />
-                                                        </div>
-                                                        <div className="col-sm-12 col-md-6">
-                                                            <label
-                                                                htmlFor={`productCustomFields[${index}].FieldValue`}
-                                                                className="form-label mt-2"
-                                                            >
-                                                                Field Value{' '}
-                                                                <span className="text-danger">
-                                                                    *
-                                                                </span>
-                                                            </label>
-                                                            <Field
-                                                                type="text"
-                                                                name={`productCustomFields[${index}].FieldValue`}
-                                                                className={`form-control ${customFieldTouched?.[index]?.FieldValue && customFieldErrors?.[index]?.FieldValue ? 'is-invalid' : ''}`}
-                                                                value={field.FieldValue}
-                                                            />
-                                                            <ErrorMessage
-                                                                component="div"
-                                                                name={`productCustomFields[${index}].FieldValue`}
-                                                                className="invalid-feedback"
-                                                            />
-                                                        </div>
-                                                        <div className="col-sm-12 col-md-1 customField-delete-icon">
-                                                            <button
-                                                                type="button"
-                                                                className="btn btn-rounded btn-secondary w-100"
-                                                                onClick={() => {
-                                                                    const updatedFields = [
-                                                                        ...props.values
-                                                                            .productCustomFields
-                                                                    ];
-                                                                    updatedFields.splice(index, 1);
-                                                                    props.setFieldValue(
-                                                                        'productCustomFields',
-                                                                        updatedFields
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Icon icon="mdi:trash-can-outline" />
-                                                            </button>
-                                                        </div>
-                                                    </React.Fragment>
-                                                )
-                                            )}
+                                            {productCustomFields.map((field, index) => (
+                                                <React.Fragment key={index}>
+                                                    <div className="col-sm-12 col-md-5">
+                                                        <label
+                                                            htmlFor={`productCustomFields[${index}].FieldName`}
+                                                            className="form-label mt-2"
+                                                        >
+                                                            Field Name{' '}
+                                                            <span className="text-danger">*</span>
+                                                        </label>
+                                                        <Field
+                                                            type="text"
+                                                            name={`productCustomFields[${index}].FieldName`}
+                                                            className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
+                                                            value={field.FieldName}
+                                                            onChange={(
+                                                                e: React.ChangeEvent<HTMLInputElement>
+                                                            ) => {
+                                                                const updatedFields = [
+                                                                    ...productCustomFields
+                                                                ];
+                                                                updatedFields[index] = {
+                                                                    ...updatedFields[index],
+                                                                    FieldName: e.target.value
+                                                                };
+                                                                setProductCustomFields(
+                                                                    updatedFields
+                                                                );
+                                                            }}
+                                                        />
+                                                        <ErrorMessage
+                                                            component="div"
+                                                            name={`productCustomFields[${index}].FieldName`}
+                                                            className="invalid-feedback"
+                                                        />
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-6">
+                                                        <label
+                                                            htmlFor={`productCustomFields[${index}].FieldValue`}
+                                                            className="form-label mt-2"
+                                                        >
+                                                            Field Value{' '}
+                                                            <span className="text-danger">*</span>
+                                                        </label>
+                                                        <Field
+                                                            type="text"
+                                                            name={`productCustomFields[${index}].FieldValue`}
+                                                            className={`form-control ${customFieldTouched?.[index]?.FieldValue && customFieldErrors?.[index]?.FieldValue ? 'is-invalid' : ''}`}
+                                                            value={field.FieldValue}
+                                                            onChange={(
+                                                                e: React.ChangeEvent<HTMLInputElement>
+                                                            ) => {
+                                                                const updatedFields = [
+                                                                    ...productCustomFields
+                                                                ];
+                                                                updatedFields[index] = {
+                                                                    ...updatedFields[index],
+                                                                    FieldValue: e.target.value
+                                                                };
+                                                                setProductCustomFields(
+                                                                    updatedFields
+                                                                );
+                                                            }}
+                                                        />
+                                                        <ErrorMessage
+                                                            component="div"
+                                                            name={`productCustomFields[${index}].FieldValue`}
+                                                            className="invalid-feedback"
+                                                        />
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-1 customField-delete-icon">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-rounded btn-secondary w-100"
+                                                            onClick={() => {
+                                                                const updatedFields = [
+                                                                    ...productCustomFields
+                                                                ];
+                                                                updatedFields.splice(index, 1);
+                                                                setProductCustomFields(
+                                                                    updatedFields
+                                                                );
+                                                                props.setFieldValue(
+                                                                    'productCustomFields',
+                                                                    updatedFields
+                                                                );
+                                                                props.setFieldTouched(
+                                                                    'productCustomFields',
+                                                                    true
+                                                                );
+                                                                setCustomFieldAdded(true);
+                                                            }}
+                                                        >
+                                                            <Icon icon="mdi:trash-can-outline" />
+                                                        </button>
+                                                    </div>
+                                                </React.Fragment>
+                                            ))}
                                         </div>
                                     ) : null}
 
                                     <div className="d-flex justify-content-end gap-2 mt-2">
                                         <button
                                             className="btn btn-rounded btn-secondary d-flex align-items-center ms-2"
-                                            onClick={() => navigate(ROUTES.PRODUCTS)}
+                                            onClick={() => {
+                                                if (isAddMode) {
+                                                    navigate(ROUTES.PRODUCTS);
+                                                } else {
+                                                    navigate(`${ROUTES.PRODUCTS}/${productId}`);
+                                                }
+                                            }}
                                         >
                                             <Icon icon="icon-park-outline:back" className="me-1" />
                                             Cancel
                                         </button>
+
                                         <div>
                                             <button
                                                 type="button"
                                                 className="btn btn-primary"
                                                 onClick={() => {
-                                                    props.setFieldValue('productCustomFields', [
-                                                        ...props.values.productCustomFields,
+                                                    setProductCustomFields([
+                                                        ...productCustomFields,
                                                         { FieldName: '', FieldValue: '' }
                                                     ]);
-                                                    const newIndex =
-                                                        props.values.productCustomFields.length;
-                                                    props.setFieldTouched(
-                                                        `productCustomFields[${newIndex}].FieldName`,
-                                                        false,
-                                                        false
-                                                    );
-                                                    props.setFieldTouched(
-                                                        `productCustomFields[${newIndex}].FieldValue`,
-                                                        false,
-                                                        false
-                                                    );
                                                     setCustomFieldAdded(true);
                                                 }}
                                             >
@@ -573,11 +594,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                             className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
                                             disabled={
                                                 !props.isValid ||
-                                                !props.dirty ||
+                                                (!props.dirty && !customFieldAdded) ||
                                                 isLoading ||
-                                                (customFieldAdded &&
-                                                    props.values.productCustomFields?.length > 0 &&
-                                                    props.values.productCustomFields.some(
+                                                (productCustomFields.length > 0 &&
+                                                    productCustomFields.some(
                                                         (field) =>
                                                             !field.FieldName || !field.FieldValue
                                                     ))

@@ -86,7 +86,6 @@ export const Products = () => {
             progressComponent={<CustomLoader />}
             onRowClicked={(row) => handleView(row.product_id)}
             pagination
-            selectableRows
             fixedHeader
             highlightOnHover
             fixedHeaderScrollHeight="450px"

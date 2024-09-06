@@ -100,7 +100,6 @@ export const UserList: React.FC = () => {
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination
-                selectableRows
                 fixedHeader
                 highlightOnHover
                 fixedHeaderScrollHeight="450px"

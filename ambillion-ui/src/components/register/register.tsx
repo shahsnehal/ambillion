@@ -10,6 +10,7 @@ import { signupRequest } from 'reduxSaga/modules/auth-module/action/actions';
 import { RootState } from 'reduxSaga/config/store';
 import { Icon } from '@iconify/react';
 import { trimValues } from 'utils/common';
+import logo from 'assets/images/logo-icon.svg';
 
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const SITE_KEY = googleRecaptchaConfig.captchaSiteKey ?? '';
@@ -86,7 +87,7 @@ export const Registration = () => {
                                     <div className="container">
                                         <div className="row justify-content-center mb-5">
                                             <img
-                                                src="../assets/images/logos/logo-icon.svg"
+                                                src={logo}
                                                 alt="homepage"
                                                 height={80}
                                                 className="logo-img"
