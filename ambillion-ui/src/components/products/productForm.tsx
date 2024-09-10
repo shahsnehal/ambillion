@@ -142,6 +142,8 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             setInitialValues(updatedDetails);
         }
     }, [selectedProductDetails]);
+
+    //Get & Set Initial Values Of ProductDocuments Into Localstate
     useEffect(() => {
         if (initialValues?.productDocuments.length) {
             const convertedFiles = initialValues.productDocuments.map((doc, index) => {
@@ -151,12 +153,14 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         }
     }, [initialValues?.productDocuments]);
 
+    //Fetch The ProductDetails
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
         }
     }, []);
 
+    //Get & Set Initial Values Of ProductCategoryId Into Localstate
     useEffect(() => {
         if (initialValues.productCategoryId) {
             setSelectedCategoryId(initialValues.productCategoryId.toString());
@@ -177,6 +181,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         }
     }, [selectedCategoryId]);
 
+    //Function For Handle CategoryChange
     const handleCategoryChange = useCallback(
         (event: React.ChangeEvent<HTMLSelectElement>, formik: FormikProps<ProductFormValues>) => {
             const newCategoryId = event.target.value;
@@ -188,6 +193,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         [selectedCategoryId]
     );
 
+    //Submit The Values For Add OR Edit The Product
     const handleSubmit = async (values: ProductFormValues) => {
         const trimmedValues = trimValues(values);
         let categoryId = trimmedValues.productCategoryId;
@@ -238,7 +244,6 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         // Wait for all promises to resolve
         const fileData = await Promise.all(fileDataPromises);
         return fileData;
-        // Now you can log the resolved file data
     }
     const removeDataUriPrefix = (dataUri: string): string => {
         const base64String = dataUri.split(',')[1];
@@ -440,20 +445,21 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                             />
                                         </div>
                                     </div>
-                                    <Dropzone
-                                        name="Attachment"
-                                        initialFiles={productDocumentFiles}
-                                        onFileChange={async (uploadedFiles) => {
-                                            const fileData = await processFiles(uploadedFiles);
-
-                                            props.setFieldValue(
-                                                'productDocuments',
-                                                fileData || null
-                                            );
-                                        }}
-                                        formikField="productDocuments"
-                                        label="Attachment"
-                                    />
+                                    <div className="row mb-3">
+                                        <Dropzone
+                                            name="Attachment"
+                                            initialFiles={productDocumentFiles}
+                                            onFileChange={async (uploadedFiles) => {
+                                                const fileData = await processFiles(uploadedFiles);
+                                                props.setFieldValue(
+                                                    'productDocuments',
+                                                    fileData || null
+                                                );
+                                            }}
+                                            formikField="productDocuments"
+                                            label="Attachment"
+                                        />
+                                    </div>
 
                                     {productCustomFields.length > 0 || customFieldAdded ? (
                                         <div className="row mb-3">
@@ -470,6 +476,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                         <Field
                                                             type="text"
                                                             name={`productCustomFields[${index}].FieldName`}
+                                                            autoFocus={isAddMode ? true : false}
                                                             className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
                                                             value={field.FieldName}
                                                             onChange={(
@@ -585,6 +592,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                     setCustomFieldAdded(true);
                                                 }}
                                             >
+                                                <Icon icon="tabler:plus" className="me-1" />
                                                 Add Product Property
                                             </button>
                                         </div>

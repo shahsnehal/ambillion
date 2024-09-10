@@ -3,6 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import { csv, doc, docx, jpeg, pdf, png, txt, xls, xlsx } from 'constants/fileType';
 import { Icon } from '@iconify/react';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
+import { ErrorMessage, useFormikContext } from 'formik';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
@@ -47,6 +48,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
     const [confirmedAction, setConfirmedAction] = useState<(() => void) | null>(null);
     const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
     const DEFAULT_MAX_SIZE = Infinity;
+    const { setFieldTouched, errors, touched } = useFormikContext<any>();
 
     useEffect(() => {
         if (initialFiles) {
@@ -109,6 +111,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
     const onDrop = async (acceptedFiles: ExtendedFile[], fileRejections: any) => {
         try {
             setIsDragActive(false);
+            setFieldTouched(formikField, true);
 
             const validFiles = acceptedFiles.filter(isFileSizeValid);
             const spaceAvailable = maxFileCount
@@ -161,6 +164,11 @@ const Dropzone: React.FC<DropzoneProps> = ({
     const deleteFile = (index: number) => {
         const newFiles = uploadedFiles.filter((_, i) => i !== index);
         setUploadedFiles(newFiles);
+        if (newFiles.length === 0) {
+            setFieldTouched(formikField, true);
+        } else {
+            setFieldTouched(formikField, false);
+        }
         if (onFileChangeTest) onFileChangeTest(newFiles, name);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -268,38 +276,33 @@ const Dropzone: React.FC<DropzoneProps> = ({
 
     return (
         <>
-            <div className="row mb-2">
-                <div className="col-sm-12">
-                    <label htmlFor={formikField} className="form-label">
-                        {label} <span className="text-danger">*</span>
-                    </label>
-                    <div {...getRootProps()}>
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                cursor: 'pointer'
-                            }}
-                            className="p-3 dropzone"
-                        >
-                            <input
-                                name={formikField}
-                                className="form-control is-invalid"
-                                id={formikField}
-                                {...getInputProps()}
-                            />
-                            {isDragActive ? (
-                                <p>Drop the files here ...</p>
-                            ) : (
-                                <p className="m-2">
-                                    Drag & drop a file here , or click to select file(s)
-                                </p>
-                            )}
-                        </div>
-                    </div>
+            <div className="mb-3">
+                <label htmlFor={formikField} className="form-label">
+                    {label} <span className="text-danger">*</span>
+                </label>
+                <div
+                    {...getRootProps()}
+                    className={`border p-3 rounded dropzone ${touched[formikField] && errors[formikField] ? 'border-danger' : 'border-secondary'}`}
+                >
+                    <input
+                        name={formikField}
+                        className="d-none"
+                        id={formikField}
+                        {...getInputProps()}
+                    />
+                    {isDragActive ? (
+                        <p>Drop the files here ...</p>
+                    ) : (
+                        <p className="m-2">Drag & drop a file here, or click to select file(s)</p>
+                    )}
                 </div>
+                {touched[formikField] && errors[formikField] ? (
+                    <div className="invalid-feedback d-block">
+                        <ErrorMessage name={formikField} component="div" />
+                    </div>
+                ) : null}
             </div>
+
             <div className="row mb-3">{uploadedFiles.length > 0 && renderUploadedFiles()}</div>
             {isConfirmationOpen && (
                 <ConfirmationModal
