@@ -17,6 +17,7 @@ import {
 } from './productCategoriesColumn';
 import { ProductCategoryModal } from './productCategoryModal';
 import {
+    CategoryDocumentTypePayload,
     ProductCategory,
     ProductCategoryFormValues
 } from 'reduxSaga/modules/productCategories-module/type/types';
@@ -39,16 +40,28 @@ export const ProductCategories = () => {
 
     //Add ProductCategory
     const handleAddProductCategory = () => {
-        setProductCategoryFormData({ categoryId: '', categoryName: '', categoryDescription: '' });
+        setProductCategoryFormData({
+            categoryId: '',
+            categoryName: '',
+            categoryDescription: '',
+            documentTypes: []
+        });
         setIsProductCategoryModalOpen(true);
     };
 
-    //Edit ProductCategory
+    // Edit ProductCategory
     const handleEditProductCategory = (row: ProductCategory) => {
+        // Directly map CategoryDocumentType to CategoryDocumentTypePayload
+        const documentTypes: CategoryDocumentTypePayload[] = row.documents.map((doc) => ({
+            documentTypeId: doc.document_type_id,
+            mandatory: doc.mandatory
+        }));
+
         setProductCategoryFormData({
             categoryId: row.category_id,
             categoryName: row.category_name,
-            categoryDescription: row.category_description
+            categoryDescription: row.category_description,
+            documentTypes
         });
         setIsProductCategoryModalOpen(true);
     };
@@ -60,11 +73,18 @@ export const ProductCategories = () => {
                 updateProductCategoryRequest(
                     values.categoryId,
                     values.categoryName,
-                    values.categoryDescription
+                    values.categoryDescription,
+                    values.documentTypes
                 )
             );
         } else {
-            dispatch(addProductCategoryRequest(values.categoryName, values.categoryDescription));
+            dispatch(
+                addProductCategoryRequest(
+                    values.categoryName,
+                    values.categoryDescription,
+                    values.documentTypes
+                )
+            );
         }
         handleCloseModal();
     };

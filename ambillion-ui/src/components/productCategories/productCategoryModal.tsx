@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Field, ErrorMessage, Form, FormikProps } from 'formik';
 import * as Yup from 'yup';
-import { ProductCategoryFormValues } from 'reduxSaga/modules/productCategories-module/type/types';
+import {
+    CategoryDocumentTypePayloadErrors,
+    CategoryDocumentTypePayloadTouched,
+    ProductCategoryFormValues
+} from 'reduxSaga/modules/productCategories-module/type/types';
 import { Icon } from '@iconify/react';
 import { trimValues } from 'utils/common';
+import { RootState } from 'reduxSaga/config/store';
+import { useSelector } from 'react-redux';
 
 export type ProductCategoryModalProps = {
     isOpen: boolean;
@@ -17,7 +23,15 @@ const validationSchema = Yup.object({
         .required('Category Name is required !')
         .trim()
         .max(100, 'Category Name must be at most 100 characters long !'),
-    categoryDescription: Yup.string().required('Description is required !').trim()
+    categoryDescription: Yup.string().required('Description is required !').trim(),
+    documentTypes: Yup.array()
+        .of(
+            Yup.object({
+                documentTypeId: Yup.string().required('Document Type Id is required !'),
+                mandatory: Yup.boolean().notRequired()
+            })
+        )
+        .optional()
 });
 
 export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
@@ -26,13 +40,19 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
     productCategoryFormData,
     onSubmit
 }) => {
-    if (!isOpen) return null;
-
     const initialValues: ProductCategoryFormValues = {
         categoryId: productCategoryFormData?.categoryId ?? '',
         categoryName: productCategoryFormData?.categoryName ?? '',
-        categoryDescription: productCategoryFormData?.categoryDescription ?? ''
+        categoryDescription: productCategoryFormData?.categoryDescription ?? '',
+        documentTypes: productCategoryFormData?.documentTypes ?? []
     };
+    const { categoryDocumentTypes } = useSelector(
+        (state: RootState) => state.productCategoryModule
+    );
+    const [documentTypeAdded, setDocumentTypeAdded] = useState<boolean>(false);
+    const [documentTypes, setDocumentTypes] = useState(initialValues.documentTypes || []);
+
+    if (!isOpen) return null;
 
     return (
         <>
@@ -106,6 +126,172 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                             />
                                         </div>
                                     </div>
+                                    {documentTypes.length > 0 || documentTypeAdded ? (
+                                        <div className="row ms-2 mb-3">
+                                            {documentTypes.map((field, index) => (
+                                                <React.Fragment
+                                                    key={
+                                                        field.documentTypeId ||
+                                                        `documentType-${index}`
+                                                    }
+                                                >
+                                                    <div className="col-sm-12 col-md-5 mb-2">
+                                                        {index === 0 && (
+                                                            <label
+                                                                htmlFor={`documentTypes[${index}].documentTypeId`}
+                                                                className="form-label mt-2"
+                                                            >
+                                                                Document Type{' '}
+                                                                <span className="text-danger">
+                                                                    *
+                                                                </span>
+                                                            </label>
+                                                        )}
+                                                        <Field
+                                                            as="select"
+                                                            name={`documentTypes[${index}].documentTypeId`}
+                                                            className={`form-control mt-3 ${
+                                                                formikProps.touched.documentTypes &&
+                                                                (
+                                                                    formikProps.touched
+                                                                        .documentTypes?.[
+                                                                        index
+                                                                    ] as CategoryDocumentTypePayloadErrors
+                                                                )?.documentTypeId &&
+                                                                (
+                                                                    formikProps.errors
+                                                                        .documentTypes?.[
+                                                                        index
+                                                                    ] as CategoryDocumentTypePayloadTouched
+                                                                )?.documentTypeId
+                                                                    ? 'is-invalid'
+                                                                    : ''
+                                                            }`}
+                                                            value={field.documentTypeId}
+                                                            onChange={(
+                                                                e: React.ChangeEvent<HTMLInputElement>
+                                                            ) => {
+                                                                const updatedFields = [
+                                                                    ...documentTypes
+                                                                ];
+                                                                updatedFields[index] = {
+                                                                    ...updatedFields[index],
+                                                                    documentTypeId: e.target.value
+                                                                };
+                                                                setDocumentTypes(updatedFields);
+                                                                formikProps.setFieldValue(
+                                                                    'documentTypes',
+                                                                    updatedFields
+                                                                );
+                                                            }}
+                                                        >
+                                                            <option value="" disabled>
+                                                                -- Select Document --
+                                                            </option>
+                                                            {categoryDocumentTypes.map(
+                                                                (documentType) => (
+                                                                    <option
+                                                                        key={
+                                                                            documentType.document_type_id
+                                                                        }
+                                                                        value={
+                                                                            documentType.document_type_id
+                                                                        }
+                                                                        title={
+                                                                            documentType.document_type_description
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            documentType.document_type_name
+                                                                        }
+                                                                    </option>
+                                                                )
+                                                            )}
+                                                        </Field>
+                                                        <ErrorMessage
+                                                            component="div"
+                                                            name={`documentTypes[${index}].documentTypeId`}
+                                                            className="invalid-feedback"
+                                                        />
+                                                    </div>
+
+                                                    <div className="col-sm-6 col-md-5 mt-2">
+                                                        {index === 0 && (
+                                                            <label className="form-label mb-3">
+                                                                Mandatory{' '}
+                                                            </label>
+                                                        )}
+                                                        <div className="form-check">
+                                                            <Field
+                                                                type="checkbox"
+                                                                name={`documentTypes[${index}].mandatory`}
+                                                                className="form-check-input mt-3"
+                                                                checked={field.mandatory}
+                                                                onChange={(
+                                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                                ) => {
+                                                                    const updatedFields = [
+                                                                        ...documentTypes
+                                                                    ];
+                                                                    updatedFields[index] = {
+                                                                        ...updatedFields[index],
+                                                                        mandatory: e.target.checked
+                                                                    };
+                                                                    setDocumentTypes(updatedFields);
+                                                                    formikProps.setFieldValue(
+                                                                        'documentTypes',
+                                                                        updatedFields
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <label
+                                                                className="form-check-label mt-3"
+                                                                htmlFor={`mandatory_${index}`}
+                                                            >
+                                                                Is mandatory?
+                                                            </label>
+                                                        </div>
+                                                        <ErrorMessage
+                                                            component="div"
+                                                            name={`documentTypes[${index}].mandatory`}
+                                                            className="invalid-feedback"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        className={`col-sm-6 col-md-1 d-flex justify-content-center align-items-center ${
+                                                            index === 0
+                                                                ? 'documentType-delete-icon'
+                                                                : 'mt-1'
+                                                        }`}
+                                                    >
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-rounded btn-secondary"
+                                                            onClick={() => {
+                                                                const updatedFields = [
+                                                                    ...documentTypes
+                                                                ];
+                                                                updatedFields.splice(index, 1);
+                                                                setDocumentTypes(updatedFields);
+                                                                formikProps.setFieldValue(
+                                                                    'documentTypes',
+                                                                    updatedFields
+                                                                );
+                                                                formikProps.setFieldTouched(
+                                                                    'documentTypes',
+                                                                    true
+                                                                );
+                                                                setDocumentTypeAdded(true);
+                                                            }}
+                                                        >
+                                                            <Icon icon="mdi:trash-can-outline" />
+                                                        </button>
+                                                    </div>
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    ) : null}
+
                                     <div className="modal-footer">
                                         <button
                                             type="button"
@@ -119,9 +305,34 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                             Close
                                         </button>
                                         <button
+                                            type="button"
+                                            className="btn btn-primary"
+                                            onClick={() => {
+                                                setDocumentTypes([
+                                                    ...documentTypes,
+                                                    { documentTypeId: '', mandatory: false }
+                                                ]);
+                                                setDocumentTypeAdded(true);
+                                                formikProps.setFieldValue('documentTypes', [
+                                                    ...documentTypes,
+                                                    { documentTypeId: '', mandatory: false }
+                                                ]);
+                                            }}
+                                        >
+                                            <Icon icon="tabler:plus" className="me-1" />
+                                            Add Document Type
+                                        </button>
+                                        <button
                                             type="submit"
                                             className="btn btn-rounded btn-primary ms-2"
-                                            disabled={!formikProps.isValid || !formikProps.dirty}
+                                            disabled={
+                                                (!formikProps.isValid && !documentTypeAdded) ||
+                                                !formikProps.dirty ||
+                                                (formikProps.values.documentTypes.length > 0 &&
+                                                    formikProps.values.documentTypes.some(
+                                                        (field) => !field.documentTypeId
+                                                    ))
+                                            }
                                         >
                                             <Icon icon="tabler:plus" className="fs-5 me-1" />
                                             {productCategoryFormData?.categoryId

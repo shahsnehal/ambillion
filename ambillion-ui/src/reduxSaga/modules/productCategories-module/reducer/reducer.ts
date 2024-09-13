@@ -2,9 +2,7 @@ import {
     ADD_PRODUCT_CATEGORY_FAILURE,
     ADD_PRODUCT_CATEGORY_REQUEST,
     ADD_PRODUCT_CATEGORY_SUCCESS,
-    DELETE_PRODUCT_CATEGORY_FAILURE,
-    DELETE_PRODUCT_CATEGORY_REQUEST,
-    DELETE_PRODUCT_CATEGORY_SUCCESS,
+    CategoryDocumentType,
     FETCH_PRODUCT_CATEGORIES_FAILURE,
     FETCH_PRODUCT_CATEGORIES_REQUEST,
     FETCH_PRODUCT_CATEGORIES_SUCCESS,
@@ -19,12 +17,14 @@ type ProductCategoryState = {
     isLoading: boolean;
     error: string | null;
     productCategories: ProductCategory[];
+    categoryDocumentTypes: CategoryDocumentType[];
 };
 
 const initialState: ProductCategoryState = {
     isLoading: false,
     error: null,
-    productCategories: []
+    productCategories: [],
+    categoryDocumentTypes: []
 };
 
 export const productCategoryReducer = (
@@ -35,14 +35,14 @@ export const productCategoryReducer = (
         case FETCH_PRODUCT_CATEGORIES_REQUEST:
         case ADD_PRODUCT_CATEGORY_REQUEST:
         case UPDATE_PRODUCT_CATEGORY_REQUEST:
-        case DELETE_PRODUCT_CATEGORY_REQUEST:
             return { ...state, isLoading: true, error: null };
 
         case FETCH_PRODUCT_CATEGORIES_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                productCategories: action.payload,
+                productCategories: action.payload.categories,
+                categoryDocumentTypes: action.payload.documentTypes,
                 error: null
             };
 
@@ -65,22 +65,9 @@ export const productCategoryReducer = (
                 error: null
             };
 
-        case DELETE_PRODUCT_CATEGORY_SUCCESS: {
-            const updatedProductCategories = state.productCategories.filter((category) => {
-                return category.category_id !== action.payload.categoryId;
-            });
-            return {
-                ...state,
-                isLoading: false,
-                productCategories: updatedProductCategories,
-                error: null
-            };
-        }
-
         case FETCH_PRODUCT_CATEGORIES_FAILURE:
         case ADD_PRODUCT_CATEGORY_FAILURE:
         case UPDATE_PRODUCT_CATEGORY_FAILURE:
-        case DELETE_PRODUCT_CATEGORY_FAILURE:
             return { ...state, isLoading: false, error: action.error };
 
         default:

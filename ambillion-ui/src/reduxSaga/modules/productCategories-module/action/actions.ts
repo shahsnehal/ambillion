@@ -5,8 +5,7 @@ import {
     ADD_PRODUCT_CATEGORY_REQUEST,
     UpdateProductCategoryRequestAction,
     UPDATE_PRODUCT_CATEGORY_REQUEST,
-    DeleteProductCategoryRequestAction,
-    DELETE_PRODUCT_CATEGORY_REQUEST
+    CategoryDocumentTypePayload
 } from '../type/types';
 
 export const fetchProductCategoriesRequest = (): FetchProductCategoriesRequestAction => ({
@@ -15,27 +14,23 @@ export const fetchProductCategoriesRequest = (): FetchProductCategoriesRequestAc
 
 export const addProductCategoryRequest = (
     categoryName: string,
-    categoryDescription: string
+    categoryDescription: string,
+    documentTypes: CategoryDocumentTypePayload[]
 ): AddProductCategoryRequestAction => ({
     type: ADD_PRODUCT_CATEGORY_REQUEST,
     payload: {
         categoryName,
-        categoryDescription
+        categoryDescription,
+        documentTypes
     }
 });
 
 export const updateProductCategoryRequest = (
     categoryId: number | string,
     categoryName: string,
-    categoryDescription: string
+    categoryDescription: string,
+    documentTypes: CategoryDocumentTypePayload[]
 ): UpdateProductCategoryRequestAction => ({
     type: UPDATE_PRODUCT_CATEGORY_REQUEST,
-    payload: { categoryId, categoryName, categoryDescription }
-});
-
-export const deleteProductCategoryRequest = (
-    categoryId: number | string
-): DeleteProductCategoryRequestAction => ({
-    type: DELETE_PRODUCT_CATEGORY_REQUEST,
-    payload: { categoryId }
+    payload: { categoryId, categoryName, categoryDescription, documentTypes }
 });

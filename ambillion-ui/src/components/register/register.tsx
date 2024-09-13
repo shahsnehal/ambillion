@@ -274,7 +274,7 @@ export const Registration = () => {
                                                                     icon={
                                                                         showPassword
                                                                             ? 'solar:eye-outline'
-                                                                            : 'solar:eye-closed-outline'
+                                                                            : 'codicon:eye-closed'
                                                                     }
                                                                     className="fs-5"
                                                                 />
@@ -321,7 +321,7 @@ export const Registration = () => {
                                                                     icon={
                                                                         showConfirmPassword
                                                                             ? 'solar:eye-outline'
-                                                                            : 'solar:eye-closed-outline'
+                                                                            : 'codicon:eye-closed'
                                                                     }
                                                                     className="fs-5"
                                                                 />

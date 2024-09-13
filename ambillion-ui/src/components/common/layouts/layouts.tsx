@@ -10,7 +10,12 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
     const navigate = useNavigate();
     const location = useLocation();
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
-    const { first_name: Name, role_name: userRole, profile_image: profileImage } = userProfile;
+    const {
+        first_name: Name,
+        last_name: lastName,
+        role_name: userRole,
+        profile_image: profileImage
+    } = userProfile;
     const isActive = (route: string) => location.pathname.startsWith(route);
 
     return (
@@ -21,7 +26,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                         <ul id="sidebarnav">
                             <li className="sidebar-item sidebar-profile pt-2">
                                 <a
-                                    className="sidebar-link has-arrow opacity-100 gap-2"
+                                    className="sidebar-link opacity-100 gap-2"
                                     href="javascript:void(0)"
                                     aria-expanded="false"
                                 >
@@ -33,15 +38,12 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                             alt="user"
                                         />
                                     </span>
-                                    <span className="hide-menu fw-medium">{Name}</span>
+                                    <span className="hide-menu fw-medium">
+                                        {Name} {lastName}
+                                    </span>
                                 </a>
                             </li>
-                            <li className="nav-small-cap">
-                                <Icon
-                                    icon="solar:menu-dots-bold"
-                                    className="nav-small-cap-icon fs-4"
-                                />
-                            </li>
+                            <li className="nav-small-cap"></li>
 
                             {userRole === userRoles.ADMIN && (
                                 <li className="sidebar-item custom-sidebar-link">
@@ -52,7 +54,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     >
                                         <Icon
                                             icon="solar:user-circle-line-duotone"
-                                            className="aside-icon"
+                                            className="aside-icon fs-6"
                                         />
                                         <span className="hide-menu">USERS</span>
                                     </a>
@@ -65,7 +67,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     id="get-url"
                                     onClick={() => navigate(ROUTES.PRODUCTS)}
                                 >
-                                    <Icon icon="gridicons:product" className="aside-icon" />
+                                    <Icon icon="gridicons:product" className="aside-icon fs-6" />
                                     <span className="hide-menu">PRODUCTS</span>
                                 </a>
                             </li>
@@ -77,7 +79,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                         id="get-url"
                                         onClick={() => navigate(ROUTES.PRODUCT_CATEGORIES)}
                                     >
-                                        <Icon icon="bx:category" className="aside-icon" />
+                                        <Icon icon="bx:category" className="aside-icon fs-6" />
                                         <span className="hide-menu">CATEGORIES</span>
                                     </a>
                                 </li>
@@ -92,21 +94,24 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                     >
                                         <Icon
                                             icon="mdi:file-document-outline"
-                                            className="aside-icon"
+                                            className="aside-icon fs-6"
                                         />
                                         <span className="hide-menu">DOCUMENT TYPE</span>
                                     </a>
                                 </li>
                             )}
 
-                            <li className="sidebar-item custom-sidebar-link">
+                            {/* <li className="sidebar-item custom-sidebar-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">
-                                        <Icon icon="solar:question-circle-linear" />
+                                        <Icon
+                                            icon="solar:question-circle-linear"
+                                            className="aside-icon fs-6"
+                                        />
                                     </div>
                                     <span className="hide-menu">FAQ</span>
                                 </a>
-                            </li>
+                            </li> */}
                         </ul>
                     </nav>
                 </div>

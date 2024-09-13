@@ -136,7 +136,7 @@ export const Header = () => {
                                                     </div>
                                                 </div>
                                                 <div className="message-body pb-3">
-                                                    <div className="px-3 pt-3">
+                                                    {/* <div className="px-3 pt-3">
                                                         <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
                                                             <a
                                                                 href="javascript:void(0)"
@@ -146,20 +146,24 @@ export const Header = () => {
                                                             </a>
                                                         </div>
                                                     </div>
-                                                    <hr />
+                                                    <hr /> */}
                                                     <div className="px-3">
-                                                        <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
+                                                        {/* <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
                                                             <a
                                                                 href="javascript:void(0)"
                                                                 className=" d-flex  align-items-center  "
                                                             >
                                                                 Account Settings
                                                             </a>
-                                                        </div>
-                                                        <div className="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
+                                                        </div> */}
+                                                        <div className="h6 mb-0 dropdown-item py-8 px-3 mt-2 rounded-2 link d-flex align-items-center">
+                                                            <Icon
+                                                                icon="solar:logout-2-outline"
+                                                                className="me-2 fs-5"
+                                                            />
                                                             <a
                                                                 onClick={handleLogout}
-                                                                className="d-flex align-items-center custom-sidebar-link"
+                                                                className="mb-0 text-decoration-none"
                                                             >
                                                                 Sign Out
                                                             </a>

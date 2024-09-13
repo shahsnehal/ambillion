@@ -178,33 +178,34 @@ export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'HSN Code',
         selector: (row) => row.origin_hsn_code,
-        sortable: true,
-        grow: 1.2
+        sortable: true
     },
     {
         name: 'Category',
         selector: (row) => row.category_name,
         sortable: true,
-        grow: 0.7
+        grow: 1
     },
     {
         name: 'Feature',
         selector: (row) => row.product_feature,
         sortable: true,
-        grow: 1.3
+        grow: 2
     },
     {
         name: 'Description',
         selector: (row) => row.customer_product_description,
         sortable: true,
-        grow: 1.5
+        grow: 2
     },
     {
         name: 'Export Status',
         selector: (row) => row.status,
         sortable: true,
         cell: (row) => (
-            <span className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2`}>
+            <span
+                className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2 sticky-column`}
+            >
                 {row.status}
             </span>
         ),

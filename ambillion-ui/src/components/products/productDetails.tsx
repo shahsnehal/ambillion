@@ -215,6 +215,14 @@ export const ProductDetails: React.FC = () => {
                                     <NoteList notesList={selectedProductDetails?.notes || null} />
                                 </div>
                                 <div className="d-flex justify-content-end  mt-3">
+                                    <button
+                                        className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"
+                                        onClick={() => navigate(ROUTES.PRODUCTS)}
+                                    >
+                                        <Icon icon="icon-park-outline:back" className="me-1" />
+                                        Back
+                                    </button>
+
                                     {userRole === userRoles.OFFICER && (
                                         <>
                                             <button
@@ -308,7 +316,7 @@ export const ProductDetails: React.FC = () => {
 
                                     {userRole === userRoles.MANUFACTURER && (
                                         <button
-                                            className="btn  btn-rounded btn-primary d-flex align-items-center"
+                                            className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
                                             disabled={
                                                 selectedProductDetails?.status !==
                                                     productStatus.PENDING &&
@@ -359,14 +367,6 @@ export const ProductDetails: React.FC = () => {
                                             Edit Product
                                         </button>
                                     )}
-
-                                    <button
-                                        className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"
-                                        onClick={() => navigate(ROUTES.PRODUCTS)}
-                                    >
-                                        <Icon icon="icon-park-outline:back" className="me-1" />
-                                        Back
-                                    </button>
                                 </div>
                             </div>
                         </div>
