@@ -54,7 +54,7 @@ export const ProductCategories = () => {
         // Directly map CategoryDocumentType to CategoryDocumentTypePayload
         const documentTypes: CategoryDocumentTypePayload[] = row.documents.map((doc) => ({
             documentTypeId: doc.document_type_id,
-            mandatory: doc.mandatory
+            mandatory: Boolean(doc.mandatory)
         }));
 
         setProductCategoryFormData({
