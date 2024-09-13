@@ -5,10 +5,6 @@ import { ProductDocumentTypeFormValues } from 'reduxSaga/modules/productDocument
 import { Icon } from '@iconify/react';
 import { fileFormats } from 'constants/fileType';
 import { trimValues } from 'utils/common';
-import { getLocalStorage } from 'utils/localStorage';
-import { localStorageKey } from 'constants/common';
-import { ProductCategory } from 'reduxSaga/modules/productCategories-module/type/types';
-
 export type ProductDocumentTypeModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -22,8 +18,7 @@ const validationSchema = Yup.object({
         .trim()
         .max(100, 'DocumentType Name must be at most 100 characters long!'),
     documentTypeDescription: Yup.string().required('DocumentType Description is required!').trim(),
-    documentTypeFormat: Yup.string().required('DocumentType Format is required!').trim(),
-    documentCategoryId: Yup.string().required('Document Category is required!')
+    documentTypeFormat: Yup.string().required('DocumentType Format is required!').trim()
 });
 
 export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> = ({
@@ -33,16 +28,11 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
     onSubmit
 }) => {
     if (!isOpen) return null;
-
-    const productCategories = getLocalStorage(localStorageKey.PRODUCT_CATEGORIES);
-
     const initialValues: ProductDocumentTypeFormValues = {
         documentTypeId: documentTypeFormData?.documentTypeId ?? '',
         documentTypeName: documentTypeFormData?.documentTypeName ?? '',
         documentTypeDescription: documentTypeFormData?.documentTypeDescription ?? '',
-        documentTypeFormat: documentTypeFormData?.documentTypeFormat ?? '',
-        documentCategoryId: documentTypeFormData?.documentCategoryId ?? '',
-        mandatory: documentTypeFormData?.mandatory ?? false
+        documentTypeFormat: documentTypeFormData?.documentTypeFormat ?? ''
     };
 
     return (
@@ -59,12 +49,7 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
                             initialValues={initialValues}
                             validationSchema={validationSchema}
                             onSubmit={(values, { resetForm }) => {
-                                const formData = {
-                                    ...values,
-                                    documentCategoryId: String(values.documentCategoryId),
-                                    mandatory: Boolean(values.mandatory)
-                                };
-                                const trimmedValues = trimValues(formData);
+                                const trimmedValues = trimValues(values);
                                 onSubmit(trimmedValues);
                                 resetForm();
                             }}
@@ -152,74 +137,6 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
                                             <ErrorMessage
                                                 component="div"
                                                 name="documentTypeFormat"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label
-                                                htmlFor="documentCategoryId"
-                                                className="form-label"
-                                            >
-                                                Document Category{' '}
-                                                <span className="text-danger">*</span>
-                                            </label>
-                                            <Field
-                                                as="select"
-                                                name="documentCategoryId"
-                                                className={`form-control ${formikProps.touched.documentCategoryId && formikProps.errors.documentCategoryId ? 'is-invalid' : ''}`}
-                                                id="documentCategoryId"
-                                            >
-                                                <option value="" disabled>
-                                                    -- Select Category --
-                                                </option>
-                                                {productCategories.map(
-                                                    (category: ProductCategory) => (
-                                                        <option
-                                                            key={category.category_id}
-                                                            value={category.category_id}
-                                                            title={category.category_description}
-                                                        >
-                                                            {category.category_name}
-                                                        </option>
-                                                    )
-                                                )}
-                                            </Field>
-                                            <ErrorMessage
-                                                component="div"
-                                                name="documentCategoryId"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                        <div className="mb-3">
-                                            <label className="form-label">
-                                                Mandatory <span className="text-danger">*</span>
-                                            </label>
-                                            <div className="form-check">
-                                                <Field
-                                                    type="checkbox"
-                                                    name="mandatory"
-                                                    id="mandatory"
-                                                    className="form-check-input"
-                                                    checked={formikProps.values.mandatory}
-                                                    onChange={(
-                                                        e: React.ChangeEvent<HTMLInputElement>
-                                                    ) => {
-                                                        formikProps.setFieldValue(
-                                                            'mandatory',
-                                                            e.target.checked
-                                                        );
-                                                    }}
-                                                />
-                                                <label
-                                                    className="form-check-label"
-                                                    htmlFor="mandatory"
-                                                >
-                                                    Is this document mandatory?
-                                                </label>
-                                            </div>
-                                            <ErrorMessage
-                                                component="div"
-                                                name="mandatory"
                                                 className="invalid-feedback"
                                             />
                                         </div>
