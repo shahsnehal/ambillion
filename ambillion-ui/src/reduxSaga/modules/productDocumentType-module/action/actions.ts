@@ -14,17 +14,13 @@ export const fetchProductDocumentTypeRequest = (): FetchProductDocumentTypeReque
 export const addProductDocumentTypeRequest = (
     documentTypeName: string,
     documentTypeDescription: string,
-    documentTypeFormat: string,
-    documentCategoryId: number | string,
-    mandatory: boolean
+    documentTypeFormat: string
 ): AddProductDocumentTypeRequestAction => ({
     type: ADD_PRODUCT_DOCUMENT_TYPE_REQUEST,
     payload: {
         documentTypeName,
         documentTypeDescription,
-        documentTypeFormat,
-        documentCategoryId,
-        mandatory
+        documentTypeFormat
     }
 });
 
@@ -32,17 +28,13 @@ export const updateProductDocumentTypeRequest = (
     documentTypeId: number | string,
     documentTypeName: string,
     documentTypeDescription: string,
-    documentTypeFormat: string,
-    documentCategoryId: number | string,
-    mandatory: boolean
+    documentTypeFormat: string
 ): UpdateProductDocumentTypeRequestAction => ({
     type: UPDATE_PRODUCT_DOCUMENT_TYPE_REQUEST,
     payload: {
         documentTypeId,
         documentTypeName,
         documentTypeDescription,
-        documentTypeFormat,
-        documentCategoryId,
-        mandatory
+        documentTypeFormat
     }
 });

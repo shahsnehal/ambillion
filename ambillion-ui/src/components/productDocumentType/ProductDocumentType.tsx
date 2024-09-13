@@ -43,9 +43,7 @@ export const ProductDocumentType = () => {
             documentTypeId: '',
             documentTypeName: '',
             documentTypeDescription: '',
-            documentTypeFormat: '',
-            documentCategoryId: '',
-            mandatory: false
+            documentTypeFormat: ''
         });
         setIsDocumentTypeModalOpen(true);
     };
@@ -56,9 +54,7 @@ export const ProductDocumentType = () => {
             documentTypeId: row.document_type_id,
             documentTypeName: row.document_type_name,
             documentTypeDescription: row.document_type_description,
-            documentTypeFormat: row.document_type_format,
-            documentCategoryId: row.category_id,
-            mandatory: row.mandatory
+            documentTypeFormat: row.document_type_format
         });
         setIsDocumentTypeModalOpen(true);
     };
@@ -71,9 +67,7 @@ export const ProductDocumentType = () => {
                     values.documentTypeId,
                     values.documentTypeName,
                     values.documentTypeDescription,
-                    values.documentTypeFormat,
-                    values.documentCategoryId,
-                    values.mandatory
+                    values.documentTypeFormat
                 )
             );
         } else {
@@ -81,9 +75,7 @@ export const ProductDocumentType = () => {
                 addProductDocumentTypeRequest(
                     values.documentTypeName,
                     values.documentTypeDescription,
-                    values.documentTypeFormat,
-                    values.documentCategoryId,
-                    values.mandatory
+                    values.documentTypeFormat
                 )
             );
         }
