@@ -9,11 +9,7 @@ import {
     UPDATE_PRODUCT_CATEGORY_REQUEST,
     UPDATE_PRODUCT_CATEGORY_SUCCESS,
     UPDATE_PRODUCT_CATEGORY_FAILURE,
-    DELETE_PRODUCT_CATEGORY_REQUEST,
-    DELETE_PRODUCT_CATEGORY_SUCCESS,
-    DELETE_PRODUCT_CATEGORY_FAILURE,
     UpdateProductCategoryRequestAction,
-    DeleteProductCategoryRequestAction,
     AddProductCategoryRequestAction
 } from '../type/types';
 import { apiUrl } from 'constants/common';
@@ -28,7 +24,11 @@ const fetchProductCategories = async (): Promise<AxiosResponse> => {
 function* handleFetchProductCategories() {
     try {
         const response: AxiosResponse = yield call(fetchProductCategories);
-        yield put({ type: FETCH_PRODUCT_CATEGORIES_SUCCESS, payload: response.data });
+        const { categories, documentTypes } = response.data;
+        yield put({
+            type: FETCH_PRODUCT_CATEGORIES_SUCCESS,
+            payload: { categories, documentTypes }
+        });
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {
@@ -42,6 +42,7 @@ function* handleFetchProductCategories() {
 const addProductCategory = async (categoryData: {
     categoryName: string;
     categoryDescription: string;
+    documentTypes: { documentTypeId: number | string; mandatory: boolean }[];
 }): Promise<AxiosResponse> => {
     return await axiosInstance.post(apiUrl.productCategories, categoryData);
 };
@@ -64,11 +65,13 @@ const updateProductCategory = async (categoryData: {
     categoryId: number | string;
     categoryName: string;
     categoryDescription: string;
+    documentTypes: { documentTypeId: number | string; mandatory: boolean }[];
 }): Promise<AxiosResponse> => {
-    const { categoryName, categoryDescription } = categoryData;
+    const { categoryName, categoryDescription, documentTypes } = categoryData;
     return await axiosInstance.patch(`${apiUrl.productCategories}/${categoryData.categoryId}`, {
         categoryName,
-        categoryDescription
+        categoryDescription,
+        documentTypes
     });
 };
 
@@ -85,28 +88,8 @@ function* handleUpdateProductCategory(action: UpdateProductCategoryRequestAction
     }
 }
 
-//Delete Product Category API
-const deleteProductCategory = async (categoryId: number | string): Promise<AxiosResponse> => {
-    return await axiosInstance.delete(`${apiUrl.productCategories}/${categoryId}`);
-};
-
-function* handleDeleteProductCategory(action: DeleteProductCategoryRequestAction) {
-    try {
-        const { categoryId } = action.payload;
-        yield call(deleteProductCategory, categoryId);
-        yield put({ type: DELETE_PRODUCT_CATEGORY_SUCCESS, payload: { categoryId } });
-    } catch (error: unknown) {
-        let errorMessage = 'An unknown error occurred';
-        if (error instanceof Error) {
-            errorMessage = error.message;
-        }
-        yield put({ type: DELETE_PRODUCT_CATEGORY_FAILURE, error: errorMessage });
-    }
-}
-
 export default function* productCategorySaga() {
     yield takeLatest(FETCH_PRODUCT_CATEGORIES_REQUEST, handleFetchProductCategories);
     yield takeLatest(ADD_PRODUCT_CATEGORY_REQUEST, handleAddProductCategory);
     yield takeLatest(UPDATE_PRODUCT_CATEGORY_REQUEST, handleUpdateProductCategory);
-    yield takeLatest(DELETE_PRODUCT_CATEGORY_REQUEST, handleDeleteProductCategory);
 }

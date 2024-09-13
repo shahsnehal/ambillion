@@ -21,7 +21,7 @@ import {
 import { localStorageKey, ROUTES } from 'constants/common';
 import { getLocalStorage } from 'utils/localStorage';
 import {
-    CategoryDocuments,
+    CategoryDocumentType,
     ProductCategory
 } from 'reduxSaga/modules/productCategories-module/type/types';
 import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
@@ -79,7 +79,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { productId } = useParams<{ productId: string }>();
-    const [categoryDocuments, setCategoryDocuments] = useState<CategoryDocuments[]>([]);
+    const [categoryDocuments, setCategoryDocuments] = useState<CategoryDocumentType[]>([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
     const [initialValues, setInitialValues] = useState<ProductFormValues>(defaultProductFormValues);
     const [customFieldAdded, setCustomFieldAdded] = useState<boolean>(false);
