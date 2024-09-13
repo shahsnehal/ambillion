@@ -10,11 +10,14 @@ export const UPDATE_PRODUCT_CATEGORY_REQUEST = 'UPDATE_PRODUCT_CATEGORY_REQUEST'
 export const UPDATE_PRODUCT_CATEGORY_SUCCESS = 'UPDATE_PRODUCT_CATEGORY_SUCCESS';
 export const UPDATE_PRODUCT_CATEGORY_FAILURE = 'UPDATE_PRODUCT_CATEGORY_FAILURE';
 
-export const DELETE_PRODUCT_CATEGORY_REQUEST = 'DELETE_PRODUCT_CATEGORY_REQUEST';
-export const DELETE_PRODUCT_CATEGORY_SUCCESS = 'DELETE_PRODUCT_CATEGORY_SUCCESS';
-export const DELETE_PRODUCT_CATEGORY_FAILURE = 'DELETE_PRODUCT_CATEGORY_FAILURE';
+export type ProductCategory = {
+    category_id: number | string;
+    category_name: string;
+    category_description: string;
+    documents: CategoryDocumentType[];
+};
 
-export type CategoryDocuments = {
+export type CategoryDocumentType = {
     document_type_id: number | string;
     document_type_name: string;
     document_type_description: string;
@@ -22,26 +25,40 @@ export type CategoryDocuments = {
     mandatory: boolean;
 };
 
-export type ProductCategory = {
-    category_id: number | string;
-    category_name: string;
-    category_description: string;
-    documents: CategoryDocuments[];
+export type CategoryDocumentTypePayload = {
+    documentTypeId: number | string;
+    mandatory: boolean;
+};
+
+export type CategoryDocumentTypePayloadErrors = {
+    documentTypeId?: string;
+    mandatory?: string;
+};
+
+export type CategoryDocumentTypePayloadTouched = {
+    documentTypeId?: boolean;
+    mandatory?: boolean;
 };
 
 export type ProductCategoryFormValues = {
     categoryId: number | string;
     categoryName: string;
     categoryDescription: string;
+    documentTypes: CategoryDocumentTypePayload[];
 };
 
 export type FetchProductCategoriesRequestAction = {
     type: typeof FETCH_PRODUCT_CATEGORIES_REQUEST;
 };
 
+export type FetchProductCategoriesSuccessPayload = {
+    categories: ProductCategory[];
+    documentTypes: CategoryDocumentType[];
+};
+
 export type FetchProductCategoriesSuccessAction = {
     type: typeof FETCH_PRODUCT_CATEGORIES_SUCCESS;
-    payload: ProductCategory[];
+    payload: FetchProductCategoriesSuccessPayload;
 };
 
 export type FetchProductCategoriesFailureAction = {
@@ -51,12 +68,20 @@ export type FetchProductCategoriesFailureAction = {
 
 export type AddProductCategoryRequestAction = {
     type: typeof ADD_PRODUCT_CATEGORY_REQUEST;
-    payload: { categoryName: string; categoryDescription: string };
+    payload: {
+        categoryName: string;
+        categoryDescription: string;
+        documentTypes: CategoryDocumentTypePayload[];
+    };
 };
 
 export type AddProductCategorySuccessAction = {
     type: typeof ADD_PRODUCT_CATEGORY_SUCCESS;
     payload: ProductCategory;
+    // payload: {
+    //     categories: ProductCategory;
+    //     documentTypes: CategoryDocumentType[];
+    // };
 };
 
 export type AddProductCategoryFailureAction = {
@@ -70,6 +95,7 @@ export type UpdateProductCategoryRequestAction = {
         categoryId: number | string;
         categoryName: string;
         categoryDescription: string;
+        documentTypes: CategoryDocumentTypePayload[];
     };
 };
 
@@ -83,25 +109,6 @@ export type UpdateProductCategoryFailureAction = {
     error: string;
 };
 
-export type DeleteProductCategoryRequestAction = {
-    type: typeof DELETE_PRODUCT_CATEGORY_REQUEST;
-    payload: {
-        categoryId: number | string;
-    };
-};
-
-export type DeleteProductCategorySuccessAction = {
-    type: typeof DELETE_PRODUCT_CATEGORY_SUCCESS;
-    payload: {
-        categoryId: number | string;
-    };
-};
-
-export type DeleteProductCategoryFailureAction = {
-    type: typeof DELETE_PRODUCT_CATEGORY_FAILURE;
-    error: string;
-};
-
 export type ProductCategoryActionTypes =
     | FetchProductCategoriesRequestAction
     | FetchProductCategoriesSuccessAction
@@ -111,7 +118,4 @@ export type ProductCategoryActionTypes =
     | AddProductCategoryFailureAction
     | UpdateProductCategoryRequestAction
     | UpdateProductCategorySuccessAction
-    | UpdateProductCategoryFailureAction
-    | DeleteProductCategoryRequestAction
-    | DeleteProductCategorySuccessAction
-    | DeleteProductCategoryFailureAction;
+    | UpdateProductCategoryFailureAction;
