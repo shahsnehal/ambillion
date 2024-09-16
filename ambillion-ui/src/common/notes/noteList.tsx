@@ -20,7 +20,7 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
                         className={`d-flex  flex-column ${(index + 1) % 2 === 0 ? 'align-items-end' : 'align-items-start'} `}
                         key={index + 1}
                     >
-                        <div className=" col-sm-12  col-md-6">
+                        <div className="col-sm-12  col-md-6">
                             <div className="card overflow-hidden">
                                 <div className="d-flex flex-row">
                                     <div className="p-3 bg-info-subtle d-flex align-items-center">

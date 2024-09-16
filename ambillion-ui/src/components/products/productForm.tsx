@@ -565,25 +565,29 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                         </div>
                                     ) : null}
 
-                                    <div className="d-flex justify-content-end gap-2 mt-2">
-                                        <button
-                                            className="btn btn-rounded btn-secondary d-flex align-items-center ms-2"
-                                            onClick={() => {
-                                                if (isAddMode) {
-                                                    navigate(ROUTES.PRODUCTS);
-                                                } else {
-                                                    navigate(`${ROUTES.PRODUCTS}/${productId}`);
-                                                }
-                                            }}
-                                        >
-                                            <Icon icon="icon-park-outline:back" className="me-1" />
-                                            Cancel
-                                        </button>
-
-                                        <div>
+                                    <div className="row justify-content-center justify-content-lg-end">
+                                        <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                            <button
+                                                className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
+                                                onClick={() => {
+                                                    if (isAddMode) {
+                                                        navigate(ROUTES.PRODUCTS);
+                                                    } else {
+                                                        navigate(`${ROUTES.PRODUCTS}/${productId}`);
+                                                    }
+                                                }}
+                                            >
+                                                <Icon
+                                                    icon="icon-park-outline:back"
+                                                    className="me-1"
+                                                />
+                                                Cancel
+                                            </button>
+                                        </div>
+                                        <div className="col-12 col-sm-auto mb-2 mb-sm-0">
                                             <button
                                                 type="button"
-                                                className="btn btn-primary"
+                                                className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
                                                 onClick={() => {
                                                     setProductCustomFields([
                                                         ...productCustomFields,
@@ -596,33 +600,35 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 Add Product Property
                                             </button>
                                         </div>
-
-                                        <button
-                                            type="submit"
-                                            className="btn btn-rounded btn-primary d-flex align-items-center ms-2"
-                                            disabled={
-                                                !props.isValid ||
-                                                (!props.dirty && !customFieldAdded) ||
-                                                isLoading ||
-                                                (productCustomFields.length > 0 &&
-                                                    productCustomFields.some(
-                                                        (field) =>
-                                                            !field.FieldName || !field.FieldValue
-                                                    ))
-                                            }
-                                        >
-                                            <Icon
-                                                icon={productId ? 'tabler:edit' : 'tabler:plus'}
-                                                className="me-1"
-                                            />
-                                            {isLoading
-                                                ? productId
-                                                    ? 'Updating...'
-                                                    : 'Adding...'
-                                                : productId
-                                                  ? 'Save Changes'
-                                                  : 'Add Product'}
-                                        </button>
+                                        <div className="col-12 col-sm-auto">
+                                            <button
+                                                type="submit"
+                                                className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                disabled={
+                                                    !props.isValid ||
+                                                    (!props.dirty && !customFieldAdded) ||
+                                                    isLoading ||
+                                                    (productCustomFields.length > 0 &&
+                                                        productCustomFields.some(
+                                                            (field) =>
+                                                                !field.FieldName ||
+                                                                !field.FieldValue
+                                                        ))
+                                                }
+                                            >
+                                                <Icon
+                                                    icon={productId ? 'tabler:edit' : 'tabler:plus'}
+                                                    className="me-1"
+                                                />
+                                                {isLoading
+                                                    ? productId
+                                                        ? 'Updating...'
+                                                        : 'Adding...'
+                                                    : productId
+                                                      ? 'Save Changes'
+                                                      : 'Add Product'}
+                                            </button>
+                                        </div>
                                     </div>
                                 </Form>
                             );

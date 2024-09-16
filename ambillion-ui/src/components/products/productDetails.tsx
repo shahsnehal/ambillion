@@ -214,94 +214,130 @@ export const ProductDetails: React.FC = () => {
                                     </h6>
                                     <NoteList notesList={selectedProductDetails?.notes || null} />
                                 </div>
-                                <div className="d-flex justify-content-end  mt-3">
-                                    <button
-                                        className="btn  btn-rounded btn-secondary d-flex align-items-center ms-2"
-                                        onClick={() => navigate(ROUTES.PRODUCTS)}
-                                    >
-                                        <Icon icon="icon-park-outline:back" className="me-1" />
-                                        Back
-                                    </button>
-
+                                <div className="row justify-content-center justify-content-lg-end">
+                                    <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                        <button
+                                            className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
+                                            onClick={() => navigate(ROUTES.PRODUCTS)}
+                                        >
+                                            <Icon icon="icon-park-outline:back" className="me-1" />
+                                            Back
+                                        </button>
+                                    </div>
                                     {userRole === userRoles.OFFICER && (
                                         <>
-                                            <button
-                                                className="btn btn-rounded btn-info d-flex align-items-center ms-2"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                    productStatus.UNDER_EXPORT_APPROVAL
-                                                }
-                                                onClick={() => setIsModalOpen(true)}
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:info"
-                                                    className="me-1"
-                                                />
-                                                Ask For More Info
-                                            </button>
-                                            <button
-                                                className="btn btn-rounded btn-success d-flex align-items-center ms-2"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                    productStatus.UNDER_EXPORT_APPROVAL
-                                                }
-                                                onClick={() =>
-                                                    handleAction(
-                                                        String(selectedProductDetails?.product_id),
-                                                        productStatus.APPROVED
-                                                    )
-                                                }
-                                            >
-                                                <Icon
-                                                    icon="pepicons-pop:checkmark-circle"
-                                                    className="me-1"
-                                                />
-                                                Mark Approve
-                                            </button>
+                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                                <button
+                                                    className="btn btn-info w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                        productStatus.UNDER_EXPORT_APPROVAL
+                                                    }
+                                                    onClick={() => setIsModalOpen(true)}
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:info"
+                                                        className="me-1"
+                                                    />
+                                                    Ask For More Info
+                                                </button>
+                                            </div>
+                                            <div className="col-12 col-sm-auto">
+                                                <button
+                                                    className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                        productStatus.UNDER_EXPORT_APPROVAL
+                                                    }
+                                                    onClick={() =>
+                                                        handleAction(
+                                                            String(
+                                                                selectedProductDetails?.product_id
+                                                            ),
+                                                            productStatus.APPROVED
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon
+                                                        icon="pepicons-pop:checkmark-circle"
+                                                        className="me-1"
+                                                    />
+                                                    Mark Approve
+                                                </button>
+                                            </div>
                                         </>
                                     )}
                                     {userRole === userRoles.ADMIN && (
                                         <>
+                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                                <button
+                                                    className="btn btn-rounded btn-info w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                        productStatus.UNDER_VERIFICATION
+                                                    }
+                                                    onClick={() => setIsModalOpen(true)}
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:info"
+                                                        className="me-1"
+                                                    />
+                                                    Ask For More Info
+                                                </button>
+                                            </div>
+                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                                <button
+                                                    className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                        productStatus.UNDER_VERIFICATION
+                                                    }
+                                                    onClick={() =>
+                                                        handleAction(
+                                                            String(
+                                                                selectedProductDetails?.product_id
+                                                            ),
+                                                            productStatus.VERIFIED
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon
+                                                        icon="pepicons-pop:checkmark-circle"
+                                                        className="me-1"
+                                                    />
+                                                    Mark Verify
+                                                </button>
+                                            </div>
+                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                                <button
+                                                    className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.VERIFIED &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.EXPORT_INFO_NEEDED
+                                                    }
+                                                    onClick={() => setIsModalOpen(true)}
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:send"
+                                                        className="me-1"
+                                                    />
+                                                    Send For Approval
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {userRole === userRoles.MANUFACTURER && (
+                                        <div className="col-12 col-sm-auto mb-2 mb-sm-0">
                                             <button
-                                                className="btn btn-rounded btn-info d-flex align-items-center ms-2"
+                                                className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
                                                 disabled={
                                                     selectedProductDetails?.status !==
-                                                    productStatus.UNDER_VERIFICATION
-                                                }
-                                                onClick={() => setIsModalOpen(true)}
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:info"
-                                                    className="me-1"
-                                                />
-                                                Ask For More Info
-                                            </button>
-                                            <button
-                                                className="btn btn-rounded btn-success d-flex align-items-center ms-2"
-                                                disabled={
+                                                        productStatus.PENDING &&
                                                     selectedProductDetails?.status !==
-                                                    productStatus.UNDER_VERIFICATION
-                                                }
-                                                onClick={() =>
-                                                    handleAction(
-                                                        String(selectedProductDetails?.product_id),
-                                                        productStatus.VERIFIED
-                                                    )
-                                                }
-                                            >
-                                                <Icon
-                                                    icon="pepicons-pop:checkmark-circle"
-                                                    className="me-1"
-                                                />
-                                                Mark Verify
-                                            </button>
-                                            <button
-                                                className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.VERIFIED &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.EXPORT_INFO_NEEDED
+                                                        productStatus.INFO_NEEDED
                                                 }
                                                 onClick={() => setIsModalOpen(true)}
                                             >
@@ -309,63 +345,48 @@ export const ProductDetails: React.FC = () => {
                                                     icon="icon-park-outline:send"
                                                     className="me-1"
                                                 />
-                                                Send For Approval
+                                                Send For Verification
                                             </button>
-                                        </>
+                                        </div>
                                     )}
-
-                                    {userRole === userRoles.MANUFACTURER && (
-                                        <button
-                                            className="btn  btn-rounded btn-primary d-flex align-items-center ms-2"
-                                            disabled={
-                                                selectedProductDetails?.status !==
-                                                    productStatus.PENDING &&
-                                                selectedProductDetails?.status !==
-                                                    productStatus.INFO_NEEDED
-                                            }
-                                            onClick={() => setIsModalOpen(true)}
-                                        >
-                                            <Icon icon="icon-park-outline:send" className="me-1" />
-                                            Send For Verification
-                                        </button>
-                                    )}
-
                                     {(userRole === userRoles.MANUFACTURER ||
                                         userRole === userRoles.ADMIN) && (
-                                        <button
-                                            disabled={
-                                                // Common disable conditions for both roles
-                                                (selectedProductDetails?.status !==
-                                                    productStatus.PENDING &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.INFO_NEEDED &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.EXPORT_INFO_NEEDED &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.VERIFIED) ||
-                                                // Specific disable conditions for the manufacturer
-                                                (userRole === userRoles.MANUFACTURER &&
-                                                    selectedProductDetails?.status !==
+                                        <div className="col-12 col-sm-auto mb-sm-0">
+                                            <button
+                                                disabled={
+                                                    // Common disable conditions for both roles
+                                                    (selectedProductDetails?.status !==
                                                         productStatus.PENDING &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.INFO_NEEDED) ||
-                                                // Specific disable conditions for the admin
-                                                (userRole === userRoles.ADMIN &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.EXPORT_INFO_NEEDED &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.VERIFIED)
-                                            }
-                                            className="btn btn-rounded btn-warning d-flex align-items-center ms-2"
-                                            onClick={() =>
-                                                navigate(
-                                                    `${ROUTES.PRODUCTS}/editProduct/${productId}`
-                                                )
-                                            }
-                                        >
-                                            <Icon icon="mdi:pencil" className="me-1" />
-                                            Edit Product
-                                        </button>
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.INFO_NEEDED &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.EXPORT_INFO_NEEDED &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.VERIFIED) ||
+                                                    // Specific disable conditions for the manufacturer
+                                                    (userRole === userRoles.MANUFACTURER &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.PENDING &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.INFO_NEEDED) ||
+                                                    // Specific disable conditions for the admin
+                                                    (userRole === userRoles.ADMIN &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.EXPORT_INFO_NEEDED &&
+                                                        selectedProductDetails?.status !==
+                                                            productStatus.VERIFIED)
+                                                }
+                                                className="btn btn-rounded btn-warning w-100 d-flex align-items-center justify-content-center"
+                                                onClick={() =>
+                                                    navigate(
+                                                        `${ROUTES.PRODUCTS}/editProduct/${productId}`
+                                                    )
+                                                }
+                                            >
+                                                <Icon icon="mdi:pencil" className="me-1" />
+                                                Edit Product
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                             </div>
