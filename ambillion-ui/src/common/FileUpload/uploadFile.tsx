@@ -218,7 +218,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
             };
 
             return (
-                <div key={index} className="col-md-4">
+                <div key={index} className="col-md-6 col-lg-4 col-sm-12">
                     <div className="alert border-success p-2">
                         <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center text-dark">

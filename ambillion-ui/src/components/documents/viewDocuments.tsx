@@ -49,7 +49,7 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
         <div className="row">
             {hasDocuments ? (
                 documents.map((doc, index) => (
-                    <div key={index + 1} className="col-md-4">
+                    <div key={index + 1} className="col-md-6 col-lg-4 col-sm-12">
                         <div className="alert border-success p-2">
                             <div className="d-flex justify-content-between">
                                 <div className="d-flex">
