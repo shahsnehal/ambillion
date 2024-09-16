@@ -48,8 +48,7 @@ function* handleSignin(action: {
         const responseData = response.data;
         const userData = responseData.user;
         const { access } = responseData.tokens;
-        const productCategories = responseData.productCatgories;
-
+        const productCategories = responseData.productCategories;
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
         setLocalStorage(localStorageKey.USER_PROFILE, userData);
