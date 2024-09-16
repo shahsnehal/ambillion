@@ -46,7 +46,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                             <li className="nav-small-cap"></li>
 
                             {userRole === userRoles.ADMIN && (
-                                <li className="sidebar-item custom-sidebar-link">
+                                <li className="sidebar-item cursor-link">
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.USERS) ? 'active' : ''}`}
                                         id="get-url"
@@ -61,7 +61,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 </li>
                             )}
 
-                            <li className="sidebar-item custom-sidebar-link">
+                            <li className="sidebar-item cursor-link">
                                 <a
                                     className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
                                     id="get-url"
@@ -73,7 +73,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                             </li>
 
                             {userRole === userRoles.ADMIN && (
-                                <li className="sidebar-item custom-sidebar-link">
+                                <li className="sidebar-item cursor-link">
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.PRODUCT_CATEGORIES) ? 'active' : ''}`}
                                         id="get-url"
@@ -86,7 +86,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                             )}
 
                             {userRole === userRoles.ADMIN && (
-                                <li className="sidebar-item custom-sidebar-link">
+                                <li className="sidebar-item cursor-link">
                                     <a
                                         className={`sidebar-link ${isActive(ROUTES.PRODUCT_DOCUMENTTYPE) ? 'active' : ''}`}
                                         id="get-url"
@@ -101,7 +101,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 </li>
                             )}
 
-                            {/* <li className="sidebar-item custom-sidebar-link">
+                            {/* <li className="sidebar-item cursor-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">
                                         <Icon

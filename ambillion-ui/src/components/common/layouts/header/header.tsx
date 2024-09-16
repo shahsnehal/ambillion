@@ -156,7 +156,7 @@ export const Header = () => {
                                                                 Account Settings
                                                             </a>
                                                         </div> */}
-                                                        <div className="h6 mb-0 dropdown-item py-8 px-3 mt-2 rounded-2 link d-flex align-items-center">
+                                                        <div className="h6 mb-0 dropdown-item py-8 px-3 mt-2 rounded-2 link d-flex align-items-center cursor-link">
                                                             <Icon
                                                                 icon="solar:logout-2-outline"
                                                                 className="me-2 fs-5"

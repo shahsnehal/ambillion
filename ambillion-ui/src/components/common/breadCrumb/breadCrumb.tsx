@@ -32,7 +32,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
                                         </span>
                                     ) : (
                                         <a
-                                            className="text-decoration-none text-primary custom-sidebar-link"
+                                            className="text-decoration-none text-primary cursor-link"
                                             onClick={() => navigate(to)}
                                         >
                                             {value.charAt(0).toUpperCase() + value.slice(1)}

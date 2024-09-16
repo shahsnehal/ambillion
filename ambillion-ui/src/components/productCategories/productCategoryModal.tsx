@@ -136,12 +136,9 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                             <div className="row ms-2 mb-3">
                                                 {documentTypes.map((field, index) => (
                                                     <React.Fragment
-                                                        key={
-                                                            field.documentTypeId ||
-                                                            `documentType-${index}`
-                                                        }
+                                                        key={`documentType-${index}-${field.documentTypeId || 'new'}`}
                                                     >
-                                                        <div className="col-sm-12 col-md-5 mb-2">
+                                                        <div className="col-sm-12 col-md-6 mb-2">
                                                             {index === 0 && (
                                                                 <label
                                                                     htmlFor={`documentTypes[${index}].documentTypeId`}
@@ -223,7 +220,7 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                                             />
                                                         </div>
 
-                                                        <div className="col-sm-6 col-md-5 mt-2">
+                                                        <div className="col-sm-6 col-md-4 mt-2">
                                                             {index === 0 && (
                                                                 <label className="form-label mb-3">
                                                                     Mandatory{' '}
