@@ -564,7 +564,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                     ) : null}
 
                                     <div className="row justify-content-center justify-content-lg-end">
-                                        <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                        <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                             <button
                                                 className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
                                                 onClick={() => {
@@ -582,7 +582,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 Cancel
                                             </button>
                                         </div>
-                                        <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                        <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                             <button
                                                 type="button"
                                                 className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
@@ -598,7 +598,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 Add Product Property
                                             </button>
                                         </div>
-                                        <div className="col-12 col-sm-auto">
+                                        <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                             <button
                                                 type="submit"
                                                 className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"

@@ -52,11 +52,11 @@ export const Products = () => {
         };
 
         return (
-            <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
+            <div className="d-flex flex-column flex-sm-row align-items-start justify-content-between gap-4 mt-3">
                 {userRole === userRoles.MANUFACTURER && (
-                    <div>
+                    <div className="mb-sm-0">
                         <button
-                            className="btn btn-primary text-white icon-center gap-2 mt-3"
+                            className="btn btn-primary text-white icon-center gap-2"
                             onClick={() => handleAddProduct()}
                         >
                             <Icon icon="tabler:plus" />
@@ -64,7 +64,7 @@ export const Products = () => {
                         </button>
                     </div>
                 )}
-                <div className="d-flex align-items-start justify-content-between gap-4 mt-3">
+                <div className="flex-grow-1">
                     <TableFilter
                         onFilter={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setFilterText(e.target.value)
