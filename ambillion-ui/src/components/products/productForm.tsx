@@ -405,7 +405,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                     )}
 
                                     <div className="row mb-3">
-                                        <div className="col-sm-12">
+                                        <div className="col-sm-6">
                                             <label
                                                 htmlFor="customerProductDescription"
                                                 className="form-label"
@@ -425,9 +425,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                 className="invalid-feedback"
                                             />
                                         </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <div className="col-sm-12">
+                                        <div className="col-sm-6">
                                             <label htmlFor="productFeature" className="form-label">
                                                 Product Features{' '}
                                                 <span className="text-danger">*</span>
@@ -534,10 +532,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                             className="invalid-feedback"
                                                         />
                                                     </div>
-                                                    <div className="col-sm-12 col-md-1 customField-delete-icon">
+                                                    <div className="col-sm-12 col-md-1 d-flex align-items-center justify-content-center customField-delete-icon">
                                                         <button
                                                             type="button"
-                                                            className="btn btn-rounded btn-secondary w-100"
+                                                            className="btn btn-rounded btn-secondary"
                                                             onClick={() => {
                                                                 const updatedFields = [
                                                                     ...productCustomFields
