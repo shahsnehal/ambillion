@@ -42,7 +42,6 @@ export const ProductDetails: React.FC = () => {
     );
 
     //Get Product Properties
-
     const productProperties: ProductCustomField[] = getProductCustomeFields(
         selectedProductDetails?.product_custom_fields
     );
@@ -215,7 +214,7 @@ export const ProductDetails: React.FC = () => {
                                     <NoteList notesList={selectedProductDetails?.notes || null} />
                                 </div>
                                 <div className="row justify-content-center justify-content-lg-end">
-                                    <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                    <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                         <button
                                             className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
                                             onClick={() => navigate(ROUTES.PRODUCTS)}
@@ -226,7 +225,7 @@ export const ProductDetails: React.FC = () => {
                                     </div>
                                     {userRole === userRoles.OFFICER && (
                                         <>
-                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                            <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                                 <button
                                                     className="btn btn-info w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -242,7 +241,7 @@ export const ProductDetails: React.FC = () => {
                                                     Ask For More Info
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-auto">
+                                            <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                                 <button
                                                     className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -269,7 +268,7 @@ export const ProductDetails: React.FC = () => {
                                     )}
                                     {userRole === userRoles.ADMIN && (
                                         <>
-                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
                                                 <button
                                                     className="btn btn-rounded btn-info w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -285,7 +284,7 @@ export const ProductDetails: React.FC = () => {
                                                     Ask For More Info
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
                                                 <button
                                                     className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -308,7 +307,7 @@ export const ProductDetails: React.FC = () => {
                                                     Mark Verify
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mt-md-3 mt-lg-0">
                                                 <button
                                                     className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -330,7 +329,7 @@ export const ProductDetails: React.FC = () => {
                                     )}
 
                                     {userRole === userRoles.MANUFACTURER && (
-                                        <div className="col-12 col-sm-auto mb-2 mb-sm-0">
+                                        <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2">
                                             <button
                                                 className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
                                                 disabled={
@@ -351,7 +350,13 @@ export const ProductDetails: React.FC = () => {
                                     )}
                                     {(userRole === userRoles.MANUFACTURER ||
                                         userRole === userRoles.ADMIN) && (
-                                        <div className="col-12 col-sm-auto mb-sm-0">
+                                        <div
+                                            className={`col-12 col-sm-6 col-md-4 col-lg-auto ${
+                                                userRole === userRoles.MANUFACTURER
+                                                    ? ''
+                                                    : 'mt-md-3 mt-lg-0'
+                                            }`}
+                                        >
                                             <button
                                                 disabled={
                                                     // Common disable conditions for both roles
