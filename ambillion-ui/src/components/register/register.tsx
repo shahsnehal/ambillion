@@ -15,6 +15,17 @@ import logo from 'assets/images/logo-icon.svg';
 const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const SITE_KEY = googleRecaptchaConfig.captchaSiteKey ?? '';
 
+/**
+ * Registration component for user signup.
+ *
+ * Provides a form for users to register an account. It includes fields for personal details,
+ * a reCAPTCHA challenge, and password validation. The component uses Formik for form handling,
+ * Yup for validation, and Redux for managing authentication state.
+ *
+ * @component
+ * @example
+ * return <Registration />;
+ */
 export const Registration = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -23,10 +34,26 @@ export const Registration = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const recaptchaRef = useRef<ReCAPTCHA>(null);
     const isLoading = useSelector((state: RootState) => state.authModule.isLoading);
-
+    /**
+     * Toggles the visibility of the password field.
+     */
     const toggleShowPassword = () => setShowPassword(!showPassword);
+    /**
+     * Toggles the visibility of the confirm password field.
+     */
     const toggleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
+    /**
+     * Validation schema for the registration form.
+     *
+     * Validates personal details, email, password, and confirm password fields using Yup.
+     * - First Name and Last Name are required.
+     * - Mobile Number must be exactly 10 digits.
+     * - Email must be a valid email address and is required.
+     * - Password must meet specific criteria: at least 8 characters, with at least one uppercase letter,
+     *   one lowercase letter, one number, and one special character.
+     * - Confirm Password must match the Password field.
+     */
     const RegisterSchemas = Yup.object().shape({
         firstName: Yup.string().trim().required('FirstName is required !'),
         lastName: Yup.string().trim().required('LastName is required !'),
@@ -52,6 +79,13 @@ export const Registration = () => {
             .required('Confirm Password is required !')
     });
 
+    /**
+     * Handles reCAPTCHA change event.
+     *
+     * Updates the state to reflect whether the reCAPTCHA challenge is completed successfully.
+     *
+     * @param {string | null} value - The reCAPTCHA token if successful, or null if not.
+     */
     const captchaOnChange = (value: string | null) => {
         if (value) {
             setIsRecaptchaValid(true);
@@ -60,6 +94,20 @@ export const Registration = () => {
         }
     };
 
+    /**
+     * Handles form submission for the registration form.
+     *
+     * Dispatches a signup request action with the provided user details.
+     * The form values are trimmed before dispatching the action.
+     *
+     * @param {SignupData} values - The form values.
+     * @param {string} values.firstName - The user's first name.
+     * @param {string} values.lastName - The user's last name.
+     * @param {string} values.companyName - The user's company name.
+     * @param {string} values.mobileNumber - The user's mobile number.
+     * @param {string} values.email - The user's email address.
+     * @param {string} values.password - The user's password.
+     */
     const handleSubmit = async (values: SignupData) => {
         const trimmedValues = trimValues(values);
         const { firstName, lastName, companyName, mobileNumber, email, password } = trimmedValues;

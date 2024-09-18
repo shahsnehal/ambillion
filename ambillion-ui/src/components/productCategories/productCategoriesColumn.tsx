@@ -8,7 +8,13 @@ type ProductCategoryActionColumnProps = {
     onEdit: (row: ProductCategory) => void;
 };
 
-//ProductCategory Action
+/**
+ * Component for rendering action buttons in the product category table.
+ *
+ * @component
+ * @param {ProductCategoryActionColumnProps} props - The props for the component.
+ * @returns {JSX.Element} The action column component with an edit button.
+ */
 export const ProductCategoryAction: React.FC<ProductCategoryActionColumnProps> = ({
     row,
     onEdit
@@ -32,7 +38,12 @@ export const ProductCategoryAction: React.FC<ProductCategoryActionColumnProps> =
     );
 };
 
-//ProductCategory Action Columns
+/**
+ * Generates the action column configuration for the DataTable.
+ *
+ * @param {(row: ProductCategory) => void} onEdit - Callback function to handle editing a product category.
+ * @returns {Object} The column configuration for the DataTable.
+ */
 export const ProductCategoryActionColumn = (onEdit: (row: ProductCategory) => void) => ({
     name: 'Action',
     cell: (row: ProductCategory) => <ProductCategoryAction row={row} onEdit={onEdit} />,
@@ -41,7 +52,11 @@ export const ProductCategoryActionColumn = (onEdit: (row: ProductCategory) => vo
     button: true
 });
 
-//ProductCategory Tabellist
+/**
+ * Defines the columns for the product category table.
+ *
+ * @type {TableColumn<ProductCategory>[]}
+ */
 export const productCategoryTableColumns: TableColumn<ProductCategory>[] = [
     {
         name: 'Category Name',

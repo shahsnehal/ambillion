@@ -22,6 +22,16 @@ import {
     ProductCategoryFormValues
 } from 'reduxSaga/modules/productCategories-module/type/types';
 
+/**
+ * ProductCategories component manages a list of product categories, with functionalities for adding and editing categories.
+ *
+ * It fetches product category data from the store, filters categories based on the name, and shows a data table with action columns.
+ * A modal is used for adding or editing product categories.
+ *
+ * @component
+ * @example
+ * return <ProductCategories />;
+ */
 export const ProductCategories = () => {
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
@@ -33,12 +43,16 @@ export const ProductCategories = () => {
         (state: RootState) => state.productCategoryModule
     );
 
-    //Fetch ProductCategory
+    /**
+     * Fetches product categories when the component mounts.
+     */
     useEffect(() => {
         dispatch(fetchProductCategoriesRequest());
     }, []);
 
-    //Add ProductCategory
+    /**
+     * Opens the modal for adding a new product category with default form values.
+     */
     const handleAddProductCategory = () => {
         setProductCategoryFormData({
             categoryId: '',
@@ -49,7 +63,11 @@ export const ProductCategories = () => {
         setIsProductCategoryModalOpen(true);
     };
 
-    // Edit ProductCategory
+    /**
+     * Opens the modal for editing an existing product category with the selected category's data.
+     *
+     * @param {ProductCategory} row - The product category to edit.
+     */
     const handleEditProductCategory = (row: ProductCategory) => {
         // Directly map CategoryDocumentType to CategoryDocumentTypePayload
         const documentTypes: CategoryDocumentTypePayload[] = row.documents.map((doc) => ({
@@ -66,7 +84,11 @@ export const ProductCategories = () => {
         setIsProductCategoryModalOpen(true);
     };
 
-    // Add & Edit Confirmation Logic
+    /**
+     * Submits the form data to either add or update a product category based on the presence of a categoryId.
+     *
+     * @param {ProductCategoryFormValues} values - The form values to submit.
+     */
     const handleSubmit = (values: ProductCategoryFormValues) => {
         if (values.categoryId) {
             dispatch(
@@ -89,13 +111,19 @@ export const ProductCategories = () => {
         handleCloseModal();
     };
 
-    //HandleCloseModal For All Actions
+    /**
+     * Closes the modal and clears the form data.
+     */
     const handleCloseModal = () => {
         setProductCategoryFormData(null);
         setIsProductCategoryModalOpen(false);
     };
 
-    //Filter Functionality
+    /**
+     * Filters product categories based on the provided filter text.
+     *
+     * @type {Array<ProductCategory>}
+     */
     const filteredItems = useMemo(
         () =>
             productCategories.filter((item) =>
@@ -104,6 +132,13 @@ export const ProductCategories = () => {
         [filterText, productCategories]
     );
 
+    /**
+     * Creates a memoized subheader component for the data table.
+     *
+     * Includes a filter input and a clear button to manage the filter text.
+     *
+     * @returns {JSX.Element} The subheader component.
+     */
     const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {

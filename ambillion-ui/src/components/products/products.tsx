@@ -11,6 +11,11 @@ import { getLocalStorage } from 'utils/localStorage';
 import { localStorageKey, ROUTES, userRoles } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * Component for displaying a list of products with filter functionality.
+ * The component fetches the products, allows filtering by product name,
+ * and provides navigation to add a new product or view product details.
+ */
 export const Products = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -20,11 +25,18 @@ export const Products = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const { products, isLoading } = useSelector((state: RootState) => state.productModule);
 
+    /**
+     * Fetches products when the component mounts.
+     */
     useEffect(() => {
         dispatch(fetchProductsRequest());
     }, []);
 
-    //Filter Functionality
+    /**
+     * Filters the products based on the filterText input.
+     *
+     * @returns {Product[]} - Filtered list of products where the display name matches the filter text.
+     */
     const filteredItems = useMemo(
         () =>
             products?.filter((item) =>
@@ -33,16 +45,28 @@ export const Products = () => {
         [filterText, products]
     );
 
-    //AddProduct Route
+    /**
+     * Navigates to the Add Product route.
+     */
     const handleAddProduct = () => {
         navigate(ROUTES.ADDPRODUCT);
     };
 
-    //ProductDetailView Route
+    /**
+     * Navigates to the Product Detail View route for a specific product.
+     *
+     * @param {number} productId - The ID of the product to view.
+     */
     const handleView = (productId: number) => {
         navigate(`${ROUTES.PRODUCTS}/${productId}`);
     };
 
+    /**
+     * Creates the sub-header component with a clear button for filtering.
+     * Clears the filter text and resets pagination if filter text exists.
+     *
+     * @returns {JSX.Element} - The sub-header component.
+     */
     const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {

@@ -12,6 +12,11 @@ export type ProductDocumentTypeModalProps = {
     onSubmit: (values: ProductDocumentTypeFormValues) => void;
 };
 
+/**
+ * Validation schema for the product document type form.
+ *
+ * @type {Yup.ObjectSchema<ProductDocumentTypeFormValues>}
+ */
 const validationSchema = Yup.object({
     documentTypeName: Yup.string()
         .required('DocumentType Name is required!')
@@ -21,13 +26,30 @@ const validationSchema = Yup.object({
     documentTypeFormat: Yup.string().required('DocumentType Format is required!').trim()
 });
 
+/**
+ * Modal component for adding or editing a product document type.
+ *
+ * @param {ProductDocumentTypeModalProps} props - Component props.
+ * @param {boolean} props.isOpen - Boolean indicating if the modal is open.
+ * @param {() => void} props.onClose - Callback function to handle closing the modal.
+ * @param {ProductDocumentTypeFormValues | null} props.documentTypeFormData - Form data for the product document type being edited, or null if adding a new one.
+ * @param {(values: ProductDocumentTypeFormValues) => void} props.onSubmit - Callback function to handle form submission with the provided values.
+ *
+ * @returns {JSX.Element | null} The rendered modal component or null if the modal is not open.
+ */
 export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> = ({
     isOpen,
     onClose,
     documentTypeFormData,
     onSubmit
 }) => {
+    // Early return if the modal is not open
     if (!isOpen) return null;
+    /**
+     * Initial values for the form, derived from the provided form data or default to empty strings.
+     *
+     * @type {ProductDocumentTypeFormValues}
+     */
     const initialValues: ProductDocumentTypeFormValues = {
         documentTypeId: documentTypeFormData?.documentTypeId ?? '',
         documentTypeName: documentTypeFormData?.documentTypeName ?? '',

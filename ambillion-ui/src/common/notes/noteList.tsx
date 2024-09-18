@@ -3,14 +3,20 @@ import React from 'react';
 import { NoteProps } from 'reduxSaga/modules/product-module/type/types';
 import { getLocalStorage } from 'utils/localStorage';
 
-// Define the type for the props of the component that uses NoteProps
 type NoteListProps = {
-    notesList: NoteProps[] | null; // 'notesList' is now correctly defined
+    notesList: NoteProps[] | null; // 'notesList' can be an array of NoteProps or null
 };
 
+/**
+ * A functional component that displays a list of notes.
+ *
+ * @param {NoteListProps} props - The component props containing the notesList.
+ * @returns {JSX.Element} The note list component displaying individual notes.
+ */
 const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
-    // Check if notesList is not null and has elements
+    // Check if notesList is not null and contains elements
     const hasNotes = notesList && notesList.length > 0;
+    // Retrieve user profile from localStorage
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE) || {};
     return (
         <div className="d-flex flex-column">

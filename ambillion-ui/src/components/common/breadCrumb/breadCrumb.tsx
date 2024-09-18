@@ -5,9 +5,21 @@ type BreadcrumbProps = {
     title: string;
 };
 
+/**
+ * Breadcrumb component that displays the current path as a breadcrumb trail.
+ *
+ * @component
+ * @param {BreadcrumbProps} props - Component props.
+ * @param {string} props.title - The title to display on the breadcrumb.
+ * @returns {JSX.Element} The rendered Breadcrumb component.
+ *
+ * @example
+ * <Breadcrumb title="Dashboard" />
+ */
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    // Split the current pathname into segments, excluding numeric values
     const pathnames = location.pathname.split('/').filter((x) => x && isNaN(Number(x)));
 
     return (

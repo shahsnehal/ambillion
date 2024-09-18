@@ -18,6 +18,11 @@ export type ProductCategoryModalProps = {
     onSubmit: (values: ProductCategoryFormValues) => void;
 };
 
+/**
+ * Validation schema for the ProductCategory form using Yup.
+ *
+ * @type {Yup.ObjectSchema}
+ */
 const validationSchema = Yup.object({
     categoryName: Yup.string()
         .required('Category Name is required !')
@@ -34,12 +39,24 @@ const validationSchema = Yup.object({
         .optional()
 });
 
+/**
+ * ProductCategoryModal component for adding and editing product categories.
+ *
+ * @component
+ * @param {ProductCategoryModalProps} props - The props for the component.
+ * @returns {JSX.Element | null} The modal component, or null if not open.
+ */
 export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
     isOpen,
     onClose,
     productCategoryFormData,
     onSubmit
 }) => {
+    /**
+     * Initial values for the form, derived from the provided form data or default to empty strings.
+     *
+     * @type {ProductCategoryFormValues}
+     */
     const initialValues: ProductCategoryFormValues = {
         categoryId: productCategoryFormData?.categoryId ?? '',
         categoryName: productCategoryFormData?.categoryName ?? '',
@@ -52,6 +69,7 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
     const [documentTypeAdded, setDocumentTypeAdded] = useState<boolean>(false);
     const [documentTypes, setDocumentTypes] = useState(initialValues.documentTypes || []);
 
+    // Early return if the modal is not open
     if (!isOpen) return null;
 
     return (

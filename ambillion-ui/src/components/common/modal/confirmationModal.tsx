@@ -17,6 +17,25 @@ type ConfirmationModalProps = {
     closeIcon?: string;
 };
 
+/**
+ * A confirmation modal component that prompts the user for confirmation
+ * before performing an action. Displays a title, content, and buttons to confirm or cancel the action.
+ *
+ * @param {ConfirmationModalProps} props - The component props.
+ * @returns {JSX.Element} The rendered ConfirmationModal component.
+ *
+ * @example
+ * <ConfirmationModal
+ *     isOpen={isOpen}
+ *     onClose={handleClose}
+ *     onConfirm={handleConfirm}
+ *     title="Delete Item"
+ *     content="Are you sure you want to delete this item?"
+ *     closeLabel="Cancel"
+ *     confirmLabel="Delete"
+ * />
+ */
+
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,
     onClose,
@@ -32,6 +51,10 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     confirmIcon = 'solar:trash-bin-minimalistic-outline',
     closeIcon = 'carbon:close-outline'
 }) => {
+    /**
+     * Handles the confirm button click by calling the onConfirm function
+     * and then closing the modal.
+     */
     const handleConfirmClick = () => {
         onConfirm();
         onClose();

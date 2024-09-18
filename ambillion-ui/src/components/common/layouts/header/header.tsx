@@ -4,14 +4,30 @@ import { logout } from 'utils/common';
 import { getLocalStorage } from 'utils/localStorage';
 import logo from 'assets/images/logo-icon.svg';
 
+/**
+ * Header component that displays the top navigation bar with user profile and sidebar toggle.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Header component.
+ *
+ * @example
+ * <Header />
+ */
 export const Header = () => {
+    // Retrieve user profile from localStorage
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
     const { name: userName, email, role_name: roleName, profile_image: profileImage } = userProfile;
 
+    /**
+     * Handles logout action by calling the logout function.
+     */
     const handleLogout = () => {
         logout();
     };
 
+    /**
+     * Toggles the sidebar visibility and adjusts sidebar type attribute.
+     */
     const handleSidebar = () => {
         const mainWrapper = document.getElementById('main-wrapper');
         if (mainWrapper) {
@@ -133,52 +149,6 @@ export const Header = () => {
                                 </div>
                             </li>
                         </ul>
-
-                        {/* <a
-                            className="p-0 border-0 nav-icon-hover-bg rounded-circle"
-                            href="javascript:void(0)"
-                            id="userDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            <img
-                                src={profileImage}
-                                alt="user"
-                                className="profile-pic rounded-circle round-30"
-                            />
-                        </a>
-                        <ul
-                            className="dropdown-menu dropdown-menu-end"
-                            aria-labelledby="userDropdown"
-                        >
-                            <li className="dropdown-item">
-                                <div className="d-flex align-items-center">
-                                    <img
-                                        src={profileImage}
-                                        alt="user"
-                                        className="rounded-circle"
-                                        width="50"
-                                        height="50"
-                                    />
-                                    <div className="ms-3">
-                                        <h5 className="mb-0 fs-5">
-                                            {userName} ({''} {roleName} {''})
-                                        </h5>
-                                        <p className="mb-0 text-muted">{email}</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <hr className="dropdown-divider" />
-                            </li>
-
-                            <li className="dropdown-item d-flex align-items-center cursor-link">
-                                <Icon icon="solar:logout-2-outline" className="me-2 fs-5" />
-                                <a onClick={handleLogout} className="text-decoration-none">
-                                    Sign Out
-                                </a>
-                            </li>
-                        </ul> */}
                     </nav>
                 </div>
             </header>

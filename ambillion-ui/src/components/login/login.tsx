@@ -10,15 +10,35 @@ import { RootState } from 'reduxSaga/config/store';
 import { Icon } from '@iconify/react';
 import { trimValues } from 'utils/common';
 
+/**
+ * Login component for user authentication.
+ *
+ * Provides a form for users to sign in to their accounts. It uses Formik for form handling,
+ * Yup for validation, and Redux for managing authentication state. Users can toggle password visibility,
+ * navigate to the Forgot Password page, or create a new account.
+ *
+ * @component
+ * @example
+ * return <Login />;
+ */
 export const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const isLoading = useSelector((state: RootState) => state.authModule.isLoading);
 
+    /**
+     * Toggles the visibility of the password field.
+     */
     const toggleShowPassword = () => setShowPassword(!showPassword);
 
-    // Validation schema for signin form
+    /**
+     * Validation schema for the signin form.
+     *
+     * Validates email and password fields using Yup.
+     * - Email must be a valid email address and is required.
+     * - Password is required.
+     */
     const SigninSchema = Yup.object().shape({
         email: Yup.string()
             .email('Please enter a valid Email Address !')
@@ -27,6 +47,16 @@ export const Login = () => {
         password: Yup.string().required('Password is required !').trim()
     });
 
+    /**
+     * Handles form submission for the login form.
+     *
+     * Dispatches a signin request action with the provided email and password.
+     * The form values are trimmed before dispatching the action.
+     *
+     * @param {SigninData} values - The form values.
+     * @param {string} values.email - The user's email address.
+     * @param {string} values.password - The user's password.
+     */
     const handleSubmit = async (values: SigninData) => {
         const trimmedValues = trimValues(values);
         const { email, password } = trimmedValues;

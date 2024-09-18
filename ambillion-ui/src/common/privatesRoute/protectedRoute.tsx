@@ -9,6 +9,17 @@ type ProtectedRouteProps = {
     allowedRoles: string[];
 };
 
+/**
+ * ProtectedRoute component that guards access to routes based on user roles and JWT token validity.
+ *
+ * This component checks if the user has a valid JWT token and if their role is included in the allowed roles.
+ * If the token is expired or the user's role is not authorized, it redirects to the appropriate page.
+ * If the user is not authenticated (no token), it redirects to the login page.
+ * If the user is authenticated and authorized, it renders the child components.
+ *
+ * @param {ProtectedRouteProps} props - The props object containing allowed roles.
+ * @returns {React.ReactElement} A React element that conditionally renders based on authentication and authorization status.
+ */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE) || {};
     const { role_name: userRole } = userProfile || null;
@@ -18,13 +29,18 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
         const decodedJwtToken: any = jwtDecode(jwtToken);
         const currentTime = Date.now() / 1000;
         if (decodedJwtToken?.exp < currentTime) {
+            // Logout the user if the JWT token is expired
             logout();
         } else if (!allowedRoles.includes(userRole || '')) {
+            // Redirect to "Not Authorized" page if the user's role is not permitted
             return <Navigate to={ROUTES.NOT_AUTHORIZES} />;
         }
     } else {
+        // Redirect to login page if no JWT token is found
         return <Navigate to={ROUTES.LOGIN} replace />;
     }
+
+    // Render the child components if the user is authenticated and authorized
     return <Outlet />;
 };
 

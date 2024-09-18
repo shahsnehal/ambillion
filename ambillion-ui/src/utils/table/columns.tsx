@@ -4,6 +4,14 @@ import { User } from 'reduxSaga/modules/user-module/type/types';
 import { Product } from 'reduxSaga/modules/product-module/type/types';
 import { userStatus, productStatus } from 'constants/common';
 
+/**
+ * Custom styles for DataTable components.
+ *
+ * @typedef {Object} CustomStyles
+ * @property {Object} rows - Styles applied to the rows of the table.
+ * @property {Object} headCells - Styles applied to the header cells of the table.
+ * @property {Object} cells - Styles applied to the data cells of the table.
+ */
 export const customStyles = {
     rows: {
         style: {
@@ -29,6 +37,12 @@ export const customStyles = {
     }
 };
 
+/**
+ * Gets the CSS class for a user status.
+ *
+ * @param {string} status - The status of the user.
+ * @returns {string} The CSS class corresponding to the user status.
+ */
 const getUserStatusClass = (status: string): string => {
     switch (status) {
         case userStatus.ACCEPTED:
@@ -42,6 +56,12 @@ const getUserStatusClass = (status: string): string => {
     }
 };
 
+/**
+ * Gets the CSS class for a product status.
+ *
+ * @param {string} status - The status of the product.
+ * @returns {string} The CSS class corresponding to the product status.
+ */
 export const getProductStatusClass = (status: string): string => {
     switch (status) {
         case productStatus.PENDING:
@@ -65,14 +85,34 @@ export const getProductStatusClass = (status: string): string => {
     }
 };
 
-//User Status Change Types
+/**
+ * Props for the UserStatusChangeAction component.
+ *
+ * @typedef {Object} UserStatusChangeActionProps
+ * @property {string} status - The current status of the user.
+ * @property {() => void} onApprove - Function to call when the user is approved.
+ * @property {() => void} onReject - Function to call when the user is rejected.
+ */
+
+/**
+ * A component that provides buttons for approving or rejecting a user's status.
+ *
+ * @param {UserStatusChangeActionProps} props - The props for the component.
+ * @returns {JSX.Element} The UserStatusChangeAction component with approve and reject buttons.
+ */
 type UserStatusChangeActionProps = {
     status: string;
     onApprove: () => void;
     onReject: () => void;
 };
 
-//User Staus Change Action
+/**
+ * Generates a column configuration for user status change actions in a DataTable.
+ *
+ * @param {function(number): void} onApprove - Callback function to handle user approval.
+ * @param {function(number): void} onReject - Callback function to handle user rejection.
+ * @returns {TableColumn<User>} The DataTable column configuration for user status change actions.
+ */
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     status,
     onApprove,
@@ -122,7 +162,11 @@ export const UserStatusChangeActionColumn = (
     button: true
 });
 
-//User Table Columns
+/**
+ * Column configuration for displaying user data in a DataTable.
+ *
+ * @type {TableColumn<User>[]}
+ */
 export const userTableColumns: TableColumn<User>[] = [
     {
         name: 'Name',
@@ -168,7 +212,11 @@ export const userTableColumns: TableColumn<User>[] = [
     }
 ];
 
-//Product Table Columns
+/**
+ * Column configuration for displaying product data in a DataTable.
+ *
+ * @type {TableColumn<Product>[]}
+ */
 export const productsTableColumns: TableColumn<Product>[] = [
     {
         name: 'Name',

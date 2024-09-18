@@ -7,6 +7,7 @@ import { ErrorMessage, useFormikContext } from 'formik';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
+
 type FileSizeLimit = {
     size: number;
     unit: 'KB' | 'MB' | 'GB';
@@ -50,12 +51,21 @@ const Dropzone: React.FC<DropzoneProps> = ({
     const DEFAULT_MAX_SIZE = Infinity;
     const { setFieldTouched, errors, touched } = useFormikContext<any>();
 
+    /**
+     * Initializes uploaded files from the initialFiles prop if provided.
+     */
     useEffect(() => {
         if (initialFiles) {
             setUploadedFiles(initialFiles);
         }
     }, [initialFiles]);
 
+    /**
+     * Converts a file size limit to bytes based on the unit (KB, MB, GB).
+     *
+     * @param {number | FileSizeLimit} fileSizeLimit - The size limit in the given unit.
+     * @returns {number} - The size limit in bytes.
+     */
     function convertFileSizeToBytes(fileSizeLimit?: number | FileSizeLimit): number {
         if (typeof fileSizeLimit === 'number') {
             return fileSizeLimit;
@@ -72,11 +82,21 @@ const Dropzone: React.FC<DropzoneProps> = ({
         }
     }
 
+    /**
+     * Validates whether the file size is within the maximum limit.
+     *
+     * @param {ExtendedFile} file - The file being checked.
+     * @returns {boolean} - True if the file size is valid, otherwise false.
+     */
     const isFileSizeValid = (file: ExtendedFile) => {
         if (!maxFileSize) return true;
         const maxFileSizeInBytes = convertFileSizeToBytes(maxFileSize);
         return file.size <= maxFileSizeInBytes;
     };
+
+    /**
+     * Resets the state for the confirmation modal.
+     */
     const resetConfirmationState = () => {
         setIsConfirmationOpen(false);
         setConfirmationMessage('');
@@ -85,6 +105,14 @@ const Dropzone: React.FC<DropzoneProps> = ({
             fileInputRef.current.value = '';
         }
     };
+
+    /**
+     * Handles renaming of a file if a file with the same name already exists in the uploaded files list.
+     *
+     * @param {ExtendedFile} file - The file being renamed.
+     * @param {string} fileName - The base name of the file.
+     * @param {string} fileExtension - The file's extension (e.g., .jpg, .pdf).
+     */
     const handleRenameUpload = (file: ExtendedFile, fileName: string, fileExtension: string) => {
         let newFile = file;
         let counter = 1;
@@ -108,6 +136,12 @@ const Dropzone: React.FC<DropzoneProps> = ({
         setIsConfirmationOpen(false);
     };
 
+    /**
+     * Handles the drop event and manages file uploads, checks for file conflicts, and validates file size.
+     *
+     * @param {ExtendedFile[]} acceptedFiles - Array of files that have been accepted.
+     * @param {any[]} fileRejections - Array of files that were rejected.
+     */
     const onDrop = async (acceptedFiles: ExtendedFile[], fileRejections: any) => {
         try {
             setIsDragActive(false);
@@ -161,6 +195,12 @@ const Dropzone: React.FC<DropzoneProps> = ({
             setIsDragActive(false);
         }
     };
+
+    /**
+     * Deletes a file from the uploaded files list.
+     *
+     * @param {number} index - The index of the file to delete.
+     */
     const deleteFile = (index: number) => {
         const newFiles = uploadedFiles.filter((_, i) => i !== index);
         setUploadedFiles(newFiles);
@@ -178,6 +218,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
         }
     };
 
+    // Configures the dropzone using react-dropzone
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles, fileRejections) => onDrop(acceptedFiles, fileRejections),
         accept: allowedFileTypes || {
@@ -198,6 +239,11 @@ const Dropzone: React.FC<DropzoneProps> = ({
         noClick: false
     });
 
+    /**
+     * Renders the list of uploaded files with options to view, download, or delete.
+     *
+     * @returns {JSX.Element[]} - JSX elements rendering the uploaded files.
+     */
     const renderUploadedFiles = () => {
         return uploadedFiles.map((file, index) => {
             const trimmedFileName =
@@ -208,6 +254,12 @@ const Dropzone: React.FC<DropzoneProps> = ({
                     : `${(file.size / 1024 / 1024).toFixed(2)} MB`;
             const fileUrl = URL.createObjectURL(file);
 
+            /**
+             * Handles file download by creating a temporary anchor element and triggering the download.
+             *
+             * @param {string} fileUrl - The URL of the file to download (can be created using URL.createObjectURL).
+             * @param {File} file - The file object to be downloaded, used to specify the download file name.
+             */
             const downloadFile = () => {
                 const downloadLink = document.createElement('a');
                 downloadLink.href = fileUrl;

@@ -3,11 +3,22 @@ import { ROUTES } from 'constants/common';
 import { removeLocalStorage } from './localStorage';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
 
+/**
+ * Logs out the user by clearing local storage and redirecting to the base path.
+ */
 export const logout = () => {
     removeLocalStorage();
     window.location.href = ROUTES.BASEPATH;
 };
 
+/**
+ * Trims whitespace from string values in an object or array.
+ *
+ * This function recursively trims string values and handles both objects and arrays.
+ *
+ * @param {any} obj - The object or array to trim.
+ * @returns {any} A new object or array with trimmed string values.
+ */
 export const trimValues = (obj: any): any => {
     if (obj === null || obj === undefined) return obj;
 
@@ -28,6 +39,14 @@ export const trimValues = (obj: any): any => {
     return obj;
 };
 
+/**
+ * Gets the product custom fields from a string or array, depending on the environment.
+ *
+ * This function parses `customeFields` based on the environment and returns an array of `ProductCustomField`.
+ *
+ * @param {any} customeFields - The custom fields, which can be a string, array, or object.
+ * @returns {ProductCustomField[]} An array of `ProductCustomField` or an empty array if parsing fails.
+ */
 export const getProductCustomeFields = (customeFields: any): ProductCustomField[] => {
     const environment = process.env.REACT_APP_NODE_ENV;
 

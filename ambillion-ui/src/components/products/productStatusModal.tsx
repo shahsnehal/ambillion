@@ -1,6 +1,7 @@
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 import { trimValues } from 'utils/common';
+
 type ProductStatusModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -9,6 +10,13 @@ type ProductStatusModalProps = {
     title: string;
 };
 
+/**
+ * Modal component for confirming product status updates with comments.
+ * It accepts the product ID and a comment, and allows the user to confirm or cancel the action.
+ *
+ * @param {ProductStatusModalProps} props - The properties for the modal component.
+ * @returns {JSX.Element | null} - The rendered modal or null if the modal is not open.
+ */
 export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     isOpen,
     onClose,
@@ -18,12 +26,18 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
 }) => {
     const [comments, setComments] = useState<string>('');
     // const isSendDisabled = comments.trim().length === 0;
+
+    /**
+     * Handles confirmation by trimming comments and passing them to the onConfirm function,
+     * then closes the modal.
+     */
     const handleConfirm = () => {
         const trimmedComments = trimValues(comments);
         onConfirm(productId, trimmedComments);
         onClose();
     };
 
+    // Early return if the modal is not open
     if (!isOpen) return null;
 
     return (
