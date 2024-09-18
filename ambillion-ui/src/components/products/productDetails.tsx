@@ -18,6 +18,11 @@ import ViewDocuments from 'components/documents/viewDocuments';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
 import { getProductCustomeFields } from 'utils/common';
 
+/**
+ * Component for displaying and managing product details.
+ *
+ * @returns {JSX.Element} The rendered ProductDetails component.
+ */
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -41,7 +46,11 @@ export const ProductDetails: React.FC = () => {
         (state: RootState) => state.productModule
     );
 
-    //Get Product Properties
+    /**
+     * Extracts product custom fields from the selected product details.
+     *
+     * @type {ProductCustomField[]}
+     */
     const productProperties: ProductCustomField[] = getProductCustomeFields(
         selectedProductDetails?.product_custom_fields
     );
@@ -51,6 +60,13 @@ export const ProductDetails: React.FC = () => {
         }
     }, []);
 
+    /**
+     * Handles the action button click, setting up the modal configuration
+     * based on the action type.
+     *
+     * @param {string} productId - The ID of the product.
+     * @param {keyof typeof productStatus | null} action - The action type to be performed.
+     */
     const handleAction = (productId: string, action: keyof typeof productStatus | null) => {
         const config = {
             [productStatus.VERIFIED]: {
@@ -78,6 +94,9 @@ export const ProductDetails: React.FC = () => {
         }
     };
 
+    /**
+     * Handles the confirmation of the action and dispatches the status update request.
+     */
     const handleConfirmAction = () => {
         if (currentProductId && actionType) {
             dispatch(updateProductStatusRequest(currentProductId, actionType, '', ''));
@@ -86,10 +105,19 @@ export const ProductDetails: React.FC = () => {
         }
     };
 
+    /**
+     * Closes the modal.
+     */
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
 
+    /**
+     * Determines the role-based status for the product based on the user's role
+     * and the current product status.
+     *
+     * @returns {string} The status to be assigned based on the user's role.
+     */
     const getRoleBasedStatus = () => {
         if (userRole === userRoles.ADMIN) {
             if (
@@ -109,6 +137,12 @@ export const ProductDetails: React.FC = () => {
         }
     };
 
+    /**
+     * Gets the comment for the product based on the updated status.
+     *
+     * @param {string} updatedStatus - The updated status of the product.
+     * @returns {string} The role to be assigned comments.
+     */
     const getCommentFor = (updatedStatus: string) => {
         if (
             updatedStatus === productStatus.UNDER_VERIFICATION ||
@@ -124,6 +158,14 @@ export const ProductDetails: React.FC = () => {
             return '';
         }
     };
+
+    /**
+     * Sends the product for more information, dispatches the status update request,
+     * and navigates back to the products list.
+     *
+     * @param {string} productId - The ID of the product.
+     * @param {string} comments - Comments to be added for the status update.
+     */
     const handleSendForMoreInfo = (productId: string, comments: string) => {
         const updatedStatus = getRoleBasedStatus() ?? '';
         const commentFor = getCommentFor(updatedStatus);
@@ -223,6 +265,7 @@ export const ProductDetails: React.FC = () => {
                                             Back
                                         </button>
                                     </div>
+                                    {/* For The Officer Role */}
                                     {userRole === userRoles.OFFICER && (
                                         <>
                                             <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
@@ -266,6 +309,7 @@ export const ProductDetails: React.FC = () => {
                                             </div>
                                         </>
                                     )}
+                                    {/* For The Admin Role */}
                                     {userRole === userRoles.ADMIN && (
                                         <>
                                             <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
@@ -327,7 +371,7 @@ export const ProductDetails: React.FC = () => {
                                             </div>
                                         </>
                                     )}
-
+                                    {/* For The Manufacture Role */}
                                     {userRole === userRoles.MANUFACTURER && (
                                         <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2">
                                             <button
@@ -348,6 +392,7 @@ export const ProductDetails: React.FC = () => {
                                             </button>
                                         </div>
                                     )}
+                                    {/* For The Admin & Manufacture Role */}
                                     {(userRole === userRoles.MANUFACTURER ||
                                         userRole === userRoles.ADMIN) && (
                                         <div

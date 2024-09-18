@@ -17,6 +17,16 @@ export const actionType = {
     REJECT: 'REJECT'
 };
 
+/**
+ * UserList component displays a list of users with the ability to approve or reject user status.
+ *
+ * It fetches user data from the store, filters users based on email, and shows a data table with action columns.
+ * A confirmation modal is used for confirming the approval or rejection of a user.
+ *
+ * @component
+ * @example
+ * return <UserList />;
+ */
 export const UserList: React.FC = () => {
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState('');
@@ -29,20 +39,44 @@ export const UserList: React.FC = () => {
         dispatch(fetchUsersRequest());
     }, []);
 
+    /**
+     * Filters users based on the provided email filter text.
+     *
+     * @type {Array<User>}
+     */
     const filteredItems = users.filter((user) =>
         user.email?.toLowerCase().includes(filterText.toLowerCase())
     );
 
+    /**
+     * Handles the approval action for a user.
+     *
+     * Sets the selected user ID and the current action type to 'APPROVE'.
+     *
+     * @param {number} userId - The ID of the user to approve.
+     */
     const handleApprove = (userId: number) => {
         setSelectedUserId(userId);
         setCurrentActionType(actionType.APPROVE);
     };
 
+    /**
+     * Handles the rejection action for a user.
+     *
+     * Sets the selected user ID and the current action type to 'REJECT'.
+     *
+     * @param {number} userId - The ID of the user to reject.
+     */
     const handleReject = (userId: number) => {
         setSelectedUserId(userId);
         setCurrentActionType(actionType.REJECT);
     };
 
+    /**
+     * Confirms the action for the selected user based on the current action type.
+     *
+     * Dispatches the appropriate action to update the user's status and closes the confirmation modal.
+     */
     const handleConfirmAction = () => {
         if (selectedUserId !== null && currentActionType !== null) {
             dispatch(
@@ -59,12 +93,21 @@ export const UserList: React.FC = () => {
         handleCloseModal();
     };
 
+    /**
+     * Closes the confirmation modal and resets the action type and selected user ID.
+     */
     const handleCloseModal = () => {
         setCurrentActionType(null);
-
         setSelectedUserId(null);
     };
 
+    /**
+     * Creates a memoized subheader component for the data table.
+     *
+     * Includes a filter input and a clear button to manage the filter text.
+     *
+     * @returns {JSX.Element} The subheader component.
+     */
     const subHeaderComponentMemo = React.useMemo(() => {
         const handleClear = () => {
             if (filterText) {

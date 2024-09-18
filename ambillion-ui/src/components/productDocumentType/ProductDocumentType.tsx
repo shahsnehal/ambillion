@@ -21,6 +21,12 @@ import {
     ProductDocumentTypeFormValues
 } from 'reduxSaga/modules/productDocumentType-module/type/types';
 
+/**
+ * Component to manage and display product document types.
+ * Allows for adding, editing, and filtering document types.
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
 export const ProductDocumentType = () => {
     const dispatch = useDispatch();
     const [filterText, setFilterText] = useState<string>('');
@@ -32,12 +38,16 @@ export const ProductDocumentType = () => {
         (state: RootState) => state.ProductDocumentTypeModule
     );
 
-    //Fetch ProductDocumentType
+    /**
+     * Fetch product document types when the component mounts.
+     */
     useEffect(() => {
         dispatch(fetchProductDocumentTypeRequest());
     }, []);
 
-    //Add ProductDocumentType
+    /**
+     * Opens the modal for adding a new product document type.
+     */
     const handleAddProductDocumentType = () => {
         setDocumentTypeFormData({
             documentTypeId: '',
@@ -48,7 +58,11 @@ export const ProductDocumentType = () => {
         setIsDocumentTypeModalOpen(true);
     };
 
-    //Edit ProductDocumentType
+    /**
+     * Opens the modal for editing an existing product document type.
+     *
+     * @param {ProductDocumentsType} row - The document type to edit.
+     */
     const handleEditProductDocumentType = (row: ProductDocumentsType) => {
         setDocumentTypeFormData({
             documentTypeId: row.document_type_id,
@@ -59,7 +73,11 @@ export const ProductDocumentType = () => {
         setIsDocumentTypeModalOpen(true);
     };
 
-    // Add & Edit Confirmation Logic
+    /**
+     * Submits the form data for adding or updating a product document type.
+     *
+     * @param {ProductDocumentTypeFormValues} values - The form values.
+     */
     const handleSubmit = (values: ProductDocumentTypeFormValues) => {
         if (values.documentTypeId) {
             dispatch(
@@ -82,13 +100,19 @@ export const ProductDocumentType = () => {
         handleCloseModal();
     };
 
-    //HandleCloseModal For All Actions
+    /**
+     * Closes the modal and resets the form data.
+     */
     const handleCloseModal = () => {
         setDocumentTypeFormData(null);
         setIsDocumentTypeModalOpen(false);
     };
 
-    //Filter Functionality
+    /**
+     * Filters the product document types based on the filter text.
+     *
+     * @returns {ProductDocumentsType[]} - The filtered list of document types.
+     */
     const filteredItems = useMemo(
         () =>
             productDocumentsType.filter((item) =>
@@ -97,6 +121,11 @@ export const ProductDocumentType = () => {
         [filterText, productDocumentsType]
     );
 
+    /**
+     * Creates a subheader component with a filter input and an add button.
+     *
+     * @returns {JSX.Element} The subheader component.
+     */
     const subHeaderComponentMemo = useMemo(() => {
         const handleClear = () => {
             if (filterText) {

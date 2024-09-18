@@ -1,26 +1,26 @@
-//Api EndPoint
+// API endpoint URLs used throughout the application
 export const apiUrl = {
     endPoint: process.env.REACT_APP_BACKEND_URL,
 
-    //auth-Module
+    // Auth Module
     signUp: '/auth/register',
     signIn: '/auth/login',
     tokenRefresh: '/auth/refresh-tokens',
 
-    //user-Module
+    // User Module
     users: '/users',
 
-    //product-Module
+    // Product Module
     products: '/products',
 
-    //productCategories-Module
+    // Product Categories Module
     productCategories: '/categories',
 
-    //ProductDocumentType-Module
+    // Product Document Type Module
     productDocumentType: '/productdocumenttype'
 };
 
-// Routing path constants
+// Routing paths used throughout the application
 export const ROUTES = {
     BASEPATH: '/',
     LOGIN: '/login',
@@ -36,24 +36,26 @@ export const ROUTES = {
     PRODUCT_DOCUMENTTYPE: '/productDocumentType'
 };
 
-// localStorageKey
+// Keys used for storing and retrieving data in local storage
 export const localStorageKey = {
     USER_PROFILE: 'userProfile',
     JWT_TOKEN: 'jwtToken',
     PRODUCT_CATEGORIES: 'productCategories'
 };
 
-// Recaptcha Configuration
+// Configuration for Google reCAPTCHA
 export const googleRecaptchaConfig = {
     captchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY
 };
 
+// User Status Constants
 export const userStatus = {
     ACCEPTED: 'ACCEPTED',
     REJECTED: 'REJECTED',
     PENDING: 'PENDING'
 };
 
+// ProductStatus Constants
 export const productStatus = {
     PENDING: 'PENDING',
     UNDER_VERIFICATION: 'UNDER_VERIFICATION',
@@ -65,6 +67,7 @@ export const productStatus = {
     APPROVED: 'APPROVED'
 } as const;
 
+// User Roles Constants
 export const userRoles = {
     ADMIN: 'ADMIN',
     MANUFACTURER: 'MANUFACTURER',

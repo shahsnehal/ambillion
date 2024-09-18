@@ -32,12 +32,18 @@ type ProductFormProps = {
     productFormData?: ProductFormValues | null;
 };
 
-// Define schema for individual document
+/**
+ * Schema for validating individual documents.
+ */
 const documentSchema = Yup.object({
     documentType: Yup.string().required('Document type is required'),
     documentName: Yup.string().required('Document name is required'),
     documentData: Yup.string().required('Document data is required')
 });
+
+/**
+ * Schema for validating the product form.
+ */
 const ProductFormSchema = Yup.object().shape({
     productCategoryId: Yup.string().required('Category is required !').trim(),
     productDisplayName: Yup.string().required('Display Name is required !').trim(),
@@ -64,6 +70,9 @@ const ProductFormSchema = Yup.object().shape({
         .min(1, 'At least one document is required !')
 });
 
+/**
+ * Default values for the product form.
+ */
 const defaultProductFormValues: ProductFormValues = {
     productId: '',
     productDisplayName: '',
@@ -75,6 +84,11 @@ const defaultProductFormValues: ProductFormValues = {
     productDocuments: []
 };
 
+/**
+ * Component for adding or editing a product.
+ * @param {ProductFormProps} props - Component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 export const ProductForm: React.FC<ProductFormProps> = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -91,6 +105,12 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     );
     const [productCustomFields, setProductCustomFields] = useState<ProductCustomField[]>([]);
 
+    /**
+     * Converts base64 data to a Blob object.
+     * @param {string} base64Data - The base64 encoded data.
+     * @param {string} contentType - The content type of the data.
+     * @returns {Blob} The Blob object.
+     */
     const convertBase64ToBlob = (base64Data: string, contentType: string): Blob => {
         const byteCharacters = atob(base64Data);
         const byteNumbers = new Array(byteCharacters.length);
@@ -101,6 +121,12 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         return new Blob([byteArray], { type: contentType });
     };
 
+    /**
+     * Converts a document to an ExtendedFile object.
+     * @param {ProductDocument} documentData - The document data.
+     * @param {string} docId - The document ID.
+     * @returns {ExtendedFile} The ExtendedFile object.
+     */
     const convertDocumentContentToExtendedFile = (
         documentData: ProductDocument,
         docId: string
@@ -143,7 +169,9 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         }
     }, [selectedProductDetails]);
 
-    //Get & Set Initial Values Of ProductDocuments Into Localstate
+    /**
+     * Updates product document files state based on initial values.
+     */
     useEffect(() => {
         if (initialValues?.productDocuments.length) {
             const convertedFiles = initialValues.productDocuments.map((doc, index) => {
@@ -153,20 +181,27 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         }
     }, [initialValues?.productDocuments]);
 
-    //Fetch The ProductDetails
+    /**
+     * Fetches product details when the component is mounted or productId changes.
+     */
     useEffect(() => {
         if (productId) {
             dispatch(getProductDetailsRequest(productId));
         }
     }, []);
 
-    //Get & Set Initial Values Of ProductCategoryId Into Localstate
+    /**
+     * Updates selectedCategoryId state based on initial values.
+     */
     useEffect(() => {
         if (initialValues.productCategoryId) {
             setSelectedCategoryId(initialValues.productCategoryId.toString());
         }
     }, [initialValues.productCategoryId]);
 
+    /**
+     * Updates categoryDocuments state based on selectedCategoryId.
+     */
     useEffect(() => {
         if (selectedCategoryId) {
             const selectedCategory = productCategories.find(
@@ -181,7 +216,11 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         }
     }, [selectedCategoryId]);
 
-    //Function For Handle CategoryChange
+    /**
+     * Handles category change event and updates Formik field value.
+     * @param {React.ChangeEvent<HTMLSelectElement>} event - The change event.
+     * @param {FormikProps<ProductFormValues>} formik - Formik instance.
+     */
     const handleCategoryChange = useCallback(
         (event: React.ChangeEvent<HTMLSelectElement>, formik: FormikProps<ProductFormValues>) => {
             const newCategoryId = event.target.value;
@@ -193,7 +232,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         [selectedCategoryId]
     );
 
-    //Submit The Values For Add OR Edit The Product
+    /**
+     * Submits the form values to add or edit a product.
+     * @param {ProductFormValues} values - The form values.
+     */
     const handleSubmit = async (values: ProductFormValues) => {
         const trimmedValues = trimValues(values);
         let categoryId = trimmedValues.productCategoryId;
@@ -218,6 +260,12 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             dispatch(addProductRequest(payload, navigate));
         }
     };
+
+    /**
+     * Converts a file to base64 format.
+     * @param {any} file - The file to convert.
+     * @returns {Promise<string>} A promise that resolves to the base64 encoded string.
+     */
     const convertBase64 = (file: any) => {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -230,6 +278,12 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
             };
         });
     };
+
+    /**
+     * Processes uploaded files and converts them to base64 format.
+     * @param {any} uploadedFiles - The uploaded files.
+     * @returns {Promise<ProductDocument[]>} A promise that resolves to an array of product documents.
+     */
     async function processFiles(uploadedFiles: any) {
         // Map over the files and create an array of promises
         const fileDataPromises = uploadedFiles.map(async (doc: any) => {
@@ -245,6 +299,13 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
         const fileData = await Promise.all(fileDataPromises);
         return fileData;
     }
+
+    /**
+     * Removes the Data URI prefix (e.g., `data:image/jpeg;base64,`) from a base64-encoded string.
+     *
+     * @param {string} dataUri - The Data URI string containing the base64-encoded data.
+     * @returns {string} The base64 string without the Data URI prefix. Returns an empty string if the base64 part is not found.
+     */
     const removeDataUriPrefix = (dataUri: string): string => {
         const base64String = dataUri.split(',')[1];
         return base64String || '';

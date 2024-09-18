@@ -5,8 +5,27 @@ type DocumentProps = {
     documents: ProductDocumentsProps[] | null;
 };
 
+/**
+ * Component to display a list of documents with options to download or view them.
+ *
+ * @param {DocumentProps} props - The component props.
+ * @returns {JSX.Element} The rendered ViewDocuments component.
+ *
+ * @example
+ * <ViewDocuments
+ *     documents={documents}
+ * />
+ */
 const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
     const hasDocuments = documents && documents.length > 0;
+
+    /**
+     * Function to download a file from base64 data.
+     *
+     * @param {string} base64Data - The base64 encoded file data.
+     * @param {string} fileName - The name of the file to be downloaded.
+     * @param {string} fileType - The MIME type of the file.
+     */
     const downloadFile = (base64Data: string, fileName: string, fileType: string) => {
         // Convert Base64 string to a binary string
         const binaryString = window.atob(base64Data);
@@ -31,6 +50,13 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
     };
+
+    /**
+     * Function to open a file in a new tab from base64 data.
+     *
+     * @param {string} base64Data - The base64 encoded file data.
+     * @param {string} fileType - The MIME type of the file.
+     */
     const ViewFile = (base64Data: string, fileType: string) => {
         // Convert Base64 string to a binary string
         const binaryString = window.atob(base64Data);

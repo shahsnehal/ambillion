@@ -1,7 +1,17 @@
 import { ROUTES } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
 
+/**
+ * A functional component that displays a 404 Not Found page.
+ *
+ * @component
+ * @example
+ * return (
+ *   <NotFound />
+ * )
+ */
 export const NotFound = () => {
+    // Initialize the navigate function from react-router-dom
     const navigate = useNavigate();
     return (
         <div id="main-wrapper">

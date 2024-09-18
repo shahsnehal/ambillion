@@ -3,9 +3,26 @@ import { localStorageKey, ROUTES } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
 import { getLocalStorage } from 'utils/localStorage';
 
+/**
+ * Component for displaying a "Not Authorized" page.
+ *
+ * This component shows a 401 error message indicating that access is denied.
+ * It provides a button that navigates the user to either the products page or the login page,
+ * depending on the presence of a JWT token in local storage.
+ *
+ * @returns {React.FC} The NotAuthorized functional component.
+ */
 export const NotAuthorized: React.FC = () => {
     const navigate = useNavigate();
+    // Retrieve JWT token from local storage.
     const jwtToken = getLocalStorage(localStorageKey.JWT_TOKEN);
+
+    /**
+     * Handles navigation based on the presence of a JWT token.
+     *
+     * Navigates to the products page if a JWT token is present,
+     * otherwise navigates to the login page.
+     */
     const handleNavigation = () => {
         if (jwtToken) {
             navigate(ROUTES.PRODUCTS);

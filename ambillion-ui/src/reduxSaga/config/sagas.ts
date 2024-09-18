@@ -5,6 +5,7 @@ import productSaga from 'reduxSaga/modules/product-module/saga/saga';
 import productCategorySaga from 'reduxSaga/modules/productCategories-module/saga/saga';
 import ProductDocumentTypeSaga from 'reduxSaga/modules/productDocumentType-module/saga/saga';
 
+// Root saga that combines all individual sagas into a single saga.
 export default function* rootSaga() {
     yield all([
         authSaga(),

@@ -24,10 +24,12 @@ function App() {
         <ErrorBoundary>
             <BrowserRouter>
                 <React.Suspense fallback={<Loader />}>
+                    {/* Defining routes for the application */}
                     <Routes>
                         {
                             // Public routes
                             <>
+                                {/* Wrapper for public routes */}
                                 <Route element={<Outlet />}>
                                     <Route path={ROUTES.BASEPATH} element={<LoginPage />} />
                                     <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
@@ -45,6 +47,8 @@ function App() {
                                     <Route path="*" element={<NotFound />} />
 
                                     {/* Private routes */}
+
+                                    {/* Protected routes for Admin only */}
                                     <Route
                                         element={
                                             <ProtectedRoute allowedRoles={[userRoles.ADMIN]} />
@@ -78,6 +82,7 @@ function App() {
                                         />
                                     </Route>
 
+                                    {/* Protected routes for Admin, Officer, and Manufacturer */}
                                     <Route
                                         element={
                                             <ProtectedRoute
@@ -107,6 +112,7 @@ function App() {
                                         />
                                     </Route>
 
+                                    {/* Protected routes for Admin and Manufacturer */}
                                     <Route
                                         element={
                                             <ProtectedRoute
@@ -127,6 +133,7 @@ function App() {
                                         />
                                     </Route>
 
+                                    {/* Protected routes for Manufacturer only */}
                                     <Route
                                         element={
                                             <ProtectedRoute
@@ -150,6 +157,7 @@ function App() {
                     </Routes>
                 </React.Suspense>
             </BrowserRouter>
+            {/* ToastContainer for notifications */}
             <ToastContainer position="top-right" autoClose={2000} />
         </ErrorBoundary>
     );

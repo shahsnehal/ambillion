@@ -8,11 +8,19 @@ type ProductDocumentTypeActionColumnProps = {
     onEdit: (row: ProductDocumentsType) => void;
 };
 
-//ProductDocumentType Action
+/**
+ * Renders action buttons for a product document type row.
+ *
+ * @param {ProductDocumentTypeActionColumnProps} props - Component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 export const ProductDocumentTypeAction: React.FC<ProductDocumentTypeActionColumnProps> = ({
     row,
     onEdit
 }) => {
+    /**
+     * Handles the editing of the product document type.
+     */
     const handleEditProductDocumentType = () => {
         onEdit(row);
     };
@@ -32,7 +40,12 @@ export const ProductDocumentTypeAction: React.FC<ProductDocumentTypeActionColumn
     );
 };
 
-//ProductDocumentType  Action Columns
+/**
+ * Defines the action column configuration for the product document types table.
+ *
+ * @param {(row: ProductDocumentsType) => void} onEdit - Callback function to handle editing of the document type.
+ * @returns {TableColumn<ProductDocumentsType>} The column configuration object.
+ */
 export const ProductDocumentTypeActionColumn = (onEdit: (row: ProductDocumentsType) => void) => ({
     name: 'Action',
     cell: (row: ProductDocumentsType) => <ProductDocumentTypeAction row={row} onEdit={onEdit} />,
@@ -41,7 +54,11 @@ export const ProductDocumentTypeActionColumn = (onEdit: (row: ProductDocumentsTy
     button: true
 });
 
-//ProductDocumentType  Tabellist
+/**
+ * Defines the columns for the product document types table.
+ *
+ * @type {TableColumn<ProductDocumentsType>[]}
+ */
 export const ProductDocumentTypeTableColumns: TableColumn<ProductDocumentsType>[] = [
     {
         name: 'Document Name',

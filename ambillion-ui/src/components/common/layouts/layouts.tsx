@@ -6,9 +6,24 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Footer } from './footer/footer';
 import { getLocalStorage } from 'utils/localStorage';
 
+/**
+ * Layout component that provides the main structure for the page,
+ * including the sidebar, header, breadcrumb, and footer.
+ *
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to be rendered within the layout.
+ * @param {string} props.title - The title to be displayed in the breadcrumb.
+ * @returns {JSX.Element} The rendered Layout component.
+ *
+ * @example
+ * <Layout title="Dashboard">
+ *     <DashboardContent />
+ * </Layout>
+ */
 export const Layout = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    // Retrieve user profile from localStorage
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
     const {
         first_name: Name,
@@ -16,6 +31,12 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
         role_name: userRole,
         profile_image: profileImage
     } = userProfile;
+    /**
+     * Determines if the given route is currently active based on the URL path.
+     *
+     * @param {string} route - The route to check.
+     * @returns {boolean} True if the route is active, false otherwise.
+     */
     const isActive = (route: string) => location.pathname.startsWith(route);
 
     return (
