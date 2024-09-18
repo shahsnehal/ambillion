@@ -154,9 +154,12 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                             <div className="row ms-2 mb-3">
                                                 {documentTypes.map((field, index) => (
                                                     <React.Fragment
-                                                        key={`documentType-${index}-${field.documentTypeId || 'new'}`}
+                                                        key={
+                                                            field.documentTypeId ||
+                                                            `documentType-${index}`
+                                                        }
                                                     >
-                                                        <div className="col-sm-12 col-md-6 mb-2">
+                                                        <div className="col-sm-12 col-md-5 mb-2">
                                                             {index === 0 && (
                                                                 <label
                                                                     htmlFor={`documentTypes[${index}].documentTypeId`}
@@ -238,7 +241,7 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                                             />
                                                         </div>
 
-                                                        <div className="col-sm-6 col-md-4 mt-2">
+                                                        <div className="col-sm-6 col-md-5 mt-2">
                                                             {index === 0 && (
                                                                 <label className="form-label mb-3">
                                                                     Mandatory{' '}
@@ -324,43 +327,39 @@ export const ProductCategoryModal: React.FC<ProductCategoryModalProps> = ({
                                             </div>
                                         ) : null}
 
-                                        <div className="modal-footer flex-column flex-md-row justify-content-between">
-                                            <div className="d-flex flex-column flex-md-row w-100 justify-content-md-start">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-rounded btn-secondary w-100 w-md-auto mb-2 mb-md-0 me-md-2"
-                                                    onClick={onClose}
-                                                >
-                                                    <Icon
-                                                        icon="carbon:close-outline"
-                                                        className="fs-5 me-1"
-                                                    />
-                                                    Close
-                                                </button>
-
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-primary w-100 w-md-auto mb-2 mb-md-0 me-md-2"
-                                                    onClick={() => {
-                                                        setDocumentTypes([
-                                                            ...documentTypes,
-                                                            { documentTypeId: '', mandatory: false }
-                                                        ]);
-                                                        setDocumentTypeAdded(true);
-                                                        formikProps.setFieldValue('documentTypes', [
-                                                            ...documentTypes,
-                                                            { documentTypeId: '', mandatory: false }
-                                                        ]);
-                                                    }}
-                                                >
-                                                    <Icon icon="tabler:plus" className="me-1" />
-                                                    Add Document Type
-                                                </button>
-                                            </div>
-
+                                        <div className="modal-footer">
+                                            <button
+                                                type="button"
+                                                className="btn btn-rounded btn-secondary ms-2"
+                                                onClick={onClose}
+                                            >
+                                                <Icon
+                                                    icon="carbon:close-outline"
+                                                    className="fs-5 me-1"
+                                                />
+                                                Close
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-primary"
+                                                onClick={() => {
+                                                    setDocumentTypes([
+                                                        ...documentTypes,
+                                                        { documentTypeId: '', mandatory: false }
+                                                    ]);
+                                                    setDocumentTypeAdded(true);
+                                                    formikProps.setFieldValue('documentTypes', [
+                                                        ...documentTypes,
+                                                        { documentTypeId: '', mandatory: false }
+                                                    ]);
+                                                }}
+                                            >
+                                                <Icon icon="tabler:plus" className="me-1" />
+                                                Add Document Type
+                                            </button>
                                             <button
                                                 type="submit"
-                                                className="btn btn-rounded btn-primary w-100 w-md-auto"
+                                                className="btn btn-rounded btn-primary ms-2"
                                                 disabled={
                                                     !formikProps.isValid ||
                                                     !formikProps.dirty ||
