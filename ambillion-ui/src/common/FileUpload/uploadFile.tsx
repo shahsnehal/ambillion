@@ -218,15 +218,18 @@ const Dropzone: React.FC<DropzoneProps> = ({
             };
 
             return (
-                <div key={index} className="col-md-4">
+                <div key={index} className="col-md-6 col-lg-4 col-sm-12 mb-3">
                     <div className="alert border-success p-2">
-                        <div className="d-flex justify-content-between">
-                            <div className="d-flex align-items-center text-dark">
+                        <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                            {/* Left section for file name and size */}
+                            <div className="d-flex align-items-center text-dark mb-2 mb-md-0">
                                 {trimmedFileName} - {fileSizeDisplay}
                             </div>
-                            <div className="d-flex justify-content-between">
+
+                            {/* Right section for buttons */}
+                            <div className="d-flex flex-wrap justify-content-end">
                                 <button
-                                    className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
+                                    className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
                                     data-toggle="tooltip"
                                     type="button"
                                     data-placement="bottom"
@@ -236,7 +239,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
                                     <Icon icon="solar:file-download-outline" className="fs-5" />
                                 </button>
                                 <button
-                                    className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
+                                    className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
                                     data-toggle="tooltip"
                                     data-placement="bottom"
                                     type="button"
@@ -246,7 +249,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
                                     <Icon icon="carbon:document-view" className="fs-5"></Icon>
                                 </button>
                                 <button
-                                    className="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
+                                    className="btn btn-secondary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
                                     data-toggle="tooltip"
                                     data-placement="bottom"
                                     title="Delete"

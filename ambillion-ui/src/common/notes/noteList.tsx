@@ -17,12 +17,12 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
             {hasNotes ? (
                 notesList.map((note, index) => (
                     <div
-                        className={`d-flex  flex-column ${(index + 1) % 2 === 0 ? 'align-items-end' : 'align-items-start'} `}
+                        className={`d-flex flex-column ${(index + 1) % 2 === 0 ? 'align-items-end' : 'align-items-start'} mb-3`}
                         key={index + 1}
                     >
-                        <div className=" col-sm-12  col-md-6">
+                        <div className="col-12 col-md-8 col-lg-6">
                             <div className="card overflow-hidden">
-                                <div className="d-flex flex-row">
+                                <div className="d-flex flex-column flex-md-row">
                                     <div className="p-3 bg-info-subtle d-flex align-items-center">
                                         <h3 className="text-info box mb-0"></h3>
                                     </div>
@@ -33,7 +33,7 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
                                         >
                                             {note?.user_id === userProfile?.userprofile_id
                                                 ? 'You'
-                                                : `${note?.created_by}( ${note?.user_role} )`}
+                                                : `${note?.created_by} ( ${note?.user_role} )`}
                                         </h6>
                                         <p className="note-date fs-2">
                                             {new Date(note.note_created_at).toLocaleDateString()}{' '}

@@ -12,10 +12,10 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
 
     return (
         <div className="shadow-none position-relative overflow-hidden mb-4">
-            <div className="d-sm-flex d-block justify-content-between align-items-center">
+            <div className="d-flex flex-wrap justify-content-between align-items-center">
                 <h5 className="mb-0 fw-semibold text-uppercase">{title}</h5>
-                <nav aria-label="breadcrumb" className="d-flex align-items-center">
-                    <ol className="breadcrumb d-flex align-items-center">
+                <nav aria-label="breadcrumb" className="mt-2 mt-sm-0">
+                    <ol className="breadcrumb d-flex flex-wrap align-items-center">
                         {pathnames.map((value, index) => {
                             const to = `/${pathnames.slice(0, index + 1).join('/')}`;
                             const isLast = index === pathnames.length - 1;
@@ -32,7 +32,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ title }) => {
                                         </span>
                                     ) : (
                                         <a
-                                            className="text-decoration-none text-primary custom-sidebar-link"
+                                            className="text-decoration-none text-primary cursor-link"
                                             onClick={() => navigate(to)}
                                         >
                                             {value.charAt(0).toUpperCase() + value.slice(1)}

@@ -49,17 +49,15 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
         <div className="row">
             {hasDocuments ? (
                 documents.map((doc, index) => (
-                    <div key={index + 1} className="col-md-4">
+                    <div key={index + 1} className="col-md-6 col-lg-4 col-sm-12 mb-3">
                         <div className="alert border-success p-2">
-                            <div className="d-flex justify-content-between">
-                                <div className="d-flex">
-                                    <Icon icon="bi:file-earmark-pdf-fill" className="fs-9" />
+                            <div className="d-flex flex-column flex-md-row justify-content-between">
+                                {/* Left section with file info */}
+                                <div className="d-flex align-items-center mb-3 mb-md-0">
+                                    <Icon icon="bi:file-earmark-pdf-fill" className="fs-9 me-2" />
                                     <div>
-                                        <div className="d-flex">
-                                            <h6 className="fw-semibold">{doc.document_name}</h6>{' '}
-                                            {/* <h6 className="mx-1"> (2 MB)</h6> */}
-                                        </div>
-                                        <div className="d-flex align-items-center gap-2 fs-2 text-muted">
+                                        <h6 className="fw-semibold mb-1">{doc.document_name}</h6>
+                                        <div className="d-flex align-items-center gap-2 fs-3 text-muted">
                                             <span>
                                                 {new Date(doc.audit_timestamp).toLocaleDateString()}
                                             </span>
@@ -69,10 +67,12 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="d-flex justify-content-between">
+
+                                {/* Right section with action buttons */}
+                                <div className="d-flex flex-wrap justify-content-end">
                                     <button
                                         type="button"
-                                        className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
+                                        className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
                                         data-toggle="tooltip"
                                         data-placement="bottom"
                                         title="Download"
@@ -86,15 +86,16 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
                                     >
                                         <Icon icon="solar:file-download-outline" className="fs-6" />
                                     </button>
+
                                     <button
                                         type="button"
-                                        className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1"
+                                        className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
                                         data-toggle="tooltip"
                                         data-placement="bottom"
                                         title="View"
                                         onClick={() => ViewFile(doc.base64Data, doc.filetype)}
                                     >
-                                        <Icon icon="carbon:document-view" className="fs-6"></Icon>
+                                        <Icon icon="carbon:document-view" className="fs-6" />
                                     </button>
                                 </div>
                             </div>

@@ -141,28 +141,33 @@ export const ProductDocumentTypeModal: React.FC<ProductDocumentTypeModalProps> =
                                             />
                                         </div>
                                     </div>
-                                    <div className="modal-footer">
-                                        <button
-                                            type="button"
-                                            className="btn btn-rounded btn-secondary ms-2"
-                                            onClick={onClose}
-                                        >
-                                            <Icon
-                                                icon="carbon:close-outline"
-                                                className="fs-5 me-1"
-                                            />
-                                            Close
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="btn btn-rounded btn-primary ms-2"
-                                            disabled={!formikProps.isValid || !formikProps.dirty}
-                                        >
-                                            <Icon icon="tabler:plus" className="fs-5 me-1" />
-                                            {documentTypeFormData?.documentTypeId
-                                                ? 'Save Changes'
-                                                : 'Add DocumentType'}
-                                        </button>
+                                    <div className="modal-footer flex-column flex-md-row justify-content-between">
+                                        <div className="d-flex flex-column flex-md-row w-100 justify-content-md-start">
+                                            <button
+                                                type="button"
+                                                className="btn btn-rounded btn-secondary w-100 w-md-auto mb-2 mb-md-0 me-md-2"
+                                                onClick={onClose}
+                                            >
+                                                <Icon
+                                                    icon="carbon:close-outline"
+                                                    className="fs-5 me-1"
+                                                />
+                                                Close
+                                            </button>
+
+                                            <button
+                                                type="submit"
+                                                className="btn btn-rounded btn-primary w-100 w-md-auto mb-2 mb-md-0"
+                                                disabled={
+                                                    !formikProps.isValid || !formikProps.dirty
+                                                }
+                                            >
+                                                <Icon icon="tabler:plus" className="fs-5 me-1" />
+                                                {documentTypeFormData?.documentTypeId
+                                                    ? 'Save Changes'
+                                                    : 'Add DocumentType'}
+                                            </button>
+                                        </div>
                                     </div>
                                 </Form>
                             )}
