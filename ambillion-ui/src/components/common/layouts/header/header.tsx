@@ -78,8 +78,63 @@ export const Header = () => {
                                 </a>
                             </div>
                         </div>
+                        <ul className="navbar-nav flex-row ms-auto align-items-center justify-content-center">
+                            <li className="nav-item dropdown">
+                                <a
+                                    className="nav-link"
+                                    href="javascript:void(0)"
+                                    id="drop2"
+                                    aria-expanded="false"
+                                >
+                                    <img
+                                        src={profileImage}
+                                        alt="user"
+                                        className="profile-pic rounded-circle round-30"
+                                    />
+                                </a>
+                                <div
+                                    className="dropdown-menu pt-0 content-dd overflow-hidden pt-0 dropdown-menu-end user-dd"
+                                    aria-labelledby="drop2"
+                                >
+                                    <div
+                                        className="profile-dropdown position-relative py-2"
+                                        data-simplebar=""
+                                    >
+                                        <div className="py-3 border-bottom">
+                                            <div className="d-flex align-items-center px-3">
+                                                <img
+                                                    src={profileImage}
+                                                    className="rounded"
+                                                    width="50"
+                                                    height="50"
+                                                    alt="ample-img"
+                                                />
+                                                <div className="ms-1">
+                                                    <h5 className="mb-0 fs-3">
+                                                        {userName} ({''} {roleName} {''})
+                                                    </h5>
+                                                    <p className="mb-0 text-muted">{email}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <li className="dropdown-item d-flex align-items-center cursor-link">
+                                            <Icon
+                                                icon="solar:logout-2-outline"
+                                                className="me-2 fs-5"
+                                            />
+                                            <a
+                                                onClick={handleLogout}
+                                                className="text-decoration-none"
+                                            >
+                                                Sign Out
+                                            </a>
+                                        </li>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
 
-                        <a
+                        {/* <a
                             className="p-0 border-0 nav-icon-hover-bg rounded-circle"
                             href="javascript:void(0)"
                             id="userDropdown"
@@ -92,8 +147,6 @@ export const Header = () => {
                                 className="profile-pic rounded-circle round-30"
                             />
                         </a>
-
-                        {/* Dropdown menu */}
                         <ul
                             className="dropdown-menu dropdown-menu-end"
                             aria-labelledby="userDropdown"
@@ -125,7 +178,7 @@ export const Header = () => {
                                     Sign Out
                                 </a>
                             </li>
-                        </ul>
+                        </ul> */}
                     </nav>
                 </div>
             </header>
