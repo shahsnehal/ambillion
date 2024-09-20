@@ -124,13 +124,17 @@ export const ProductCategories = () => {
      *
      * @type {Array<ProductCategory>}
      */
-    const filteredItems = useMemo(
-        () =>
-            productCategories.filter((item) =>
-                item.category_name.toLowerCase().includes(filterText.toLowerCase())
-            ),
-        [filterText, productCategories]
-    );
+    const filteredCategories = useMemo(() => {
+        const lowercasedFilterText = filterText.toLowerCase();
+
+        return productCategories.filter((category) => {
+            const fieldsToSearch = [category.category_name, category.category_description];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [filterText, productCategories]);
 
     /**
      * Creates a memoized subheader component for the data table.
@@ -166,7 +170,7 @@ export const ProductCategories = () => {
                         }
                         onClear={handleClear}
                         filterText={filterText}
-                        placeholder="Filter By Category Name"
+                        placeholder="Filter Category..."
                     />
                 </div>
             </div>
@@ -180,7 +184,7 @@ export const ProductCategories = () => {
                     ...productCategoryTableColumns,
                     ProductCategoryActionColumn(handleEditProductCategory)
                 ]}
-                data={filteredItems}
+                data={filteredCategories}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination

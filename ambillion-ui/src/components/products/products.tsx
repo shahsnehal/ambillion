@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 import { useSelector, useDispatch } from 'react-redux';
 import DataTable from 'react-data-table-component';
@@ -35,15 +35,27 @@ export const Products = () => {
     /**
      * Filters the products based on the filterText input.
      *
-     * @returns {Product[]} - Filtered list of products where the display name matches the filter text.
+     * @returns {Product[]} - Filtered list of products where the  matches the filter text.
      */
-    const filteredItems = useMemo(
-        () =>
-            products?.filter((item) =>
-                item.product_displayname.toLowerCase().includes(filterText.toLowerCase())
-            ),
-        [filterText, products]
-    );
+
+    const filteredProducts = useMemo(() => {
+        const lowercasedFilterText = filterText.toLowerCase();
+
+        return products?.filter((item) => {
+            const fieldsToSearch = [
+                item.product_displayname,
+                item.origin_hsn_code,
+                item.category_name,
+                item.product_feature,
+                item.customer_product_description,
+                item.status
+            ];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [filterText, products]);
 
     /**
      * Navigates to the Add Product route.
@@ -95,7 +107,7 @@ export const Products = () => {
                         }
                         onClear={handleClear}
                         filterText={filterText}
-                        placeholder="Filter By Product Name"
+                        placeholder="Filter Products..."
                     />
                 </div>
             </div>
@@ -105,7 +117,7 @@ export const Products = () => {
     return (
         <DataTable
             columns={[...productsTableColumns]}
-            data={filteredItems}
+            data={filteredProducts}
             progressPending={isLoading}
             progressComponent={<CustomLoader />}
             onRowClicked={(row) => handleView(row.product_id)}

@@ -113,13 +113,22 @@ export const ProductDocumentType = () => {
      *
      * @returns {ProductDocumentsType[]} - The filtered list of document types.
      */
-    const filteredItems = useMemo(
-        () =>
-            productDocumentsType.filter((item) =>
-                item.document_type_name.toLowerCase().includes(filterText.toLowerCase())
-            ),
-        [filterText, productDocumentsType]
-    );
+    const filteredDocuments = useMemo(() => {
+        const lowercasedFilterText = filterText.toLowerCase();
+
+        return productDocumentsType.filter((doc) => {
+            const fieldsToSearch = [
+                doc.document_type_name,
+                doc.document_type_description,
+                doc.document_type_format,
+                doc.category_name
+            ];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [filterText, productDocumentsType]);
 
     /**
      * Creates a subheader component with a filter input and an add button.
@@ -153,7 +162,7 @@ export const ProductDocumentType = () => {
                         }
                         onClear={handleClear}
                         filterText={filterText}
-                        placeholder="Filter By Product Document Name"
+                        placeholder="Filter Product DocumentType..."
                     />
                 </div>
             </div>
@@ -167,7 +176,7 @@ export const ProductDocumentType = () => {
                     ...ProductDocumentTypeTableColumns,
                     ProductDocumentTypeActionColumn(handleEditProductDocumentType)
                 ]}
-                data={filteredItems}
+                data={filteredDocuments}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination

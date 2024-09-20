@@ -1,6 +1,6 @@
 import { TableFilter } from 'components/common/table/tableFilter';
 import { useSelector, useDispatch } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { customStyles, UserStatusChangeActionColumn, userTableColumns } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
@@ -40,13 +40,28 @@ export const UserList: React.FC = () => {
     }, []);
 
     /**
-     * Filters users based on the provided email filter text.
+     * Filters users based on the provided  filter text.
      *
      * @type {Array<User>}
      */
-    const filteredItems = users.filter((user) =>
-        user.email?.toLowerCase().includes(filterText.toLowerCase())
-    );
+    const filteredUsers = useMemo(() => {
+        const lowercasedFilterText = filterText.toLowerCase();
+
+        return users.filter((user) => {
+            const fieldsToSearch = [
+                user.name,
+                user.company_name,
+                user.email,
+                user.mobile_number,
+                user.created_timestamp,
+                user.status
+            ];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [filterText, users]);
 
     /**
      * Handles the approval action for a user.
@@ -125,7 +140,7 @@ export const UserList: React.FC = () => {
                     }
                     onClear={handleClear}
                     filterText={filterText}
-                    placeholder="Filter By Email"
+                    placeholder="Filter users..."
                 />
             </div>
         );
@@ -139,7 +154,7 @@ export const UserList: React.FC = () => {
 
                     UserStatusChangeActionColumn(handleApprove, handleReject)
                 ]}
-                data={filteredItems}
+                data={filteredUsers}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination
