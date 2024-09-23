@@ -20,56 +20,55 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
     const hasDocuments = documents && documents.length > 0;
 
     /**
-     * Function to download a file from base64 data.
+     * Function to download a file from contentpath data.
      *
-     * @param {string} base64Data - The base64 encoded file data.
      * @param {string} fileName - The name of the file to be downloaded.
-     * @param {string} fileType - The MIME type of the file.
+     * @param {string} fileUrl - File Url to view doc.
      */
-    const downloadFile = (base64Data: string, fileName: string, fileType: string) => {
-        // Convert Base64 string to a binary string
-        const binaryString = window.atob(base64Data);
-        // Create a Uint8Array from the binary string
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
+    const downloadFile = async (fileUrl: string, fileName: string) => {
+        try {
+            const response = await fetch(fileUrl);
+
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            const blob = await response.blob(); // Get the file as a blob
+            const url = window.URL.createObjectURL(blob); // Create a URL for the blob
+
+            // Create a link element
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName; // Specify the filename for download
+            document.body.appendChild(link);
+
+            // Simulate a click to trigger the download
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url); // Free up memory
+        } catch (error) {
+            console.error('Download failed:', error);
         }
-
-        // Create a Blob from the Uint8Array
-        const blob = new Blob([bytes], { type: fileType });
-        const url = window.URL.createObjectURL(blob);
-
-        // Create a link element and simulate a click to trigger the download
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
     };
 
     /**
-     * Function to open a file in a new tab from base64 data.
+     * Function to open a file in a new tab from fileUrl data.
      *
-     * @param {string} base64Data - The base64 encoded file data.
-     * @param {string} fileType - The MIME type of the file.
+     * @param {string} fileUrl - File Url to view doc.
      */
-    const ViewFile = (base64Data: string, fileType: string) => {
-        // Convert Base64 string to a binary string
-        const binaryString = window.atob(base64Data);
-        // Create a Uint8Array from the binary string
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-
-        // Create a Blob from the Uint8Array
-        const blob = new Blob([bytes], { type: fileType });
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
+    const ViewFile = (fileUrl: string) => {
+        window.open(fileUrl, '_blank');
+        // // Convert Base64 string to a binary string
+        // const binaryString = window.atob(base64Data);
+        // // Create a Uint8Array from the binary string
+        // const bytes = new Uint8Array(binaryString.length);
+        // for (let i = 0; i < binaryString.length; i++) {
+        //     bytes[i] = binaryString.charCodeAt(i);
+        // }
+        // // Create a Blob from the Uint8Array
+        // const blob = new Blob([bytes], { type: fileType });
+        // const url = window.URL.createObjectURL(blob);
+        // window.open(url, '_blank');
     };
     return (
         <div className="row">
@@ -103,11 +102,7 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
                                         data-placement="bottom"
                                         title="Download"
                                         onClick={() =>
-                                            downloadFile(
-                                                doc.base64Data,
-                                                doc.document_name,
-                                                doc.filetype
-                                            )
+                                            downloadFile(doc.contentpath, doc.document_name)
                                         }
                                     >
                                         <Icon icon="solar:file-download-outline" className="fs-6" />
@@ -119,7 +114,8 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
                                         data-toggle="tooltip"
                                         data-placement="bottom"
                                         title="View"
-                                        onClick={() => ViewFile(doc.base64Data, doc.filetype)}
+                                        // onClick={() => ViewFile(doc.base64Data, doc.contentpath)}
+                                        onClick={() => ViewFile(doc.contentpath)}
                                     >
                                         <Icon icon="carbon:document-view" className="fs-6" />
                                     </button>
