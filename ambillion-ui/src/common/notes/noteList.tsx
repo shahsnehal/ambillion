@@ -29,9 +29,7 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
                         <div className="col-12 col-md-8 col-lg-6">
                             <div className="card overflow-hidden">
                                 <div className="d-flex flex-column flex-md-row">
-                                    <div className="p-3 bg-info-subtle d-flex align-items-center">
-                                        <h3 className="text-info box mb-0"></h3>
-                                    </div>
+                                    <div className="p-3 bg-info-subtle d-flex align-items-center"></div>
                                     <div className="p-3">
                                         <h6
                                             className="note-title text-truncate"

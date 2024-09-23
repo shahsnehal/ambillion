@@ -85,7 +85,7 @@ axiosInstance.interceptors.response.use(
         } else if (data?.error) {
             toast.error(data?.message);
         }
-        return Promise.reject(data);
+        return Promise.reject(new Error('An unknown error occurred.'));
     }
 );
 export default axiosInstance;

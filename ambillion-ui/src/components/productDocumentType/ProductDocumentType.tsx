@@ -20,6 +20,7 @@ import {
     ProductDocumentsType,
     ProductDocumentTypeFormValues
 } from 'reduxSaga/modules/productDocumentType-module/type/types';
+import { useDebounce } from 'utils/common';
 
 /**
  * Component to manage and display product document types.
@@ -37,6 +38,8 @@ export const ProductDocumentType = () => {
     const { productDocumentsType, isLoading } = useSelector(
         (state: RootState) => state.ProductDocumentTypeModule
     );
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
 
     /**
      * Fetch product document types when the component mounts.
@@ -114,7 +117,7 @@ export const ProductDocumentType = () => {
      * @returns {ProductDocumentsType[]} - The filtered list of document types.
      */
     const filteredDocuments = useMemo(() => {
-        const lowercasedFilterText = filterText.toLowerCase();
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
 
         return productDocumentsType.filter((doc) => {
             const fieldsToSearch = [
@@ -128,7 +131,7 @@ export const ProductDocumentType = () => {
                 field?.toLowerCase().includes(lowercasedFilterText)
             );
         });
-    }, [filterText, productDocumentsType]);
+    }, [debouncedFilterText, productDocumentsType]);
 
     /**
      * Creates a subheader component with a filter input and an add button.

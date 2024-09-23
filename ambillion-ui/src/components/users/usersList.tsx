@@ -11,6 +11,7 @@ import {
 import { RootState } from 'reduxSaga/config/store';
 import { userStatus } from 'constants/common';
 import { CustomLoader } from 'common/loaders/loader';
+import { useDebounce } from 'utils/common';
 
 export const actionType = {
     APPROVE: 'APPROVE',
@@ -34,6 +35,8 @@ export const UserList: React.FC = () => {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [currentActionType, setCurrentActionType] = useState<string | null>(null);
     const { isLoading, users } = useSelector((state: RootState) => state.userModule);
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
 
     useEffect(() => {
         dispatch(fetchUsersRequest());
@@ -45,7 +48,7 @@ export const UserList: React.FC = () => {
      * @type {Array<User>}
      */
     const filteredUsers = useMemo(() => {
-        const lowercasedFilterText = filterText.toLowerCase();
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
 
         return users.filter((user) => {
             const fieldsToSearch = [
@@ -61,7 +64,7 @@ export const UserList: React.FC = () => {
                 field?.toLowerCase().includes(lowercasedFilterText)
             );
         });
-    }, [filterText, users]);
+    }, [debouncedFilterText, users]);
 
     /**
      * Handles the approval action for a user.

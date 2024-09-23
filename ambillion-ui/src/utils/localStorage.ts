@@ -2,7 +2,7 @@
 import { EncryptStorage } from 'encrypt-storage';
 
 // Initialize encryption storage with a key and prefix.
-const key: string = process.env.REACT_APP_KEY || '';
+const key: string = process.env.REACT_APP_KEY ?? '';
 export const encryptStorage = new EncryptStorage(key, {
     prefix: '@ambillion'
 });

@@ -18,7 +18,6 @@ export const txt = { 'text/plain': ['.txt'] };
 //image types
 export const jpeg = { 'image/jpeg': ['.jpg', '.jpeg'] };
 export const png = { 'image/png': ['.png'] };
-// export const gif = { 'image/gif': ['.gif'] };
 
 //DocumentType Formats
 export const fileFormats = [
