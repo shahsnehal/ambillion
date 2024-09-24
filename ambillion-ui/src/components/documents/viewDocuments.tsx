@@ -1,5 +1,6 @@
 import { Icon } from '@iconify/react';
 import { localStorageKey } from 'constants/common';
+import { toast } from 'react-toastify';
 import { ProductDocumentsProps } from 'reduxSaga/modules/product-module/type/types';
 import { getLocalStorage } from 'utils/localStorage';
 
@@ -55,6 +56,7 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url); // Free up memory
         } catch (error) {
+            toast.error('Failed to download file.');
             console.error('Download failed:', error);
         }
     };
@@ -86,6 +88,7 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
             // Optionally clean up the URL object after it's opened
             window.URL.revokeObjectURL(url); // Free up memory
         } catch (error) {
+            toast.error('Failed to view file.');
             console.error('View file failed:', error);
         }
     };

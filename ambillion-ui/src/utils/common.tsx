@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ROUTES } from 'constants/common';
+import { localStorageKey, ROUTES } from 'constants/common';
 import { useState, useEffect } from 'react';
-import { removeLocalStorage } from './localStorage';
+import { getLocalStorage, removeLocalStorage } from './localStorage';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
 import CryptoJS from 'crypto-js';
 /**
@@ -129,7 +129,14 @@ export const decryptData = (encryptedData: { salt: string; iv: string; ciphertex
 
 export const getBase64FromFileUrl = async (fileUrl: string): Promise<string> => {
     try {
-        const response = await fetch(fileUrl);
+        const accessToken = getLocalStorage(localStorageKey.JWT_TOKEN); // Get the JWT token
+        const response = await await fetch(fileUrl, {
+            method: 'GET',
+            credentials: 'include', // Include credentials (cookies) for authentication
+            headers: {
+                Authorization: `Bearer ${accessToken}` // Assuming you're using a Bearer token for auth
+            }
+        });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
