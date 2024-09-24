@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { csv, doc, docx, jpeg, pdf, png, txt, xls, xlsx } from 'constants/fileType';
