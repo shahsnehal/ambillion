@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ROUTES } from 'constants/common';
+import { useState, useEffect } from 'react';
 import { removeLocalStorage } from './localStorage';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
 import CryptoJS from 'crypto-js';
@@ -29,7 +30,7 @@ export const trimValues = (obj: any): any => {
     if (typeof obj === 'object') {
         const trimmedObject: any = Array.isArray(obj) ? [] : {};
         for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            if (Object.hasOwn(obj, key)) {
                 trimmedObject[key] = trimValues(obj[key]);
             }
         }
@@ -67,7 +68,6 @@ export const getProductCustomeFields = (customeFields: any): ProductCustomField[
         return [];
     } else if (Array.isArray(customeFields)) {
         // If customeFields is already an array (expected in production environment)
-        console.log('from if');
         if (environment === 'production') {
             return customeFields as ProductCustomField[];
         }
@@ -152,4 +152,27 @@ export const getBase64FromFileUrl = async (fileUrl: string): Promise<string> => 
         console.error('Error fetching or converting file to base64:', error);
         return ''; // Return an empty string if error occurs
     }
+};
+/**
+ * Custom hook for debouncing a value.
+ *
+ * @param value - The input value to debounce.
+ * @param delay - The delay in milliseconds before updating the state.
+ * @returns The debounced value.
+ */
+export const useDebounce = (value: string, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        // Clean up the timeout if the value changes before the delay.
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
 };

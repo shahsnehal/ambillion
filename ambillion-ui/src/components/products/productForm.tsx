@@ -285,6 +285,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                 resolve(reader.result);
             };
             reader.onerror = function (error) {
+                // eslint-disable-next-line no-console
                 console.log('Error: ', error);
             };
         });
@@ -575,9 +576,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                 <Field
                                                                     type="text"
                                                                     name={`productCustomFields[${index}].FieldName`}
-                                                                    autoFocus={
-                                                                        isAddMode ? true : false
-                                                                    }
+                                                                    autoFocus={isAddMode}
                                                                     className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
                                                                     value={field.FieldName}
                                                                     onChange={(
@@ -734,13 +733,17 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                             }
                                                             className="me-1"
                                                         />
-                                                        {isLoading
-                                                            ? productId
-                                                                ? 'Updating...'
-                                                                : 'Adding...'
-                                                            : productId
-                                                              ? 'Save Changes'
-                                                              : 'Add Product'}
+                                                        {(() => {
+                                                            if (isLoading) {
+                                                                return productId
+                                                                    ? 'Updating...'
+                                                                    : 'Adding...';
+                                                            } else {
+                                                                return productId
+                                                                    ? 'Save Changes'
+                                                                    : 'Add Product';
+                                                            }
+                                                        })()}
                                                     </button>
                                                 </div>
                                             </div>

@@ -10,6 +10,7 @@ import { CustomLoader } from 'common/loaders/loader';
 import { getLocalStorage } from 'utils/localStorage';
 import { localStorageKey, ROUTES, userRoles } from 'constants/common';
 import { useNavigate } from 'react-router-dom';
+import { useDebounce } from 'utils/common';
 
 /**
  * Component for displaying a list of products with filter functionality.
@@ -25,6 +26,9 @@ export const Products = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const { products, isLoading } = useSelector((state: RootState) => state.productModule);
 
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
+
     /**
      * Fetches products when the component mounts.
      */
@@ -39,7 +43,7 @@ export const Products = () => {
      */
 
     const filteredProducts = useMemo(() => {
-        const lowercasedFilterText = filterText.toLowerCase();
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
 
         return products?.filter((item) => {
             const fieldsToSearch = [
@@ -55,7 +59,7 @@ export const Products = () => {
                 field?.toLowerCase().includes(lowercasedFilterText)
             );
         });
-    }, [filterText, products]);
+    }, [debouncedFilterText, products]);
 
     /**
      * Navigates to the Add Product route.

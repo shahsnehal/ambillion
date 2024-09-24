@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { csv, doc, docx, jpeg, pdf, png, txt, xls, xlsx } from 'constants/fileType';
@@ -43,7 +44,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
 }) => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [isDragActive, setIsDragActive] = useState(false);
-    const [fileRejections, setFileRejections] = useState<any[]>([]);
+    const [fileRejections] = useState<any[]>([]);
     const [uploadedFiles, setUploadedFiles] = useState<ExtendedFile[]>(initialFiles || []);
     const [confirmationMessage, setConfirmationMessage] = useState<string>('');
     const [confirmedAction, setConfirmedAction] = useState<(() => void) | null>(null);
@@ -129,7 +130,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
-            onFileChangeTest && onFileChangeTest(newFiles, name);
+            onFileChangeTest?.(newFiles, name);
             return newFiles;
         });
 
@@ -166,7 +167,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
                     fileName = fileName.slice(0, dotIndex);
                 }
 
-                while (uploadedFiles.some((uploadedFile) => uploadedFile.name === newFile.name)) {
+                if (uploadedFiles.some((uploadedFile) => uploadedFile.name === newFile.name)) {
                     setConfirmationMessage(
                         `File "${newFile.name}" already exists. Do you want to rename and upload?`
                     );
@@ -186,7 +187,7 @@ const Dropzone: React.FC<DropzoneProps> = ({
                     if (fileInputRef.current) {
                         fileInputRef.current.value = '';
                     }
-                    onFileChangeTest && onFileChangeTest(newFiles, name);
+                    onFileChangeTest?.(newFiles, name);
                     return newFiles;
                 });
             }
@@ -220,7 +221,9 @@ const Dropzone: React.FC<DropzoneProps> = ({
 
     // Configures the dropzone using react-dropzone
     const { getRootProps, getInputProps } = useDropzone({
-        onDrop: (acceptedFiles, fileRejections) => onDrop(acceptedFiles, fileRejections),
+        onDrop: (acceptedFiles, fileRejections) => {
+            onDrop(acceptedFiles, fileRejections);
+        },
         accept: allowedFileTypes || {
             ...pdf,
             ...doc,

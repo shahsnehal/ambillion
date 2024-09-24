@@ -21,6 +21,7 @@ import {
     ProductCategory,
     ProductCategoryFormValues
 } from 'reduxSaga/modules/productCategories-module/type/types';
+import { useDebounce } from 'utils/common';
 
 /**
  * ProductCategories component manages a list of product categories, with functionalities for adding and editing categories.
@@ -42,6 +43,8 @@ export const ProductCategories = () => {
     const { productCategories, isLoading } = useSelector(
         (state: RootState) => state.productCategoryModule
     );
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
 
     /**
      * Fetches product categories when the component mounts.
@@ -125,7 +128,7 @@ export const ProductCategories = () => {
      * @type {Array<ProductCategory>}
      */
     const filteredCategories = useMemo(() => {
-        const lowercasedFilterText = filterText.toLowerCase();
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
 
         return productCategories.filter((category) => {
             const fieldsToSearch = [category.category_name, category.category_description];
@@ -134,7 +137,7 @@ export const ProductCategories = () => {
                 field?.toLowerCase().includes(lowercasedFilterText)
             );
         });
-    }, [filterText, productCategories]);
+    }, [debouncedFilterText, productCategories]);
 
     /**
      * Creates a memoized subheader component for the data table.
