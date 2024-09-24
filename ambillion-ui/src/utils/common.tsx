@@ -127,6 +127,32 @@ export const decryptData = (encryptedData: { salt: string; iv: string; ciphertex
     return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 };
 
+export const getBase64FromFileUrl = async (fileUrl: string): Promise<string> => {
+    try {
+        const response = await fetch(fileUrl);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const result = reader.result as string | null;
+                if (result) {
+                    resolve(result.split(',')[1] || ''); // Ensure it always returns a string
+                } else {
+                    reject(new Error('Failed to read file as base64'));
+                }
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    } catch (error) {
+        console.error('Error fetching or converting file to base64:', error);
+        return ''; // Return an empty string if error occurs
+    }
+};
 /**
  * Custom hook for debouncing a value.
  *

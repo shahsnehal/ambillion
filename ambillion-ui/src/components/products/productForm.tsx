@@ -26,7 +26,7 @@ import {
 } from 'reduxSaga/modules/productCategories-module/type/types';
 import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
-import { getProductCustomeFields, trimValues } from 'utils/common';
+import { getBase64FromFileUrl, getProductCustomeFields, trimValues } from 'utils/common';
 import { CustomLoader } from 'common/loaders/loader';
 
 type ProductFormProps = {
@@ -143,32 +143,42 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     };
 
     useEffect(() => {
-        if (selectedProductDetails && !isAddMode) {
-            const productProperties: ProductCustomField[] = getProductCustomeFields(
-                selectedProductDetails?.product_custom_fields
-            );
-            setProductCustomFields(productProperties);
-            const updatedDetails = {
-                productId: selectedProductDetails?.product_id ?? '',
-                productDisplayName: selectedProductDetails?.product_displayname ?? '',
-                productCategoryId: selectedProductDetails?.category_id ?? '',
-                originHsnCode: selectedProductDetails?.origin_hsn_code ?? '',
-                customerProductDescription:
-                    selectedProductDetails?.customer_product_description ?? '',
-                productFeature: selectedProductDetails?.product_feature ?? '',
-                productCustomFields: productProperties,
-                productDocuments: selectedProductDetails?.product_documents
-                    ? selectedProductDetails.product_documents.map((doc) => ({
-                          documentType: doc.filetype,
-                          documentName: doc.document_name,
-                          documentData: doc.base64Data
-                      }))
-                    : []
-            };
+        const fetchProductDetails = async () => {
+            if (selectedProductDetails && !isAddMode) {
+                const productProperties: ProductCustomField[] = getProductCustomeFields(
+                    selectedProductDetails?.product_custom_fields
+                );
+                setProductCustomFields(productProperties);
 
-            setInitialValues(updatedDetails);
-        }
-    }, [selectedProductDetails]);
+                // Handle the asynchronous base64 fetching here
+                const updatedDetails = {
+                    productId: selectedProductDetails?.product_id ?? '',
+                    productDisplayName: selectedProductDetails?.product_displayname ?? '',
+                    productCategoryId: selectedProductDetails?.category_id ?? '',
+                    originHsnCode: selectedProductDetails?.origin_hsn_code ?? '',
+                    customerProductDescription:
+                        selectedProductDetails?.customer_product_description ?? '',
+                    productFeature: selectedProductDetails?.product_feature ?? '',
+                    productCustomFields: productProperties,
+                    productDocuments: selectedProductDetails?.product_documents
+                        ? await Promise.all(
+                              selectedProductDetails.product_documents.map(async (doc) => ({
+                                  documentType: doc.filetype,
+                                  documentName: doc.document_name,
+                                  documentData: await getBase64FromFileUrl(doc.contentpath) // Await the base64 data
+                              }))
+                          )
+                        : []
+                };
+
+                // Set the updated details in state
+                setInitialValues(updatedDetails);
+            }
+        };
+
+        // Call the async function
+        fetchProductDetails();
+    }, [selectedProductDetails, isAddMode]);
 
     /**
      * Updates product document files state based on initial values.
