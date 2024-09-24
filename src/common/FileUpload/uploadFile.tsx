@@ -7,6 +7,7 @@ import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ErrorMessage, useFormikContext } from 'formik';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 
 type FileSizeLimit = {
     size: number;
