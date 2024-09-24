@@ -1,5 +1,7 @@
 import { Icon } from '@iconify/react';
+import { localStorageKey } from 'constants/common';
 import { ProductDocumentsProps } from 'reduxSaga/modules/product-module/type/types';
+import { getLocalStorage } from 'utils/localStorage';
 
 type DocumentProps = {
     documents: ProductDocumentsProps[] | null;
@@ -27,8 +29,14 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
      */
     const downloadFile = async (fileUrl: string, fileName: string) => {
         try {
-            const response = await fetch(fileUrl);
-
+            const accessToken = getLocalStorage(localStorageKey.JWT_TOKEN);
+            const response = await fetch(fileUrl, {
+                method: 'GET',
+                credentials: 'include', // Include credentials (cookies) for authentication
+                headers: {
+                    Authorization: `Bearer ${accessToken}` // Assuming you're using a Bearer token for auth
+                }
+            });
             if (!response.ok) throw new Error('Network response was not ok');
 
             const blob = await response.blob(); // Get the file as a blob
@@ -56,20 +64,32 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
      *
      * @param {string} fileUrl - File Url to view doc.
      */
-    const ViewFile = (fileUrl: string) => {
-        window.open(fileUrl, '_blank');
-        // // Convert Base64 string to a binary string
-        // const binaryString = window.atob(base64Data);
-        // // Create a Uint8Array from the binary string
-        // const bytes = new Uint8Array(binaryString.length);
-        // for (let i = 0; i < binaryString.length; i++) {
-        //     bytes[i] = binaryString.charCodeAt(i);
-        // }
-        // // Create a Blob from the Uint8Array
-        // const blob = new Blob([bytes], { type: fileType });
-        // const url = window.URL.createObjectURL(blob);
-        // window.open(url, '_blank');
+    const ViewFile = async (fileUrl: string) => {
+        try {
+            const accessToken = getLocalStorage(localStorageKey.JWT_TOKEN); // Get the JWT token
+            const response = await fetch(fileUrl, {
+                method: 'GET',
+                credentials: 'include', // Include credentials (cookies) for authentication
+                headers: {
+                    Authorization: `Bearer ${accessToken}` // Assuming you're using a Bearer token for auth
+                }
+            });
+
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            const blob = await response.blob(); // Get the file as a blob
+            const url = window.URL.createObjectURL(blob); // Create a URL for the blob
+
+            // Open the file in a new tab
+            window.open(url, '_blank');
+
+            // Optionally clean up the URL object after it's opened
+            window.URL.revokeObjectURL(url); // Free up memory
+        } catch (error) {
+            console.error('View file failed:', error);
+        }
     };
+
     return (
         <div className="row">
             {hasDocuments ? (
