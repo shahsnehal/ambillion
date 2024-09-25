@@ -68,6 +68,7 @@ export const getProductCustomeFields = (customeFields: any): ProductCustomField[
         return [];
     } else if (Array.isArray(customeFields)) {
         // If customeFields is already an array (expected in production environment)
+        console.log('from if');
         if (environment === 'production') {
             return customeFields as ProductCustomField[];
         }

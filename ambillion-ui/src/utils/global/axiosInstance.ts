@@ -37,6 +37,7 @@ axiosInstance.interceptors.request.use(
         // Retrieve the access token from localStorage
         const accessToken = getLocalStorage(localStorageKey.JWT_TOKEN);
         if (accessToken) {
+            // Attach the token to the Authorization header if it exists
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
 
@@ -60,6 +61,7 @@ axiosInstance.interceptors.request.use(
  */
 axiosInstance.interceptors.response.use(
     (response: AxiosResponse) => {
+        // Check if the response code indicates success
         const responseCode = response?.data?.code;
 
         // Decrypt response data if encrypted (check for specific structure)
@@ -73,16 +75,19 @@ axiosInstance.interceptors.response.use(
         }
 
         if ([200, 201, 202, 203].includes(responseCode)) {
+            // Display a success message if present in the response
             const responseMessage = response?.data?.message;
             if (responseMessage) toast.success(responseMessage);
         }
-        return response.data;
+        return response.data; // Return the response data to be used by the calling code
     },
     async (error) => {
         const data = error?.response ? error?.response?.data : null;
         if (error.code && !data) {
+            // Display error message if no response data is available
             toast.error(error.message);
         } else if (data?.error) {
+            // Display error message from response data if available
             toast.error(data?.message);
         }
         return Promise.reject(new Error('An unknown error occurred.'));
