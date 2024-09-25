@@ -344,7 +344,8 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
 
                             return (
                                 <>
-                                    {isLoading ? (
+                                    {isLoading ||
+                                    (!isAddMode && !initialValues?.productDisplayName) ? (
                                         <div className="container my-4">
                                             <CustomLoader />
                                         </div>
