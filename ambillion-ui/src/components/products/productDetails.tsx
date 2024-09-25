@@ -183,7 +183,7 @@ export const ProductDetails: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            ) : (
+            ) : selectedProductDetails ? (
                 <div className="card">
                     <div className="card-body">
                         <div className="container my-4">
@@ -440,6 +440,14 @@ export const ProductDetails: React.FC = () => {
                                     )}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="card">
+                    <div className="card-body">
+                        <div className="container my-4">
+                            <h5>Product Details Not Available.</h5>
                         </div>
                     </div>
                 </div>
