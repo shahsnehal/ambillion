@@ -26,7 +26,8 @@ import {
 } from 'reduxSaga/modules/productCategories-module/type/types';
 import Dropzone, { ExtendedFile } from 'common/FileUpload/uploadFile';
 import { Icon } from '@iconify/react';
-import { getProductCustomeFields, trimValues } from 'utils/common';
+import { getBase64FromFileUrl, getProductCustomeFields, trimValues } from 'utils/common';
+import { CustomLoader } from 'common/loaders/loader';
 
 type ProductFormProps = {
     productFormData?: ProductFormValues | null;
@@ -142,32 +143,42 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
     };
 
     useEffect(() => {
-        if (selectedProductDetails && !isAddMode) {
-            const productProperties: ProductCustomField[] = getProductCustomeFields(
-                selectedProductDetails?.product_custom_fields
-            );
-            setProductCustomFields(productProperties);
-            const updatedDetails = {
-                productId: selectedProductDetails?.product_id ?? '',
-                productDisplayName: selectedProductDetails?.product_displayname ?? '',
-                productCategoryId: selectedProductDetails?.category_id ?? '',
-                originHsnCode: selectedProductDetails?.origin_hsn_code ?? '',
-                customerProductDescription:
-                    selectedProductDetails?.customer_product_description ?? '',
-                productFeature: selectedProductDetails?.product_feature ?? '',
-                productCustomFields: productProperties,
-                productDocuments: selectedProductDetails?.product_documents
-                    ? selectedProductDetails.product_documents.map((doc) => ({
-                          documentType: doc.filetype,
-                          documentName: doc.document_name,
-                          documentData: doc.base64Data
-                      }))
-                    : []
-            };
+        const fetchProductDetails = async () => {
+            if (selectedProductDetails && !isAddMode) {
+                const productProperties: ProductCustomField[] = getProductCustomeFields(
+                    selectedProductDetails?.product_custom_fields
+                );
+                setProductCustomFields(productProperties);
 
-            setInitialValues(updatedDetails);
-        }
-    }, [selectedProductDetails]);
+                // Handle the asynchronous base64 fetching here
+                const updatedDetails = {
+                    productId: selectedProductDetails?.product_id ?? '',
+                    productDisplayName: selectedProductDetails?.product_displayname ?? '',
+                    productCategoryId: selectedProductDetails?.category_id ?? '',
+                    originHsnCode: selectedProductDetails?.origin_hsn_code ?? '',
+                    customerProductDescription:
+                        selectedProductDetails?.customer_product_description ?? '',
+                    productFeature: selectedProductDetails?.product_feature ?? '',
+                    productCustomFields: productProperties,
+                    productDocuments: selectedProductDetails?.product_documents
+                        ? await Promise.all(
+                              selectedProductDetails.product_documents.map(async (doc) => ({
+                                  documentType: doc.filetype,
+                                  documentName: doc.document_name,
+                                  documentData: await getBase64FromFileUrl(doc.contentpath) // Await the base64 data
+                              }))
+                          )
+                        : []
+                };
+
+                // Set the updated details in state
+                setInitialValues(updatedDetails);
+            }
+        };
+
+        // Call the async function
+        fetchProductDetails();
+    }, [selectedProductDetails, isAddMode]);
 
     /**
      * Updates product document files state based on initial values.
@@ -274,6 +285,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                 resolve(reader.result);
             };
             reader.onerror = function (error) {
+                // eslint-disable-next-line no-console
                 console.log('Error: ', error);
             };
         });
@@ -331,365 +343,414 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                 .productCustomFields as CustomFieldTouched[];
 
                             return (
-                                <Form>
-                                    <div className="row mb-3">
-                                        <div className="col-sm-12 col-md-6">
-                                            <label
-                                                htmlFor="productDisplayName"
-                                                className="form-label"
-                                            >
-                                                Product Display Name{' '}
-                                                <span className="text-danger">*</span>
-                                            </label>
-                                            <Field
-                                                type="text"
-                                                name="productDisplayName"
-                                                autoFocus
-                                                className={`form-control ${props.touched.productDisplayName && props.errors.productDisplayName ? 'is-invalid' : ''}`}
-                                                id="productDisplayName"
-                                            />
-                                            <ErrorMessage
-                                                component="div"
-                                                name="productDisplayName"
-                                                className="invalid-feedback"
-                                            />
+                                <>
+                                    {isLoading ||
+                                    (!isAddMode && !initialValues?.productDisplayName) ? (
+                                        <div className="container my-4">
+                                            <CustomLoader />
                                         </div>
+                                    ) : (
+                                        <Form>
+                                            <div className="row mb-3">
+                                                <div className="col-sm-12 col-md-6">
+                                                    <label
+                                                        htmlFor="productDisplayName"
+                                                        className="form-label"
+                                                    >
+                                                        Product Display Name{' '}
+                                                        <span className="text-danger">*</span>
+                                                    </label>
+                                                    <Field
+                                                        type="text"
+                                                        name="productDisplayName"
+                                                        autoFocus
+                                                        className={`form-control ${props.touched.productDisplayName && props.errors.productDisplayName ? 'is-invalid' : ''}`}
+                                                        id="productDisplayName"
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="productDisplayName"
+                                                        className="invalid-feedback"
+                                                    />
+                                                </div>
 
-                                        <div className="col-sm-12 col-md-6">
-                                            <label htmlFor="originHsnCode" className="form-label">
-                                                Origin HSN Code{' '}
-                                                <span className="text-danger">*</span>
-                                            </label>
-                                            <Field
-                                                type="text"
-                                                name="originHsnCode"
-                                                className={`form-control ${props.touched.originHsnCode && props.errors.originHsnCode ? 'is-invalid' : ''}`}
-                                                id="originHsnCode"
-                                            />
-                                            <ErrorMessage
-                                                component="div"
-                                                name="originHsnCode"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <div className="col-sm-12">
-                                            <label
-                                                htmlFor="productCategoryId"
-                                                className="form-label"
-                                            >
-                                                Product Category{' '}
-                                                <span className="text-danger">*</span>
-                                            </label>
-                                            <Field
-                                                as="select"
-                                                name="productCategoryId"
-                                                className={`form-control ${props.touched.productCategoryId && props.errors.productCategoryId ? 'is-invalid' : ''}`}
-                                                id="productCategoryId"
-                                                onChange={(
-                                                    event: React.ChangeEvent<HTMLSelectElement>
-                                                ) => {
-                                                    handleCategoryChange(event, props);
-                                                }}
-                                                value={props.values.productCategoryId}
-                                            >
-                                                <option value="" disabled>
-                                                    -- Select a Category --
-                                                </option>
-                                                {productCategories?.map(
-                                                    (category: ProductCategory) => (
-                                                        <option
-                                                            key={category.category_id}
-                                                            value={category.category_id}
-                                                            title={category.category_description}
-                                                        >
-                                                            {category.category_name}
+                                                <div className="col-sm-12 col-md-6">
+                                                    <label
+                                                        htmlFor="originHsnCode"
+                                                        className="form-label"
+                                                    >
+                                                        Origin HSN Code{' '}
+                                                        <span className="text-danger">*</span>
+                                                    </label>
+                                                    <Field
+                                                        type="text"
+                                                        name="originHsnCode"
+                                                        className={`form-control ${props.touched.originHsnCode && props.errors.originHsnCode ? 'is-invalid' : ''}`}
+                                                        id="originHsnCode"
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="originHsnCode"
+                                                        className="invalid-feedback"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="row mb-3">
+                                                <div className="col-sm-12">
+                                                    <label
+                                                        htmlFor="productCategoryId"
+                                                        className="form-label"
+                                                    >
+                                                        Product Category{' '}
+                                                        <span className="text-danger">*</span>
+                                                    </label>
+                                                    <Field
+                                                        as="select"
+                                                        name="productCategoryId"
+                                                        className={`form-control ${props.touched.productCategoryId && props.errors.productCategoryId ? 'is-invalid' : ''}`}
+                                                        id="productCategoryId"
+                                                        onChange={(
+                                                            event: React.ChangeEvent<HTMLSelectElement>
+                                                        ) => {
+                                                            handleCategoryChange(event, props);
+                                                        }}
+                                                        value={props.values.productCategoryId}
+                                                    >
+                                                        <option value="" disabled>
+                                                            -- Select a Category --
                                                         </option>
-                                                    )
-                                                )}
-                                            </Field>
-
-                                            <ErrorMessage
-                                                component="div"
-                                                name="productCategoryId"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    {props.values.productCategoryId && (
-                                        <div className="col-sm-12 mt-3">
-                                            <label
-                                                htmlFor="categoryDocuments"
-                                                className="form-label text-black"
-                                            >
-                                                Required To Attach Documents for Selected Category :
-                                            </label>
-                                            {categoryDocuments.length > 0 ? (
-                                                <table className="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Description</th>
-                                                            <th>Format</th>
-                                                            <th>Mandatory</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {categoryDocuments.map((doc) => (
-                                                            <tr key={doc.document_type_id}>
-                                                                <td>{doc.document_type_name}</td>
-                                                                <td>
-                                                                    {doc.document_type_description}
-                                                                </td>
-                                                                <td>{doc.document_type_format}</td>
-                                                                <td
-                                                                    className={
-                                                                        doc.mandatory
-                                                                            ? 'text-secondary'
-                                                                            : ''
+                                                        {productCategories?.map(
+                                                            (category: ProductCategory) => (
+                                                                <option
+                                                                    key={category.category_id}
+                                                                    value={category.category_id}
+                                                                    title={
+                                                                        category.category_description
                                                                     }
                                                                 >
-                                                                    {doc.mandatory ? 'Yes' : 'No'}
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            ) : (
-                                                <p>
-                                                    No Documents required for the selected category.
-                                                </p>
+                                                                    {category.category_name}
+                                                                </option>
+                                                            )
+                                                        )}
+                                                    </Field>
+
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="productCategoryId"
+                                                        className="invalid-feedback"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {props.values.productCategoryId && (
+                                                <div className="col-sm-12 mt-3">
+                                                    <label
+                                                        htmlFor="categoryDocuments"
+                                                        className="form-label text-black"
+                                                    >
+                                                        Required To Attach Documents for Selected
+                                                        Category :
+                                                    </label>
+                                                    {categoryDocuments.length > 0 ? (
+                                                        <table className="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Description</th>
+                                                                    <th>Format</th>
+                                                                    <th>Mandatory</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {categoryDocuments.map((doc) => (
+                                                                    <tr key={doc.document_type_id}>
+                                                                        <td>
+                                                                            {doc.document_type_name}
+                                                                        </td>
+                                                                        <td>
+                                                                            {
+                                                                                doc.document_type_description
+                                                                            }
+                                                                        </td>
+                                                                        <td>
+                                                                            {
+                                                                                doc.document_type_format
+                                                                            }
+                                                                        </td>
+                                                                        <td
+                                                                            className={
+                                                                                doc.mandatory
+                                                                                    ? 'text-secondary'
+                                                                                    : ''
+                                                                            }
+                                                                        >
+                                                                            {doc.mandatory
+                                                                                ? 'Yes'
+                                                                                : 'No'}
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    ) : (
+                                                        <p>
+                                                            No Documents required for the selected
+                                                            category.
+                                                        </p>
+                                                    )}
+                                                </div>
                                             )}
-                                        </div>
+
+                                            <div className="row mb-3">
+                                                <div className="col-sm-6">
+                                                    <label
+                                                        htmlFor="customerProductDescription"
+                                                        className="form-label"
+                                                    >
+                                                        Customer Product Description{' '}
+                                                        <span className="text-danger">*</span>
+                                                    </label>
+                                                    <Field
+                                                        as="textarea"
+                                                        name="customerProductDescription"
+                                                        className={`form-control ${props.touched.customerProductDescription && props.errors.customerProductDescription ? 'is-invalid' : ''}`}
+                                                        id="customerProductDescription"
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="customerProductDescription"
+                                                        className="invalid-feedback"
+                                                    />
+                                                </div>
+                                                <div className="col-sm-6">
+                                                    <label
+                                                        htmlFor="productFeature"
+                                                        className="form-label"
+                                                    >
+                                                        Product Features{' '}
+                                                        <span className="text-danger">*</span>
+                                                    </label>
+                                                    <Field
+                                                        as="textarea"
+                                                        name="productFeature"
+                                                        className={`form-control ${props.touched.productFeature && props.errors.productFeature ? 'is-invalid' : ''}`}
+                                                        id="productFeature"
+                                                    />
+                                                    <ErrorMessage
+                                                        component="div"
+                                                        name="productFeature"
+                                                        className="invalid-feedback"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="row mb-3">
+                                                <Dropzone
+                                                    name="Attachment"
+                                                    initialFiles={productDocumentFiles}
+                                                    onFileChange={async (uploadedFiles) => {
+                                                        const fileData =
+                                                            await processFiles(uploadedFiles);
+                                                        props.setFieldValue(
+                                                            'productDocuments',
+                                                            fileData || null
+                                                        );
+                                                    }}
+                                                    formikField="productDocuments"
+                                                    label="Attachment"
+                                                />
+                                            </div>
+
+                                            {productCustomFields.length > 0 || customFieldAdded ? (
+                                                <div className="row mb-3">
+                                                    {productCustomFields.map((field, index) => (
+                                                        <React.Fragment key={index}>
+                                                            <div className="col-sm-12 col-md-5">
+                                                                <label
+                                                                    htmlFor={`productCustomFields[${index}].FieldName`}
+                                                                    className="form-label mt-2"
+                                                                >
+                                                                    Field Name{' '}
+                                                                    <span className="text-danger">
+                                                                        *
+                                                                    </span>
+                                                                </label>
+                                                                <Field
+                                                                    type="text"
+                                                                    name={`productCustomFields[${index}].FieldName`}
+                                                                    autoFocus={isAddMode}
+                                                                    className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
+                                                                    value={field.FieldName}
+                                                                    onChange={(
+                                                                        e: React.ChangeEvent<HTMLInputElement>
+                                                                    ) => {
+                                                                        const updatedFields = [
+                                                                            ...productCustomFields
+                                                                        ];
+                                                                        updatedFields[index] = {
+                                                                            ...updatedFields[index],
+                                                                            FieldName:
+                                                                                e.target.value
+                                                                        };
+                                                                        setProductCustomFields(
+                                                                            updatedFields
+                                                                        );
+                                                                    }}
+                                                                />
+                                                                <ErrorMessage
+                                                                    component="div"
+                                                                    name={`productCustomFields[${index}].FieldName`}
+                                                                    className="invalid-feedback"
+                                                                />
+                                                            </div>
+                                                            <div className="col-sm-12 col-md-6">
+                                                                <label
+                                                                    htmlFor={`productCustomFields[${index}].FieldValue`}
+                                                                    className="form-label mt-2"
+                                                                >
+                                                                    Field Value{' '}
+                                                                    <span className="text-danger">
+                                                                        *
+                                                                    </span>
+                                                                </label>
+                                                                <Field
+                                                                    type="text"
+                                                                    name={`productCustomFields[${index}].FieldValue`}
+                                                                    className={`form-control ${customFieldTouched?.[index]?.FieldValue && customFieldErrors?.[index]?.FieldValue ? 'is-invalid' : ''}`}
+                                                                    value={field.FieldValue}
+                                                                    onChange={(
+                                                                        e: React.ChangeEvent<HTMLInputElement>
+                                                                    ) => {
+                                                                        const updatedFields = [
+                                                                            ...productCustomFields
+                                                                        ];
+                                                                        updatedFields[index] = {
+                                                                            ...updatedFields[index],
+                                                                            FieldValue:
+                                                                                e.target.value
+                                                                        };
+                                                                        setProductCustomFields(
+                                                                            updatedFields
+                                                                        );
+                                                                    }}
+                                                                />
+                                                                <ErrorMessage
+                                                                    component="div"
+                                                                    name={`productCustomFields[${index}].FieldValue`}
+                                                                    className="invalid-feedback"
+                                                                />
+                                                            </div>
+                                                            <div className="col-sm-12 col-md-1 d-flex align-items-center justify-content-center customField-delete-icon">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-rounded btn-secondary"
+                                                                    onClick={() => {
+                                                                        const updatedFields = [
+                                                                            ...productCustomFields
+                                                                        ];
+                                                                        updatedFields.splice(
+                                                                            index,
+                                                                            1
+                                                                        );
+                                                                        setProductCustomFields(
+                                                                            updatedFields
+                                                                        );
+                                                                        props.setFieldValue(
+                                                                            'productCustomFields',
+                                                                            updatedFields
+                                                                        );
+                                                                        props.setFieldTouched(
+                                                                            'productCustomFields',
+                                                                            true
+                                                                        );
+                                                                        setCustomFieldAdded(true);
+                                                                    }}
+                                                                >
+                                                                    <Icon icon="mdi:trash-can-outline" />
+                                                                </button>
+                                                            </div>
+                                                        </React.Fragment>
+                                                    ))}
+                                                </div>
+                                            ) : null}
+
+                                            <div className="row justify-content-center justify-content-lg-end">
+                                                <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                    <button
+                                                        className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
+                                                        onClick={() => {
+                                                            if (isAddMode) {
+                                                                navigate(ROUTES.PRODUCTS);
+                                                            } else {
+                                                                navigate(
+                                                                    `${ROUTES.PRODUCTS}/${productId}`
+                                                                );
+                                                            }
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            icon="icon-park-outline:back"
+                                                            className="me-1"
+                                                        />
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                                <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                        onClick={() => {
+                                                            setProductCustomFields([
+                                                                ...productCustomFields,
+                                                                { FieldName: '', FieldValue: '' }
+                                                            ]);
+                                                            setCustomFieldAdded(true);
+                                                        }}
+                                                    >
+                                                        <Icon icon="tabler:plus" className="me-1" />
+                                                        Add Product Property
+                                                    </button>
+                                                </div>
+                                                <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                    <button
+                                                        type="submit"
+                                                        className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                        disabled={
+                                                            !props.isValid ||
+                                                            (!props.dirty && !customFieldAdded) ||
+                                                            isLoading ||
+                                                            (productCustomFields.length > 0 &&
+                                                                productCustomFields.some(
+                                                                    (field) =>
+                                                                        !field.FieldName ||
+                                                                        !field.FieldValue
+                                                                ))
+                                                        }
+                                                    >
+                                                        <Icon
+                                                            icon={
+                                                                productId
+                                                                    ? 'tabler:edit'
+                                                                    : 'tabler:plus'
+                                                            }
+                                                            className="me-1"
+                                                        />
+                                                        {(() => {
+                                                            if (isLoading) {
+                                                                return productId
+                                                                    ? 'Updating...'
+                                                                    : 'Adding...';
+                                                            } else {
+                                                                return productId
+                                                                    ? 'Save Changes'
+                                                                    : 'Add Product';
+                                                            }
+                                                        })()}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </Form>
                                     )}
-
-                                    <div className="row mb-3">
-                                        <div className="col-sm-6">
-                                            <label
-                                                htmlFor="customerProductDescription"
-                                                className="form-label"
-                                            >
-                                                Customer Product Description{' '}
-                                                <span className="text-danger">*</span>
-                                            </label>
-                                            <Field
-                                                as="textarea"
-                                                name="customerProductDescription"
-                                                className={`form-control ${props.touched.customerProductDescription && props.errors.customerProductDescription ? 'is-invalid' : ''}`}
-                                                id="customerProductDescription"
-                                            />
-                                            <ErrorMessage
-                                                component="div"
-                                                name="customerProductDescription"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                        <div className="col-sm-6">
-                                            <label htmlFor="productFeature" className="form-label">
-                                                Product Features{' '}
-                                                <span className="text-danger">*</span>
-                                            </label>
-                                            <Field
-                                                as="textarea"
-                                                name="productFeature"
-                                                className={`form-control ${props.touched.productFeature && props.errors.productFeature ? 'is-invalid' : ''}`}
-                                                id="productFeature"
-                                            />
-                                            <ErrorMessage
-                                                component="div"
-                                                name="productFeature"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row mb-3">
-                                        <Dropzone
-                                            name="Attachment"
-                                            initialFiles={productDocumentFiles}
-                                            onFileChange={async (uploadedFiles) => {
-                                                const fileData = await processFiles(uploadedFiles);
-                                                props.setFieldValue(
-                                                    'productDocuments',
-                                                    fileData || null
-                                                );
-                                            }}
-                                            formikField="productDocuments"
-                                            label="Attachment"
-                                        />
-                                    </div>
-
-                                    {productCustomFields.length > 0 || customFieldAdded ? (
-                                        <div className="row mb-3">
-                                            {productCustomFields.map((field, index) => (
-                                                <React.Fragment key={index}>
-                                                    <div className="col-sm-12 col-md-5">
-                                                        <label
-                                                            htmlFor={`productCustomFields[${index}].FieldName`}
-                                                            className="form-label mt-2"
-                                                        >
-                                                            Field Name{' '}
-                                                            <span className="text-danger">*</span>
-                                                        </label>
-                                                        <Field
-                                                            type="text"
-                                                            name={`productCustomFields[${index}].FieldName`}
-                                                            autoFocus={isAddMode ? true : false}
-                                                            className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
-                                                            value={field.FieldName}
-                                                            onChange={(
-                                                                e: React.ChangeEvent<HTMLInputElement>
-                                                            ) => {
-                                                                const updatedFields = [
-                                                                    ...productCustomFields
-                                                                ];
-                                                                updatedFields[index] = {
-                                                                    ...updatedFields[index],
-                                                                    FieldName: e.target.value
-                                                                };
-                                                                setProductCustomFields(
-                                                                    updatedFields
-                                                                );
-                                                            }}
-                                                        />
-                                                        <ErrorMessage
-                                                            component="div"
-                                                            name={`productCustomFields[${index}].FieldName`}
-                                                            className="invalid-feedback"
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-12 col-md-6">
-                                                        <label
-                                                            htmlFor={`productCustomFields[${index}].FieldValue`}
-                                                            className="form-label mt-2"
-                                                        >
-                                                            Field Value{' '}
-                                                            <span className="text-danger">*</span>
-                                                        </label>
-                                                        <Field
-                                                            type="text"
-                                                            name={`productCustomFields[${index}].FieldValue`}
-                                                            className={`form-control ${customFieldTouched?.[index]?.FieldValue && customFieldErrors?.[index]?.FieldValue ? 'is-invalid' : ''}`}
-                                                            value={field.FieldValue}
-                                                            onChange={(
-                                                                e: React.ChangeEvent<HTMLInputElement>
-                                                            ) => {
-                                                                const updatedFields = [
-                                                                    ...productCustomFields
-                                                                ];
-                                                                updatedFields[index] = {
-                                                                    ...updatedFields[index],
-                                                                    FieldValue: e.target.value
-                                                                };
-                                                                setProductCustomFields(
-                                                                    updatedFields
-                                                                );
-                                                            }}
-                                                        />
-                                                        <ErrorMessage
-                                                            component="div"
-                                                            name={`productCustomFields[${index}].FieldValue`}
-                                                            className="invalid-feedback"
-                                                        />
-                                                    </div>
-                                                    <div className="col-sm-12 col-md-1 d-flex align-items-center justify-content-center customField-delete-icon">
-                                                        <button
-                                                            type="button"
-                                                            className="btn btn-rounded btn-secondary"
-                                                            onClick={() => {
-                                                                const updatedFields = [
-                                                                    ...productCustomFields
-                                                                ];
-                                                                updatedFields.splice(index, 1);
-                                                                setProductCustomFields(
-                                                                    updatedFields
-                                                                );
-                                                                props.setFieldValue(
-                                                                    'productCustomFields',
-                                                                    updatedFields
-                                                                );
-                                                                props.setFieldTouched(
-                                                                    'productCustomFields',
-                                                                    true
-                                                                );
-                                                                setCustomFieldAdded(true);
-                                                            }}
-                                                        >
-                                                            <Icon icon="mdi:trash-can-outline" />
-                                                        </button>
-                                                    </div>
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    ) : null}
-
-                                    <div className="row justify-content-center justify-content-lg-end">
-                                        <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
-                                            <button
-                                                className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
-                                                onClick={() => {
-                                                    if (isAddMode) {
-                                                        navigate(ROUTES.PRODUCTS);
-                                                    } else {
-                                                        navigate(`${ROUTES.PRODUCTS}/${productId}`);
-                                                    }
-                                                }}
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:back"
-                                                    className="me-1"
-                                                />
-                                                Cancel
-                                            </button>
-                                        </div>
-                                        <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
-                                                onClick={() => {
-                                                    setProductCustomFields([
-                                                        ...productCustomFields,
-                                                        { FieldName: '', FieldValue: '' }
-                                                    ]);
-                                                    setCustomFieldAdded(true);
-                                                }}
-                                            >
-                                                <Icon icon="tabler:plus" className="me-1" />
-                                                Add Product Property
-                                            </button>
-                                        </div>
-                                        <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
-                                            <button
-                                                type="submit"
-                                                className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
-                                                disabled={
-                                                    !props.isValid ||
-                                                    (!props.dirty && !customFieldAdded) ||
-                                                    isLoading ||
-                                                    (productCustomFields.length > 0 &&
-                                                        productCustomFields.some(
-                                                            (field) =>
-                                                                !field.FieldName ||
-                                                                !field.FieldValue
-                                                        ))
-                                                }
-                                            >
-                                                <Icon
-                                                    icon={productId ? 'tabler:edit' : 'tabler:plus'}
-                                                    className="me-1"
-                                                />
-                                                {isLoading
-                                                    ? productId
-                                                        ? 'Updating...'
-                                                        : 'Adding...'
-                                                    : productId
-                                                      ? 'Save Changes'
-                                                      : 'Add Product'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </Form>
+                                </>
                             );
                         }}
                     </Formik>

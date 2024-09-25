@@ -20,6 +20,7 @@ import {
     ProductDocumentsType,
     ProductDocumentTypeFormValues
 } from 'reduxSaga/modules/productDocumentType-module/type/types';
+import { useDebounce } from 'utils/common';
 
 /**
  * Component to manage and display product document types.
@@ -37,6 +38,8 @@ export const ProductDocumentType = () => {
     const { productDocumentsType, isLoading } = useSelector(
         (state: RootState) => state.ProductDocumentTypeModule
     );
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
 
     /**
      * Fetch product document types when the component mounts.
@@ -113,13 +116,22 @@ export const ProductDocumentType = () => {
      *
      * @returns {ProductDocumentsType[]} - The filtered list of document types.
      */
-    const filteredItems = useMemo(
-        () =>
-            productDocumentsType.filter((item) =>
-                item.document_type_name.toLowerCase().includes(filterText.toLowerCase())
-            ),
-        [filterText, productDocumentsType]
-    );
+    const filteredDocuments = useMemo(() => {
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
+
+        return productDocumentsType.filter((doc) => {
+            const fieldsToSearch = [
+                doc.document_type_name,
+                doc.document_type_description,
+                doc.document_type_format,
+                doc.category_name
+            ];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [debouncedFilterText, productDocumentsType]);
 
     /**
      * Creates a subheader component with a filter input and an add button.
@@ -153,7 +165,7 @@ export const ProductDocumentType = () => {
                         }
                         onClear={handleClear}
                         filterText={filterText}
-                        placeholder="Filter By Product Document Name"
+                        placeholder="Filter Product DocumentType..."
                     />
                 </div>
             </div>
@@ -167,7 +179,7 @@ export const ProductDocumentType = () => {
                     ...ProductDocumentTypeTableColumns,
                     ProductDocumentTypeActionColumn(handleEditProductDocumentType)
                 ]}
-                data={filteredItems}
+                data={filteredDocuments}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination

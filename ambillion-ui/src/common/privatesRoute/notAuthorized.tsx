@@ -41,14 +41,13 @@ export const NotAuthorized: React.FC = () => {
                                 <h1 className="fw-semibold mb-3 fs-9">401</h1>
                                 <h4 className="fw-semibold mb-7">Access Denied</h4>
                                 <p className="mb-4">We are sorry, your request is unauthorized.</p>
-                                <a
+                                <button
                                     className="sidebar-link btn btn-primary"
                                     id="get-url"
-                                    role="button"
                                     onClick={handleNavigation}
                                 >
                                     Go to Home
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>

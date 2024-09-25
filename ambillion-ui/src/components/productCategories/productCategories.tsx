@@ -21,6 +21,7 @@ import {
     ProductCategory,
     ProductCategoryFormValues
 } from 'reduxSaga/modules/productCategories-module/type/types';
+import { useDebounce } from 'utils/common';
 
 /**
  * ProductCategories component manages a list of product categories, with functionalities for adding and editing categories.
@@ -42,6 +43,8 @@ export const ProductCategories = () => {
     const { productCategories, isLoading } = useSelector(
         (state: RootState) => state.productCategoryModule
     );
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
 
     /**
      * Fetches product categories when the component mounts.
@@ -124,13 +127,17 @@ export const ProductCategories = () => {
      *
      * @type {Array<ProductCategory>}
      */
-    const filteredItems = useMemo(
-        () =>
-            productCategories.filter((item) =>
-                item.category_name.toLowerCase().includes(filterText.toLowerCase())
-            ),
-        [filterText, productCategories]
-    );
+    const filteredCategories = useMemo(() => {
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
+
+        return productCategories.filter((category) => {
+            const fieldsToSearch = [category.category_name, category.category_description];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [debouncedFilterText, productCategories]);
 
     /**
      * Creates a memoized subheader component for the data table.
@@ -166,7 +173,7 @@ export const ProductCategories = () => {
                         }
                         onClear={handleClear}
                         filterText={filterText}
-                        placeholder="Filter By Category Name"
+                        placeholder="Filter Category..."
                     />
                 </div>
             </div>
@@ -180,7 +187,7 @@ export const ProductCategories = () => {
                     ...productCategoryTableColumns,
                     ProductCategoryActionColumn(handleEditProductCategory)
                 ]}
-                data={filteredItems}
+                data={filteredCategories}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination

@@ -25,7 +25,6 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     title
 }) => {
     const [comments, setComments] = useState<string>('');
-    // const isSendDisabled = comments.trim().length === 0;
 
     /**
      * Handles confirmation by trimming comments and passing them to the onConfirm function,

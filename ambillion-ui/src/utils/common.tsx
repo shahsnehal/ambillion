@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ROUTES } from 'constants/common';
-import { removeLocalStorage } from './localStorage';
+import { localStorageKey, ROUTES } from 'constants/common';
+import { useState, useEffect } from 'react';
+import { getLocalStorage, removeLocalStorage } from './localStorage';
 import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
-
+import CryptoJS from 'crypto-js';
 /**
  * Logs out the user by clearing local storage and redirecting to the base path.
  */
@@ -29,7 +30,7 @@ export const trimValues = (obj: any): any => {
     if (typeof obj === 'object') {
         const trimmedObject: any = Array.isArray(obj) ? [] : {};
         for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            if (Object.hasOwn(obj, key)) {
                 trimmedObject[key] = trimValues(obj[key]);
             }
         }
@@ -79,4 +80,107 @@ export const getProductCustomeFields = (customeFields: any): ProductCustomField[
     }
 
     return []; // Default to an empty array if none of the conditions are met
+};
+
+/**
+ * Encrypts data using AES encryption.
+ * @param {any} data - The data to be encrypted.
+ * @returns {object} The encrypted payload including the salt, IV, and ciphertext.
+ */
+export const encryptData = (data: any) => {
+    const secretKey = process.env.REACT_APP_ENCRYPTION_KEY ?? '';
+    const salt = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
+    const iv = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
+    const key = CryptoJS.PBKDF2(secretKey, CryptoJS.enc.Hex.parse(salt), {
+        keySize: 128 / 32,
+        iterations: 1000
+    });
+
+    const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), key, {
+        iv: CryptoJS.enc.Hex.parse(iv)
+    });
+    return {
+        salt,
+        iv,
+        ciphertext: encrypted.ciphertext.toString(CryptoJS.enc.Base64)
+    };
+};
+
+/**
+ * Decrypts data using AES decryption.
+ * @param {object} encryptedData - The encrypted payload including salt, IV, and ciphertext.
+ * @returns {any} The decrypted data.
+ */
+export const decryptData = (encryptedData: { salt: string; iv: string; ciphertext: string }) => {
+    const { salt, iv, ciphertext } = encryptedData;
+    const secretKey = process.env.REACT_APP_ENCRYPTION_KEY ?? '';
+    const key = CryptoJS.PBKDF2(secretKey, CryptoJS.enc.Hex.parse(salt), {
+        keySize: 128 / 32,
+        iterations: 1000
+    });
+
+    const decrypted = CryptoJS.AES.decrypt(
+        { ciphertext: CryptoJS.enc.Base64.parse(ciphertext) } as any,
+        key,
+        { iv: CryptoJS.enc.Hex.parse(iv) }
+    );
+
+    return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+};
+
+export const getBase64FromFileUrl = async (fileUrl: string): Promise<string> => {
+    try {
+        const accessToken = getLocalStorage(localStorageKey.JWT_TOKEN); // Get the JWT token
+        const response = await await fetch(fileUrl, {
+            method: 'GET',
+            credentials: 'include', // Include credentials (cookies) for authentication
+            headers: {
+                Authorization: `Bearer ${accessToken}` // Assuming you're using a Bearer token for auth
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const result = reader.result as string | null;
+                if (result) {
+                    resolve(result.split(',')[1] || ''); // Ensure it always returns a string
+                } else {
+                    reject(new Error('Failed to read file as base64'));
+                }
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    } catch (error) {
+        console.error('Error fetching or converting file to base64:', error);
+        return ''; // Return an empty string if error occurs
+    }
+};
+/**
+ * Custom hook for debouncing a value.
+ *
+ * @param value - The input value to debounce.
+ * @param delay - The delay in milliseconds before updating the state.
+ * @returns The debounced value.
+ */
+export const useDebounce = (value: string, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        // Clean up the timeout if the value changes before the delay.
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
 };

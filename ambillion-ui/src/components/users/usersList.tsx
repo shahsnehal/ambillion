@@ -1,6 +1,6 @@
 import { TableFilter } from 'components/common/table/tableFilter';
 import { useSelector, useDispatch } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { customStyles, UserStatusChangeActionColumn, userTableColumns } from 'utils/table/columns';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
@@ -11,6 +11,7 @@ import {
 import { RootState } from 'reduxSaga/config/store';
 import { userStatus } from 'constants/common';
 import { CustomLoader } from 'common/loaders/loader';
+import { useDebounce } from 'utils/common';
 
 export const actionType = {
     APPROVE: 'APPROVE',
@@ -34,19 +35,36 @@ export const UserList: React.FC = () => {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
     const [currentActionType, setCurrentActionType] = useState<string | null>(null);
     const { isLoading, users } = useSelector((state: RootState) => state.userModule);
+    // Debounce the filter text to avoid excessive re-renders
+    const debouncedFilterText = useDebounce(filterText, 500);
 
     useEffect(() => {
         dispatch(fetchUsersRequest());
     }, []);
 
     /**
-     * Filters users based on the provided email filter text.
+     * Filters users based on the provided  filter text.
      *
      * @type {Array<User>}
      */
-    const filteredItems = users.filter((user) =>
-        user.email?.toLowerCase().includes(filterText.toLowerCase())
-    );
+    const filteredUsers = useMemo(() => {
+        const lowercasedFilterText = debouncedFilterText.toLowerCase();
+
+        return users.filter((user) => {
+            const fieldsToSearch = [
+                user.name,
+                user.company_name,
+                user.email,
+                user.mobile_number,
+                user.created_timestamp,
+                user.status
+            ];
+
+            return fieldsToSearch.some((field) =>
+                field?.toLowerCase().includes(lowercasedFilterText)
+            );
+        });
+    }, [debouncedFilterText, users]);
 
     /**
      * Handles the approval action for a user.
@@ -125,7 +143,7 @@ export const UserList: React.FC = () => {
                     }
                     onClear={handleClear}
                     filterText={filterText}
-                    placeholder="Filter By Email"
+                    placeholder="Filter users..."
                 />
             </div>
         );
@@ -139,7 +157,7 @@ export const UserList: React.FC = () => {
 
                     UserStatusChangeActionColumn(handleApprove, handleReject)
                 ]}
-                data={filteredItems}
+                data={filteredUsers}
                 progressPending={isLoading}
                 progressComponent={<CustomLoader />}
                 pagination
