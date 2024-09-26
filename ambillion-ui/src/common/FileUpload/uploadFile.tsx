@@ -5,9 +5,8 @@ import { csv, doc, docx, jpeg, pdf, png, txt, xls, xlsx } from 'constants/fileTy
 import { Icon } from '@iconify/react';
 import { ConfirmationModal } from 'components/common/modal/confirmationModal';
 import { ErrorMessage, useFormikContext } from 'formik';
+import { toast } from 'react-toastify';
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 
 type FileSizeLimit = {
     size: number;
@@ -147,6 +146,21 @@ const Dropzone: React.FC<DropzoneProps> = ({
         try {
             setIsDragActive(false);
             setFieldTouched(formikField, true);
+
+            // Handle rejected files (only invalid types)
+            if (fileRejections.length > 0) {
+                fileRejections.forEach((rejection: any) => {
+                    // Check if the rejection was due to invalid file format
+                    const isInvalidFormat = rejection.errors.some(
+                        (error: any) => error.code === 'file-invalid-type'
+                    );
+
+                    // Show custom message only for invalid file format
+                    if (isInvalidFormat) {
+                        toast.error('Invalid file format. Please upload a valid file.');
+                    }
+                });
+            }
 
             const validFiles = acceptedFiles.filter(isFileSizeValid);
             const spaceAvailable = maxFileCount
