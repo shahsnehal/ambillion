@@ -446,7 +446,7 @@ export const ProductDetails: React.FC = () => {
             ) : (
                 <div className="card">
                     <div className="card-body">
-                        <div className="container my-4">
+                        <div className="container my-4 d-flex justify-content-center">
                             <h5>Product Details Not Available.</h5>
                         </div>
                     </div>
