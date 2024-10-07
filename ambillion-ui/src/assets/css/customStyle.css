@@ -8,6 +8,14 @@
     margin-top: 2.2rem;
 }
 
+/* Media query for screens smaller than 768px */
+@media (max-width: 768px) {
+    .customField-delete-icon {
+        display: flex; /* Use flex for smaller screens */
+        justify-content: center; /* Center content for smaller screens */
+    }
+}
+
 /* Css For documentType */
 .documentType-delete-icon {
     margin-top: 2rem;
