@@ -72,13 +72,13 @@ export const getProductStatusClass = (status: string): string => {
             return 'bg-success-subtle text-success';
         case productStatus.INFO_NEEDED:
             return 'bg-secondary-subtle text-secondary';
-        case productStatus.SENT_FOR_APPROVAL:
+        case productStatus.SENT_FOR_EXPORT_APPROVAL:
             return 'bg-info-subtle text-info';
         case productStatus.UNDER_EXPORT_APPROVAL:
             return 'bg-info-subtle text-info';
         case productStatus.EXPORT_INFO_NEEDED:
             return 'bg-secondary-subtle text-secondary';
-        case productStatus.APPROVED:
+        case productStatus.EXPORT_APPROVED:
             return 'bg-success-subtle text-success';
         default:
             return '';

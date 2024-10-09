@@ -82,12 +82,13 @@ function App() {
                                         />
                                     </Route>
 
-                                    {/* Protected routes for Admin, Officer, and Manufacturer */}
+                                    {/* Protected routes for Admin, Export_Officer, Import_Officer and Manufacturer */}
                                     <Route
                                         element={
                                             <ProtectedRoute
                                                 allowedRoles={[
-                                                    userRoles.OFFICER,
+                                                    userRoles.EXPORT_OFFICER,
+                                                    userRoles.IMPORT_OFFICER,
                                                     userRoles.ADMIN,
                                                     userRoles.MANUFACTURER
                                                 ]}

@@ -74,7 +74,7 @@ export const ProductDetails: React.FC = () => {
                 content: 'Are you sure you want to verify this product?',
                 confirmLabel: 'Verify'
             },
-            [productStatus.APPROVED]: {
+            [productStatus.EXPORT_APPROVED]: {
                 title: 'Approve Confirmation',
                 content: 'Are you sure you want to approve this product?',
                 confirmLabel: 'Approve'
@@ -83,6 +83,11 @@ export const ProductDetails: React.FC = () => {
                 title: 'Confirm Sending for Approval',
                 content: 'Are you sure you want to send for approval?',
                 confirmLabel: 'Yes'
+            },
+            [productStatus.IMPORT_APPROVED]: {
+                title: 'Import Approve Confirmation',
+                content: 'Are you sure you want to approve this product For Import?',
+                confirmLabel: 'Import Approve'
             }
         };
 
@@ -128,7 +133,7 @@ export const ProductDetails: React.FC = () => {
             } else {
                 return productStatus.INFO_NEEDED;
             }
-        } else if (userRole === userRoles.OFFICER) {
+        } else if (userRole === userRoles.EXPORT_OFFICER) {
             return productStatus.EXPORT_INFO_NEEDED;
         } else if (userRole === userRoles.MANUFACTURER) {
             return productStatus.UNDER_VERIFICATION;
@@ -153,7 +158,12 @@ export const ProductDetails: React.FC = () => {
             updatedStatus === productStatus.UNDER_EXPORT_APPROVAL ||
             updatedStatus === productStatus.EXPORT_INFO_NEEDED
         ) {
-            return userRoles.OFFICER;
+            return userRoles.EXPORT_OFFICER;
+        } else if (
+            updatedStatus === productStatus.UNDER_IMPORT_APPROVAL ||
+            updatedStatus === productStatus.IMPORT_INFO_NEEDED
+        ) {
+            return userRoles.IMPORT_OFFICER;
         } else {
             return '';
         }
@@ -256,7 +266,9 @@ export const ProductDetails: React.FC = () => {
                                     <NoteList notesList={selectedProductDetails?.notes || null} />
                                 </div>
                                 <div className="row justify-content-center justify-content-lg-end">
-                                    <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                    <div
+                                        className={`col-12 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4' : 'col-md-3 col-lg-auto'}  mb-2`}
+                                    >
                                         <button
                                             className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
                                             onClick={() => navigate(ROUTES.PRODUCTS)}
@@ -265,8 +277,9 @@ export const ProductDetails: React.FC = () => {
                                             Back
                                         </button>
                                     </div>
-                                    {/* For The Officer Role */}
-                                    {userRole === userRoles.OFFICER && (
+
+                                    {/* For The EXPORT_Officer Role */}
+                                    {userRole === userRoles.EXPORT_OFFICER && (
                                         <>
                                             <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                                 <button
@@ -296,7 +309,7 @@ export const ProductDetails: React.FC = () => {
                                                             String(
                                                                 selectedProductDetails?.product_id
                                                             ),
-                                                            productStatus.APPROVED
+                                                            productStatus.EXPORT_APPROVED
                                                         )
                                                     }
                                                 >
@@ -309,10 +322,54 @@ export const ProductDetails: React.FC = () => {
                                             </div>
                                         </>
                                     )}
+                                    {/* For The IMPORT_Officer Role */}
+                                    {userRole === userRoles.IMPORT_OFFICER && (
+                                        <>
+                                            <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                <button
+                                                    className="btn btn-info w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                        productStatus.UNDER_IMPORT_APPROVAL
+                                                    }
+                                                    onClick={() => setIsModalOpen(true)}
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:info"
+                                                        className="me-1"
+                                                    />
+                                                    Ask For More Info
+                                                </button>
+                                            </div>
+                                            <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                <button
+                                                    className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status !==
+                                                        productStatus.UNDER_IMPORT_APPROVAL
+                                                    }
+                                                    onClick={() =>
+                                                        handleAction(
+                                                            String(
+                                                                selectedProductDetails?.product_id
+                                                            ),
+                                                            productStatus.IMPORT_APPROVED
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon
+                                                        icon="pepicons-pop:checkmark-circle"
+                                                        className="me-1"
+                                                    />
+                                                    Mark Import Approve
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
                                     {/* For The Admin Role */}
                                     {userRole === userRoles.ADMIN && (
                                         <>
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
                                                 <button
                                                     className="btn btn-rounded btn-info w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -328,7 +385,7 @@ export const ProductDetails: React.FC = () => {
                                                     Ask For More Info
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
                                                 <button
                                                     className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -351,7 +408,7 @@ export const ProductDetails: React.FC = () => {
                                                     Mark Verify
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mt-md-3 mt-lg-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-2 mt-md-3">
                                                 <button
                                                     className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -366,14 +423,14 @@ export const ProductDetails: React.FC = () => {
                                                         icon="icon-park-outline:send"
                                                         className="me-1"
                                                     />
-                                                    Send For Approval
+                                                    Send For Export Approval
                                                 </button>
                                             </div>
                                         </>
                                     )}
                                     {/* For The Manufacture Role */}
                                     {userRole === userRoles.MANUFACTURER && (
-                                        <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2">
+                                        <div className="col-12 col-sm-6 col-md-3 col-lg-auto mb-2">
                                             <button
                                                 className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
                                                 disabled={
@@ -395,48 +452,79 @@ export const ProductDetails: React.FC = () => {
                                     {/* For The Admin & Manufacture Role */}
                                     {(userRole === userRoles.MANUFACTURER ||
                                         userRole === userRoles.ADMIN) && (
-                                        <div
-                                            className={`col-12 col-sm-6 col-md-4 col-lg-auto ${
-                                                userRole === userRoles.MANUFACTURER
-                                                    ? ''
-                                                    : 'mt-md-3 mt-lg-0'
-                                            }`}
-                                        >
-                                            <button
-                                                disabled={
-                                                    // Common disable conditions for both roles
-                                                    (selectedProductDetails?.status !==
-                                                        productStatus.PENDING &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.INFO_NEEDED &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.EXPORT_INFO_NEEDED &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.VERIFIED) ||
-                                                    // Specific disable conditions for the manufacturer
-                                                    (userRole === userRoles.MANUFACTURER &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.PENDING &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.INFO_NEEDED) ||
-                                                    // Specific disable conditions for the admin
-                                                    (userRole === userRoles.ADMIN &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.EXPORT_INFO_NEEDED &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.VERIFIED)
-                                                }
-                                                className="btn btn-rounded btn-warning w-100 d-flex align-items-center justify-content-center"
-                                                onClick={() =>
-                                                    navigate(
-                                                        `${ROUTES.PRODUCTS}/editProduct/${productId}`
-                                                    )
-                                                }
+                                        <>
+                                            <div
+                                                className={`col-12 col-sm-6 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4 mt-md-3 mt-lg-3' : 'col-md-3 col-lg-auto'} mb-2 `}
                                             >
-                                                <Icon icon="mdi:pencil" className="me-1" />
-                                                Edit Product
-                                            </button>
-                                        </div>
+                                                <button
+                                                    className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        !(
+                                                            selectedProductDetails?.status ===
+                                                                productStatus.EXPORT_APPROVED ||
+                                                            selectedProductDetails?.status ===
+                                                                productStatus.IMPORT_INFO_NEEDED
+                                                        )
+                                                    }
+                                                    onClick={() => setIsModalOpen(true)}
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:send"
+                                                        className="me-1"
+                                                    />
+                                                    Send For Import Approval
+                                                </button>
+                                            </div>
+
+                                            <div
+                                                className={`col-12 col-sm-6 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4' : 'col-md-3 col-lg-auto'}  ${
+                                                    userRole === userRoles.MANUFACTURER
+                                                        ? ''
+                                                        : 'mt-md-3 col-md-4'
+                                                }`}
+                                            >
+                                                <button
+                                                    disabled={
+                                                        // Common disable conditions for both roles
+                                                        (selectedProductDetails?.status !==
+                                                            productStatus.PENDING &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.VERIFIED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_APPROVED) ||
+                                                        // Specific disable conditions for the manufacturer
+                                                        (userRole === userRoles.MANUFACTURER &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.PENDING &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_APPROVED) ||
+                                                        // Specific disable conditions for the admin
+                                                        (userRole === userRoles.ADMIN &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.VERIFIED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_APPROVED)
+                                                    }
+                                                    className="btn btn-rounded btn-warning w-100 d-flex align-items-center justify-content-center"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `${ROUTES.PRODUCTS}/editProduct/${productId}`
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon icon="mdi:pencil" className="me-1" />
+                                                    Edit Product
+                                                </button>
+                                            </div>
+                                        </>
                                     )}
                                 </div>
                             </div>
