@@ -130,13 +130,27 @@ export const ProductDetails: React.FC = () => {
                 selectedProductDetails?.status === productStatus.EXPORT_INFO_NEEDED
             ) {
                 return productStatus.UNDER_EXPORT_APPROVAL;
+            } else if (
+                selectedProductDetails?.status === productStatus.EXPORT_APPROVED ||
+                selectedProductDetails?.status === productStatus.IMPORT_INFO_NEEDED
+            ) {
+                return productStatus.UNDER_IMPORT_APPROVAL;
             } else {
                 return productStatus.INFO_NEEDED;
             }
         } else if (userRole === userRoles.EXPORT_OFFICER) {
             return productStatus.EXPORT_INFO_NEEDED;
         } else if (userRole === userRoles.MANUFACTURER) {
-            return productStatus.UNDER_VERIFICATION;
+            if (
+                selectedProductDetails?.status === productStatus.EXPORT_APPROVED ||
+                selectedProductDetails?.status === productStatus.IMPORT_INFO_NEEDED
+            ) {
+                return productStatus.UNDER_IMPORT_APPROVAL;
+            } else {
+                return productStatus.UNDER_VERIFICATION;
+            }
+        } else if (userRole === userRoles.IMPORT_OFFICER) {
+            return productStatus.IMPORT_INFO_NEEDED;
         } else {
             return selectedProductDetails?.status;
         }
@@ -459,12 +473,20 @@ export const ProductDetails: React.FC = () => {
                                                 <button
                                                     className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
-                                                        !(
-                                                            selectedProductDetails?.status ===
-                                                                productStatus.EXPORT_APPROVED ||
-                                                            selectedProductDetails?.status ===
-                                                                productStatus.IMPORT_INFO_NEEDED
-                                                        )
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.PENDING ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.UNDER_VERIFICATION ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.VERIFIED ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.INFO_NEEDED ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.SENT_FOR_EXPORT_APPROVAL ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.UNDER_EXPORT_APPROVAL ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.EXPORT_INFO_NEEDED
                                                     }
                                                     onClick={() => setIsModalOpen(true)}
                                                 >
