@@ -67,9 +67,9 @@ export const productStatus = {
     EXPORT_APPROVED: 'EXPORT_APPROVED',
     SENT_FOR_IMPORT_APPROVAL: 'SENT_FOR_IMPORT_APPROVAL',
     UNDER_IMPORT_APPROVAL: 'UNDER_IMPORT_APPROVAL',
-    IMPORT_INFO_NEEDED: 'EXPORT_INFO_NEEDED',
+    IMPORT_INFO_NEEDED: 'IMPORT_INFO_NEEDED',
     IMPORT_APPROVED: 'IMPORT_APPROVED',
-    IMPORT_REJECTED: ' IMPORT_REJECTED'
+    IMPORT_REJECTED: 'IMPORT_REJECTED'
 } as const;
 
 // User Roles Constants
@@ -79,3 +79,11 @@ export const userRoles = {
     EXPORT_OFFICER: 'EXPORT_OFFICER',
     IMPORT_OFFICER: 'IMPORT_OFFICER'
 };
+
+//Countries Constatnts
+export const countries = [
+    { countryId: '1', countryName: 'India' },
+    { countryId: '2', countryName: 'United States' },
+    { countryId: '3', countryName: 'Canada' },
+    { countryId: '4', countryName: 'Australia' }
+];

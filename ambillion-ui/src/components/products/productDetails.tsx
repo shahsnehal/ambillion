@@ -26,6 +26,7 @@ import { getProductCustomeFields } from 'utils/common';
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [showCountryDropdown, setShowCountryDropdown] = useState<boolean>(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [modalConfig, setModalConfig] = useState<{
         title: string;
@@ -110,6 +111,15 @@ export const ProductDetails: React.FC = () => {
         }
     };
 
+    const handleOpenModal = (action: string) => {
+        if (action === 'sendForImportApproval') {
+            setShowCountryDropdown(true); // Show dropdown for "Send For Import Approval" action
+        } else {
+            setShowCountryDropdown(false); // Do not show dropdown for other actions
+        }
+        setIsModalOpen(true);
+    };
+
     /**
      * Closes the modal.
      */
@@ -132,7 +142,7 @@ export const ProductDetails: React.FC = () => {
                 return productStatus.UNDER_EXPORT_APPROVAL;
             } else if (
                 selectedProductDetails?.status === productStatus.EXPORT_APPROVED ||
-                selectedProductDetails?.status === productStatus.IMPORT_INFO_NEEDED
+                selectedProductDetails?.import_status === productStatus.IMPORT_INFO_NEEDED
             ) {
                 return productStatus.UNDER_IMPORT_APPROVAL;
             } else {
@@ -143,7 +153,7 @@ export const ProductDetails: React.FC = () => {
         } else if (userRole === userRoles.MANUFACTURER) {
             if (
                 selectedProductDetails?.status === productStatus.EXPORT_APPROVED ||
-                selectedProductDetails?.status === productStatus.IMPORT_INFO_NEEDED
+                selectedProductDetails?.import_status === productStatus.IMPORT_INFO_NEEDED
             ) {
                 return productStatus.UNDER_IMPORT_APPROVAL;
             } else {
@@ -190,10 +200,12 @@ export const ProductDetails: React.FC = () => {
      * @param {string} productId - The ID of the product.
      * @param {string} comments - Comments to be added for the status update.
      */
-    const handleSendForMoreInfo = (productId: string, comments: string) => {
+    const handleSendForMoreInfo = (productId: string, comments: string, countryId?: string) => {
         const updatedStatus = getRoleBasedStatus() ?? '';
         const commentFor = getCommentFor(updatedStatus);
-        dispatch(updateProductStatusRequest(productId, updatedStatus, comments, commentFor));
+        dispatch(
+            updateProductStatusRequest(productId, updatedStatus, comments, commentFor, countryId)
+        );
         navigate(ROUTES.PRODUCTS);
     };
 
@@ -214,11 +226,20 @@ export const ProductDetails: React.FC = () => {
                             <div className="row">
                                 <div className="shop-content">
                                     <div className="d-flex align-items-center gap-2 mb-2">
-                                        <span
-                                            className={`badge ${getProductStatusClass(selectedProductDetails?.status ?? '')} fs-2 fw-semibold`}
-                                        >
-                                            {selectedProductDetails?.status}
-                                        </span>
+                                        {userRole === userRoles.IMPORT_OFFICER ? (
+                                            <span
+                                                className={`badge ${getProductStatusClass(selectedProductDetails?.import_status ?? '')} fs-2 fw-semibold`}
+                                            >
+                                                {selectedProductDetails?.import_status}
+                                            </span>
+                                        ) : (
+                                            <span
+                                                className={`badge ${getProductStatusClass(selectedProductDetails?.status ?? '')} fs-2 fw-semibold`}
+                                            >
+                                                {selectedProductDetails?.status}
+                                            </span>
+                                        )}
+
                                         <span>
                                             <span>
                                                 <Icon icon="bi:bookmark" className="text-primary" />
@@ -263,6 +284,57 @@ export const ProductDetails: React.FC = () => {
                                         </div>
                                     )}
                                 </div>
+                                {(userRole === userRoles.ADMIN ||
+                                    userRole === userRoles.MANUFACTURER) &&
+                                    selectedProductDetails?.import_status &&
+                                    (() => {
+                                        const importStatus =
+                                            selectedProductDetails.import_status ?? '';
+                                        const importStatusArray = importStatus
+                                            .split(',')
+                                            .map((status) => {
+                                                const [country, productStatus] = status.split(':');
+                                                return {
+                                                    country: country.trim(),
+                                                    productStatus: productStatus.trim()
+                                                };
+                                            });
+
+                                        return (
+                                            importStatusArray.length > 0 && (
+                                                <div className="mt-4">
+                                                    <h6 className="fs-4">Import Status:</h6>
+                                                    <table className="table table-bordered mt-2">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country Name</th>
+                                                                <th>Product Import Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {importStatusArray.map(
+                                                                (statusItem, index) => (
+                                                                    <tr key={index}>
+                                                                        <td>
+                                                                            {statusItem.country}
+                                                                        </td>
+                                                                        <td
+                                                                            className={`badge ${getProductStatusClass(statusItem?.productStatus ?? '')} fs-2 fw-semibold p-2 m-3`}
+                                                                        >
+                                                                            {
+                                                                                statusItem.productStatus
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            )
+                                        );
+                                    })()}
+
                                 <hr className="mt-4"></hr>
                                 <div className="mt-1">
                                     <h6 className="fw-semibold mb-0 text-dark mb-3">Documents</h6>
@@ -343,7 +415,7 @@ export const ProductDetails: React.FC = () => {
                                                 <button
                                                     className="btn btn-info w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
-                                                        selectedProductDetails?.status !==
+                                                        selectedProductDetails?.import_status !==
                                                         productStatus.UNDER_IMPORT_APPROVAL
                                                     }
                                                     onClick={() => setIsModalOpen(true)}
@@ -359,7 +431,7 @@ export const ProductDetails: React.FC = () => {
                                                 <button
                                                     className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
-                                                        selectedProductDetails?.status !==
+                                                        selectedProductDetails?.import_status !==
                                                         productStatus.UNDER_IMPORT_APPROVAL
                                                     }
                                                     onClick={() =>
@@ -488,7 +560,9 @@ export const ProductDetails: React.FC = () => {
                                                         selectedProductDetails?.status ===
                                                             productStatus.EXPORT_INFO_NEEDED
                                                     }
-                                                    onClick={() => setIsModalOpen(true)}
+                                                    onClick={() =>
+                                                        handleOpenModal('sendForImportApproval')
+                                                    }
                                                 >
                                                     <Icon
                                                         icon="icon-park-outline:send"
@@ -573,6 +647,7 @@ export const ProductDetails: React.FC = () => {
                             ? 'Additional Comments'
                             : 'Request Additional Information'
                     }
+                    showCountryDropdown={showCountryDropdown}
                 />
             )}
             {isConfirmModalOpen && (

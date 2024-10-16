@@ -120,7 +120,7 @@ export const Products = () => {
 
     return (
         <DataTable
-            columns={[...productsTableColumns]}
+            columns={productsTableColumns(userRole)}
             data={filteredProducts}
             progressPending={isLoading}
             progressComponent={<CustomLoader />}

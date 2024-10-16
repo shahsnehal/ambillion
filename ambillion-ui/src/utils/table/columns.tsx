@@ -2,7 +2,7 @@ import { TableColumn } from 'react-data-table-component';
 import { Icon } from '@iconify/react';
 import { User } from 'reduxSaga/modules/user-module/type/types';
 import { Product } from 'reduxSaga/modules/product-module/type/types';
-import { userStatus, productStatus } from 'constants/common';
+import { userStatus, productStatus, userRoles } from 'constants/common';
 
 /**
  * Custom styles for DataTable components.
@@ -80,6 +80,16 @@ export const getProductStatusClass = (status: string): string => {
             return 'bg-secondary-subtle text-secondary';
         case productStatus.EXPORT_APPROVED:
             return 'bg-success-subtle text-success';
+        case productStatus.SENT_FOR_IMPORT_APPROVAL:
+            return 'bg-info-subtle text-info';
+        case productStatus.UNDER_IMPORT_APPROVAL:
+            return 'bg-info-subtle text-info';
+        case productStatus.IMPORT_INFO_NEEDED:
+            return 'bg-secondary-subtle text-secondary';
+        case productStatus.IMPORT_APPROVED:
+            return 'bg-success-subtle text-success';
+        case productStatus.IMPORT_REJECTED:
+            return 'bg-success-subtle text-danger';
         default:
             return '';
     }
@@ -217,7 +227,7 @@ export const userTableColumns: TableColumn<User>[] = [
  *
  * @type {TableColumn<Product>[]}
  */
-export const productsTableColumns: TableColumn<Product>[] = [
+export const productsTableColumns = (userRole: string): TableColumn<Product>[] => [
     {
         name: 'Name',
         selector: (row) => row.product_displayname,
@@ -244,19 +254,22 @@ export const productsTableColumns: TableColumn<Product>[] = [
         name: 'Description',
         selector: (row) => row.customer_product_description,
         sortable: true,
-        grow: 2
+        grow: 1.7
     },
     {
-        name: 'Export Status',
-        selector: (row) => row.status,
+        name: userRole === userRoles.IMPORT_OFFICER ? 'Import Status' : 'Export Status',
+        selector: (row) => (userRole === userRoles.IMPORT_OFFICER ? row.import_status : row.status),
         sortable: true,
-        cell: (row) => (
-            <span
-                className={`badge ${getProductStatusClass(row.status)} rounded fw-semibold p-2 sticky-column`}
-            >
-                {row.status}
-            </span>
-        ),
-        grow: 1.5
+        cell: (row) => {
+            const status = userRole === userRoles.IMPORT_OFFICER ? row.import_status : row.status;
+            return (
+                <span
+                    className={`badge ${getProductStatusClass(status)} rounded fw-semibold p-2 sticky-column`}
+                >
+                    {status}
+                </span>
+            );
+        },
+        grow: 1.7
     }
 ];

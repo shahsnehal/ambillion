@@ -1,13 +1,15 @@
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 import { trimValues } from 'utils/common';
+import { countries } from 'constants/common';
 
 type ProductStatusModalProps = {
     isOpen: boolean;
     onClose: () => void;
     productId: string;
-    onConfirm: (productId: string, comment: string) => void;
+    onConfirm: (productId: string, comment: string, countryId?: string) => void;
     title: string;
+    showCountryDropdown?: boolean;
 };
 
 /**
@@ -22,9 +24,11 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     onClose,
     productId,
     onConfirm,
-    title
+    title,
+    showCountryDropdown = false
 }) => {
     const [comments, setComments] = useState<string>('');
+    const [selectedCountryId, setSelectedCountryId] = useState<string>('');
 
     /**
      * Handles confirmation by trimming comments and passing them to the onConfirm function,
@@ -32,7 +36,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
      */
     const handleConfirm = () => {
         const trimmedComments = trimValues(comments);
-        onConfirm(productId, trimmedComments);
+        onConfirm(productId, trimmedComments, showCountryDropdown ? selectedCountryId : undefined);
         onClose();
     };
 
@@ -66,6 +70,35 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                     onChange={(e) => setComments(e.target.value)}
                                 ></textarea>
                             </div>
+
+                            {showCountryDropdown && (
+                                <div className="mb-3">
+                                    <label htmlFor="country" className="form-label">
+                                        Select Country for Import Approval
+                                    </label>
+                                    <span className="text-danger"> * </span>
+                                    <select
+                                        id="country"
+                                        className="form-control"
+                                        value={selectedCountryId}
+                                        onChange={(e) => setSelectedCountryId(e.target.value)}
+                                    >
+                                        <option value="" disabled>
+                                            -- Select a country --
+                                        </option>
+                                        {countries
+                                            .filter((country) => country.countryName !== 'India')
+                                            .map((country) => (
+                                                <option
+                                                    key={country.countryId}
+                                                    value={country.countryId}
+                                                >
+                                                    {country.countryName}
+                                                </option>
+                                            ))}
+                                    </select>
+                                </div>
+                            )}
                         </div>
                         <div className="modal-footer">
                             <button
@@ -80,7 +113,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                 type="button"
                                 className="btn btn-primary btn-rounded ms-2"
                                 onClick={handleConfirm}
-                                // disabled={isSendDisabled}
+                                disabled={showCountryDropdown && !selectedCountryId}
                             >
                                 <Icon icon="icon-park-outline:send" className="fs-5 me-1" />
                                 Send
