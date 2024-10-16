@@ -48,20 +48,22 @@ const updateProductStatusAPI = async (
     productId: string,
     status: string,
     comments: string,
-    commentFor?: string
+    commentFor?: string,
+    countryId?: string
 ): Promise<AxiosResponse> => {
     return await axiosInstance.patch(`${apiUrl.products}`, {
         productId,
         status,
         comments,
-        commentFor
+        commentFor,
+        countryId
     });
 };
 
 function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
     try {
-        const { productId, status, comments, commentFor } = action.payload;
-        yield call(updateProductStatusAPI, productId, status, comments, commentFor);
+        const { productId, status, comments, commentFor, countryId } = action.payload;
+        yield call(updateProductStatusAPI, productId, status, comments, commentFor, countryId);
         yield put({
             type: UPDATE_PRODUCT_STATUS_SUCCESS,
             payload: { productId, status, comments }

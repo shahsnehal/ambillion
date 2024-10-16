@@ -78,6 +78,7 @@ export type Product = {
     comments: string;
     notes: NoteProps[] | null;
     product_documents: ProductDocumentsProps[] | null;
+    import_status: string;
 };
 
 export type ProductFormValues = {
@@ -107,12 +108,18 @@ export type FetchProductsFailureAction = {
 
 export type UpdateProductStatusRequestAction = {
     type: typeof UPDATE_PRODUCT_STATUS_REQUEST;
-    payload: { productId: string; comments: string; status: string; commentFor?: string };
+    payload: {
+        productId: string;
+        comments: string;
+        status: string;
+        commentFor?: string;
+        countryId?: string;
+    };
 };
 
 export type UpdateProductStatusSuccessAction = {
     type: typeof UPDATE_PRODUCT_STATUS_SUCCESS;
-    payload: { productId: string; comments: string; status: string };
+    payload: { productId: string; comments: string; status: string; countryId?: string };
 };
 
 export type UpdateProductStatusFailureAction = {

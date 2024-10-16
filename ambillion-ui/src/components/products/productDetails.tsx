@@ -26,6 +26,7 @@ import { getProductCustomeFields } from 'utils/common';
 export const ProductDetails: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [showCountryDropdown, setShowCountryDropdown] = useState<boolean>(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [modalConfig, setModalConfig] = useState<{
         title: string;
@@ -74,7 +75,7 @@ export const ProductDetails: React.FC = () => {
                 content: 'Are you sure you want to verify this product?',
                 confirmLabel: 'Verify'
             },
-            [productStatus.APPROVED]: {
+            [productStatus.EXPORT_APPROVED]: {
                 title: 'Approve Confirmation',
                 content: 'Are you sure you want to approve this product?',
                 confirmLabel: 'Approve'
@@ -83,6 +84,11 @@ export const ProductDetails: React.FC = () => {
                 title: 'Confirm Sending for Approval',
                 content: 'Are you sure you want to send for approval?',
                 confirmLabel: 'Yes'
+            },
+            [productStatus.IMPORT_APPROVED]: {
+                title: 'Import Approve Confirmation',
+                content: 'Are you sure you want to approve this product For Import?',
+                confirmLabel: 'Import Approve'
             }
         };
 
@@ -105,6 +111,15 @@ export const ProductDetails: React.FC = () => {
         }
     };
 
+    const handleOpenModal = (action: string) => {
+        if (action === 'sendForImportApproval') {
+            setShowCountryDropdown(true); // Show dropdown for "Send For Import Approval" action
+        } else {
+            setShowCountryDropdown(false); // Do not show dropdown for other actions
+        }
+        setIsModalOpen(true);
+    };
+
     /**
      * Closes the modal.
      */
@@ -125,13 +140,27 @@ export const ProductDetails: React.FC = () => {
                 selectedProductDetails?.status === productStatus.EXPORT_INFO_NEEDED
             ) {
                 return productStatus.UNDER_EXPORT_APPROVAL;
+            } else if (
+                selectedProductDetails?.status === productStatus.EXPORT_APPROVED ||
+                selectedProductDetails?.import_status === productStatus.IMPORT_INFO_NEEDED
+            ) {
+                return productStatus.UNDER_IMPORT_APPROVAL;
             } else {
                 return productStatus.INFO_NEEDED;
             }
-        } else if (userRole === userRoles.OFFICER) {
+        } else if (userRole === userRoles.EXPORT_OFFICER) {
             return productStatus.EXPORT_INFO_NEEDED;
         } else if (userRole === userRoles.MANUFACTURER) {
-            return productStatus.UNDER_VERIFICATION;
+            if (
+                selectedProductDetails?.status === productStatus.EXPORT_APPROVED ||
+                selectedProductDetails?.import_status === productStatus.IMPORT_INFO_NEEDED
+            ) {
+                return productStatus.UNDER_IMPORT_APPROVAL;
+            } else {
+                return productStatus.UNDER_VERIFICATION;
+            }
+        } else if (userRole === userRoles.IMPORT_OFFICER) {
+            return productStatus.IMPORT_INFO_NEEDED;
         } else {
             return selectedProductDetails?.status;
         }
@@ -153,7 +182,12 @@ export const ProductDetails: React.FC = () => {
             updatedStatus === productStatus.UNDER_EXPORT_APPROVAL ||
             updatedStatus === productStatus.EXPORT_INFO_NEEDED
         ) {
-            return userRoles.OFFICER;
+            return userRoles.EXPORT_OFFICER;
+        } else if (
+            updatedStatus === productStatus.UNDER_IMPORT_APPROVAL ||
+            updatedStatus === productStatus.IMPORT_INFO_NEEDED
+        ) {
+            return userRoles.IMPORT_OFFICER;
         } else {
             return '';
         }
@@ -166,10 +200,12 @@ export const ProductDetails: React.FC = () => {
      * @param {string} productId - The ID of the product.
      * @param {string} comments - Comments to be added for the status update.
      */
-    const handleSendForMoreInfo = (productId: string, comments: string) => {
+    const handleSendForMoreInfo = (productId: string, comments: string, countryId?: string) => {
         const updatedStatus = getRoleBasedStatus() ?? '';
         const commentFor = getCommentFor(updatedStatus);
-        dispatch(updateProductStatusRequest(productId, updatedStatus, comments, commentFor));
+        dispatch(
+            updateProductStatusRequest(productId, updatedStatus, comments, commentFor, countryId)
+        );
         navigate(ROUTES.PRODUCTS);
     };
 
@@ -190,11 +226,20 @@ export const ProductDetails: React.FC = () => {
                             <div className="row">
                                 <div className="shop-content">
                                     <div className="d-flex align-items-center gap-2 mb-2">
-                                        <span
-                                            className={`badge ${getProductStatusClass(selectedProductDetails?.status ?? '')} fs-2 fw-semibold`}
-                                        >
-                                            {selectedProductDetails?.status}
-                                        </span>
+                                        {userRole === userRoles.IMPORT_OFFICER ? (
+                                            <span
+                                                className={`badge ${getProductStatusClass(selectedProductDetails?.import_status ?? '')} fs-2 fw-semibold`}
+                                            >
+                                                {selectedProductDetails?.import_status}
+                                            </span>
+                                        ) : (
+                                            <span
+                                                className={`badge ${getProductStatusClass(selectedProductDetails?.status ?? '')} fs-2 fw-semibold`}
+                                            >
+                                                {selectedProductDetails?.status}
+                                            </span>
+                                        )}
+
                                         <span>
                                             <span>
                                                 <Icon icon="bi:bookmark" className="text-primary" />
@@ -239,6 +284,57 @@ export const ProductDetails: React.FC = () => {
                                         </div>
                                     )}
                                 </div>
+                                {(userRole === userRoles.ADMIN ||
+                                    userRole === userRoles.MANUFACTURER) &&
+                                    selectedProductDetails?.import_status &&
+                                    (() => {
+                                        const importStatus =
+                                            selectedProductDetails.import_status ?? '';
+                                        const importStatusArray = importStatus
+                                            .split(',')
+                                            .map((status) => {
+                                                const [country, productStatus] = status.split(':');
+                                                return {
+                                                    country: country.trim(),
+                                                    productStatus: productStatus.trim()
+                                                };
+                                            });
+
+                                        return (
+                                            importStatusArray.length > 0 && (
+                                                <div className="mt-4">
+                                                    <h6 className="fs-4">Import Status:</h6>
+                                                    <table className="table table-bordered mt-2">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Country Name</th>
+                                                                <th>Product Import Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {importStatusArray.map(
+                                                                (statusItem, index) => (
+                                                                    <tr key={index}>
+                                                                        <td>
+                                                                            {statusItem.country}
+                                                                        </td>
+                                                                        <td
+                                                                            className={`badge ${getProductStatusClass(statusItem?.productStatus ?? '')} fs-2 fw-semibold p-2 m-3`}
+                                                                        >
+                                                                            {
+                                                                                statusItem.productStatus
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            )}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            )
+                                        );
+                                    })()}
+
                                 <hr className="mt-4"></hr>
                                 <div className="mt-1">
                                     <h6 className="fw-semibold mb-0 text-dark mb-3">Documents</h6>
@@ -256,7 +352,9 @@ export const ProductDetails: React.FC = () => {
                                     <NoteList notesList={selectedProductDetails?.notes || null} />
                                 </div>
                                 <div className="row justify-content-center justify-content-lg-end">
-                                    <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                    <div
+                                        className={`col-12 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4' : 'col-md-3 col-lg-auto'}  mb-2`}
+                                    >
                                         <button
                                             className="btn btn-rounded btn-secondary w-100 d-flex align-items-center justify-content-center"
                                             onClick={() => navigate(ROUTES.PRODUCTS)}
@@ -265,8 +363,9 @@ export const ProductDetails: React.FC = () => {
                                             Back
                                         </button>
                                     </div>
-                                    {/* For The Officer Role */}
-                                    {userRole === userRoles.OFFICER && (
+
+                                    {/* For The EXPORT_Officer Role */}
+                                    {userRole === userRoles.EXPORT_OFFICER && (
                                         <>
                                             <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
                                                 <button
@@ -296,7 +395,7 @@ export const ProductDetails: React.FC = () => {
                                                             String(
                                                                 selectedProductDetails?.product_id
                                                             ),
-                                                            productStatus.APPROVED
+                                                            productStatus.EXPORT_APPROVED
                                                         )
                                                     }
                                                 >
@@ -309,10 +408,54 @@ export const ProductDetails: React.FC = () => {
                                             </div>
                                         </>
                                     )}
+                                    {/* For The IMPORT_Officer Role */}
+                                    {userRole === userRoles.IMPORT_OFFICER && (
+                                        <>
+                                            <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                <button
+                                                    className="btn btn-info w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.import_status !==
+                                                        productStatus.UNDER_IMPORT_APPROVAL
+                                                    }
+                                                    onClick={() => setIsModalOpen(true)}
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:info"
+                                                        className="me-1"
+                                                    />
+                                                    Ask For More Info
+                                                </button>
+                                            </div>
+                                            <div className="col-12 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                                <button
+                                                    className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.import_status !==
+                                                        productStatus.UNDER_IMPORT_APPROVAL
+                                                    }
+                                                    onClick={() =>
+                                                        handleAction(
+                                                            String(
+                                                                selectedProductDetails?.product_id
+                                                            ),
+                                                            productStatus.IMPORT_APPROVED
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon
+                                                        icon="pepicons-pop:checkmark-circle"
+                                                        className="me-1"
+                                                    />
+                                                    Mark Import Approve
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
                                     {/* For The Admin Role */}
                                     {userRole === userRoles.ADMIN && (
                                         <>
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
                                                 <button
                                                     className="btn btn-rounded btn-info w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -328,7 +471,7 @@ export const ProductDetails: React.FC = () => {
                                                     Ask For More Info
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mb-md-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-2">
                                                 <button
                                                     className="btn btn-rounded btn-success w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -351,7 +494,7 @@ export const ProductDetails: React.FC = () => {
                                                     Mark Verify
                                                 </button>
                                             </div>
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2 mt-md-3 mt-lg-0">
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4 mb-2 mt-md-3">
                                                 <button
                                                     className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
                                                     disabled={
@@ -366,14 +509,14 @@ export const ProductDetails: React.FC = () => {
                                                         icon="icon-park-outline:send"
                                                         className="me-1"
                                                     />
-                                                    Send For Approval
+                                                    Send For Export Approval
                                                 </button>
                                             </div>
                                         </>
                                     )}
                                     {/* For The Manufacture Role */}
                                     {userRole === userRoles.MANUFACTURER && (
-                                        <div className="col-12 col-sm-6 col-md-4 col-lg-auto mb-2">
+                                        <div className="col-12 col-sm-6 col-md-3 col-lg-auto mb-2">
                                             <button
                                                 className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
                                                 disabled={
@@ -395,48 +538,89 @@ export const ProductDetails: React.FC = () => {
                                     {/* For The Admin & Manufacture Role */}
                                     {(userRole === userRoles.MANUFACTURER ||
                                         userRole === userRoles.ADMIN) && (
-                                        <div
-                                            className={`col-12 col-sm-6 col-md-4 col-lg-auto ${
-                                                userRole === userRoles.MANUFACTURER
-                                                    ? ''
-                                                    : 'mt-md-3 mt-lg-0'
-                                            }`}
-                                        >
-                                            <button
-                                                disabled={
-                                                    // Common disable conditions for both roles
-                                                    (selectedProductDetails?.status !==
-                                                        productStatus.PENDING &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.INFO_NEEDED &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.EXPORT_INFO_NEEDED &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.VERIFIED) ||
-                                                    // Specific disable conditions for the manufacturer
-                                                    (userRole === userRoles.MANUFACTURER &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.PENDING &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.INFO_NEEDED) ||
-                                                    // Specific disable conditions for the admin
-                                                    (userRole === userRoles.ADMIN &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.EXPORT_INFO_NEEDED &&
-                                                        selectedProductDetails?.status !==
-                                                            productStatus.VERIFIED)
-                                                }
-                                                className="btn btn-rounded btn-warning w-100 d-flex align-items-center justify-content-center"
-                                                onClick={() =>
-                                                    navigate(
-                                                        `${ROUTES.PRODUCTS}/editProduct/${productId}`
-                                                    )
-                                                }
+                                        <>
+                                            <div
+                                                className={`col-12 col-sm-6 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4 mt-md-3 mt-lg-3' : 'col-md-3 col-lg-auto'} mb-2 `}
                                             >
-                                                <Icon icon="mdi:pencil" className="me-1" />
-                                                Edit Product
-                                            </button>
-                                        </div>
+                                                <button
+                                                    className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                    disabled={
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.PENDING ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.UNDER_VERIFICATION ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.VERIFIED ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.INFO_NEEDED ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.SENT_FOR_EXPORT_APPROVAL ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.UNDER_EXPORT_APPROVAL ||
+                                                        selectedProductDetails?.status ===
+                                                            productStatus.EXPORT_INFO_NEEDED
+                                                    }
+                                                    onClick={() =>
+                                                        handleOpenModal('sendForImportApproval')
+                                                    }
+                                                >
+                                                    <Icon
+                                                        icon="icon-park-outline:send"
+                                                        className="me-1"
+                                                    />
+                                                    Send For Import Approval
+                                                </button>
+                                            </div>
+
+                                            <div
+                                                className={`col-12 col-sm-6 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4' : 'col-md-3 col-lg-auto'}  ${
+                                                    userRole === userRoles.MANUFACTURER
+                                                        ? ''
+                                                        : 'mt-md-3 col-md-4'
+                                                }`}
+                                            >
+                                                <button
+                                                    disabled={
+                                                        // Common disable conditions for both roles
+                                                        (selectedProductDetails?.status !==
+                                                            productStatus.PENDING &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.VERIFIED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_APPROVED) ||
+                                                        // Specific disable conditions for the manufacturer
+                                                        (userRole === userRoles.MANUFACTURER &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.PENDING &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_APPROVED) ||
+                                                        // Specific disable conditions for the admin
+                                                        (userRole === userRoles.ADMIN &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_INFO_NEEDED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.VERIFIED &&
+                                                            selectedProductDetails?.status !==
+                                                                productStatus.EXPORT_APPROVED)
+                                                    }
+                                                    className="btn btn-rounded btn-warning w-100 d-flex align-items-center justify-content-center"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `${ROUTES.PRODUCTS}/editProduct/${productId}`
+                                                        )
+                                                    }
+                                                >
+                                                    <Icon icon="mdi:pencil" className="me-1" />
+                                                    Edit Product
+                                                </button>
+                                            </div>
+                                        </>
                                     )}
                                 </div>
                             </div>
@@ -463,6 +647,7 @@ export const ProductDetails: React.FC = () => {
                             ? 'Additional Comments'
                             : 'Request Additional Information'
                     }
+                    showCountryDropdown={showCountryDropdown}
                 />
             )}
             {isConfirmModalOpen && (

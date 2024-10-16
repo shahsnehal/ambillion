@@ -22,10 +22,11 @@ export const updateProductStatusRequest = (
     productId: string,
     status: string,
     comments: string,
-    commentFor?: string
+    commentFor?: string,
+    countryId?: string
 ): UpdateProductStatusRequestAction => ({
     type: UPDATE_PRODUCT_STATUS_REQUEST,
-    payload: { productId, comments, status, commentFor }
+    payload: { productId, comments, status, commentFor, countryId }
 });
 
 export const addProductRequest = (
