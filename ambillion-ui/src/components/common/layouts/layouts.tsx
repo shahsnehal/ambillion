@@ -122,6 +122,19 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 </li>
                             )}
 
+                            {userRole === userRoles.ADMIN && (
+                                <li className="sidebar-item cursor-link">
+                                    <a
+                                        className={`sidebar-link ${isActive(ROUTES.COUNTRIES) ? 'active' : ''}`}
+                                        id="get-url"
+                                        onClick={() => navigate(ROUTES.COUNTRIES)}
+                                    >
+                                        <Icon icon="mdi:flag" className="aside-icon fs-6" />
+                                        <span className="hide-menu">COUNTRIES</span>
+                                    </a>
+                                </li>
+                            )}
+
                             {/* <li className="sidebar-item cursor-link">
                                 <a className="sidebar-link" aria-expanded="false">
                                     <div className="d-flex">

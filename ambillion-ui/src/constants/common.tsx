@@ -17,7 +17,10 @@ export const apiUrl = {
     productCategories: '/categories',
 
     // Product Document Type Module
-    productDocumentType: '/productdocumenttype'
+    productDocumentType: '/productdocumenttype',
+
+    // Country Module
+    countries: '/countries'
 };
 
 // Routing paths used throughout the application
@@ -33,14 +36,16 @@ export const ROUTES = {
     EDITPRODUCT: '/products/editProduct/:productId',
     PRODUCTDETAILS: '/products/:productId',
     PRODUCT_CATEGORIES: '/productCategories',
-    PRODUCT_DOCUMENTTYPE: '/productDocumentType'
+    PRODUCT_DOCUMENTTYPE: '/productDocumentType',
+    COUNTRIES: '/countries'
 };
 
 // Keys used for storing and retrieving data in local storage
 export const localStorageKey = {
     USER_PROFILE: 'userProfile',
     JWT_TOKEN: 'jwtToken',
-    PRODUCT_CATEGORIES: 'productCategories'
+    PRODUCT_CATEGORIES: 'productCategories',
+    COUNTRIES: 'countries'
 };
 
 // Configuration for Google reCAPTCHA
@@ -79,11 +84,3 @@ export const userRoles = {
     EXPORT_OFFICER: 'EXPORT_OFFICER',
     IMPORT_OFFICER: 'IMPORT_OFFICER'
 };
-
-//Countries Constatnts
-export const countries = [
-    { countryId: '1', countryName: 'India' },
-    { countryId: '2', countryName: 'United States' },
-    { countryId: '3', countryName: 'Canada' },
-    { countryId: '4', countryName: 'Australia' }
-];
