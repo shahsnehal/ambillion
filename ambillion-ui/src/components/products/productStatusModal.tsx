@@ -1,7 +1,9 @@
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 import { trimValues } from 'utils/common';
-import { countries } from 'constants/common';
+import { localStorageKey } from 'constants/common';
+import { getLocalStorage } from 'utils/localStorage';
+import { CountryType } from 'reduxSaga/modules/country-module/type/types';
 
 type ProductStatusModalProps = {
     isOpen: boolean;
@@ -29,6 +31,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
 }) => {
     const [comments, setComments] = useState<string>('');
     const [selectedCountryId, setSelectedCountryId] = useState<string>('');
+    const countries = getLocalStorage(localStorageKey.COUNTRIES);
 
     /**
      * Handles confirmation by trimming comments and passing them to the onConfirm function,
@@ -87,13 +90,16 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                             -- Select a country --
                                         </option>
                                         {countries
-                                            .filter((country) => country.countryName !== 'India')
-                                            .map((country) => (
+                                            .filter(
+                                                (country: CountryType) =>
+                                                    country.country_name !== 'India'
+                                            )
+                                            ?.map((country: CountryType) => (
                                                 <option
-                                                    key={country.countryId}
-                                                    value={country.countryId}
+                                                    key={country.country_id}
+                                                    value={country.country_id}
                                                 >
-                                                    {country.countryName}
+                                                    {country.country_name}
                                                 </option>
                                             ))}
                                     </select>

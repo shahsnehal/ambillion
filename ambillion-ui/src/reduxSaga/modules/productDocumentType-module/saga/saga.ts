@@ -87,7 +87,7 @@ function* handleUpdateProductDocumentType(action: UpdateProductDocumentTypeReque
     }
 }
 
-export default function* ProductDocumentTypeSaga() {
+export default function* productDocumentTypeSaga() {
     yield takeLatest(FETCH_PRODUCT_DOCUMENT_TYPE_REQUEST, handleFetchProductDocumentType);
     yield takeLatest(ADD_PRODUCT_DOCUMENT_TYPE_REQUEST, handleAddProductDocumentType);
     yield takeLatest(UPDATE_PRODUCT_DOCUMENT_TYPE_REQUEST, handleUpdateProductDocumentType);

@@ -24,7 +24,7 @@ const initialState: ProductDocumentTypeState = {
     productDocumentsType: []
 };
 
-export const ProductDocumentTypeReducer = (
+export const productDocumentTypeReducer = (
     state = initialState,
     action: ProductDocumentTypeActionTypes
 ): ProductDocumentTypeState => {
