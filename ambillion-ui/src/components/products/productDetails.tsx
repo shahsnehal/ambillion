@@ -61,6 +61,15 @@ export const ProductDetails: React.FC = () => {
         }
     }, []);
 
+    const parseImportStatus = (importStatus: string) => {
+        if (!importStatus) return [];
+
+        return importStatus.split(',').map((status) => {
+            const [country, productStatus] = status.split(':').map((item) => item.trim());
+            return { country, productStatus };
+        });
+    };
+
     /**
      * Handles the action button click, setting up the modal configuration
      * based on the action type.
@@ -284,21 +293,23 @@ export const ProductDetails: React.FC = () => {
                                         </div>
                                     )}
                                 </div>
+                                <hr className="mt-4"></hr>
+                                <div className="mt-1">
+                                    <h6 className="fw-semibold mb-0 text-dark mb-3">Documents</h6>
+                                    <ViewDocuments
+                                        documents={
+                                            selectedProductDetails?.product_documents || null
+                                        }
+                                    />
+                                </div>
+                                <hr className="mt-4"></hr>
                                 {(userRole === userRoles.ADMIN ||
                                     userRole === userRoles.MANUFACTURER) &&
                                     selectedProductDetails?.import_status &&
                                     (() => {
-                                        const importStatus =
-                                            selectedProductDetails.import_status ?? '';
-                                        const importStatusArray = importStatus
-                                            .split(',')
-                                            .map((status) => {
-                                                const [country, productStatus] = status.split(':');
-                                                return {
-                                                    country: country.trim(),
-                                                    productStatus: productStatus.trim()
-                                                };
-                                            });
+                                        const importStatusArray = parseImportStatus(
+                                            selectedProductDetails.import_status
+                                        );
 
                                         return (
                                             importStatusArray.length > 0 && (
@@ -334,16 +345,6 @@ export const ProductDetails: React.FC = () => {
                                             )
                                         );
                                     })()}
-
-                                <hr className="mt-4"></hr>
-                                <div className="mt-1">
-                                    <h6 className="fw-semibold mb-0 text-dark mb-3">Documents</h6>
-                                    <ViewDocuments
-                                        documents={
-                                            selectedProductDetails?.product_documents || null
-                                        }
-                                    />
-                                </div>
                                 <hr className="mt-4"></hr>
                                 <div className="mt-1">
                                     <h6 className="fw-semibold mb-0 text-dark mb-3">
@@ -512,35 +513,10 @@ export const ProductDetails: React.FC = () => {
                                                     Send For Export Approval
                                                 </button>
                                             </div>
-                                        </>
-                                    )}
-                                    {/* For The Manufacture Role */}
-                                    {userRole === userRoles.MANUFACTURER && (
-                                        <div className="col-12 col-sm-6 col-md-3 col-lg-auto mb-2">
-                                            <button
-                                                className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
-                                                disabled={
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.PENDING &&
-                                                    selectedProductDetails?.status !==
-                                                        productStatus.INFO_NEEDED
-                                                }
-                                                onClick={() => setIsModalOpen(true)}
-                                            >
-                                                <Icon
-                                                    icon="icon-park-outline:send"
-                                                    className="me-1"
-                                                />
-                                                Send For Verification
-                                            </button>
-                                        </div>
-                                    )}
-                                    {/* For The Admin & Manufacture Role */}
-                                    {(userRole === userRoles.MANUFACTURER ||
-                                        userRole === userRoles.ADMIN) && (
-                                        <>
                                             <div
-                                                className={`col-12 col-sm-6 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4 mt-md-3 mt-lg-3' : 'col-md-3 col-lg-auto'} mb-2 `}
+                                                className={
+                                                    'col-12 col-sm-6 col-md-4 col-lg-4 mt-md-3 mt-lg-3 mb-2 '
+                                                }
                                             >
                                                 <button
                                                     className="btn btn-rounded btn-primary w-100 d-flex align-items-center justify-content-center"
@@ -571,7 +547,33 @@ export const ProductDetails: React.FC = () => {
                                                     Send For Import Approval
                                                 </button>
                                             </div>
-
+                                        </>
+                                    )}
+                                    {/* For The Manufacture Role */}
+                                    {userRole === userRoles.MANUFACTURER && (
+                                        <div className="col-12 col-sm-6 col-md-3 col-lg-auto mb-2">
+                                            <button
+                                                className="btn btn-primary w-100 d-flex align-items-center justify-content-center"
+                                                disabled={
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.PENDING &&
+                                                    selectedProductDetails?.status !==
+                                                        productStatus.INFO_NEEDED
+                                                }
+                                                onClick={() => setIsModalOpen(true)}
+                                            >
+                                                <Icon
+                                                    icon="icon-park-outline:send"
+                                                    className="me-1"
+                                                />
+                                                Send For Verification
+                                            </button>
+                                        </div>
+                                    )}
+                                    {/* For The Admin & Manufacture Role */}
+                                    {(userRole === userRoles.MANUFACTURER ||
+                                        userRole === userRoles.ADMIN) && (
+                                        <>
                                             <div
                                                 className={`col-12 col-sm-6 ${userRole === userRoles.ADMIN ? 'col-md-4 col-lg-4' : 'col-md-3 col-lg-auto'}  ${
                                                     userRole === userRoles.MANUFACTURER
@@ -648,6 +650,9 @@ export const ProductDetails: React.FC = () => {
                             : 'Request Additional Information'
                     }
                     showCountryDropdown={showCountryDropdown}
+                    importStatusArray={parseImportStatus(
+                        selectedProductDetails?.import_status || ''
+                    )}
                 />
             )}
             {isConfirmModalOpen && (

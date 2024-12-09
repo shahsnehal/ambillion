@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react';
 import { trimValues } from 'utils/common';
-import { localStorageKey } from 'constants/common';
+import { localStorageKey, productStatus } from 'constants/common';
 import { getLocalStorage } from 'utils/localStorage';
 import { CountryType } from 'reduxSaga/modules/country-module/type/types';
 
@@ -12,6 +12,7 @@ type ProductStatusModalProps = {
     onConfirm: (productId: string, comment: string, countryId?: string) => void;
     title: string;
     showCountryDropdown?: boolean;
+    importStatusArray: Array<{ country: string; productStatus: string }>;
 };
 
 /**
@@ -27,7 +28,8 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     productId,
     onConfirm,
     title,
-    showCountryDropdown = false
+    showCountryDropdown = false,
+    importStatusArray = []
 }) => {
     const [comments, setComments] = useState<string>('');
     const [selectedCountryId, setSelectedCountryId] = useState<string>('');
@@ -46,6 +48,16 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
     // Early return if the modal is not open
     if (!isOpen) return null;
 
+    // Get countries with the UNDER_IMPORT_APPROVAL status
+    const underImportApprovalCountries = importStatusArray
+        .filter((status) => status.productStatus === productStatus.UNDER_IMPORT_APPROVAL)
+        .map((status) => status.country);
+
+    // Filter out countries with UNDER_IMPORT_APPROVAL status
+    const filteredCountries = countries.filter(
+        (country: CountryType) => !underImportApprovalCountries.includes(country.country_name)
+    );
+
     return (
         <>
             <div
@@ -61,19 +73,6 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                             <button type="button" className="btn-close" onClick={onClose}></button>
                         </div>
                         <div className="modal-body">
-                            <div className="mb-3">
-                                <label htmlFor="comment" className="form-label">
-                                    Comments
-                                </label>
-                                <textarea
-                                    id="comment"
-                                    className="form-control"
-                                    rows={3}
-                                    value={comments}
-                                    onChange={(e) => setComments(e.target.value)}
-                                ></textarea>
-                            </div>
-
                             {showCountryDropdown && (
                                 <div className="mb-3">
                                     <label htmlFor="country" className="form-label">
@@ -89,7 +88,7 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                         <option value="" disabled>
                                             -- Select a country --
                                         </option>
-                                        {countries
+                                        {filteredCountries
                                             .filter(
                                                 (country: CountryType) =>
                                                     country.country_name !== 'India'
@@ -105,6 +104,18 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
                                     </select>
                                 </div>
                             )}
+                            <div className="mb-3">
+                                <label htmlFor="comment" className="form-label">
+                                    Comments
+                                </label>
+                                <textarea
+                                    id="comment"
+                                    className="form-control"
+                                    rows={3}
+                                    value={comments}
+                                    onChange={(e) => setComments(e.target.value)}
+                                ></textarea>
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button
