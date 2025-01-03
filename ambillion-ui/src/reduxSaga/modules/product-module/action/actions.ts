@@ -11,7 +11,9 @@ import {
     FETCH_PRODUCTS_REQUEST,
     FetchProductsRequestAction,
     UPDATE_PRODUCT_STATUS_REQUEST,
-    UpdateProductStatusRequestAction
+    UpdateProductStatusRequestAction,
+    FetchImportStatusRequestAction,
+    FETCH_IMPORTSTATUS_REQUEST
 } from '../type/types';
 
 export const fetchProductsRequest = (): FetchProductsRequestAction => ({
@@ -56,4 +58,12 @@ export const getProductDetailsRequest = (
 ): FetchProductDetailsRequestAction => ({
     type: FETCH_PRODUCTDETAILS_REQUEST,
     payload: productId
+});
+
+export const getImportStatusRequest = (
+    productId: number | string,
+    countryId: number | string
+): FetchImportStatusRequestAction => ({
+    type: FETCH_IMPORTSTATUS_REQUEST,
+    payload: { productId, countryId }
 });

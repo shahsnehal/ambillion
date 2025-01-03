@@ -19,6 +19,7 @@ import { ProductsPage } from 'pages/products/products';
 import { ProductCategoriesPage } from 'pages/productCategories/productCategories';
 import { ProductDocumentTypePage } from 'pages/productDocumentType/productDocumentType';
 import { CountriesPage } from 'pages/countries/countries';
+import { ProductImportStatusDetails } from 'components/products/ProductImportStatusDetails';
 
 function App() {
     return (
@@ -87,6 +88,15 @@ function App() {
                                             element={
                                                 <Layout title="Countries">
                                                     <CountriesPage />
+                                                </Layout>
+                                            }
+                                        />
+
+                                        <Route
+                                            path={ROUTES.PRODUCT_IMPORT_STATUS_DETAILS}
+                                            element={
+                                                <Layout title="Product Import Status Details">
+                                                    <ProductImportStatusDetails />
                                                 </Layout>
                                             }
                                         />

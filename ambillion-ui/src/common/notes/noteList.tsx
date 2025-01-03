@@ -23,29 +23,35 @@ const NoteList: React.FC<NoteListProps> = ({ notesList }) => {
             {hasNotes ? (
                 notesList.map((note, index) => (
                     <div
-                        className={`d-flex flex-column ${(index + 1) % 2 === 0 ? 'align-items-end' : 'align-items-start'} mb-3`}
+                        className={`d-flex flex-column ${(index + 1) % 2 === 0 ? 'align-items-end' : 'align-items-start'}`}
                         key={index + 1}
                     >
                         <div className="col-12 col-md-8 col-lg-6">
                             <div className="card overflow-hidden">
                                 <div className="d-flex flex-column flex-md-row">
-                                    <div className="p-3 bg-info-subtle d-flex align-items-center"></div>
-                                    <div className="p-3">
-                                        <h6
-                                            className="note-title text-truncate"
-                                            data-noteheading={note.created_by}
-                                        >
-                                            {note?.user_id === userProfile?.userprofile_id
-                                                ? 'You'
-                                                : `${note?.created_by} ( ${note?.user_role} )`}
-                                        </h6>
-                                        <p className="note-date fs-2">
-                                            {new Date(note.note_created_at).toLocaleDateString()}{' '}
-                                            {new Date(note.note_created_at).toLocaleTimeString()}
-                                        </p>
+                                    <div className="p-2 bg-info-subtle d-flex align-items-center"></div>
+                                    <div className="p-1 w-100">
+                                        <div className="d-flex justify-content-between p-1">
+                                            <h6
+                                                className="note-title text-truncate mb-1"
+                                                data-noteheading={note.created_by}
+                                            >
+                                                {note?.user_id === userProfile?.userprofile_id
+                                                    ? 'You'
+                                                    : `${note?.created_by} ( ${note?.user_role} )`}
+                                            </h6>
+                                            <p className="note-date fs-2 mb-1">
+                                                {new Date(
+                                                    note.note_created_at
+                                                ).toLocaleDateString()}{' '}
+                                                {new Date(
+                                                    note.note_created_at
+                                                ).toLocaleTimeString()}
+                                            </p>
+                                        </div>
                                         <div className="note-content">
                                             <p
-                                                className="note-inner-content"
+                                                className="note-inner-content ms-1 mb-1"
                                                 data-notecontent={note.note_description}
                                             >
                                                 {note.note_description}

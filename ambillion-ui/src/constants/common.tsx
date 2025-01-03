@@ -20,7 +20,10 @@ export const apiUrl = {
     productDocumentType: '/productdocumenttype',
 
     // Country Module
-    countries: '/countries'
+    countries: '/countries',
+
+    // Import Status Endpoint
+    importStatus: '/products/:productId/import-status/:countryId'
 };
 
 // Routing paths used throughout the application
@@ -37,7 +40,8 @@ export const ROUTES = {
     PRODUCTDETAILS: '/products/:productId',
     PRODUCT_CATEGORIES: '/productCategories',
     PRODUCT_DOCUMENTTYPE: '/productDocumentType',
-    COUNTRIES: '/countries'
+    COUNTRIES: '/countries',
+    PRODUCT_IMPORT_STATUS_DETAILS: '/products/:productId/import-status/:countryId'
 };
 
 // Keys used for storing and retrieving data in local storage

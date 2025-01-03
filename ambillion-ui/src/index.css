@@ -43736,3 +43736,13 @@ body .connect-sorting-content {
 .mailbox .message-center .message-item .user-img .offline {
     background: var(--bs-warning);
 }
+
+/* Custom CSS */
+
+/* For Back Button */
+
+@media screen and (max-width: 576px) {
+    .back-btn {
+        width: 100%;
+    }
+}

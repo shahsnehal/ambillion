@@ -18,7 +18,11 @@ import {
     UPDATE_PRODUCT_STATUS_SUCCESS,
     UPDATE_PRODUCT_STATUS_FAILURE,
     ProductActionTypes,
-    Product
+    Product,
+    FETCH_IMPORTSTATUS_REQUEST,
+    FETCH_IMPORTSTATUS_SUCCESS,
+    FETCH_IMPORTSTATUS_FAILURE,
+    ImportStatus
 } from '../type/types';
 
 type ProductState = {
@@ -26,13 +30,15 @@ type ProductState = {
     error: string | null;
     products: Product[];
     selectedProductDetails: Product | null;
+    importStatus: ImportStatus | null;
 };
 
 const initialState: ProductState = {
     isLoading: false,
     error: null,
     products: [],
-    selectedProductDetails: null
+    selectedProductDetails: null,
+    importStatus: null
 };
 
 export const productReducer = (state = initialState, action: ProductActionTypes): ProductState => {
@@ -43,6 +49,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
         case FETCH_PRODUCTS_REQUEST:
         case UPDATE_PRODUCT_STATUS_REQUEST:
         case FETCH_PRODUCTDETAILS_REQUEST:
+        case FETCH_IMPORTSTATUS_REQUEST:
             return { ...state, isLoading: true, error: null };
 
         case FETCH_PRODUCTS_SUCCESS:
@@ -87,6 +94,14 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
                 error: null
             };
 
+        case FETCH_IMPORTSTATUS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                importStatus: action.payload,
+                error: null
+            };
+
         case UPDATE_PRODUCT_STATUS_SUCCESS:
             return {
                 ...state,
@@ -109,6 +124,7 @@ export const productReducer = (state = initialState, action: ProductActionTypes)
         case DELETE_PRODUCT_FAILURE:
         case UPDATE_PRODUCT_STATUS_FAILURE:
         case FETCH_PRODUCTDETAILS_FAILURE:
+        case FETCH_IMPORTSTATUS_FAILURE:
             return { ...state, isLoading: false, error: action.error };
 
         default:
