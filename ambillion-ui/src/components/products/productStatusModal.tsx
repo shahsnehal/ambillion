@@ -50,7 +50,12 @@ export const ProductStatusModal: React.FC<ProductStatusModalProps> = ({
 
     // Get countries with the UNDER_IMPORT_APPROVAL status
     const underImportApprovalCountries = importStatusArray
-        .filter((status) => status.productStatus === productStatus.UNDER_IMPORT_APPROVAL)
+        .filter(
+            (status) =>
+                status.productStatus === productStatus.UNDER_IMPORT_APPROVAL ||
+                status.productStatus === productStatus.IMPORT_APPROVED ||
+                status.productStatus === productStatus.IMPORT_REJECTED
+        )
         .map((status) => status.country);
 
     // Filter out countries with UNDER_IMPORT_APPROVAL status
