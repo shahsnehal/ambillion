@@ -18,6 +18,8 @@ import { ProductForm } from 'components/products/productForm';
 import { ProductsPage } from 'pages/products/products';
 import { ProductCategoriesPage } from 'pages/productCategories/productCategories';
 import { ProductDocumentTypePage } from 'pages/productDocumentType/productDocumentType';
+import { CountriesPage } from 'pages/countries/countries';
+import { ProductImportStatusDetails } from 'components/products/ProductImportStatusDetails';
 
 function App() {
     return (
@@ -80,14 +82,33 @@ function App() {
                                                 </Layout>
                                             }
                                         />
+
+                                        <Route
+                                            path={ROUTES.COUNTRIES}
+                                            element={
+                                                <Layout title="Countries">
+                                                    <CountriesPage />
+                                                </Layout>
+                                            }
+                                        />
+
+                                        <Route
+                                            path={ROUTES.PRODUCT_IMPORT_STATUS_DETAILS}
+                                            element={
+                                                <Layout title="Product Import Status Details">
+                                                    <ProductImportStatusDetails />
+                                                </Layout>
+                                            }
+                                        />
                                     </Route>
 
-                                    {/* Protected routes for Admin, Officer, and Manufacturer */}
+                                    {/* Protected routes for Admin, Export_Officer, Import_Officer and Manufacturer */}
                                     <Route
                                         element={
                                             <ProtectedRoute
                                                 allowedRoles={[
-                                                    userRoles.OFFICER,
+                                                    userRoles.EXPORT_OFFICER,
+                                                    userRoles.IMPORT_OFFICER,
                                                     userRoles.ADMIN,
                                                     userRoles.MANUFACTURER
                                                 ]}

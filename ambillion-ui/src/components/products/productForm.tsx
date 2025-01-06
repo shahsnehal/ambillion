@@ -578,7 +578,17 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                     type="text"
                                                                     name={`productCustomFields[${index}].FieldName`}
                                                                     autoFocus={isAddMode}
-                                                                    className={`form-control ${customFieldTouched?.[index]?.FieldName && customFieldErrors?.[index]?.FieldName ? 'is-invalid' : ''}`}
+                                                                    className={`form-control ${
+                                                                        customFieldTouched?.[index]
+                                                                            ?.FieldName &&
+                                                                        (
+                                                                            customFieldErrors?.[
+                                                                                index
+                                                                            ] as CustomFieldErrors
+                                                                        )?.FieldName
+                                                                            ? 'is-invalid'
+                                                                            : ''
+                                                                    }`}
                                                                     value={field.FieldName}
                                                                     onChange={(
                                                                         e: React.ChangeEvent<HTMLInputElement>
@@ -594,6 +604,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                         setProductCustomFields(
                                                                             updatedFields
                                                                         );
+                                                                        props.setFieldValue(
+                                                                            `productCustomFields[${index}].FieldName`,
+                                                                            e.target.value
+                                                                        );
                                                                     }}
                                                                 />
                                                                 <ErrorMessage
@@ -602,6 +616,7 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                     className="invalid-feedback"
                                                                 />
                                                             </div>
+
                                                             <div className="col-sm-12 col-md-6">
                                                                 <label
                                                                     htmlFor={`productCustomFields[${index}].FieldValue`}
@@ -615,7 +630,17 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                 <Field
                                                                     type="text"
                                                                     name={`productCustomFields[${index}].FieldValue`}
-                                                                    className={`form-control ${customFieldTouched?.[index]?.FieldValue && customFieldErrors?.[index]?.FieldValue ? 'is-invalid' : ''}`}
+                                                                    className={`form-control ${
+                                                                        customFieldTouched?.[index]
+                                                                            ?.FieldValue &&
+                                                                        (
+                                                                            customFieldErrors?.[
+                                                                                index
+                                                                            ] as CustomFieldErrors
+                                                                        )?.FieldValue
+                                                                            ? 'is-invalid'
+                                                                            : ''
+                                                                    }`}
                                                                     value={field.FieldValue}
                                                                     onChange={(
                                                                         e: React.ChangeEvent<HTMLInputElement>
@@ -631,6 +656,10 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                         setProductCustomFields(
                                                                             updatedFields
                                                                         );
+                                                                        props.setFieldValue(
+                                                                            `productCustomFields[${index}].FieldValue`,
+                                                                            e.target.value
+                                                                        );
                                                                     }}
                                                                 />
                                                                 <ErrorMessage
@@ -639,7 +668,8 @@ export const ProductForm: React.FC<ProductFormProps> = () => {
                                                                     className="invalid-feedback"
                                                                 />
                                                             </div>
-                                                            <div className="col-sm-12 col-md-1 d-flex align-items-center justify-content-center customField-delete-icon">
+
+                                                            <div className="col-sm-12 col-md-1 customField-delete-icon">
                                                                 <button
                                                                     type="button"
                                                                     className="btn btn-rounded btn-secondary"

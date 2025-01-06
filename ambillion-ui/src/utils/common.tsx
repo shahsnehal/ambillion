@@ -68,7 +68,6 @@ export const getProductCustomeFields = (customeFields: any): ProductCustomField[
         return [];
     } else if (Array.isArray(customeFields)) {
         // If customeFields is already an array (expected in production environment)
-        console.log('from if');
         if (environment === 'production') {
             return customeFields as ProductCustomField[];
         }
@@ -157,7 +156,6 @@ export const getBase64FromFileUrl = async (fileUrl: string): Promise<string> => 
             reader.readAsDataURL(blob);
         });
     } catch (error) {
-        console.error('Error fetching or converting file to base64:', error);
         return ''; // Return an empty string if error occurs
     }
 };

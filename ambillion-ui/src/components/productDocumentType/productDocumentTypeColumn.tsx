@@ -76,11 +76,5 @@ export const ProductDocumentTypeTableColumns: TableColumn<ProductDocumentsType>[
         selector: (row) => row.document_type_format,
         sortable: true,
         grow: 1
-    },
-    {
-        name: 'Category',
-        selector: (row) => row.category_name,
-        sortable: true,
-        grow: 1
     }
 ];

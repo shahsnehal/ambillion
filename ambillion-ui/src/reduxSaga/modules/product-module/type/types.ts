@@ -22,6 +22,10 @@ export const UPDATE_PRODUCT_STATUS_REQUEST = 'UPDATE_PRODUCT_STATUS_REQUEST';
 export const UPDATE_PRODUCT_STATUS_SUCCESS = 'UPDATE_PRODUCT_STATUS_SUCCESS';
 export const UPDATE_PRODUCT_STATUS_FAILURE = 'UPDATE_PRODUCT_STATUS_FAILURE';
 
+export const FETCH_IMPORTSTATUS_REQUEST = 'FETCH_IMPORTSTATUS_REQUEST';
+export const FETCH_IMPORTSTATUS_SUCCESS = 'FETCH_IMPORTSTATUS_SUCCESS';
+export const FETCH_IMPORTSTATUS_FAILURE = 'FETCH_IMPORTSTATUS_FAILURE';
+
 export type NoteProps = {
     note_id: string | number;
     created_by: string;
@@ -58,6 +62,15 @@ export type CustomFieldTouched = {
     FieldName?: boolean;
     FieldValue?: boolean;
 };
+export type ImportStatus = {
+    product_id: number;
+    product_displayname: string;
+    origin_hsn_code: string;
+    country_id: number;
+    country_name: string;
+    import_status: string;
+    notes: NoteProps[] | null;
+};
 export type Product = {
     product_id: number;
     category_id: number;
@@ -78,6 +91,7 @@ export type Product = {
     comments: string;
     notes: NoteProps[] | null;
     product_documents: ProductDocumentsProps[] | null;
+    import_status: string;
 };
 
 export type ProductFormValues = {
@@ -107,12 +121,18 @@ export type FetchProductsFailureAction = {
 
 export type UpdateProductStatusRequestAction = {
     type: typeof UPDATE_PRODUCT_STATUS_REQUEST;
-    payload: { productId: string; comments: string; status: string; commentFor?: string };
+    payload: {
+        productId: string;
+        comments: string;
+        status: string;
+        commentFor?: string;
+        countryId?: string;
+    };
 };
 
 export type UpdateProductStatusSuccessAction = {
     type: typeof UPDATE_PRODUCT_STATUS_SUCCESS;
-    payload: { productId: string; comments: string; status: string };
+    payload: { productId: string; comments: string; status: string; countryId?: string };
 };
 
 export type UpdateProductStatusFailureAction = {
@@ -184,6 +204,21 @@ export type FetchProductDetailsFailureAction = {
     error: string;
 };
 
+export type FetchImportStatusRequestAction = {
+    type: typeof FETCH_IMPORTSTATUS_REQUEST;
+    payload: { productId: number | string; countryId: number | string };
+};
+
+export type FetchImportStatusSuccessAction = {
+    type: typeof FETCH_IMPORTSTATUS_SUCCESS;
+    payload: ImportStatus;
+};
+
+export type FetchImportStatusFailureAction = {
+    type: typeof FETCH_IMPORTSTATUS_FAILURE;
+    error: string;
+};
+
 export type ProductActionTypes =
     | FetchProductsRequestAction
     | FetchProductsSuccessAction
@@ -202,4 +237,7 @@ export type ProductActionTypes =
     | DeleteProductFailureAction
     | FetchProductDetailsRequestAction
     | FetchProductDetailsSuccessAction
-    | FetchProductDetailsFailureAction;
+    | FetchProductDetailsFailureAction
+    | FetchImportStatusRequestAction
+    | FetchImportStatusSuccessAction
+    | FetchImportStatusFailureAction;

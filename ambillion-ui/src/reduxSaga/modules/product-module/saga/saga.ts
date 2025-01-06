@@ -19,7 +19,10 @@ import {
     UPDATE_PRODUCT_STATUS_REQUEST,
     UPDATE_PRODUCT_STATUS_SUCCESS,
     UPDATE_PRODUCT_STATUS_FAILURE,
-    UpdateProductStatusRequestAction
+    UpdateProductStatusRequestAction,
+    FETCH_IMPORTSTATUS_REQUEST,
+    FETCH_IMPORTSTATUS_FAILURE,
+    FETCH_IMPORTSTATUS_SUCCESS
 } from '../type/types';
 import { apiUrl, ROUTES } from 'constants/common';
 import axiosInstance from 'utils/global/axiosInstance';
@@ -48,20 +51,22 @@ const updateProductStatusAPI = async (
     productId: string,
     status: string,
     comments: string,
-    commentFor?: string
+    commentFor?: string,
+    countryId?: string
 ): Promise<AxiosResponse> => {
     return await axiosInstance.patch(`${apiUrl.products}`, {
         productId,
         status,
         comments,
-        commentFor
+        commentFor,
+        countryId
     });
 };
 
 function* handleUpdateProductStatus(action: UpdateProductStatusRequestAction) {
     try {
-        const { productId, status, comments, commentFor } = action.payload;
-        yield call(updateProductStatusAPI, productId, status, comments, commentFor);
+        const { productId, status, comments, commentFor, countryId } = action.payload;
+        yield call(updateProductStatusAPI, productId, status, comments, commentFor, countryId);
         yield put({
             type: UPDATE_PRODUCT_STATUS_SUCCESS,
             payload: { productId, status, comments }
@@ -168,6 +173,42 @@ function* handleFetchProductDetails(action: {
     }
 }
 
+// Function to fetch import status by productId and countryId
+const fetchImportStatusById = async (
+    productId: number | string,
+    countryId: number | string
+): Promise<AxiosResponse> => {
+    const url = apiUrl.importStatus
+        .replace(':productId', String(productId))
+        .replace(':countryId', String(countryId));
+
+    return await axiosInstance.get(url);
+};
+
+// Saga to handle fetching import status
+function* handleFetchImportStatus(action: {
+    type: typeof FETCH_IMPORTSTATUS_REQUEST;
+    payload: { productId: number | string; countryId: number };
+}) {
+    try {
+        const { productId, countryId } = action.payload;
+        const response: AxiosResponse = yield call(fetchImportStatusById, productId, countryId);
+        yield put({
+            type: FETCH_IMPORTSTATUS_SUCCESS,
+            payload: response.data
+        });
+    } catch (error: unknown) {
+        let errorMessage = 'An unknown error occurred';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        yield put({
+            type: FETCH_IMPORTSTATUS_FAILURE,
+            error: errorMessage
+        });
+    }
+}
+
 export default function* productSaga() {
     yield takeLatest(FETCH_PRODUCTS_REQUEST, handleFetchProducts);
     yield takeLatest(UPDATE_PRODUCT_STATUS_REQUEST, handleUpdateProductStatus);
@@ -175,4 +216,5 @@ export default function* productSaga() {
     yield takeLatest(EDIT_PRODUCT_REQUEST, handleEditProduct);
     yield takeLatest(DELETE_PRODUCT_REQUEST, handleDeleteProduct);
     yield takeLatest(FETCH_PRODUCTDETAILS_REQUEST, handleFetchProductDetails);
+    yield takeLatest(FETCH_IMPORTSTATUS_REQUEST, handleFetchImportStatus);
 }
