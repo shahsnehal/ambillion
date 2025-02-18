@@ -78,10 +78,6 @@ export type AddProductCategoryRequestAction = {
 export type AddProductCategorySuccessAction = {
     type: typeof ADD_PRODUCT_CATEGORY_SUCCESS;
     payload: ProductCategory;
-    // payload: {
-    //     categories: ProductCategory;
-    //     documentTypes: CategoryDocumentType[];
-    // };
 };
 
 export type AddProductCategoryFailureAction = {

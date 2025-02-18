@@ -53,8 +53,8 @@ const ProductFormSchema = Yup.object().shape({
         .required('HSN Code is required !')
         .trim()
         .matches(
-            /^\d{10,}$/,
-            'HSN Code must be at least 10 digits long and can only include numbers !'
+            /^\d{1,10}$/,
+            'HSN Code must be between 1 and 10 digits long and can only include numbers!'
         ),
     productFeature: Yup.string().required('Features are required !').trim(),
     productCustomFields: Yup.array()

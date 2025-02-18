@@ -135,17 +135,18 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 </li>
                             )}
 
-                            {/* <li className="sidebar-item cursor-link">
-                                <a className="sidebar-link" aria-expanded="false">
-                                    <div className="d-flex">
-                                        <Icon
-                                            icon="solar:question-circle-linear"
-                                            className="aside-icon fs-6"
-                                        />
-                                    </div>
-                                    <span className="hide-menu">FAQ</span>
-                                </a>
-                            </li> */}
+                            {userRole === userRoles.ADMIN && (
+                                <li className="sidebar-item cursor-link">
+                                    <a
+                                        className={`sidebar-link ${isActive(ROUTES.HSN_CODES) ? 'active' : ''}`}
+                                        id="get-url"
+                                        onClick={() => navigate(ROUTES.HSN_CODES)}
+                                    >
+                                        <Icon icon="mdi:numeric" className="aside-icon fs-6" />
+                                        <span className="hide-menu">HSN CODES</span>
+                                    </a>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                 </div>

@@ -5,6 +5,7 @@ import productSaga from 'reduxSaga/modules/product-module/saga/saga';
 import productCategorySaga from 'reduxSaga/modules/productCategories-module/saga/saga';
 import productDocumentTypeSaga from 'reduxSaga/modules/productDocumentType-module/saga/saga';
 import countrySaga from 'reduxSaga/modules/country-module/saga/saga';
+import hsnCodeSaga from 'reduxSaga/modules/hsnCodes-module/saga/saga';
 
 // Root saga that combines all individual sagas into a single saga.
 export default function* rootSaga() {
@@ -14,6 +15,7 @@ export default function* rootSaga() {
         productSaga(),
         productCategorySaga(),
         productDocumentTypeSaga(),
-        countrySaga()
+        countrySaga(),
+        hsnCodeSaga()
     ]);
 }
