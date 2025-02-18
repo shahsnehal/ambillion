@@ -23,7 +23,10 @@ export const apiUrl = {
     countries: '/countries',
 
     // Import Status Endpoint
-    importStatus: '/products/:productId/import-status/:countryId'
+    importStatus: '/products/:productId/import-status/:countryId',
+
+    // HSN Code Module
+    hsnCodes: '/hsncodes'
 };
 
 // Routing paths used throughout the application
@@ -41,7 +44,8 @@ export const ROUTES = {
     PRODUCT_CATEGORIES: '/productCategories',
     PRODUCT_DOCUMENTTYPE: '/productDocumentType',
     COUNTRIES: '/countries',
-    PRODUCT_IMPORT_STATUS_DETAILS: '/products/:productId/import-status/:countryId'
+    PRODUCT_IMPORT_STATUS_DETAILS: '/products/:productId/import-status/:countryId',
+    HSN_CODES: '/hsnCodes'
 };
 
 // Keys used for storing and retrieving data in local storage
