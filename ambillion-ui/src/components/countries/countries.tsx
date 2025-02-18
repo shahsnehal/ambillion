@@ -28,7 +28,7 @@ export const Country = () => {
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [isCountryModalOpen, setIsCountryModalOpen] = useState<boolean>(false);
     const [countryFormData, setCountryFormData] = useState<CountryFormValues | null>(null);
-    const { countries, isLoading } = useSelector((state: RootState) => state.CountryModule);
+    const { countries, isLoading } = useSelector((state: RootState) => state.countryModule);
     const debouncedFilterText = useDebounce(filterText, 500);
 
     // Fetch all countries on mount

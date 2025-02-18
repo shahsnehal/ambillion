@@ -36,7 +36,7 @@ export const ProductDocumentType = () => {
     const [documentTypeFormData, setDocumentTypeFormData] =
         useState<ProductDocumentTypeFormValues | null>(null);
     const { productDocumentsType, isLoading } = useSelector(
-        (state: RootState) => state.ProductDocumentTypeModule
+        (state: RootState) => state.productDocumentTypeModule
     );
     // Debounce the filter text to avoid excessive re-renders
     const debouncedFilterText = useDebounce(filterText, 500);
