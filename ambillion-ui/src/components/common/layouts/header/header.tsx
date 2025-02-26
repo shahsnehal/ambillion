@@ -1,8 +1,9 @@
 import { Icon } from '@iconify/react';
-import { localStorageKey } from 'constants/common';
+import { localStorageKey, ROUTES } from 'constants/common';
 import { logout } from 'utils/common';
 import { getLocalStorage } from 'utils/localStorage';
 import logo from 'assets/images/logo-icon.svg';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Header component that displays the top navigation bar with user profile and sidebar toggle.
@@ -17,12 +18,17 @@ export const Header = () => {
     // Retrieve user profile from localStorage
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
     const { name: userName, email, role_name: roleName, profile_image: profileImage } = userProfile;
+    const navigate = useNavigate();
 
     /**
      * Handles logout action by calling the logout function.
      */
     const handleLogout = () => {
         logout();
+    };
+
+    const handleViewProfile = () => {
+        navigate(ROUTES.USER_PROFILE);
     };
 
     /**
@@ -133,6 +139,18 @@ export const Header = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        <li className="dropdown-item d-flex align-items-center cursor-link">
+                                            <Icon
+                                                icon="carbon:user-profile"
+                                                className="me-2 fs-5"
+                                            />
+                                            <a
+                                                onClick={handleViewProfile}
+                                                className="text-decoration-none"
+                                            >
+                                                View Profile
+                                            </a>
+                                        </li>
                                         <li className="dropdown-item d-flex align-items-center cursor-link">
                                             <Icon
                                                 icon="solar:logout-2-outline"

@@ -6,6 +6,7 @@ import { getLocalStorage } from 'utils/localStorage';
 
 type DocumentProps = {
     documents: ProductDocumentsProps[] | null;
+    className?: string;
 };
 
 /**
@@ -19,7 +20,7 @@ type DocumentProps = {
  *     documents={documents}
  * />
  */
-const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
+const ViewDocuments: React.FC<DocumentProps> = ({ documents, className = '' }) => {
     const hasDocuments = documents && documents.length > 0;
 
     /**
@@ -94,57 +95,73 @@ const ViewDocuments: React.FC<DocumentProps> = ({ documents }) => {
     return (
         <div className="row">
             {hasDocuments ? (
-                documents.map((doc, index) => (
-                    <div key={index + 1} className="col-md-6 col-lg-4 col-sm-12 mb-3">
-                        <div className="alert border-success p-2">
-                            <div className="d-flex flex-column flex-md-row justify-content-between">
-                                {/* Left section with file info */}
-                                <div className="d-flex align-items-center mb-3 mb-md-0">
-                                    <Icon icon="bi:file-earmark-pdf-fill" className="fs-9 me-2" />
-                                    <div>
-                                        <h6 className="fw-semibold mb-1">{doc.document_name}</h6>
-                                        <div className="d-flex align-items-center gap-2 fs-3 text-muted">
-                                            <span>
-                                                {new Date(doc.audit_timestamp).toLocaleDateString()}
-                                            </span>
-                                            <span>
-                                                {new Date(doc.audit_timestamp).toLocaleTimeString()}
-                                            </span>
+                documents.map((doc, index) => {
+                    const itemClassName = className || 'col-md-6 col-lg-4 col-sm-12 mb-3';
+
+                    return (
+                        <div key={index + 1} className={itemClassName}>
+                            <div className="alert border-success p-2">
+                                <div className="d-flex flex-column flex-md-row justify-content-between">
+                                    {/* Left section with file info */}
+                                    <div className="d-flex align-items-center mb-3 mb-md-0">
+                                        <Icon
+                                            icon="bi:file-earmark-pdf-fill"
+                                            className="fs-9 me-2"
+                                        />
+                                        <div>
+                                            <h6 className="fw-semibold mb-1">
+                                                {doc.document_name}
+                                            </h6>
+                                            <div className="d-flex align-items-center gap-2 fs-3 text-muted">
+                                                <span>
+                                                    {new Date(
+                                                        doc.audit_timestamp
+                                                    ).toLocaleDateString()}
+                                                </span>
+                                                <span>
+                                                    {new Date(
+                                                        doc.audit_timestamp
+                                                    ).toLocaleTimeString()}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Right section with action buttons */}
-                                <div className="d-flex flex-wrap justify-content-end">
-                                    <button
-                                        type="button"
-                                        className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
-                                        data-toggle="tooltip"
-                                        data-placement="bottom"
-                                        title="Download"
-                                        onClick={() =>
-                                            downloadFile(doc.contentpath, doc.document_name)
-                                        }
-                                    >
-                                        <Icon icon="solar:file-download-outline" className="fs-6" />
-                                    </button>
+                                    {/* Right section with action buttons */}
+                                    <div className="d-flex flex-wrap justify-content-end">
+                                        <button
+                                            type="button"
+                                            className="btn btn-dark rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
+                                            data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="Download"
+                                            onClick={() =>
+                                                downloadFile(doc.contentpath, doc.document_name)
+                                            }
+                                        >
+                                            <Icon
+                                                icon="solar:file-download-outline"
+                                                className="fs-6"
+                                            />
+                                        </button>
 
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
-                                        data-toggle="tooltip"
-                                        data-placement="bottom"
-                                        title="View"
-                                        // onClick={() => ViewFile(doc.base64Data, doc.contentpath)}
-                                        onClick={() => ViewFile(doc.contentpath)}
-                                    >
-                                        <Icon icon="carbon:document-view" className="fs-6" />
-                                    </button>
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary rounded-circle d-flex align-items-center justify-content-center p-2 mx-1 mb-2"
+                                            data-toggle="tooltip"
+                                            data-placement="bottom"
+                                            title="View"
+                                            // onClick={() => ViewFile(doc.base64Data, doc.contentpath)}
+                                            onClick={() => ViewFile(doc.contentpath)}
+                                        >
+                                            <Icon icon="carbon:document-view" className="fs-6" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))
+                    );
+                })
             ) : (
                 <p>No Document available</p>
             )}

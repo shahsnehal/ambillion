@@ -6,6 +6,7 @@ import { productCategoryReducer } from 'reduxSaga/modules/productCategories-modu
 import { productDocumentTypeReducer } from 'reduxSaga/modules/productDocumentType-module/reducer/reducer';
 import { countryReducer } from 'reduxSaga/modules/country-module/reducer/reducer';
 import { hsnCodeReducer } from 'reduxSaga/modules/hsnCodes-module/reducer/reducer';
+import { userDocumentsReducer } from 'reduxSaga/modules/userDocuments-module/reducer/reducer';
 
 // Combines individual reducers into a single reducer function.
 export const combinedReducer = combineReducers({
@@ -15,5 +16,6 @@ export const combinedReducer = combineReducers({
     productCategoryModule: productCategoryReducer,
     productDocumentTypeModule: productDocumentTypeReducer,
     countryModule: countryReducer,
-    hsnCodeModule: hsnCodeReducer
+    hsnCodeModule: hsnCodeReducer,
+    userDocumentsModule: userDocumentsReducer
 });
