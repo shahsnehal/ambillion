@@ -1,9 +1,16 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { localStorageKey, ROUTES } from 'constants/common';
 import { useState, useEffect } from 'react';
 import { getLocalStorage, removeLocalStorage } from './localStorage';
-import { ProductCustomField } from 'reduxSaga/modules/product-module/type/types';
+import {
+    ProductCustomField,
+    ProductDocumentsProps
+} from 'reduxSaga/modules/product-module/type/types';
 import CryptoJS from 'crypto-js';
+import { UserDocumentsWrapperProps } from 'reduxSaga/modules/userDocuments-module/type/types';
+import ViewDocuments from 'components/documents/viewDocuments';
+
 /**
  * Logs out the user by clearing local storage and redirecting to the base path.
  */
@@ -181,4 +188,38 @@ export const useDebounce = (value: string, delay: number) => {
     }, [value, delay]);
 
     return debouncedValue;
+};
+
+/**
+ * UserDocumentsWrapper Component
+ * This component transforms raw document data into a format compatible with ViewDocuments.
+ *
+ * @param documents - The raw documents to be transformed.
+ * @param className - An optional custom CSS class to apply to the component.
+ *
+ * @returns A ViewDocuments component with transformed documents or a message if no documents are available.
+ */
+export const UserDocumentsWrapper: React.FC<UserDocumentsWrapperProps> = ({
+    documents,
+    className = ''
+}) => {
+    // If no documents are provided or the documents object is empty, return a message.
+    if (!documents || Object.keys(documents).length === 0) {
+        return <div>No Documents Available</div>;
+    }
+
+    // Transform the raw userDocuments into the ProductDocumentsProps format.
+    const mappedDocuments: ProductDocumentsProps[] = documents.map((doc) => ({
+        document_id: doc.documentName,
+        document_name: doc.documentName,
+        filetype: doc.documentType,
+        contentpath: doc.documentData,
+        audit_timestamp: doc.auditTimestamp || new Date().toISOString(),
+        created_by: '',
+        role: '',
+        base64Data: doc.documentData
+    }));
+
+    // Return the ViewDocuments component with the mapped documents and optional custom className
+    return <ViewDocuments className={className} documents={mappedDocuments} />;
 };

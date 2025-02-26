@@ -21,6 +21,7 @@ import { ProductDocumentTypePage } from 'pages/productDocumentType/productDocume
 import { CountriesPage } from 'pages/countries/countries';
 import { ProductImportStatusDetails } from 'components/products/ProductImportStatusDetails';
 import { HsnCodesPage } from 'pages/hsnCodes/hsnCodes';
+import { UserProfilePage } from 'pages/userProfile/userProfile';
 
 function App() {
     return (
@@ -138,6 +139,14 @@ function App() {
                                             element={
                                                 <Layout title="product detail">
                                                     <ProductDetails />
+                                                </Layout>
+                                            }
+                                        />
+                                        <Route
+                                            path={ROUTES.USER_PROFILE}
+                                            element={
+                                                <Layout title="Profile">
+                                                    <UserProfilePage />
                                                 </Layout>
                                             }
                                         />
