@@ -26,7 +26,10 @@ export const apiUrl = {
     importStatus: '/products/:productId/import-status/:countryId',
 
     // HSN Code Module
-    hsnCodes: '/hsncodes'
+    hsnCodes: '/hsncodes',
+
+    // User Document Module
+    userDocuments: '/userdocuments'
 };
 
 // Routing paths used throughout the application
@@ -45,7 +48,8 @@ export const ROUTES = {
     PRODUCT_DOCUMENTTYPE: '/productDocumentType',
     COUNTRIES: '/countries',
     PRODUCT_IMPORT_STATUS_DETAILS: '/products/:productId/import-status/:countryId',
-    HSN_CODES: '/hsnCodes'
+    HSN_CODES: '/hsnCodes',
+    USER_PROFILE: '/userProfile'
 };
 
 // Keys used for storing and retrieving data in local storage
@@ -91,4 +95,14 @@ export const userRoles = {
     MANUFACTURER: 'MANUFACTURER',
     EXPORT_OFFICER: 'EXPORT_OFFICER',
     IMPORT_OFFICER: 'IMPORT_OFFICER'
+};
+
+// User Documents Constants
+export const USER_DOCUMENT_TYPES = {
+    PAN_CARD: 'panCard',
+    GST_COPY: 'gstCopy',
+    BANK_AD_CODE: 'bankAdCode',
+    IEC: 'iec',
+    KYC_DOCUMENTS: 'kycDocuments',
+    KYC_FORMAT: 'KycFormat'
 };
