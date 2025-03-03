@@ -1,3 +1,5 @@
+import { UserDocumentProps } from 'reduxSaga/modules/userDocuments-module/type/types';
+
 export const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
 export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
@@ -5,6 +7,10 @@ export const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';
 export const UPDATE_USER_STATUS_REQUEST = 'UPDATE_USER_STATUS_REQUEST';
 export const UPDATE_USER_STATUS_SUCCESS = 'UPDATE_USER_STATUS_SUCCESS';
 export const UPDATE_USER_STATUS_FAILURE = 'UPDATE_USER_STATUS_FAILURE';
+
+export const FETCH_USERDETAILS_REQUEST = 'FETCH_USERDETAILS_REQUEST';
+export const FETCH_USERDETAILS_SUCCESS = 'FETCH_USERDETAILS_SUCCESS';
+export const FETCH_USERDETAILS_FAILURE = 'FETCH_USERDETAILS_FAILURE';
 
 export type User = {
     userprofile_id: number;
@@ -16,6 +22,13 @@ export type User = {
     mobile_number: string;
     created_timestamp: string;
     status: string;
+    profile_image?: string;
+    role_name?: string;
+};
+
+export type UserDetailsWithDocuments = {
+    user: User;
+    documents: UserDocumentProps[] | null;
 };
 
 export type FetchUsersRequestAction = {
@@ -47,10 +60,28 @@ export type UpdateUserStatusFailureAction = {
     error: string;
 };
 
+export type FetchUserDetailsRequestAction = {
+    type: typeof FETCH_USERDETAILS_REQUEST;
+    payload: number | string;
+};
+
+export type FetchUserDetailsSuccessAction = {
+    type: typeof FETCH_USERDETAILS_SUCCESS;
+    payload: UserDetailsWithDocuments;
+};
+
+export type FetchUserDetailsFailureAction = {
+    type: typeof FETCH_USERDETAILS_FAILURE;
+    error: string;
+};
+
 export type UserActionTypes =
     | FetchUsersRequestAction
     | FetchUsersSuccessAction
     | FetchUsersFailureAction
     | UpdateUserStatusRequestAction
     | UpdateUserStatusSuccessAction
-    | UpdateUserStatusFailureAction;
+    | UpdateUserStatusFailureAction
+    | FetchUserDetailsRequestAction
+    | FetchUserDetailsSuccessAction
+    | FetchUserDetailsFailureAction;
