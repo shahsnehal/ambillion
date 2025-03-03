@@ -1,5 +1,7 @@
 import {
+    FETCH_USERDETAILS_REQUEST,
     FETCH_USERS_REQUEST,
+    FetchUserDetailsRequestAction,
     FetchUsersRequestAction,
     UPDATE_USER_STATUS_REQUEST,
     UpdateUserStatusRequestAction
@@ -15,4 +17,11 @@ export const updateUserStatusRequest = (
 ): UpdateUserStatusRequestAction => ({
     type: UPDATE_USER_STATUS_REQUEST,
     payload: { userId, status }
+});
+
+export const fetchUserDetailsRequest = (
+    userId: number | string
+): FetchUserDetailsRequestAction => ({
+    type: FETCH_USERDETAILS_REQUEST,
+    payload: userId
 });

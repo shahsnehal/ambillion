@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import { Icon } from '@iconify/react';
 import { CustomLoader } from 'common/loaders/loader';
-import { localStorageKey, USER_DOCUMENT_TYPES, userRoles } from 'constants/common';
+import { localStorageKey, userDocumentTypes, userRoles } from 'constants/common';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'reduxSaga/config/store';
@@ -28,12 +28,12 @@ export const UserProfile = () => {
 
     // Initialize document state to hold file names
     const [documents, setDocuments] = useState<{ [key: string]: string | null }>({
-        [USER_DOCUMENT_TYPES.PAN_CARD]: null,
-        [USER_DOCUMENT_TYPES.GST_COPY]: null,
-        [USER_DOCUMENT_TYPES.BANK_AD_CODE]: null,
-        [USER_DOCUMENT_TYPES.IEC]: null,
-        [USER_DOCUMENT_TYPES.KYC_DOCUMENTS]: null,
-        [USER_DOCUMENT_TYPES.KYC_FORMAT]: null
+        [userDocumentTypes.PAN_CARD]: null,
+        [userDocumentTypes.GST_COPY]: null,
+        [userDocumentTypes.BANK_AD_CODE]: null,
+        [userDocumentTypes.IEC]: null,
+        [userDocumentTypes.KYC_DOCUMENTS]: null,
+        [userDocumentTypes.KYC_FORMAT]: null
     });
 
     /**
@@ -248,7 +248,7 @@ export const UserProfile = () => {
                                                     <tr>
                                                         <td>
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.PAN_CARD
+                                                                userDocumentTypes.PAN_CARD
                                                             ] ? (
                                                                 <span className="text-success">
                                                                     <Icon
@@ -265,38 +265,38 @@ export const UserProfile = () => {
                                                                 </span>
                                                             )}
                                                         </td>
-                                                        <td>PAN Card</td>
-                                                        <td>
+                                                        <td>{userDocumentTypes.PAN_CARD}</td>
+                                                        <td className="pb-0 mb-0">
                                                             <div className="d-flex align-items-center">
                                                                 <label
                                                                     className="btn btn-primary me-2"
-                                                                    htmlFor={`${USER_DOCUMENT_TYPES.PAN_CARD}Input`}
+                                                                    htmlFor={`${userDocumentTypes.PAN_CARD}Input`}
                                                                 >
                                                                     Choose File
                                                                 </label>
                                                                 <input
-                                                                    id={`${USER_DOCUMENT_TYPES.PAN_CARD}Input`}
+                                                                    id={`${userDocumentTypes.PAN_CARD}Input`}
                                                                     type="file"
                                                                     onChange={(e) =>
                                                                         handleFileUpload(
                                                                             e,
-                                                                            USER_DOCUMENT_TYPES.PAN_CARD
+                                                                            userDocumentTypes.PAN_CARD
                                                                         )
                                                                     }
                                                                     className="form-control d-none"
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td className="pb-0 mb-0">
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.PAN_CARD
+                                                                userDocumentTypes.PAN_CARD
                                                             ] && (
                                                                 <UserDocumentsWrapper
-                                                                    className="col-md-12 mb-3"
+                                                                    className="col-md-12"
                                                                     documents={mappedDocuments.filter(
                                                                         (doc) =>
                                                                             doc.documentType ===
-                                                                            USER_DOCUMENT_TYPES.PAN_CARD
+                                                                            userDocumentTypes.PAN_CARD
                                                                     )}
                                                                 />
                                                             )}
@@ -307,7 +307,7 @@ export const UserProfile = () => {
                                                     <tr>
                                                         <td>
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.GST_COPY
+                                                                userDocumentTypes.GST_COPY
                                                             ] ? (
                                                                 <span className="text-success">
                                                                     <Icon
@@ -324,38 +324,38 @@ export const UserProfile = () => {
                                                                 </span>
                                                             )}
                                                         </td>
-                                                        <td>GST Copy</td>
+                                                        <td>{userDocumentTypes.GST_COPY}</td>
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <label
                                                                     className="btn btn-primary me-2"
-                                                                    htmlFor={`${USER_DOCUMENT_TYPES.GST_COPY}Input`}
+                                                                    htmlFor={`${userDocumentTypes.GST_COPY}Input`}
                                                                 >
                                                                     Choose File
                                                                 </label>
                                                                 <input
-                                                                    id={`${USER_DOCUMENT_TYPES.GST_COPY}Input`}
+                                                                    id={`${userDocumentTypes.GST_COPY}Input`}
                                                                     type="file"
                                                                     onChange={(e) =>
                                                                         handleFileUpload(
                                                                             e,
-                                                                            USER_DOCUMENT_TYPES.GST_COPY
+                                                                            userDocumentTypes.GST_COPY
                                                                         )
                                                                     }
                                                                     className="form-control d-none"
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td className="pb-0 mb-0">
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.GST_COPY
+                                                                userDocumentTypes.GST_COPY
                                                             ] && (
                                                                 <UserDocumentsWrapper
-                                                                    className="col-md-12 mb-3"
+                                                                    className="col-md-12"
                                                                     documents={mappedDocuments.filter(
                                                                         (doc) =>
                                                                             doc.documentType ===
-                                                                            USER_DOCUMENT_TYPES.GST_COPY
+                                                                            userDocumentTypes.GST_COPY
                                                                     )}
                                                                 />
                                                             )}
@@ -366,7 +366,7 @@ export const UserProfile = () => {
                                                     <tr>
                                                         <td>
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.BANK_AD_CODE
+                                                                userDocumentTypes.BANK_AD_CODE
                                                             ] ? (
                                                                 <span className="text-success">
                                                                     <Icon
@@ -383,38 +383,38 @@ export const UserProfile = () => {
                                                                 </span>
                                                             )}
                                                         </td>
-                                                        <td>Bank AD Code</td>
+                                                        <td>{userDocumentTypes.BANK_AD_CODE}</td>
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <label
                                                                     className="btn btn-primary me-2"
-                                                                    htmlFor={`${USER_DOCUMENT_TYPES.BANK_AD_CODE}Input`}
+                                                                    htmlFor={`${userDocumentTypes.BANK_AD_CODE}Input`}
                                                                 >
                                                                     Choose File
                                                                 </label>
                                                                 <input
-                                                                    id={`${USER_DOCUMENT_TYPES.BANK_AD_CODE}Input`}
+                                                                    id={`${userDocumentTypes.BANK_AD_CODE}Input`}
                                                                     type="file"
                                                                     onChange={(e) =>
                                                                         handleFileUpload(
                                                                             e,
-                                                                            USER_DOCUMENT_TYPES.BANK_AD_CODE
+                                                                            userDocumentTypes.BANK_AD_CODE
                                                                         )
                                                                     }
                                                                     className="form-control d-none"
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td className="pb-0 mb-0">
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.BANK_AD_CODE
+                                                                userDocumentTypes.BANK_AD_CODE
                                                             ] && (
                                                                 <UserDocumentsWrapper
-                                                                    className="col-md-12 mb-3"
+                                                                    className="col-md-12"
                                                                     documents={mappedDocuments.filter(
                                                                         (doc) =>
                                                                             doc.documentType ===
-                                                                            USER_DOCUMENT_TYPES.BANK_AD_CODE
+                                                                            userDocumentTypes.BANK_AD_CODE
                                                                     )}
                                                                 />
                                                             )}
@@ -424,9 +424,7 @@ export const UserProfile = () => {
                                                     {/* IEC */}
                                                     <tr>
                                                         <td>
-                                                            {documents?.[
-                                                                USER_DOCUMENT_TYPES.IEC
-                                                            ] ? (
+                                                            {documents?.[userDocumentTypes.IEC] ? (
                                                                 <span className="text-success">
                                                                     <Icon
                                                                         icon="proicons:checkmark"
@@ -442,38 +440,36 @@ export const UserProfile = () => {
                                                                 </span>
                                                             )}
                                                         </td>
-                                                        <td>IEC</td>
+                                                        <td>{userDocumentTypes.IEC}</td>
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <label
                                                                     className="btn btn-primary me-2"
-                                                                    htmlFor={`${USER_DOCUMENT_TYPES.IEC}Input`}
+                                                                    htmlFor={`${userDocumentTypes.IEC}Input`}
                                                                 >
                                                                     Choose File
                                                                 </label>
                                                                 <input
-                                                                    id={'iecInput'}
+                                                                    id={`${userDocumentTypes.IEC}Input`}
                                                                     type="file"
                                                                     onChange={(e) =>
                                                                         handleFileUpload(
                                                                             e,
-                                                                            USER_DOCUMENT_TYPES.IEC
+                                                                            userDocumentTypes.IEC
                                                                         )
                                                                     }
                                                                     className="form-control d-none"
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
-                                                            {documents?.[
-                                                                USER_DOCUMENT_TYPES.IEC
-                                                            ] && (
+                                                        <td className="pb-0 mb-0">
+                                                            {documents?.[userDocumentTypes.IEC] && (
                                                                 <UserDocumentsWrapper
-                                                                    className="col-md-12 mb-3"
+                                                                    className="col-md-12"
                                                                     documents={mappedDocuments.filter(
                                                                         (doc) =>
                                                                             doc.documentType ===
-                                                                            USER_DOCUMENT_TYPES.IEC
+                                                                            userDocumentTypes.IEC
                                                                     )}
                                                                 />
                                                             )}
@@ -484,7 +480,7 @@ export const UserProfile = () => {
                                                     <tr>
                                                         <td>
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.KYC_DOCUMENTS
+                                                                userDocumentTypes.KYC_DOCUMENTS
                                                             ] ? (
                                                                 <span className="text-success">
                                                                     <Icon
@@ -501,38 +497,38 @@ export const UserProfile = () => {
                                                                 </span>
                                                             )}
                                                         </td>
-                                                        <td>KYC Documents</td>
+                                                        <td>{userDocumentTypes.KYC_DOCUMENTS}</td>
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <label
                                                                     className="btn btn-primary me-2"
-                                                                    htmlFor={`${USER_DOCUMENT_TYPES.KYC_DOCUMENTS}Input`}
+                                                                    htmlFor={`${userDocumentTypes.KYC_DOCUMENTS}Input`}
                                                                 >
                                                                     Choose File
                                                                 </label>
                                                                 <input
-                                                                    id={`${USER_DOCUMENT_TYPES.KYC_DOCUMENTS}Input`}
+                                                                    id={`${userDocumentTypes.KYC_DOCUMENTS}Input`}
                                                                     type="file"
                                                                     onChange={(e) =>
                                                                         handleFileUpload(
                                                                             e,
-                                                                            USER_DOCUMENT_TYPES.KYC_DOCUMENTS
+                                                                            userDocumentTypes.KYC_DOCUMENTS
                                                                         )
                                                                     }
                                                                     className="form-control d-none"
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td className="pb-0 mb-0">
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.KYC_DOCUMENTS
+                                                                userDocumentTypes.KYC_DOCUMENTS
                                                             ] && (
                                                                 <UserDocumentsWrapper
-                                                                    className="col-md-12 mb-3"
+                                                                    className="col-md-12"
                                                                     documents={mappedDocuments.filter(
                                                                         (doc) =>
                                                                             doc.documentType ===
-                                                                            USER_DOCUMENT_TYPES.KYC_DOCUMENTS
+                                                                            userDocumentTypes.KYC_DOCUMENTS
                                                                     )}
                                                                 />
                                                             )}
@@ -543,7 +539,7 @@ export const UserProfile = () => {
                                                     <tr>
                                                         <td>
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.KYC_FORMAT
+                                                                userDocumentTypes.KYC_FORMAT
                                                             ] ? (
                                                                 <span className="text-success">
                                                                     <Icon
@@ -560,38 +556,38 @@ export const UserProfile = () => {
                                                                 </span>
                                                             )}
                                                         </td>
-                                                        <td>KYC Format</td>
+                                                        <td>{userDocumentTypes.KYC_FORMAT}</td>
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <label
                                                                     className="btn btn-primary me-2"
-                                                                    htmlFor={`${USER_DOCUMENT_TYPES.KYC_FORMAT}Input`}
+                                                                    htmlFor={`${userDocumentTypes.KYC_FORMAT}Input`}
                                                                 >
                                                                     Choose File
                                                                 </label>
                                                                 <input
-                                                                    id={`${USER_DOCUMENT_TYPES.KYC_FORMAT}Input`}
+                                                                    id={`${userDocumentTypes.KYC_FORMAT}Input`}
                                                                     type="file"
                                                                     onChange={(e) =>
                                                                         handleFileUpload(
                                                                             e,
-                                                                            USER_DOCUMENT_TYPES.KYC_FORMAT
+                                                                            userDocumentTypes.KYC_FORMAT
                                                                         )
                                                                     }
                                                                     className="form-control d-none"
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td className="pb-0 mb-0">
                                                             {documents?.[
-                                                                USER_DOCUMENT_TYPES.KYC_FORMAT
+                                                                userDocumentTypes.KYC_FORMAT
                                                             ] && (
                                                                 <UserDocumentsWrapper
-                                                                    className="col-md-12 mb-3"
+                                                                    className="col-md-12"
                                                                     documents={mappedDocuments.filter(
                                                                         (doc) =>
                                                                             doc.documentType ===
-                                                                            USER_DOCUMENT_TYPES.KYC_FORMAT
+                                                                            userDocumentTypes.KYC_FORMAT
                                                                     )}
                                                                 />
                                                             )}

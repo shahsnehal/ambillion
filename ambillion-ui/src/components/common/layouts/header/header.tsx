@@ -28,7 +28,7 @@ export const Header = () => {
     };
 
     const handleViewProfile = () => {
-        navigate(ROUTES.USER_PROFILE);
+        navigate(ROUTES.PROFILE);
     };
 
     /**

@@ -22,6 +22,7 @@ import { CountriesPage } from 'pages/countries/countries';
 import { ProductImportStatusDetails } from 'components/products/ProductImportStatusDetails';
 import { HsnCodesPage } from 'pages/hsnCodes/hsnCodes';
 import { UserProfilePage } from 'pages/userProfile/userProfile';
+import { UserDetailsPage } from 'pages/userDetails/userDetails';
 
 function App() {
     return (
@@ -111,6 +112,15 @@ function App() {
                                                 </Layout>
                                             }
                                         />
+
+                                        <Route
+                                            path={ROUTES.USERDETAILS}
+                                            element={
+                                                <Layout title="User Details">
+                                                    <UserDetailsPage />
+                                                </Layout>
+                                            }
+                                        />
                                     </Route>
 
                                     {/* Protected routes for Admin, Export_Officer, Import_Officer and Manufacturer */}
@@ -143,7 +153,7 @@ function App() {
                                             }
                                         />
                                         <Route
-                                            path={ROUTES.USER_PROFILE}
+                                            path={ROUTES.PROFILE}
                                             element={
                                                 <Layout title="Profile">
                                                     <UserProfilePage />

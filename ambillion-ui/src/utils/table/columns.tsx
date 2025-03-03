@@ -43,7 +43,7 @@ export const customStyles = {
  * @param {string} status - The status of the user.
  * @returns {string} The CSS class corresponding to the user status.
  */
-const getUserStatusClass = (status: string): string => {
+export const getUserStatusClass = (status: string): string => {
     switch (status) {
         case userStatus.ACCEPTED:
             return 'bg-success-subtle text-success';
@@ -102,6 +102,7 @@ export const getProductStatusClass = (status: string): string => {
  * @property {string} status - The current status of the user.
  * @property {() => void} onApprove - Function to call when the user is approved.
  * @property {() => void} onReject - Function to call when the user is rejected.
+ * @property {() => void} onView - Function to call when the user details is shown.
  */
 
 /**
@@ -114,6 +115,7 @@ type UserStatusChangeActionProps = {
     status: string;
     onApprove: () => void;
     onReject: () => void;
+    onView: () => void;
 };
 
 /**
@@ -126,7 +128,8 @@ type UserStatusChangeActionProps = {
 export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
     status,
     onApprove,
-    onReject
+    onReject,
+    onView
 }) => {
     return (
         <div className="d-flex gap-2">
@@ -150,6 +153,15 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
             >
                 <Icon icon="solar:close-circle-outline" className="fs-5" />
             </button>
+            <button
+                className="btn btn-warning btn-rounded d-flex align-items-center justify-content-center p-2"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="View"
+                onClick={onView}
+            >
+                <Icon icon="lsicon:view-outline" className="fs-5" />
+            </button>
         </div>
     );
 };
@@ -157,7 +169,8 @@ export const UserStatusChangeAction: React.FC<UserStatusChangeActionProps> = ({
 //User Status Change Action Column
 export const UserStatusChangeActionColumn = (
     onApprove: (userId: number) => void,
-    onReject: (userId: number) => void
+    onReject: (userId: number) => void,
+    onView: (userId: number) => void
 ) => ({
     name: 'Actions',
     cell: (row: User) => (
@@ -165,11 +178,13 @@ export const UserStatusChangeActionColumn = (
             status={row.status}
             onApprove={() => onApprove(row.userprofile_id)}
             onReject={() => onReject(row.userprofile_id)}
+            onView={() => onView(row.userprofile_id)}
         />
     ),
     ignoreRowClick: false,
     allowOverflow: true,
-    button: true
+    button: true,
+    width: '15%'
 });
 
 /**
@@ -182,24 +197,30 @@ export const userTableColumns: TableColumn<User>[] = [
         name: 'Name',
         selector: (row) => row.name,
         sortable: true,
-        wrap: true
+        wrap: true,
+        width: '15%'
     },
     {
         name: 'Company Name',
         selector: (row) => row.company_name ?? '',
-        sortable: true
+        sortable: true,
+        wrap: true,
+        width: '15%'
     },
     {
         name: 'Email Address',
         selector: (row) => row.email,
         sortable: true,
         grow: 1,
-        wrap: true
+        wrap: true,
+        width: '18%'
     },
     {
         name: 'Mobile Number',
         selector: (row) => row.mobile_number,
-        sortable: true
+        sortable: true,
+        wrap: true,
+        width: '12%'
     },
     {
         name: 'Created Date',
@@ -208,17 +229,21 @@ export const userTableColumns: TableColumn<User>[] = [
             const [formattedDate] = date.toISOString().split('T');
             return formattedDate;
         },
-        sortable: true
+        sortable: true,
+        wrap: true,
+        width: '10%'
     },
     {
         name: 'Status',
         selector: (row) => row.status,
         sortable: true,
         cell: (row) => (
-            <span className={`badge ${getUserStatusClass(row.status)} rounded fw-semibold p-2`}>
+            <span className={`badge ${getUserStatusClass(row.status)} rounded fw-semibold p-1`}>
                 {row.status}
             </span>
-        )
+        ),
+        wrap: true,
+        width: '15%'
     }
 ];
 

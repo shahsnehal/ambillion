@@ -8,7 +8,10 @@ import {
     UPDATE_USER_STATUS_REQUEST,
     UPDATE_USER_STATUS_SUCCESS,
     UPDATE_USER_STATUS_FAILURE,
-    UpdateUserStatusRequestAction
+    UpdateUserStatusRequestAction,
+    FETCH_USERDETAILS_REQUEST,
+    FETCH_USERDETAILS_SUCCESS,
+    FETCH_USERDETAILS_FAILURE
 } from '../type/types';
 import { apiUrl } from 'constants/common';
 
@@ -52,7 +55,36 @@ function* handleUpdateUserStatus(action: UpdateUserStatusRequestAction) {
     }
 }
 
+//Fetch UserDetailsBy ID API
+const fetchUserDetailsById = async (userId: number | string): Promise<AxiosResponse> => {
+    return await axiosInstance.get(`${apiUrl.users}/${userId}`);
+};
+
+function* handleFetchUserDetails(action: {
+    type: typeof FETCH_USERDETAILS_REQUEST;
+    payload: number;
+}) {
+    try {
+        const response: AxiosResponse = yield call(fetchUserDetailsById, action.payload);
+        const { user, documents } = response.data;
+        yield put({
+            type: FETCH_USERDETAILS_SUCCESS,
+            payload: {
+                user,
+                documents
+            }
+        });
+    } catch (error: unknown) {
+        let errorMessage = 'An unknown error occurred';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        yield put({ type: FETCH_USERDETAILS_FAILURE, error: errorMessage });
+    }
+}
+
 export default function* userSaga() {
     yield takeLatest(UPDATE_USER_STATUS_REQUEST, handleUpdateUserStatus);
     yield takeLatest(FETCH_USERS_REQUEST, handleFetchUsers);
+    yield takeLatest(FETCH_USERDETAILS_REQUEST, handleFetchUserDetails);
 }

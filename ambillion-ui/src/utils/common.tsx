@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { localStorageKey, ROUTES } from 'constants/common';
+import { localStorageKey, ROUTES, userDocumentTypes } from 'constants/common';
 import { useState, useEffect } from 'react';
 import { getLocalStorage, removeLocalStorage } from './localStorage';
 import {
@@ -222,4 +222,31 @@ export const UserDocumentsWrapper: React.FC<UserDocumentsWrapperProps> = ({
 
     // Return the ViewDocuments component with the mapped documents and optional custom className
     return <ViewDocuments className={className} documents={mappedDocuments} />;
+};
+
+/**
+ * Checks if the user has all the required documents.
+ *
+ * This function compares the list of user documents against a set of required document types
+ * and returns true if all required documents are present, otherwise false.
+ *
+ * @param userDocuments - An array of user documents to be checked. Each document is expected
+ *                        to have a `filetype` property that specifies the document type.
+ *
+ * @returns A boolean indicating whether all required documents are present (`true` if all required documents are found, `false` otherwise).
+ */
+export const hasAllRequiredDocuments = (userDocuments: Array<any>): boolean => {
+    const requiredDocuments = [
+        userDocumentTypes.PAN_CARD,
+        userDocumentTypes.GST_COPY,
+        userDocumentTypes.BANK_AD_CODE,
+        userDocumentTypes.IEC,
+        userDocumentTypes.KYC_DOCUMENTS,
+        userDocumentTypes.KYC_FORMAT
+    ];
+
+    const userDocumentTypesInResponse = userDocuments.map((doc) => doc.filetype);
+
+    // Check if all required documents are present
+    return requiredDocuments.every((docType) => userDocumentTypesInResponse.includes(docType));
 };
