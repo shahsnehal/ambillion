@@ -9,10 +9,11 @@ import {
     SIGNIN_FAILURE,
     SIGNIN_REQUEST
 } from '../type/types';
-import { apiUrl, localStorageKey, ROUTES } from 'constants/common';
+import { apiUrl, localStorageKey, ROUTES, userRoles } from 'constants/common';
 import axiosInstance from 'utils/global/axiosInstance';
 import { AxiosResponse } from 'axios';
 import { setLocalStorage } from 'utils/localStorage';
+import { hasAllRequiredDocuments } from 'utils/common';
 
 const signup = async (signupData: SignupData): Promise<AxiosResponse> => {
     return await axiosInstance.post(apiUrl.signUp, signupData);
@@ -47,8 +48,9 @@ function* handleSignin(action: {
         const response: AxiosResponse = yield call(signin, action.payload);
         const responseData = response.data;
         const userData = responseData.user;
+        const { role_name: roleName } = userData;
         const { access } = responseData.tokens;
-        const { productCategories, countries } = responseData;
+        const { productCategories, countries, userDocuments } = responseData;
         yield put({ type: SIGNIN_SUCCESS, payload: responseData });
 
         setLocalStorage(localStorageKey.USER_PROFILE, userData);
@@ -56,7 +58,20 @@ function* handleSignin(action: {
         setLocalStorage(localStorageKey.PRODUCT_CATEGORIES, productCategories);
         setLocalStorage(localStorageKey.COUNTRIES, countries);
 
-        action.payload.navigate(ROUTES.PRODUCTS);
+        // Check if role is MANUFACTURER and verify user documents using the hasAllRequiredDocuments function
+        if (roleName === userRoles.MANUFACTURER) {
+            const allDocumentsPresent = hasAllRequiredDocuments(userDocuments);
+
+            // If all documents are present, route to PRODUCTS, otherwise route to PROFILE
+            if (allDocumentsPresent) {
+                action.payload.navigate(ROUTES.PRODUCTS);
+            } else {
+                action.payload.navigate(ROUTES.PROFILE);
+            }
+        } else {
+            // If role is not MANUFACTURER, navigate to PRODUCTS
+            action.payload.navigate(ROUTES.PRODUCTS);
+        }
     } catch (error: unknown) {
         let errorMessage = 'An unknown error occurred';
         if (error instanceof Error) {

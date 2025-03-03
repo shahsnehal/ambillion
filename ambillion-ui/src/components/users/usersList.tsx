@@ -9,9 +9,10 @@ import {
     updateUserStatusRequest
 } from 'reduxSaga/modules/user-module/action/actions';
 import { RootState } from 'reduxSaga/config/store';
-import { userStatus } from 'constants/common';
+import { ROUTES, userStatus } from 'constants/common';
 import { CustomLoader } from 'common/loaders/loader';
 import { useDebounce } from 'utils/common';
+import { useNavigate } from 'react-router-dom';
 
 export const actionType = {
     APPROVE: 'APPROVE',
@@ -30,6 +31,7 @@ export const actionType = {
  */
 export const UserList: React.FC = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState<boolean>(false);
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
@@ -88,6 +90,15 @@ export const UserList: React.FC = () => {
     const handleReject = (userId: number) => {
         setSelectedUserId(userId);
         setCurrentActionType(actionType.REJECT);
+    };
+
+    /**
+     * Handles the view action for a user.
+     *
+     * @param {number} userId - The ID of the user to view.
+     */
+    const handleView = (userId: number) => {
+        navigate(`${ROUTES.USERS}/${userId}`);
     };
 
     /**
@@ -155,7 +166,7 @@ export const UserList: React.FC = () => {
                 columns={[
                     ...userTableColumns,
 
-                    UserStatusChangeActionColumn(handleApprove, handleReject)
+                    UserStatusChangeActionColumn(handleApprove, handleReject, handleView)
                 ]}
                 data={filteredUsers}
                 progressPending={isLoading}

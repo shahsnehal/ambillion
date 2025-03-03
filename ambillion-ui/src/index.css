@@ -43736,32 +43736,3 @@ body .connect-sorting-content {
 .mailbox .message-center .message-item .user-img .offline {
     background: var(--bs-warning);
 }
-
-/* Custom CSS */
-
-/* For Back Button */
-
-@media screen and (max-width: 576px) {
-    .back-btn {
-        width: 100%;
-    }
-}
-
-/* For User Detail */
-
-.user_detail {
-    display: flex;
-}
-
-.user_detail_lable {
-    width: 30%;
-}
-
-@media (max-width: 576px) {
-    .user_detail {
-        display: grid;
-    }
-    .user_detail_lable {
-        width: 100%;
-    }
-}

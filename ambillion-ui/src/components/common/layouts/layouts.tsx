@@ -5,6 +5,12 @@ import { localStorageKey, ROUTES, userRoles } from 'constants/common';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Footer } from './footer/footer';
 import { getLocalStorage } from 'utils/localStorage';
+import { hasAllRequiredDocuments } from 'utils/common';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'reduxSaga/config/store';
+import { useEffect } from 'react';
+import { fetchUserDocumentsRequest } from 'reduxSaga/modules/userDocuments-module/action/actions';
 
 /**
  * Layout component that provides the main structure for the page,
@@ -22,6 +28,7 @@ import { getLocalStorage } from 'utils/localStorage';
  */
 export const Layout = ({ children, title }: { children: React.ReactNode; title: string }) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const location = useLocation();
     // Retrieve user profile from localStorage
     const userProfile = getLocalStorage(localStorageKey.USER_PROFILE);
@@ -29,8 +36,11 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
         first_name: Name,
         last_name: lastName,
         role_name: userRole,
-        profile_image: profileImage
+        profile_image: profileImage,
+        userprofile_id: userId
     } = userProfile;
+    const { userDocuments } = useSelector((state: RootState) => state.userDocumentsModule);
+
     /**
      * Determines if the given route is currently active based on the URL path.
      *
@@ -38,6 +48,30 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
      * @returns {boolean} True if the route is active, false otherwise.
      */
     const isActive = (route: string) => location.pathname.startsWith(route);
+
+    /**
+     * Fetches user documents when the user is a manufacturer and no documents are present.
+     */
+    useEffect(() => {
+        if (userRole === userRoles.MANUFACTURER) {
+            dispatch(fetchUserDocumentsRequest(userId));
+        }
+    }, []);
+
+    const handleNavigate = () => {
+        if (userRole === userRoles.MANUFACTURER) {
+            const allDocumentsPresent = hasAllRequiredDocuments(userDocuments);
+
+            if (allDocumentsPresent) {
+                navigate(ROUTES.PRODUCTS);
+            } else {
+                toast.error('Please Upload Your Documents Before Accessing The Products Page.');
+            }
+        } else {
+            // If the user is not a manufacturer, navigate directly to PRODUCTS
+            navigate(ROUTES.PRODUCTS);
+        }
+    };
 
     return (
         <div id="main-wrapper">
@@ -86,7 +120,7 @@ export const Layout = ({ children, title }: { children: React.ReactNode; title: 
                                 <a
                                     className={`sidebar-link ${isActive(ROUTES.PRODUCTS) ? 'active' : ''}`}
                                     id="get-url"
-                                    onClick={() => navigate(ROUTES.PRODUCTS)}
+                                    onClick={handleNavigate}
                                 >
                                     <Icon icon="gridicons:product" className="aside-icon fs-6" />
                                     <span className="hide-menu">PRODUCTS</span>

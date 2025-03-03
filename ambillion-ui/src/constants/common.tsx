@@ -49,7 +49,8 @@ export const ROUTES = {
     COUNTRIES: '/countries',
     PRODUCT_IMPORT_STATUS_DETAILS: '/products/:productId/import-status/:countryId',
     HSN_CODES: '/hsnCodes',
-    USER_PROFILE: '/userProfile'
+    PROFILE: '/profile',
+    USERDETAILS: '/users/:userId'
 };
 
 // Keys used for storing and retrieving data in local storage
@@ -98,11 +99,12 @@ export const userRoles = {
 };
 
 // User Documents Constants
-export const USER_DOCUMENT_TYPES = {
-    PAN_CARD: 'panCard',
-    GST_COPY: 'gstCopy',
-    BANK_AD_CODE: 'bankAdCode',
-    IEC: 'iec',
-    KYC_DOCUMENTS: 'kycDocuments',
-    KYC_FORMAT: 'KycFormat'
+export const userDocumentTypes = {
+    PAN_CARD: 'Pan Card',
+    GST_COPY: 'GST Copy',
+    BANK_AD_CODE: 'Bank AD Code',
+    IEC: 'IEC',
+    KYC_DOCUMENTS: 'KYC Documents',
+    KYC_FORMAT: 'KYC Format',
+    DOCUMENT_NOT_AVAILABLE: 'Document Not Available'
 };
